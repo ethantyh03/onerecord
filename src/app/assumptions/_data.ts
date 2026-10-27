@@ -171,7 +171,7 @@ export const ASSUMPTION_GROUPS: AssumptionGroup[] = [
         id: "A11",
         title: "Cycle time, today vs target",
         value:
-          "Median 14 days → ≤ 4 business days. Amy's item took 18 days (case brief, Appendix C).",
+          "Median 14 days (Amy's took 18) → ≤ 4 business days. Amy's 18 days are from the case brief, Appendix C.",
         basis:
           "18 days is App C. The 14-day median sits between S4's \"2–3 weeks\" and App C (see A26). The 2/5/9/2-day split is our breakdown of App C (illustrative).",
         tags: ["illustrative"],
@@ -204,7 +204,7 @@ export const ASSUMPTION_GROUPS: AssumptionGroup[] = [
         id: "A14",
         title: "Production platform",
         value:
-          "Canvas Power Apps form on a SharePoint List, Power Automate routing with the standard Approvals connector, Teams and Outlook approvals, Entra ID roles. No new licences for the workflow in phase 1 (standard connectors only). The duplicate matcher runs as a nightly job that writes normalised match keys to a SharePoint list via Microsoft Graph; the form does a delegable key and tax-ID lookup, so no premium HTTP connector is needed. Regional Pulse in production = Power BI, with Pro licences for about 10 viewers (≈ USD 14/user/month, approx.) if not already owned.",
+          "Canvas Power Apps form on a SharePoint List, Power Automate routing with the standard Approvals connector, Teams and Outlook approvals, Entra ID roles. No new licences for the workflow (phase 1): standard connectors only. The duplicate matcher runs as a nightly job that writes normalised match keys to a SharePoint list via Microsoft Graph; the form does a delegable key and tax-ID lookup, so no premium HTTP connector is needed. Regional Pulse in production = Power BI, with Pro licences for about 10 viewers (≈ USD 14/user/month, approx.) if not already owned.",
         basis:
           "Microsoft licensing documentation in the research log: Approvals and Teams are standard connectors included with Microsoft 365. Avoids Dataverse to stay clear of premium enforcement.",
         tags: ["research"],

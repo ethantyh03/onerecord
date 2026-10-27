@@ -90,7 +90,7 @@ Source tags:
 | S1 | **PRs (accepted quotes = pipeline)** | 3.5% of A lines, 3% of B lines and 85% of C lines come through a PR 5–35 days earlier. Lost PRs are added. Open PRs are dated 20 Aug – 25 Oct 2026 | `streams.pr_*` | A6 [T] | 4,240 PRs. 12M PR→PO conversion: SG 73%, VN 73%, MY 71%, TH 65%, **MM 41%** |
 | S2 | **Enquiries lead POs by ~1 month** | Half of the PRs are preceded by an enquiry, and the rest follow next month's seasonality. MM enquiries rise while MM POs fall | `streams.enquir*` | FM §5.5 MM | 10,818 enquiries. YoY: MM +15%, VN +13% |
 | S3 | **Follow-ups (excluded from demand)** | 10% of POs get a delivery, invoice, return or credit-note message | `streams.followup_*` | A6 | 4,009 follow-ups |
-| S4 | **Stuck demand** | PR-5521 (Sunway Medical Centre, S$48,600) and PR-5527 (Penang General Hospital, S$21,400): Dengue IgG/IgM Combo 30T, blocked by REQ-1042 (the item is not in the master). Plus 10 more blocked PRs across 5 countries (REQ-1031…1049) | `pinned.prs`, `streams.blocked_*` | Plan pinned facts, FM §5.6 #6 | **S$335k over 12 PRs**. Both pinned customers are new MY records (Sep 2026) with no POs, so the only real hospital names are not in the PO data |
+| S4 | **Stuck demand** | PR-5521 (Sungai Permai Medical Centre, S$48,600) and PR-5527 (Pulau Mutiara General Hospital, S$21,400): Dengue IgG/IgM Combo 30T, blocked by REQ-1042 (the item is not in the master). Plus 10 more blocked PRs across 5 countries (REQ-1031…1049) | `pinned.prs`, `streams.blocked_*` | Plan pinned facts, FM §5.6 #6 | **S$335k over 12 PRs**. Both pinned customers are new MY records (Sep 2026) with no POs. Their names are fictional, like every name except NUH |
 | S5 | **As-is MDM history** | ~80 requests/month (customer 30, item 30, vendor 10, extend 5, cost centre 5), Oct 2025 – Sep 2026, ids REQ-0001…REQ-0990 (below the app's REQ-1001+). Each request has sequential hand-offs; 40% bounce at least once. Components are stored per request: notice, bounce, approval and MDM days | `mdm_history.*` | A12, A13, A26, FM §6.7 | **Median 14.1 calendar days** (items 16.0, customers 13.9). 40% bounced. 83 requests link to records created in the window; 84 list the PRs that waited on them |
 
 ## Stress scenarios (DS3): "our method doesn't invent signal"
@@ -131,5 +131,6 @@ clean master data first.
 - Several effect sizes have no published source and are labelled [T]: flush sizes, holiday dips, churn rates and
   prices. The research log's Gaps section lists them.
 - Country weights rest on vendor market-size estimates that disagree by up to 4×. Myanmar's weight is an assumption.
-- Real hospital names appear only where the plan pins them: the NUH master record, and the two PR customers, which are
-  set up as new records with no PO history. Every other name is fictional and guarded against look-alikes.
+- The only real hospital name is the NUH master record (pinned, no sales). The two pinned PR customers (Sungai Permai
+  Medical Centre, Pulau Mutiara General Hospital) are fictional and set up as new records with no PO history. Every
+  other name is fictional and guarded against look-alikes.

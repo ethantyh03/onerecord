@@ -107,7 +107,7 @@ C-MY-00057,Sungai Melati Biotech Research Centre,QTG,MY,G-MY-0050,1,C-MY-00057,t
 C-MY-00058,Hospital Sungai Gemilang,SPD,MY,G-MY-0054,1,C-MY-00058,true,,,,G-MY-0054,true
 C-MY-00059,Pusat Perubatan Seri Kenanga,QTG,MY,G-MY-0014,1,C-MY-00059,true,,,,G-MY-0014,true
 C-MY-00060,Meranti Pharma Sdn Bhd,QTG,MY,G-MY-0021,2,C-MY-00060,true,C-MY-00063,1.0,93% name match; Same postcode; Same phone number; Same email domain (meranti.example),G-MY-0021,true
-C-MY-00061,Specialist Hospital Bukit Damai,QTS,MY,G-MY-0002,3,C-MY-00029,false,C-MY-00029,1.0,Same tax ID; 100% name match; Same postcode; Same phone number; Same email domain (bukitdamai.example),G-MY-0002,true
+C-MY-00061,Specialist Hospital Bukit Damai,QTS,MY,G-MY-0002,3,C-MY-00029,false,C-MY-00091,1.0,100% name match after expanding Spec → Specialist; Same postcode; Same phone number; Same email domain (bukitdamai.example),G-MY-0002,true
 C-MY-00062,Ulu Kesuma Family Clinic,QTG,MY,G-MY-0070,1,C-MY-00062,true,,,,G-MY-0070,true
 C-MY-00063,Meranti Pharma S/B,QTS,MY,G-MY-0021,2,C-MY-00060,false,C-MY-00060,1.0,93% name match; Same postcode; Same phone number; Same email domain (meranti.example),G-MY-0021,true
 C-MY-00064,Bukit Baiduri Medical Centre,SPD,MY,G-MY-0048,1,C-MY-00064,true,,,,G-MY-0048,true
@@ -137,11 +137,11 @@ C-MY-00087,Halia Medical Research Institute,QTG,MY,G-MY-0081,1,C-MY-00087,true,,
 C-MY-00088,Tiara Gloves Sdn Bhd,QTG,MY,G-MY-0057,1,C-MY-00088,true,,,,G-MY-0057,true
 C-MY-00089,Makmal Patologi Kuala Bestari,SPD,MY,G-MY-0024,1,C-MY-00089,true,,,,G-MY-0024,true
 C-MY-00090,Kasturi Medical Research Institute,QTS,MY,G-MY-0028,1,C-MY-00090,true,,,,G-MY-0028,true
-C-MY-00091,Bukit Damai Spec Hospital,SPD,MY,G-MY-0002,3,C-MY-00029,false,C-MY-00029,1.0,100% name match after expanding Spec → Specialist; Same postcode; Same phone number; Same email domain (bukitdamai.example),G-MY-0002,true
+C-MY-00091,Bukit Damai Spec Hospital,SPD,MY,G-MY-0002,3,C-MY-00029,false,C-MY-00061,1.0,100% name match after expanding Spec → Specialist; Same postcode; Same phone number; Same email domain (bukitdamai.example),G-MY-0002,true
 C-MY-00092,Poliklinik Tanjung Nirwana,SPD,MY,G-MY-0076,1,C-MY-00092,true,,,,G-MY-0076,true
 C-MY-00093,Cengal Halal Testing Sdn Bhd,QTG,MY,G-MY-0047,1,C-MY-00093,true,,,,G-MY-0047,true
-C-MY-00094,Sunway Medical Centre,SPD,MY,G-MY-0089,1,C-MY-00094,true,,,,G-MY-0089,true
-C-MY-00095,Penang General Hospital,SPD,MY,G-MY-0090,1,C-MY-00095,true,,,,G-MY-0090,true
+C-MY-00094,Sungai Permai Medical Centre,SPD,MY,G-MY-0089,1,C-MY-00094,true,,,,G-MY-0089,true
+C-MY-00095,Pulau Mutiara General Hospital,SPD,MY,G-MY-0090,1,C-MY-00095,true,,,,G-MY-0090,true
 C-SG-00001,Saffron Food Testing Pte Ltd,QTG,SG,G-SG-0008,1,C-SG-00001,true,,,,G-SG-0008,true
 C-SG-00002,Cendana Clinical Laboratories Pte Ltd,SPD,SG,G-SG-0024,1,C-SG-00002,true,,,,G-SG-0024,true
 C-SG-00003,Siglap Crest Community Hospital,SPD,SG,G-SG-0048,1,C-SG-00003,true,,,,G-SG-0048,true

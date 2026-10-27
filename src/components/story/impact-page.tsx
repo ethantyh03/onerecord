@@ -103,10 +103,10 @@ export function ImpactPage() {
           label="Median time to set up a record"
           value={
             <Figure formula={<>{SOURCES.a26} Target: median ≤4 business days, in line with the APQC benchmark of 3.0 days.</>}>
-              14<span className="text-[0.9375rem] font-medium"> days</span> → ≤4<span className="text-[0.9375rem] font-medium"> business days</span>
+              14<span className="text-[0.9375rem] font-medium"> days</span> → ≤ 4<span className="text-[0.9375rem] font-medium"> business days</span>
             </Figure>
           }
-          caption="Median 14 calendar days today → ≤4 business days. Amy's item in the case brief (Appendix C) took 18."
+          caption="Median 14 days (Amy's took 18) → ≤ 4 business days. Amy's item is from the case brief (Appendix C)."
           footnote="A26 · APQC benchmark 3.0 days"
         />
         <KpiTile
@@ -155,7 +155,7 @@ export function ImpactPage() {
               None
             </Figure>
           }
-          caption="No new licences for the workflow in phase 1 (standard connectors only). Power BI Pro only if not owned."
+          caption="No new licences for the workflow (phase 1): standard connectors only. Power BI Pro only if not owned."
           footnote="Research log: Microsoft licensing"
         />
       </section>
@@ -268,7 +268,7 @@ export function ImpactPage() {
               },
               {
                 label: "Median cycle time",
-                value: <Figure formula={SOURCES.a26}>14 days → ≤4 business days</Figure>,
+                value: <Figure formula={SOURCES.a26}>median 14 days (Amy&apos;s took 18) → ≤ 4 business days</Figure>,
               },
               {
                 label: "Outside benchmark",
@@ -310,7 +310,7 @@ export function ImpactPage() {
               </tr>
             </thead>
             <tbody>
-              <CostGroupRow label="Phase 1: pilot, then roll-out" badge={<NoteChip tone="ok">No new licences for the workflow</NoteChip>} />
+              <CostGroupRow label="Phase 1: pilot, then roll-out" badge={<NoteChip tone="ok">No new licences for the workflow (phase 1)</NoteChip>} />
               <CostRow item="Lean team build, 6 weeks" who="1 citizen developer + 1 analyst" oneOff={<Figure formula="2 people × 6 weeks × 40 h × S$50 (A22)">{formatSgd(I.leanTeamSgd)}</Figure>} />
               <CostRow item="Duplicate matcher and forecast" who="Data-science / Power Platform contractor, ~15 days" oneOff={<Figure formula="15 days × S$650/day (A22, upper end of S$450–650, low confidence)">{formatSgd(I.contractorSgd)}</Figure>} />
               <CostRow item="Forms, routes and business units" who="MDM team configures" oneOff={<Figure formula="48 h × S$50 (A22)">{formatSgd(I.mdmConfigSgd)}</Figure>} />

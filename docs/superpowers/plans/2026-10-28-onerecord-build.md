@@ -49,7 +49,7 @@
     - Category IVD reagent / Medical device ⇒ field `regLicenceNo` (HSA / MDA licence) becomes required, and a QA/RA step is auto-added with `addedBecause: "Category = IVD reagent → regulatory review required"`.
   - Personas (ids): `amy` (Amy Lim, Product Manager SPD, SG), `weijie` (Tan Wei Jie, Finance Manager, SG), `priya` (Priya Nair, MDM Analyst, SG, roles mdm+admin), `marcus` (Marcus Wong, Head of new BU, SG).
   - Approver ids: `daniel` (Daniel Ong, BU Head SPD), `siti` (Siti Rahman, Business Support MY), `ploy` (Dr Ploy Srisuk, QA/RA TH), `lan` (Nguyen Thi Lan, Sales Manager VN), `kyaw` (Kyaw Zin Htet, Business Support MM), `rachel` (Rachel Koh, Finance Director), `hafiz` (Hafiz Ismail, Procurement Head MY), `meiling` (Chua Mei Ling, Financial Controller), `jun` (Lim Jun Hao, BU Head QTS), `aisha` (Aisha Karim, BU Head QTG).
-  - Seeded request ids start at `REQ-1001`. The demo's "ready for MDM" item request is **REQ-1042** (Dengue IgG/IgM Combo 30T, Product A, SPD, MY). It blocks **PR-5521** (Sunway Medical Centre MY, S$48,600) and **PR-5527** (Penang General Hospital MY, S$21,400).
+  - Seeded request ids start at `REQ-1001`. The demo's "ready for MDM" item request is **REQ-1042** (Dengue IgG/IgM Combo 30T, Product A, SPD, MY). It blocks **PR-5521** (Sungai Permai Medical Centre MY, S$48,600) and **PR-5527** (Pulau Mutiara General Hospital MY, S$21,400).
   - SAP code format: `C-SG-00123` (customer), `V-MY-00045` (vendor), `I-A-000812` (item: product group, not country), `CC-SG-0031` (cost centre).
 
 ## Review Focus
@@ -126,7 +126,7 @@ classifyMessage(m: { subject: string; body: string; from: string }): { kind: Mes
 - dedupe: "Natl Univ Hosp" vs "National University Hospital" ≥ 0.85.
 - dedupe: findDuplicates("Hospital") has no match ≥ 0.85.
 - dedupe: same taxId ⇒ reason "Same tax ID".
-- dedupe: "Mount Elizabeth Hospital" vs "National University Hospital" < 0.75.
+- dedupe: a different SG hospital name vs "National University Hospital" < 0.75.
 - codes: next code after C-SG-00122 is C-SG-00123.
 - dtw: customer request ⇒ oBusinessPartners.csv with headers[0] "CardCode" and the CardName row value.
 - extract: the redaction removes "1234567890".

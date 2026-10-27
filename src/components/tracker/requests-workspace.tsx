@@ -274,7 +274,7 @@ export function RequestsWorkspace() {
           icon={Clock3}
           value={hydrated ? `${formatDays(stats.medianDaysToCreate)} d` : "—"}
           caption="Business days from submission to live in SAP B1"
-          footnote="Today by email: median 14 days → target ≤ 4 business days"
+          footnote="Today by email: median 14 days (Amy's took 18) → ≤ 4 business days"
         />
         <KpiTile
           label="Orders waiting on master data"

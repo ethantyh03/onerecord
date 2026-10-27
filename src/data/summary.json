@@ -1,6 +1,6 @@
 {
  "isMock": false,
- "generatedAt": "2026-10-28T03:00:04+08:00",
+ "generatedAt": "2026-10-28T05:51:03+08:00",
  "window": "Oct 2025 – Sep 2026",
  "headlines": [
   {
@@ -56,10 +56,10 @@
    "id": "cycle_time",
    "label": "Setup time for a new record",
    "value": 4,
-   "baseline": 18,
-   "display": "18 days → ≤4 business days",
+   "baseline": 14.0,
+   "display": "median 14 days (Amy's took 18) → ≤ 4 business days",
    "unit": "days",
-   "sentence": "Amy's item took 18 days. One form, parallel approvals in Teams with a 2-business-day SLA, and an SAP import file bring the target median to 4 business days or less; about 43% of the time saved is a process change that needs no new software.",
+   "sentence": "Today's median is 14 days (Amy's item took 18). One form, parallel approvals in Teams with a 2-business-day SLA, and an SAP import file bring the target median to 4 business days or less; about 43% of the time saved is a process change that needs no new software.",
    "sourceFile": "impact.json",
    "sourcePath": "soft.cycleTime.target.value",
    "useIn": [
@@ -74,7 +74,7 @@
    "value": 5.9,
    "display": "5.9 months on S$39.9k",
    "unit": "months",
-   "sentence": "Phase 1 costs about S$39.9k with no new licences for the workflow and releases ~1,751 hours a year (≈0.94 FTE), paying back in about 5.9 months at 80 requests a month.",
+   "sentence": "Phase 1 costs about S$39.9k, with no new licences for the workflow (phase 1), and releases ~1,751 hours a year (≈0.94 FTE), paying back in about 5.9 months at 80 requests a month.",
    "sourceFile": "impact.json",
    "sourcePath": "headline.paybackMonths.value",
    "useIn": [

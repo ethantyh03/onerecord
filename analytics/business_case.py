@@ -324,7 +324,7 @@ def cost_section(i: dict) -> dict:
     one, run = phase1_one_off(i), phase1_run(i)
     p2, lic, maint = phase2_one_off(i), licences_sgd(i), phase2_one_off(i) * i["phase2MaintenanceRate"]
     return {
-        "title": "Cost (phase 1 needs no new licences for the workflow: standard connectors, SharePoint, Teams Approvals, SAP import files)",
+        "title": "Cost (no new licences for the workflow (phase 1): standard connectors, SharePoint, Teams Approvals, SAP import files)",
         "phase1": {
             "label": "Phase 1 (pilot → rollout)",
             "oneOff": num(one, "SGD", "S$24,000 + S$9,750 + S$2,400 + S$3,750", "A22", "S$39,900", 0),
@@ -543,7 +543,7 @@ def kpi_section() -> dict:
         },
         "kpis": [
             {"kpi": "Requests through OneRecord", "target": "≥90% by week 6 (month 2 at rollout)", "baseline": "0% (email)"},
-            {"kpi": "Median setup time", "target": "≤4 business days", "baseline": "14 calendar days (A26); Amy 18"},
+            {"kpi": "Median setup time", "target": "≤ 4 business days", "baseline": "median 14 days (Amy's took 18) (A26)"},
             {"kpi": "Bounce rate (sent back for missing info)", "target": "<15%", "baseline": "40% (A13)"},
             {"kpi": "Duplicates intercepted at intake", "target": "count, reported weekly", "baseline": "not measured"},
             {"kpi": "Stuck demand (S$ of orders waiting on a setup)", "target": "falling trend", "baseline": "live tile"},
@@ -575,7 +575,7 @@ ALTERNATIVES = [
      "Fixes the workflow (exact-match duplicates only), but the regional numbers stay dirty", False),
     ("Buy an MDM suite / B1 add-on", "High (enterprise pricing; not verified) + IT", "yes", "yes", "yes", "partly", "partly",
      "Over-sized for ~80 requests a month", False),
-    ("OneRecord (M365 workflow + small DS layer + DTW)", "~S$40k, no new licences for the workflow", "yes", "yes", "yes", "yes", "yes",
+    ("OneRecord (M365 workflow + small DS layer + DTW)", "~S$40k, no new licences for the workflow (phase 1)", "yes", "yes", "yes", "yes", "yes",
      "Chosen: fuzzy + tax-ID duplicate check, parallel approvals with SLA, stuck demand, de-duplicated forecast", True),
 ]
 
@@ -670,8 +670,8 @@ def build_impact(scenario: str = "base") -> dict:
                                 f"{base['hpy']:,.0f} h a year (≈{base['fte']:.2f} FTE)", 0),
             "netSgdPerYear": num(round(base["net"]), "SGD", "gross − run", "this file, hardBenefit.rows[80]", f"S${base['net']:,.0f}"),
             "threeYearNetSgd": num(round(base["net3"]), "SGD", "3 × net − one-off", "this file", fmt_sgd(base["net3"])),
-            "newLicences": "none in phase 1",
-            "sentence": (f"Phase 1 costs about S${base['one'] / 1000:.1f}k with no new licences for the workflow and releases ~{base['hpy']:,.0f} hours "
+            "newLicences": "none for the workflow (phase 1)",
+            "sentence": (f"Phase 1 costs about S${base['one'] / 1000:.1f}k, with no new licences for the workflow (phase 1), and releases ~{base['hpy']:,.0f} hours "
                          f"a year (≈{base['fte']:.2f} FTE), paying back in about {base['pb']:.1f} months at 80 requests a month."),
         },
         "inputs": inputs_table(i),

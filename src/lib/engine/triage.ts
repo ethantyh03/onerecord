@@ -126,7 +126,7 @@ function firstQuestion(text: string): string | undefined {
   return m && m[0].trim().length > 1 ? snippet(m[0]) : undefined;
 }
 
-/** First PO number in the text, formatted for display ("PO-778812", "LPO KPJ/2026/1187", "77120"). */
+/** First PO number in the text, formatted for display ("PO-778812", "LPO SMH/2026/1187", "77120"). */
 function findPoNumber(text: string): string | undefined {
   const re = new RegExp(PO_CAND_RE.source, PO_CAND_RE.flags);
   let m: RegExpExecArray | null;

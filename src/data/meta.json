@@ -1,6 +1,6 @@
 {
  "isMock": false,
- "generatedAt": "2026-10-28T03:00:04+08:00",
+ "generatedAt": "2026-10-28T05:51:03+08:00",
  "seed": 42,
  "synthetic": true,
  "generator": "analytics/run_all.py (generate → resolve → growth → forecast → stress → signals → streams → actions → business_case → build_summary)",

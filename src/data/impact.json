@@ -1,6 +1,6 @@
 {
  "isMock": false,
- "generatedAt": "2026-10-28T02:59:51+08:00",
+ "generatedAt": "2026-10-28T05:50:51+08:00",
  "generator": "analytics/business_case.py",
  "spec": "final model §6 (docs/superpowers/specs/2026-10-28-final-model.md)",
  "synthetic": true,
@@ -47,8 +47,8 @@
    "source": "this file",
    "display": "S$205k"
   },
-  "newLicences": "none in phase 1",
-  "sentence": "Phase 1 costs about S$39.9k with no new licences for the workflow and releases ~1,751 hours a year (≈0.94 FTE), paying back in about 5.9 months at 80 requests a month."
+  "newLicences": "none for the workflow (phase 1)",
+  "sentence": "Phase 1 costs about S$39.9k, with no new licences for the workflow (phase 1), and releases ~1,751 hours a year (≈0.94 FTE), paying back in about 5.9 months at 80 requests a month."
  },
  "inputs": [
   {
@@ -447,7 +447,7 @@
   ]
  },
  "costs": {
-  "title": "Cost (phase 1 needs no new licences for the workflow: standard connectors, SharePoint, Teams Approvals, SAP import files)",
+  "title": "Cost (no new licences for the workflow (phase 1): standard connectors, SharePoint, Teams Approvals, SAP import files)",
   "phase1": {
    "label": "Phase 1 (pilot → rollout)",
    "oneOff": {
@@ -1103,8 +1103,8 @@
    },
    {
     "kpi": "Median setup time",
-    "target": "≤4 business days",
-    "baseline": "14 calendar days (A26); Amy 18"
+    "target": "≤ 4 business days",
+    "baseline": "median 14 days (Amy's took 18) (A26)"
    },
    {
     "kpi": "Bounce rate (sent back for missing info)",
@@ -1202,7 +1202,7 @@
    },
    {
     "option": "OneRecord (M365 workflow + small DS layer + DTW)",
-    "oneOff": "~S$40k, no new licences for the workflow",
+    "oneOff": "~S$40k, no new licences for the workflow (phase 1)",
     "stopsIncomplete": "yes",
     "stopsDuplicates": "yes",
     "fastVisibleApprovals": "yes",

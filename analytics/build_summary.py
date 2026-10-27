@@ -70,6 +70,7 @@ def build_summary() -> dict:
     mis = dd["misattribution"]["totalSgdMoved12m"]
     hm = me["heldOutMetrics"]
     wf = imp["waterfall"]["totals"]
+    med = imp["soft"]["cycleTime"]["baselineMedian"]["value"]
     hb = imp["headline"]
     clean_share = cx["fromCleaningPts"] / cx["totalImprovementPts"] if cx["totalImprovementPts"] else 0.0
     rob = forecast_robustness(reuse=True)
@@ -127,10 +128,10 @@ def build_summary() -> dict:
             "id": "cycle_time",
             "label": "Setup time for a new record",
             "value": 4,
-            "baseline": wf["beforeDays"]["value"],
-            "display": f"{wf['beforeDays']['value']} days → ≤4 business days",
+            "baseline": med,
+            "display": f"median {med:.0f} days (Amy's took {wf['beforeDays']['value']}) → ≤ 4 business days",
             "unit": "days",
-            "sentence": (f"Amy's item took {wf['beforeDays']['value']} days. One form, parallel approvals in Teams with a "
+            "sentence": (f"Today's median is {med:.0f} days (Amy's item took {wf['beforeDays']['value']}). One form, parallel approvals in Teams with a "
                          f"2-business-day SLA, and an SAP import file bring the target median to 4 business days or less; "
                          f"about {wf['processShare']['value'] * 100:.0f}% of the time saved is a process change that needs no new software."),
             "sourceFile": "impact.json",

@@ -11,7 +11,7 @@ Writes the CSVs documented in analytics/SCHEMA.md, plus
   plants.json   ground truth for every planted pattern (codes, names, measured sizes)
   manifest.json params snapshot, row counts and the summary stats printed at the end.
 Every number comes from analytics/params.yaml; every planted pattern is listed in analytics/PATTERNS.md.
-All names are fictional except the pinned demo facts (NUH master record; the two PR customers).
+All names are fictional except the pinned NUH master record (no sales); the two pinned PR customers are fictional too.
 """
 from __future__ import annotations
 
@@ -1332,7 +1332,7 @@ class Generator:
         self.pr_cust = {}
         nmy = sum(1 for r in self.cust if r["country"] == "MY" and r.get("golden_id"))
         for k, pr in enumerate(P["pinned"]["prs"]):
-            stem = pr["customer_name"].split()[0]
+            stem = pr.get("stem") or pr["customer_name"].split()[0]  # address stem, e.g. "Jalan Permai 10"
             self.cust.append(dict(country=pr["country"], segment=pr["segment"], tier="M",
                                   base={p: 0 for p in PRODUCTS}, plant=["pinned_pr_customer"],
                                   golden_id=f"G-MY-{nmy + k + 1:04d}", name=pr["customer_name"], stem=stem,

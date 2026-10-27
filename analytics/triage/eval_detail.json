@@ -1,6 +1,6 @@
 {
  "testSet": "OneRecord inbox-triage blind test set v1",
- "testSetSha256": "6283636c95d88c44dde547d2d666a22b5a0322a338ac4e16b1300ee041796d69",
+ "testSetSha256": "3f3a4099cdded854d70c4880d0c3bd4fe264897a0a821d05b376c15aa9abf9c6",
  "n": 60,
  "accuracy": 0.917,
  "accuracyHard": 0.879,
@@ -310,11 +310,11 @@
    "country": "VN",
    "confidence": 0.91,
    "reasons": [
-    "Contains PO number BM-2610-031",
+    "Contains PO number HH-2610-031",
     "Order wording (\"deliver to\")",
     "States quantity 5 box"
    ],
-   "subject": "Đơn đặt hàng / Purchase order #BM-2610-031"
+   "subject": "Đơn đặt hàng / Purchase order #HH-2610-031"
   },
   {
    "id": "BT-019",
@@ -328,7 +328,7 @@
     "States quantity 24 box",
     "No PO number yet — pipeline, not demand"
    ],
-   "subject": "PO from Siriraj - Glucose reagent"
+   "subject": "PO from Chao Phraya Central - Glucose reagent"
   },
   {
    "id": "BT-020",
@@ -430,7 +430,7 @@
    "country": "SG",
    "confidence": 0.83,
    "reasons": [
-    "Contains PO number PO no. is SGH/PUR/26/08812",
+    "Contains PO number PO no. is PHGH/PUR/26/08812",
     "States quantity 12 kits"
    ],
    "subject": "Order for the HbA1c reagent"
@@ -477,7 +477,7 @@
     "States quantity 100 tests",
     "No PO number yet — pipeline, not demand"
    ],
-   "subject": "Order request - Mandalay General"
+   "subject": "Order request - Yadanar General"
   },
   {
    "id": "BT-030",
@@ -505,7 +505,7 @@
    "reasons": [
     "Requests master-data setup (\"Vendor registration\")"
    ],
-   "subject": "Vendor registration - Vinmec"
+   "subject": "Vendor registration - Song Hong International"
   },
   {
    "id": "BT-032",
@@ -602,9 +602,9 @@
    "confidence": 0.7,
    "reasons": [
     "Refers to an existing order or delivery (\"not received\")",
-    "Contains PO number PO PGH/26/5521-B"
+    "Contains PO number PO PMGH/26/5521-B"
    ],
-   "subject": "FW: FW: Delivery - Penang General"
+   "subject": "FW: FW: Delivery - Pulau Mutiara General"
   },
   {
    "id": "BT-039",
@@ -617,9 +617,9 @@
    "reasons": [
     "Refers to an existing order (delivery documents: \"Goods received\")",
     "Refers to an existing order (billing: \"invoice\")",
-    "Contains PO number PO BM-2609-017"
+    "Contains PO number PO HH-2609-017"
    ],
-   "subject": "Hoá đơn VAT for PO BM-2609-017"
+   "subject": "Hoá đơn VAT for PO HH-2609-017"
   },
   {
    "id": "BT-040",
@@ -672,7 +672,7 @@
    "reasons": [
     "Raises a problem with an existing order (\"wrong unit price\")",
     "Refers to an existing order (billing: \"Invoice\")",
-    "Contains PO number PO KPJD-PO-2026-0992"
+    "Contains PO number PO SMHD-PO-2026-0992"
    ],
    "subject": "Invoice INV-SPD-26-04412 wrong unit price"
   },
@@ -747,7 +747,7 @@
    "country": "SG",
    "confidence": 0.55,
    "reasons": [
-    "Contains PO number PO No. 2026/NTFGH/3381",
+    "Contains PO number PO No. 2026/JWGH/3381",
     "States quantity 6 cartons"
    ],
    "subject": "RE: Quotation Q-26-4471 - accepted"
@@ -848,11 +848,11 @@
    "country": "MY",
    "confidence": 0.83,
    "reasons": [
-    "Contains PO number KPJD-PO-2026-1147",
+    "Contains PO number SMHD-PO-2026-1147",
     "Order wording (\"issued Purchase Order\")",
     "States quantity 200 boxes"
    ],
-   "subject": "PURCHASE ORDER - KPJ DAMANSARA"
+   "subject": "PURCHASE ORDER - SMH DAMANSARA"
   },
   {
    "id": "BT-056",
@@ -866,9 +866,9 @@
     "Refers to an existing order or delivery (\"When can the balance 10 boxes come\")",
     "Raises a problem with an existing order (\"short delivered\")",
     "Refers to an existing order (delivery documents: \"DO-88123\")",
-    "Contains PO number PO 2026/TTSH/1190"
+    "Contains PO number PO 2026/BGH/1190"
    ],
-   "subject": "RE: PO 2026/TTSH/1190 - short delivered"
+   "subject": "RE: PO 2026/BGH/1190 - short delivered"
   },
   {
    "id": "BT-057",
@@ -881,7 +881,7 @@
    "reasons": [
     "Refers to an existing order (billing: \"Payment made\")",
     "Refers to an existing order (\"the shipment from\")",
-    "Contains PO number PO PH-0926-03"
+    "Contains PO number PO IL-0926-03"
    ],
    "subject": "Payment made - please confirm"
   },
@@ -895,7 +895,7 @@
    "confidence": 0.7,
    "reasons": [
     "Refers to an existing order (delivery documents: \"COA\")",
-    "Contains PO number PO SGH/PUR/26/07710"
+    "Contains PO number PO PHGH/PUR/26/07710"
    ],
    "subject": "COA required for delivered lot"
   },

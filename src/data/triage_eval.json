@@ -113,7 +113,7 @@
   },
   {
    "id": "BT-019",
-   "subject": "PO from Siriraj - Glucose reagent",
+   "subject": "PO from Chao Phraya Central - Glucose reagent",
    "actual": "po",
    "predicted": "pr",
    "why": "Rules saw: States quantity 24 box; No PO number yet — pipeline, not demand. Actually a PO: 'P/O' spelling; Thai Buddhist-era year 2569 in PO number."

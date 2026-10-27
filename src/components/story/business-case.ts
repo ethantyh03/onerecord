@@ -373,7 +373,7 @@ export const ALTERNATIVES: Alternative[] = [
   {
     id: "onerecord",
     option: "OneRecord (Microsoft 365 workflow + small data-science layer + SAP import file)",
-    oneOff: "~S$40k, no new workflow licences (Power BI Pro only if not owned)",
+    oneOff: "~S$40k, no new licences for the workflow (phase 1); Power BI Pro only if not owned",
     stopsIncomplete: "yes",
     stopsDuplicates: "yes",
     fastVisibleApprovals: "yes",

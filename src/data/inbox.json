@@ -14,11 +14,11 @@
   },
   {
    "id": "MSG-2002",
-   "from": "procurement@sunwaymedicalcentre.example",
-   "company": "Sunway Medical Centre",
+   "from": "procurement@sungaipermaimedicalcentr.example",
+   "company": "Sungai Permai Medical Centre",
    "country": "MY",
    "subject": "Quotation SPD-MY-26-1188 accepted – Dengue IgG/IgM Combo 30T",
-   "body": "Dear Ms Siti,\n\nWe accept quotation SPD-MY-26-1188 for 243 kits of Dengue IgG/IgM Combo 30T (S$48,600). Our PO will follow as soon as your team confirms the item code is in your system.\n\nPlease advise the lead time.\n\nRegards,\nProcurement Unit, Sunway Medical Centre",
+   "body": "Dear Ms Siti,\n\nWe accept quotation SPD-MY-26-1188 for 243 kits of Dengue IgG/IgM Combo 30T (S$48,600). Our PO will follow as soon as your team confirms the item code is in your system.\n\nPlease advise the lead time.\n\nRegards,\nProcurement Unit, Sungai Permai Medical Centre",
    "receivedAt": "2026-10-26T10:05:00+08:00",
    "humanLabel": "pr"
   },
@@ -84,8 +84,8 @@
   },
   {
    "id": "MSG-2009",
-   "from": "stores@penanggeneralhospital.example",
-   "company": "Penang General Hospital",
+   "from": "stores@pulaumutiarageneralhospi.example",
+   "company": "Pulau Mutiara General Hospital",
    "country": "MY",
    "subject": "Re: Dengue combo kits – please proceed with 107 kits",
    "body": "Hi,\n\nFollowing our call, please proceed with 107 kits of Dengue IgG/IgM Combo 30T as quoted (S$21,400). Our official LPO will be issued once the budget code is confirmed next week. Kindly reserve the stock.\n\nRegards,\nPharmacy & Stores",

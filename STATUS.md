@@ -41,18 +41,15 @@ Deadline: **12:00 SGT Wed 28 Oct 2026**. The user is asleep until ~07:30 and has
 
 | ~03:10 | USAGE LIMIT REACHED. Wave 3 (wf_c60c0da1-e11) stopped mid-Fix phase: the working tree has UNCOMMITTED partial fixer edits (README, approvals page, e2e, business_case.py, …). On resume, run tsc + vitest first and keep or repair them. The :3100 server also exited |
 
-## RESUME AT 05:27 (after the usage reset)
-1. cd C:/Users/ethan/dev/onerecord && git status (should be clean apart from reviewer screenshots in test-results/)
-2. npm run build && start `npx next start -p 3100` in the background; curl until 200
-3. Relaunch Wave 3: Workflow scriptPath scratchpad/wave3.js, resumeFromRunId wf_c60c0da1-e11, same args (baseUrl http://localhost:3100, round 1, notes = DS caveats in the 03:06 entry; see the Wave 3 launch in the transcript)
-4. Commit; then Wave 4 (scratchpad/wave4.js): video + TTS + slides + presenter guide
-5. Prepare the morning checklist (below)
+| 05:27 | Resumed after the reset. Wave 3 resumed (verify only; reviewers/fixers cached). Prep (VO + TTS 2:36, Q&A + checklist) done |
+| 05:36 | Wave 3 DONE + committed (6fe3b31): tsc 0, vitest 288, build green, golden 24/24 |
+| 05:38 | Hygiene launched (wf_6db13b79-ced): rename real hospital/chain names at the source, regenerate, verify numbers, wording fixes; then Wave 4 (video, slides, guide) |
 
 ## Waves
 - [x] Wave 1: foundation (engine, store, shell, mocks) + integration
 - [x] W1-E: Python data + DS → src/data JSON
 - [x] Wave 2: features (intake, approvals, tracker + MDM, admin, pulse, triage + impact)
-- [ ] Wave 3: integrate + e2e demo path + visual review loop
+- [x] Wave 3: integrate + e2e demo path + visual review loop
 - [ ] Wave 4: README, recording, voiceover script, 2 slides, secrets scan, deploy
 
 ## Morning checklist for the user (draft)

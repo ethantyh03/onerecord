@@ -49,7 +49,7 @@ export function LandingKpis() {
             <span className="text-lg font-medium tracking-[-0.01em] text-secondary-foreground">business days</span>
           </span>
         }
-        caption="Median 14 calendar days today → a median of 4 business days or less. Amy's item in the brief (Appendix C) took 18."
+        caption="Median 14 days (Amy's took 18) → ≤ 4 business days. Amy's item is from the brief (Appendix C)."
         footnote="Baseline median: assumption A26. Target is our KPI."
       />
       <KpiTile

@@ -18,7 +18,7 @@ Conventions
 
 Pinned rows (must exist exactly):
 - `customers_records.csv`: `C-SG-00017, National University Hospital, SPD, SG, 198500123K, 5 Lower Kent Ridge Road, 119074, +65 6779 5555`, `has_transactions=false`, its own golden ID, **no rows in pos.csv**.
-- `prs.csv`: `PR-5521` (Sunway Medical Centre, MY, S$48,600) and `PR-5527` (Penang General Hospital, MY, S$21,400), both `status=blocked`, `blocked_by_request_id=REQ-1042`, item "Dengue IgG/IgM Combo 30T", Product A, SPD.
+- `prs.csv`: `PR-5521` (Sungai Permai Medical Centre, MY, S$48,600) and `PR-5527` (Pulau Mutiara General Hospital, MY, S$21,400), both `status=blocked`, `blocked_by_request_id=REQ-1042`, item "Dengue IgG/IgM Combo 30T", Product A, SPD.
 
 ---
 

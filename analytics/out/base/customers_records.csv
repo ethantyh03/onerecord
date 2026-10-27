@@ -140,8 +140,8 @@ C-MY-00090,Kasturi Medical Research Institute,QTS,MY,200402309577,"No. 259, Jala
 C-MY-00091,Bukit Damai Spec Hospital,SPD,MY,,"No. 373, Jalan Bukit 9, Taman Selasih",57296,+60 3-8341 5049,lab.bukitdamai@bukitdamai.example,Private hospital,2026-03-22,true,G-MY-0002,MY,abbreviation;blank_tax_id
 C-MY-00092,Poliklinik Tanjung Nirwana,SPD,MY,,"No. 135, Jalan Tanjung 10, Taman Suria",28633,+60 6-5989 6865,procurement@tanjungnirwana.example,Clinic,2026-03-23,true,G-MY-0076,MY,
 C-MY-00093,Cengal Halal Testing Sdn Bhd,QTG,MY,201301145027,"No. 372, Jalan Cengal 1, Taman Makmur",16065,+60 5-8189 9957,procurement@cengal.example,Industry,2026-04-30,true,G-MY-0047,MY,
-C-MY-00094,Sunway Medical Centre,SPD,MY,201302724868,"No. 173, Jalan Sunway 10, Taman Nilam",63958,+60 5-8170 5604,procurement@sunwaymedicalcentr.example,Private hospital,2026-09-08,false,G-MY-0089,MY,
-C-MY-00095,Penang General Hospital,SPD,MY,201402423515,"No. 322, Jalan Penang 2, Taman Harmoni",52728,+60 7-3412 8872,procurement@penanggeneralhospi.example,Public hospital,2026-09-15,false,G-MY-0090,MY,
+C-MY-00094,Sungai Permai Medical Centre,SPD,MY,201302724868,"No. 173, Jalan Permai 10, Taman Nilam",63958,+60 5-8170 5604,procurement@sungaipermaimedica.example,Private hospital,2026-09-08,false,G-MY-0089,MY,
+C-MY-00095,Pulau Mutiara General Hospital,SPD,MY,201402423515,"No. 322, Jalan Mutiara 2, Taman Harmoni",52728,+60 7-3412 8872,procurement@pulaumutiaragenera.example,Public hospital,2026-09-15,false,G-MY-0090,MY,
 C-SG-00001,Saffron Food Testing Pte Ltd,QTG,SG,198988031Q,98 Saffron Drive,132751,+65 6975 6967,procurement@saffron.example,Industry,2008-07-28,true,G-SG-0008,SG,
 C-SG-00002,Cendana Clinical Laboratories Pte Ltd,SPD,SG,201427076M,185 Cendana Crescent,222527,+65 6626 4705,procurement@cendana.example,Diagnostic lab,2008-10-01,true,G-SG-0024,SG,
 C-SG-00003,Siglap Crest Community Hospital,SPD,SG,201960246K,236 Siglap Avenue,460692,+65 6444 7077,procurement@siglapcrest.example,Public hospital,2008-12-12,true,G-SG-0048,SG,

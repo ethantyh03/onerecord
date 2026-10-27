@@ -134,7 +134,7 @@ export function ArchitecturePage() {
       <PageHeader
         title="How it lands in SAP B1"
         subtitle="Approvals live in Microsoft 365, where people already work. SAP Business One stays the system of record. Each box is coloured by who builds it, so a company without a development team can see exactly what it takes on."
-        meta={<NoteChip tone="ok">No new licences for the workflow in phase 1</NoteChip>}
+        meta={<NoteChip tone="ok">No new licences for the workflow (phase 1)</NoteChip>}
       />
 
       <Swimlane />

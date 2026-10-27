@@ -2,10 +2,10 @@
  * Display pseudonyms for real organisation names (final model §3.6 / §7.2: every customer except NUH is fictional,
  * and no real hospital name is shown next to sales).
  *
- * The analytics generator (analytics/params.yaml, analytics/streams.py) seeded two MY customers with real hospital
- * names. src/data/contract.ts runs every generated JSON file through `pseudonymise` so the app shows the same
- * fictional names as src/lib/seed.ts, whether or not the JSON has been regenerated yet. Once the generator uses
- * the fictional names, these replacements match nothing and do nothing.
+ * The sources are now clean: analytics/params.yaml, analytics/streams.py, the triage sets, src/lib/seed.ts and the
+ * generated src/data/*.json all use fictional names at the source (pre-publication pass, 28 Oct 2026), so these
+ * replacements match nothing and do nothing. src/data/contract.ts still runs every generated JSON file through
+ * `pseudonymise` as a defensive layer, in case a future edit or regeneration reintroduces one of these names.
  *
  * Order matters: the most specific strings come first.
  */

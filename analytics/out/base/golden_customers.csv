@@ -131,8 +131,8 @@ G-MY-0085,Poliklinik Sungai Bayu,MY,Clinic,S,2023-10,,false,,,2026-06
 G-MY-0086,Lembah Bayu Family Clinic,MY,Clinic,S,2024-01,,false,,,2026-06
 G-MY-0087,Seri Mutiara Family Clinic Ipoh,MY,Clinic,S,2024-05,,false,near_miss,,2026-08
 G-MY-0088,Makmal Patologi Taman Nirwana,MY,Diagnostic lab,S,,,false,new_customer,,
-G-MY-0089,Sunway Medical Centre,MY,Private hospital,M,,,false,pinned_pr_customer,,
-G-MY-0090,Penang General Hospital,MY,Public hospital,M,,,false,pinned_pr_customer,,
+G-MY-0089,Sungai Permai Medical Centre,MY,Private hospital,M,,,false,pinned_pr_customer,,
+G-MY-0090,Pulau Mutiara General Hospital,MY,Public hospital,M,,,false,pinned_pr_customer,,
 G-SG-0000,National University Hospital,SG,Public hospital,L,,,false,pinned_nuh,,
 G-SG-0001,Jalan Kayu Vale General Hospital,SG,Public hospital,L,2023-10,,true,,,2026-09
 G-SG-0002,Redhill Vista Medical Centre,SG,Private hospital,L,2023-10,,false,,,2026-09

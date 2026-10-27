@@ -10,8 +10,8 @@ import { usePitchKeys } from "../_lib/use-pitch-keys";
 const TILES = [
   {
     id: "time",
-    figure: "≤4 business days",
-    caption: "Median time from request to live record, down from 14 calendar days today. Amy's item took 18.",
+    figure: "≤ 4 business days",
+    caption: "Median time from request to live record. Today: median 14 days (Amy's took 18) → ≤ 4 business days.",
   },
   {
     id: "hours",
@@ -21,7 +21,7 @@ const TILES = [
   {
     id: "licences",
     figure: "No new licences",
-    caption: "for the workflow in phase 1. Standard Microsoft 365 connectors, Teams and SharePoint, landing in SAP B1 through its own import tool.",
+    caption: "for the workflow (phase 1). Standard Microsoft 365 connectors, Teams and SharePoint, landing in SAP B1 through its own import tool.",
   },
 ] as const;
 

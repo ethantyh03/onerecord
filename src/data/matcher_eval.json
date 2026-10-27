@@ -195,13 +195,13 @@
  "heldOutRecords": 215,
  "comparisons": {
   "allPossiblePairs": 75078,
-  "pairsScored": 1712,
-  "reductionRatio": 0.9772
+  "pairsScored": 1728,
+  "reductionRatio": 0.977
  },
  "blockingAblation": [
   {
    "blocking": "country + Soundex of first distinctive word",
-   "pairsScoredSGMY": 168,
+   "pairsScoredSGMY": 172,
    "threshold": 0.905,
    "f1SGMY": 0.737,
    "recallSGMY": 0.636,
@@ -209,7 +209,7 @@
   },
   {
    "blocking": "country + Soundex of any distinctive word",
-   "pairsScoredSGMY": 606,
+   "pairsScoredSGMY": 622,
    "threshold": 0.905,
    "f1SGMY": 0.857,
    "recallSGMY": 0.818,
@@ -217,7 +217,7 @@
   },
   {
    "blocking": "any distinctive word + dialling-code country check (chosen)",
-   "pairsScoredSGMY": 624,
+   "pairsScoredSGMY": 640,
    "threshold": 0.905,
    "f1SGMY": 0.957,
    "recallSGMY": 1.0,

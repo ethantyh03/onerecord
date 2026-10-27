@@ -401,7 +401,7 @@ const BASELINE_CUSTOMERS: CustomerRef[] = [
   { code: "C-MY-00058", name: "Pulau Mutiara General Hospital", entity: "SPD", country: "MY", taxId: "196201000088", street: "Jalan Mutiara Indah", city: "George Town", zip: "10450", phone: "+60 4-281 6620", segment: "Public hospital", createdAt: "2021-09-07T02:50:00.000Z" },
   { code: "C-TH-00041", name: "Bangkok Metro Lab", entity: "SPD", country: "TH", taxId: "0105551023874", street: "1120 Rama IV Road, Khlong Toei", city: "Bangkok", zip: "10110", phone: "+66 2 671 4400", segment: "Diagnostic lab", createdAt: "2022-04-25T03:20:00.000Z" },
   { code: "C-VN-00022", name: "Hue Central Diagnostics", entity: "SPD", country: "VN", taxId: "3301245789", street: "16 Le Loi Street", city: "Hue", zip: "530000", phone: "+84 234 3822 165", segment: "Diagnostic lab", createdAt: "2022-11-08T02:10:00.000Z" },
-  { code: "C-MM-00009", name: "Yangon General Diagnostics", entity: "QTG", country: "MM", taxId: "104876213", street: "No. 82 Bogyoke Aung San Road, Pabedan Township", city: "Yangon", zip: "11141", phone: "+95 1 377 210", segment: "Diagnostic lab", createdAt: "2023-07-17T04:00:00.000Z" },
+  { code: "C-MM-00009", name: "Pabedan General Diagnostics", entity: "QTG", country: "MM", taxId: "104876213", street: "No. 82 Bogyoke Aung San Road, Pabedan Township", city: "Yangon", zip: "11141", phone: "+95 1 377 210", segment: "Diagnostic lab", createdAt: "2023-07-17T04:00:00.000Z" },
 ];
 
 interface ItemRef {
@@ -495,7 +495,7 @@ function baselineSapRecords(): SapRecord[] {
     });
   }
   const ccs: [string, string, string, CountryCode][] = [
-    ["CC-TH-0011", "SPD Bangkok Hospital Sales", "SPD", "TH"],
+    ["CC-TH-0011", "SPD Bangkok Key Accounts", "SPD", "TH"],
     ["CC-VN-0008", "QTS Vietnam Field Service", "QTS", "VN"],
     ["CC-MM-0004", "QTG Myanmar Distribution", "QTG", "MM"],
   ];
@@ -609,7 +609,7 @@ const HISTORY: HistSpec[] = [
   { domainId: "item", requestorId: "amy", entity: "SPD", country: "SG", data: item("Hepatitis B sAg Rapid Test 40T", "IVD reagent", "A", "Seoul BioAssay Co., Ltd.", "KIT", 40, 28, 44, COLD, "DE0509034", "SPD", "SG, VN, MM") },
   { domainId: "customer", requestorId: "minhduc", entity: "QTS", country: "VN", data: cust("Da Nang Coastal Hospital", "VN", "QTS", "0401987654", "74 Hai Phong Street, Hai Chau District", "Da Nang", "550000", "+84 236 3821 480", "Public hospital", "Dr Le Thi Thu", "danangcoastal", "Net 60", 45000, "VND") },
   { domainId: "extend", requestorId: "nurul", entity: "QTS", country: "MY", data: { existingCode: "C-MY-00058", existingName: "Pulau Mutiara General Hospital", extendToEntity: "QTS", newShipToAddress: "Pathology Department, Block B, Jalan Mutiara Indah, 10450 George Town", changesCreditTerms: "No", reason: "Pulau Mutiara General Hospital is buying a benchtop centrifuge from QTS; the customer exists only under SPD." } },
-  { domainId: "customer", requestorId: "thandar", entity: "QTG", country: "MM", data: cust("Mandalay City Hospital", "MM", "QTG", "105233871", "No. 35, 26th Street, Chanayethazan Township", "Mandalay", "05021", "+95 2 403 118", "Public hospital", "Dr Aung Kyaw Moe", "mandalaycityhospital", "Cash on delivery", 10000, "USD") },
+  { domainId: "customer", requestorId: "thandar", entity: "QTG", country: "MM", data: cust("Mandalay Ratana Hospital", "MM", "QTG", "105233871", "No. 35, 26th Street, Chanayethazan Township", "Mandalay", "05021", "+95 2 403 118", "Public hospital", "Dr Aung Kyaw Moe", "mandalayratanahospital", "Cash on delivery", 10000, "USD") },
   { domainId: "item", requestorId: "nurul", entity: "QTS", country: "MY", data: item("Benchtop Centrifuge CF-16R", "Instrument", "C", "Suzhou Precision Lab Instruments Co., Ltd.", "EA", 1, 6400, 9800, AMBIENT, null, "QTS", "MY, SG, TH") },
   { domainId: "customer", requestorId: "amy", entity: "SPD", country: "SG", data: cust("Tampines Family Clinic Group", "SG", "SPD", "201511203E", "9 Tampines Central 1, #04-12", "Singapore", "529536", "+65 6786 2290", "Clinic", "Ms Rachel Ng", "tampinesfamilyclinic", "Net 30", 20000, "SGD") },
   { domainId: "vendor", requestorId: "meifong", entity: "QTG", country: "MY", data: { vendorName: "Selangor Cold Chain Logistics Sdn Bhd", country: "MY", taxId: "201401022876", street: "Lot 5, Jalan Pelabur 23/1, Seksyen 23", zipCode: "40300", phone: "+60 3-5541 7720", email: "billing@selangorcoldchain.example", suppliesRegulated: "No", bankName: "Malaya Union Bank", bankAccountNo: "5140 2287 6611", swift: "MUBKMYKL", paymentTerms: "Net 30" } },
@@ -1096,7 +1096,7 @@ const RECENT: RecentSpec[] = [
     createdAgo: 0.25,
     submittedAgo: 0.2,
     status: "in_approval",
-    data: cust("Yangon Asia Royal Clinic", "MM", "QTG", "105942781", "No. 14 Baho Road, Sanchaung Township", "Yangon", "11111", "+95 1 538 055", "Clinic", "Daw Khin Myat Noe", "asiaroyalclinic", "Cash on delivery", 15000, "USD"),
+    data: cust("Yangon Padauk Clinic", "MM", "QTG", "105942781", "No. 14 Baho Road, Sanchaung Township", "Yangon", "11111", "+95 1 538 055", "Clinic", "Daw Khin Myat Noe", "padaukclinic", "Cash on delivery", 15000, "USD"),
     plan: { "cust-bu": { s: "pending" }, "cust-bs": { s: "pending" } },
     blockedPrIds: ["PR-5533"],
   },
@@ -1434,7 +1434,7 @@ const RECENT_PRS: PrSpec[] = [
   { id: "PR-5498", ago: 6.0, customer: "Saigon Precision Lab JSC", country: "VN", entity: "QTG", product: "B", item: "Pipette Tips 200 µL, Filtered (960s)", units: 90, sgd: 7920, status: "open" },
   { id: "PR-5500", ago: 5.0, customer: "Khon Kaen Provincial Lab", country: "TH", entity: "SPD", product: "A", item: "CRP Latex Reagent 2×50 mL", units: 150, sgd: 7800, status: "open" },
   { id: "PR-5501", ago: 4.4, customer: "Novena Diagnostics Lab Pte Ltd", country: "SG", entity: "SPD", product: "A", item: "Hepatitis B sAg Rapid Test 40T", units: 120, sgd: 5280, status: "open", blockedBy: "REQ-1032" },
-  { id: "PR-5503", ago: 3.8, customer: "Mandalay City Hospital", country: "MM", entity: "QTG", product: "B", item: "Conical Centrifuge Tubes 50 mL, Sterile (500s)", units: 100, sgd: 11600, status: "blocked", blockedBy: "REQ-1034", missing: "item" },
+  { id: "PR-5503", ago: 3.8, customer: "Mandalay Ratana Hospital", country: "MM", entity: "QTG", product: "B", item: "Conical Centrifuge Tubes 50 mL, Sterile (500s)", units: 100, sgd: 11600, status: "blocked", blockedBy: "REQ-1034", missing: "item" },
   { id: "PR-5506", ago: 3.6, customer: "Johor Straits Medical Centre", country: "MY", entity: "QTS", product: "C", item: "Benchtop Centrifuge CF-16R", units: 2, sgd: 19600, status: "open" },
   { id: "PR-5508", ago: 3.5, customer: "Kallang Community Hospital", country: "SG", entity: "SPD", product: "A", item: "Influenza A/B Antigen Rapid Test 20T", units: 520, sgd: 16900, status: "blocked", blockedBy: "REQ-1036", missing: "item" },
   { id: "PR-5510", ago: 3.4, customer: "Da Nang Coastal Hospital", country: "VN", entity: "QTS", product: "C", item: "Haematology Analyser 5-Part Diff HX-560", units: 1, sgd: 58000, status: "blocked", blockedBy: "REQ-1035", missing: "item" },
@@ -1449,12 +1449,12 @@ const RECENT_PRS: PrSpec[] = [
   { id: "PR-5527", ago: 2.2, customer: "Pulau Mutiara General Hospital", country: "MY", entity: "SPD", product: "A", item: "Dengue IgG/IgM Combo 30T", units: 800, sgd: 21400, status: "blocked", blockedBy: "REQ-1042", missing: "item" },
   { id: "PR-5529", ago: 1.5, customer: "Bangkok Metro Lab", country: "TH", entity: "SPD", product: "A", item: "HbA1c Reagent Kit 100T", units: 80, sgd: 11200, status: "open" },
   { id: "PR-5531", ago: 0.8, customer: "Sungai Permai Medical Centre", country: "MY", entity: "QTS", product: "C", item: "Coagulation Analyser CG-90", units: 1, sgd: 26500, status: "blocked", blockedBy: "REQ-1043", missing: "customer" },
-  { id: "PR-5533", ago: 0.6, customer: "Yangon Asia Royal Clinic", country: "MM", entity: "QTG", product: "B", item: "Microcentrifuge Tubes 1.5 mL (500s)", units: 140, sgd: 9800, status: "blocked", blockedBy: "REQ-1044", missing: "customer" },
+  { id: "PR-5533", ago: 0.6, customer: "Yangon Padauk Clinic", country: "MM", entity: "QTG", product: "B", item: "Microcentrifuge Tubes 1.5 mL (500s)", units: 140, sgd: 9800, status: "blocked", blockedBy: "REQ-1044", missing: "customer" },
   // Amy's live demo item (App C): orders already waiting for an item code that doesn't exist yet. No MDM request
   // covers them, so they are blocked with no blockedByRequestId until her request is submitted (auto-link).
-  { id: "PR-5534", ago: 4.2, customer: "Sungai Permai Medical Centre", country: "MY", entity: "SPD", product: "B", item: K2EDTA_ITEM, units: 120, sgd: 14400, status: "blocked", missing: "item" },
-  { id: "PR-5536", ago: 2.7, customer: "Mount Faber Specialist Clinic", country: "SG", entity: "SPD", product: "B", item: K2EDTA_ITEM, units: 80, sgd: 9600, status: "blocked", missing: "item" },
-  { id: "PR-5538", ago: 1.2, customer: "Thomson Road Diagnostic Lab", country: "SG", entity: "SPD", product: "B", item: K2EDTA_ITEM, units: 100, sgd: 12000, status: "blocked", missing: "item" },
+  { id: "PR-5534", ago: 4.2, customer: "Sungai Permai Medical Centre", country: "MY", entity: "SPD", product: "B", item: K2EDTA_ITEM, units: 533, sgd: 14400, status: "blocked", missing: "item" },
+  { id: "PR-5536", ago: 2.7, customer: "Mount Faber Specialist Clinic", country: "SG", entity: "SPD", product: "B", item: K2EDTA_ITEM, units: 356, sgd: 9600, status: "blocked", missing: "item" },
+  { id: "PR-5538", ago: 1.2, customer: "Thomson Road Diagnostic Lab", country: "SG", entity: "SPD", product: "B", item: K2EDTA_ITEM, units: 444, sgd: 12000, status: "blocked", missing: "item" },
   { id: "PR-5535", ago: 0.4, customer: "Hue Central Diagnostics", country: "VN", entity: "SPD", product: "A", item: "Malaria Pf/Pan Ag Rapid Test 25T", units: 200, sgd: 7600, status: "open" },
 ];
 

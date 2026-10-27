@@ -14,9 +14,9 @@ import { isEmptyValue } from "@/lib/engine/conditions";
 // ---------------------------------------------------------------------------------------------
 // Scripted demo inputs
 
-/** Amy's original email to the MDM mailbox (case brief, App C), verbatim. */
+/** Amy's original email to the MDM mailbox (case brief, App C); the bank name is left out, the account number stays so redaction shows. The cache key below is derived from this text, so they always match. */
 export const AMY_EMAIL =
-  "Hi MDM team, pls create item code for the new blood collection tubes we're importing. Item: K2EDTA Blood Collection Tube 4 mL, 100/pk. Manufacturer: Meditube Korea Co., Ltd. Category: lab consumable. Pack: 100 tubes/pack, UoM PACK. Cost SGD 18.50/pack, selling SGD 27.00/pack. Storage 4-25C. Entity SPD, for SG + MY hospital labs. Supplier bank for payment: DBS 123-456789-001. Need ASAP, customers are waiting. Thanks, Amy";
+  "Hi MDM team, pls create item code for the new blood collection tubes we're importing. Item: K2EDTA Blood Collection Tube 4 mL, 100/pk. Manufacturer: Meditube Korea Co., Ltd. Category: lab consumable. Pack: 100 tubes/pack, UoM PACK. Cost SGD 18.50/pack, selling SGD 27.00/pack. Storage 4-25C. Entity SPD, for SG + MY hospital labs. Supplier bank account for payment: 123-456789-001. Need ASAP, customers are waiting. Thanks, Amy";
 
 const CUSTOMER_HEADER = [
   "Customer name",

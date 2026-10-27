@@ -140,11 +140,11 @@ INBOX = [
      "- ALT/GPT Reagent 4x50mL (I-A-000856) x 24 kits\n- Haematology Diluent 20L (I-A-000865) x 30\n\n"
      "Deliver to Central Lab receiving bay, B1, by 7 Nov. Kindly acknowledge.\n\nThanks,\nNur Aisyah\nProcurement Executive",
      "2026-10-26T09:12:00+08:00", "po"),
-    ("MY", "Sunway Medical Centre", "procurement",
+    ("MY", "Sungai Permai Medical Centre", "procurement",
      "Quotation SPD-MY-26-1188 accepted – Dengue IgG/IgM Combo 30T",
      "Dear Ms Siti,\n\nWe accept quotation SPD-MY-26-1188 for 243 kits of Dengue IgG/IgM Combo 30T (S$48,600). "
      "Our PO will follow as soon as your team confirms the item code is in your system.\n\nPlease advise the lead time.\n\n"
-     "Regards,\nProcurement Unit, Sunway Medical Centre",
+     "Regards,\nProcurement Unit, Sungai Permai Medical Centre",
      "2026-10-26T10:05:00+08:00", "pr"),
     ("MM", "Thukha Yeik Specialist Hospital", "purchasing",
      "Price request – Dengue NS1 rapid and malaria RDT",
@@ -182,7 +182,7 @@ INBOX = [
      "- Dengue Duo NS1 + IgG/IgM Rapid Test 10T x 150 kits\n- Typhoid IgM/IgG Rapid Test 25T x 40 kits\n\n"
      "Dengue cases are still high in HCMC, please deliver within this week.\n\nThanks & best regards,\nMs Trần Thu Hà – Purchasing",
      "2026-10-27T08:15:00+08:00", "po"),
-    ("MY", "Penang General Hospital", "stores",
+    ("MY", "Pulau Mutiara General Hospital", "stores",
      "Re: Dengue combo kits – please proceed with 107 kits",
      "Hi,\n\nFollowing our call, please proceed with 107 kits of Dengue IgG/IgM Combo 30T as quoted (S$21,400). "
      "Our official LPO will be issued once the budget code is confirmed next week. Kindly reserve the stock.\n\n"

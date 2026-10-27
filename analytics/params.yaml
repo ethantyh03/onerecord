@@ -304,8 +304,8 @@ pinned:
         lic_trad_num: "198500123K", street: "5 Lower Kent Ridge Road", zip_code: "119074", phone1: "+65 6779 5555",
         email: "procurement@nuh.example", segment: "Public hospital", golden_id: "G-SG-0000"}
   prs:
-    - {pr_id: "PR-5521", customer_name: "Sunway Medical Centre", country: MY, sgd: 48600, segment: "Private hospital", created_at: "2026-10-13T10:20:00+08:00"}
-    - {pr_id: "PR-5527", customer_name: "Penang General Hospital", country: MY, sgd: 21400, segment: "Public hospital", created_at: "2026-10-15T15:05:00+08:00"}
+    - {pr_id: "PR-5521", customer_name: "Sungai Permai Medical Centre", stem: "Permai", country: MY, sgd: 48600, segment: "Private hospital", created_at: "2026-10-13T10:20:00+08:00"}
+    - {pr_id: "PR-5527", customer_name: "Pulau Mutiara General Hospital", stem: "Mutiara", country: MY, sgd: 21400, segment: "Public hospital", created_at: "2026-10-15T15:05:00+08:00"}
   pr_item: {item_name: "Dengue IgG/IgM Combo 30T", product: A, entity: SPD, unit_price_sgd: 200.0, blocked_by: "REQ-1042"}
   # the demo's new items must NOT already exist in the item master
   reserved_item_names: ["Dengue IgG/IgM Combo 30T", "Dengue NS1 Ag Rapid Test 25T"]
