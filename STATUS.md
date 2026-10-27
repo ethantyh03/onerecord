@@ -50,17 +50,23 @@ Deadline: **12:00 SGT Wed 28 Oct 2026**. The user is asleep until ~07:30 and has
 
 | 06:00 | `vercel deploy --temporary` is not available without login (it started a device-login flow, now expired). In the morning: run `vercel login` (device flow), the user approves the link, then `vercel --prod` |
 
+| 06:43 | Wave 4 DONE: video 2:53.5 (1080p, TTS en-US-AndrewNeural, captions), 2-slide PDF, presenter guide; review + polish applied 11/15 fixes |
+| 06:55 | REQ-1101 fix: Marcus's extension now has its own id; video weijie beat re-recorded; slides re-exported. tsc 0, vitest 289, golden 24/24 |
+| 06:58 | Deliverables committed (6cd241a) and copied to OneDrive …/Data Case Competition 2026/Submission/. Final secrets scan clean. Hourly heartbeat cron deleted |
+
 ## Waves
 - [x] Wave 1: foundation (engine, store, shell, mocks) + integration
 - [x] W1-E: Python data + DS → src/data JSON
 - [x] Wave 2: features (intake, approvals, tracker + MDM, admin, pulse, triage + impact)
 - [x] Wave 3: integrate + e2e demo path + visual review loop
-- [ ] Wave 4: README, recording, voiceover script, 2 slides, secrets scan, deploy
+- [x] Wave 4: README, recording, voiceover script, 2 slides, secrets scan (deploy pending user login)
 
-## Morning checklist for the user (draft)
-1. Open the submission form (https://forms.gle/ApCcjxN7YedCzTas7; the S7 link is the same form) while signed in to your SMU Google account. Note the fields and file limits, but don't submit yet.
-2. Run `! npx vercel login` → Continue with GitHub (1 min). Then tell Claude "deploy".
-3. Watch the auto-recorded demo video; record the voice-over (script provided) or use the TTS version.
-4. Upload to YouTube as Unlisted; check it in an incognito window.
-5. Review the 2-slide PDF; say OK to make the repo public.
-6. Submit before 11:30.
+## Morning checklist for the user (final)
+Files: OneDrive …/Data Case Competition 2026/Submission/ (video, silent video, captions, voice-over script, 2-slide PDF + PNGs, PRESENTER-GUIDE.html)
+1. Tell Claude your TEAM NAME (goes on the slide footers).
+2. Open the submission form (https://forms.gle/ApCcjxN7YedCzTas7; the S7 link is the same form) signed in with your SMU Google account. Note the fields and file limits. Don't submit yet.
+3. Live link: Claude runs `vercel login` and gives you a link + code to approve in your browser (1 min), then deploys with --prod.
+4. Watch Submission/OneRecord-demo.mp4 (2:53). Upload it as-is (AI voice), OR record your own voice over OneRecord-demo-silent.mp4 using voiceover-script.md (Clipchamp).
+5. YouTube: upload as Unlisted; check it in incognito once HD has processed. Send Claude the link → slides, README and the close frame get updated and the PDF re-exported.
+6. Say "make the repo public" (secrets scan done; note that commit metadata shows your Gmail).
+7. Submit the form with: YouTube link, GitHub link, live link, Submission/OneRecord-summary.pdf. Target 11:30; deadline 12:00.
