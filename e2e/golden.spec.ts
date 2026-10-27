@@ -74,7 +74,7 @@ test.describe("golden path", () => {
     await card.getByTestId("teams-approve").click();
     await expect(page.locator("[data-sonner-toast]").filter({ hasText: /Approved/ })).toBeVisible();
 
-    // Finance is done; the request advances to MLS's own extra step (added in Admin), then MDM.
+    // Finance is done; MLS's molecular pre-check is for product requests only, so the extension goes straight to MDM.
     await expect(page.locator('[data-testid^="waiting-item-REQ-1100"]')).toHaveCount(0);
     await page.goto("/requests/view?id=REQ-1100");
     await expect(page.getByTestId("tracker-timeline")).toBeVisible();
@@ -82,8 +82,9 @@ test.describe("golden path", () => {
       "data-status",
       "approved",
     );
-    await expect(page.locator('[data-testid^="tracker-step-mls-regulatory"]')).toHaveAttribute("data-status", "pending");
-    await expect(page.locator(tid("tracker-mdm"))).toHaveAttribute("data-state", "upcoming");
+    await expect(page.locator('[data-testid^="tracker-step-mls-regulatory"]')).toHaveCount(0);
+    await expect(page.locator(tid("tracker-mdm"))).toHaveAttribute("data-state", "active");
+    await expect(page.locator(tid("tracker-step-mdm-final.mdm"))).toHaveAttribute("data-status", "pending");
   });
 
   test("(d) Priya: generates the DTW import, marks it created, stuck demand drops", async ({ page }) => {

@@ -21,6 +21,32 @@ describe("admin: Test a route", () => {
     const pre = steps.find((s) => s.stageLabel === "Molecular regulatory pre-check");
     expect(pre?.assigneeId).toBe("ploy");
     expect(pre?.addedBecause).toContain("Business unit MLS rule");
+    expect(pre?.addedBecause).toContain("Product group provided");
     expect(steps.at(-1)?.role).toBe("mdm");
+  });
+
+  it("MLS extend / customer requests skip the molecular pre-check", () => {
+    const bu = deepClone(NEW_BU_TEMPLATE);
+    for (const id of ["extend", "customer"]) {
+      const domain = DEFAULT_CONFIG.domains.find((d) => d.id === id)!;
+      const d = { changesCreditTerms: "Yes", creditLimit: 80000, entity: "MLS", extendToEntity: "MLS" };
+      const steps = buildRoute({ domain, bu, data: d, people: DEFAULT_CONFIG.people });
+      expect(steps.some((s) => s.stageId === "mls-regulatory")).toBe(false);
+      expect(steps.at(-1)?.role).toBe("mdm");
+    }
+  });
+
+  it("the BU sheet's save mapping keeps the step condition, so the saved BU equals NEW_BU_TEMPLATE", () => {
+    const draft = deepClone(NEW_BU_TEMPLATE);
+    const saved = {
+      ...draft,
+      extraStages: draft.extraStages.map((s) => ({
+        ...s,
+        label: s.label.trim(),
+        steps: s.steps.map((st) => ({ ...st, label: st.label.trim() || "review" })),
+      })),
+    };
+    expect(saved).toEqual(NEW_BU_TEMPLATE);
+    expect(saved.extraStages[0].steps[0].condition).toEqual({ field: "productGroup", op: "notEmpty" });
   });
 });

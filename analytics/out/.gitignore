@@ -1,0 +1,5 @@
+# Stress-test scenarios are regenerated in ~2 s each:
+#   python analytics/generate.py --seed 42 --scenario nosignal
+#   python analytics/generate.py --seed 7  --scenario halfdengue
+nosignal/
+halfdengue/

@@ -1,364 +1,364 @@
 golden_id,canonical_name,country,segment,size_tier,first_po_month,churn_month,installed_c,planted,contract_end,last_po_month
-G-MM-0001,Thit Padauk Hospital,MM,Public hospital,L,2023-10,,true,,,2026-09
-G-MM-0002,Moe Khin Medical Centre,MM,Private hospital,L,2023-10,,true,,,2026-09
-G-MM-0003,Zay Mingalar Medical Centre,MM,Private hospital,L,2023-10,,false,,,2026-09
+G-MM-0001,Lin Thet General Hospital,MM,Public hospital,L,2023-10,,true,,,2026-09
+G-MM-0002,Pan Sar Medical Centre,MM,Private hospital,L,2023-10,,true,,,2026-09
+G-MM-0003,Nan Kaung Hospital,MM,Private hospital,L,2023-10,,false,,,2026-09
 G-MM-0004,Thukha Yeik Specialist Hospital,MM,Public hospital,L,2023-10,,false,hero_mm,,2026-09
 G-MM-0005,Aung Myittar Hospital,MM,Private hospital,L,2023-10,,false,romanisation_mm,,2026-09
-G-MM-0006,Ywar Taw Hospital,MM,Private hospital,L,2023-10,,true,,,2026-09
-G-MM-0007,Yadanar Win Township Hospital,MM,Public hospital,L,2023-10,,false,,,2026-09
-G-MM-0008,Thazin Khin General Hospital,MM,Public hospital,L,2023-10,,true,,,2026-09
-G-MM-0009,Shwe Lin Township Hospital,MM,Public hospital,L,2023-10,,true,,,2026-09
-G-MM-0010,Moe Taw Institute of Medicine,MM,Research/academic,L,2023-10,,true,,,2026-09
-G-MM-0011,Thit Pyae Specialist Hospital,MM,Private hospital,L,2023-10,,false,,,2026-09
-G-MM-0012,Kyal Nyo Hospital,MM,Public hospital,L,2023-10,,true,,,2026-09
-G-MM-0013,Pan Maung Specialist Hospital,MM,Private hospital,L,2023-10,,false,,,2026-09
-G-MM-0014,"Thant Biotech Co., Ltd.",MM,Industry,M,2023-10,,true,,,2026-09
-G-MM-0015,Thiri Mingalar Hospital,MM,Private hospital,M,2023-10,,true,near_miss,,2026-08
-G-MM-0016,Phyo Thu Township Hospital,MM,Public hospital,M,2023-10,,false,,,2026-09
-G-MM-0017,"Thazin Laboratory Co., Ltd.",MM,Diagnostic lab,M,2023-10,,false,,,2026-09
-G-MM-0018,Hninn Khin Township Hospital,MM,Public hospital,M,2023-10,,true,,,2026-09
-G-MM-0019,"Ayar Pharma Co., Ltd.",MM,Industry,M,2023-10,,true,,,2026-09
-G-MM-0020,Pyi Win Clinic,MM,Clinic,M,2023-10,,false,,,2026-09
-G-MM-0021,"Lotus Myanmar Pharma Co., Ltd.",MM,Industry,M,2023-10,,true,,,2026-09
-G-MM-0022,Sabe Htet Medical Centre,MM,Private hospital,M,2023-10,,true,,,2026-09
-G-MM-0023,Myint Yee Township Hospital,MM,Public hospital,M,2023-10,,true,,,2026-09
-G-MM-0024,Padauk Medical Research Centre,MM,Research/academic,M,2023-10,,false,,,2026-09
-G-MM-0025,Thazin Mo Diagnostic Centre,MM,Diagnostic lab,M,2023-10,,true,,,2026-09
-G-MM-0026,Ngwe Khaing Hospital,MM,Public hospital,M,2023-10,,true,,,2026-09
-G-MM-0027,Sabe Pann Hospital,MM,Public hospital,S,2023-11,,true,,,2026-09
-G-MM-0028,Pan Khaing Polyclinic,MM,Clinic,S,2023-10,,false,,,2026-08
-G-MM-0029,Thit Yee Clinic,MM,Clinic,S,2023-10,,false,,,2026-09
-G-MM-0030,Mya Medical Research Centre,MM,Research/academic,S,2023-10,,true,,,2026-09
-G-MM-0031,Wun Kaung Township Hospital,MM,Public hospital,S,2023-11,,true,,,2026-09
-G-MM-0032,Kyal Maung Diagnostic Centre,MM,Diagnostic lab,S,2024-03,,true,,,2026-07
-G-MM-0033,Thiri Mingalar Clinic,MM,Private hospital,S,2023-10,,false,near_miss,,2026-08
-G-MM-0034,Ngwe Htet Polyclinic,MM,Clinic,S,2023-10,,false,,,2026-08
-G-MM-0035,"Phyo Biotech Co., Ltd.",MM,Industry,S,2023-11,,false,,,2026-09
-G-MM-0036,Sein Pyae Clinic,MM,Clinic,S,2023-12,,false,,,2026-04
-G-MM-0037,Hla Myay Hospital,MM,Public hospital,S,2023-12,,true,,,2026-07
-G-MM-0038,Moe Lin Diagnostic Centre,MM,Diagnostic lab,S,2023-11,,true,,,2026-01
-G-MM-0039,Nwe Kaung Clinic,MM,Clinic,S,2023-10,,false,,,2026-09
-G-MM-0040,Nan Nyo Diagnostic Centre,MM,Diagnostic lab,S,2024-05,,true,,,2026-09
-G-MM-0041,Pyi Thu Specialist Hospital,MM,Private hospital,S,2023-12,,false,,,2026-07
-G-MM-0042,Golden Lotus Medical Research Centre,MM,Research/academic,S,2023-10,,true,,,2026-09
-G-MM-0043,"Nwe Laboratory Co., Ltd.",MM,Diagnostic lab,S,2024-03,,true,,,2026-06
-G-MM-0044,Ywar Hlaing Clinic,MM,Clinic,S,2024-04,,false,,,2026-05
-G-MY-0001,Padang Sutera Specialist Hospital,MY,Private hospital,L,2023-10,,true,,2028-10,2026-09
+G-MM-0006,Nan Maung Medical Centre,MM,Private hospital,L,2023-10,,true,,,2026-08
+G-MM-0007,Sein Win Hospital,MM,Public hospital,L,2023-10,,false,,,2026-09
+G-MM-0008,Nwe Taw General Hospital,MM,Public hospital,L,2023-10,,true,,,2026-09
+G-MM-0009,Ywar Maung General Hospital,MM,Public hospital,L,2023-10,,true,,,2026-09
+G-MM-0010,Hninn Sar Institute of Medicine,MM,Research/academic,L,2023-10,,true,,,2026-09
+G-MM-0011,Phyo Hlaing Hospital,MM,Private hospital,L,2023-10,,false,,,2026-09
+G-MM-0012,Padamyar Sin Hospital,MM,Public hospital,L,2023-10,,true,,,2026-09
+G-MM-0013,Thazin Nyo Medical Centre,MM,Private hospital,L,2023-10,,false,,,2026-09
+G-MM-0014,"Thazin Pharma Co., Ltd.",MM,Industry,M,2023-10,,true,,,2026-09
+G-MM-0015,Thiri Mingalar Hospital,MM,Private hospital,M,2023-10,,true,near_miss,,2026-09
+G-MM-0016,Kan Pann Hospital,MM,Public hospital,M,2023-10,,false,,,2026-09
+G-MM-0017,Nan Zin Diagnostic Centre,MM,Diagnostic lab,M,2023-10,,false,,,2026-09
+G-MM-0018,Wun Mo Township Hospital,MM,Public hospital,M,2023-10,,true,,,2026-09
+G-MM-0019,"Zay Pharma Co., Ltd.",MM,Industry,M,2023-10,,true,,,2026-09
+G-MM-0020,Yadanar Lin Polyclinic,MM,Clinic,M,2023-10,,false,,,2026-09
+G-MM-0021,"Ruby Pharma Co., Ltd.",MM,Industry,M,2023-10,,true,,,2026-09
+G-MM-0022,Thit Thar Medical Centre,MM,Private hospital,M,2023-10,,true,,,2026-09
+G-MM-0023,Thit Padauk General Hospital,MM,Public hospital,M,2023-10,,true,,,2026-09
+G-MM-0024,Lotus Myanmar Medical Research Centre,MM,Research/academic,M,2023-10,,false,,,2026-09
+G-MM-0025,Yadanar Wai Diagnostic Centre,MM,Diagnostic lab,M,2023-10,,true,,,2026-08
+G-MM-0026,Sabe Zaw General Hospital,MM,Public hospital,M,2023-10,,true,,,2026-09
+G-MM-0027,Mya Sar Township Hospital,MM,Public hospital,S,2023-11,,true,,,2026-09
+G-MM-0028,Hla Htet Clinic,MM,Clinic,S,2023-10,,false,,,2026-09
+G-MM-0029,Wun Khin Clinic,MM,Clinic,S,2023-10,,false,,,2026-09
+G-MM-0030,Moe Medical Research Centre,MM,Research/academic,S,2023-10,,true,,,2026-09
+G-MM-0031,Zay Aye Township Hospital,MM,Public hospital,S,2023-12,,true,,,2026-09
+G-MM-0032,"Ayar Laboratory Co., Ltd.",MM,Diagnostic lab,S,2023-11,,true,,,2026-08
+G-MM-0033,Thiri Mingalar Clinic,MM,Private hospital,S,2023-10,,false,near_miss,,2026-09
+G-MM-0034,Ywar Pyae Polyclinic,MM,Clinic,S,2023-10,,false,,,2026-08
+G-MM-0035,"Golden Lotus Pharma Co., Ltd.",MM,Industry,S,2023-11,,false,,,2026-09
+G-MM-0036,Mya Taung Polyclinic,MM,Clinic,S,2023-12,,false,,,2026-05
+G-MM-0037,Yadanar Thu General Hospital,MM,Public hospital,S,2023-12,,true,,,2026-07
+G-MM-0038,"Phyo Laboratory Co., Ltd.",MM,Diagnostic lab,S,2023-11,,true,,,2026-09
+G-MM-0039,Nwe Zaw Polyclinic,MM,Clinic,S,2023-10,,false,,,2026-09
+G-MM-0040,Ywar Hlaing Diagnostic Centre,MM,Diagnostic lab,S,2024-05,,true,,,2026-09
+G-MM-0041,Pan Wai Hospital,MM,Private hospital,S,2023-12,,false,,,2026-09
+G-MM-0042,Ywar Kaung Institute of Medicine,MM,Research/academic,S,2023-10,,true,,,2026-07
+G-MM-0043,Nwe Pann Diagnostic Centre,MM,Diagnostic lab,S,2024-03,,true,,,2026-06
+G-MM-0044,Ywar Taw Clinic,MM,Clinic,S,2024-04,,false,,,2026-05
+G-MY-0001,Lembah Cempaka Medical Centre,MY,Private hospital,L,2023-10,,true,,2028-10,2026-09
 G-MY-0002,Bukit Damai Specialist Hospital,MY,Private hospital,L,2023-10,,false,hero_my,2029-09,2026-09
 G-MY-0003,Hospital Taman Seri,MY,Public hospital,L,2023-10,,true,misattribution_my,2028-01,2026-09
-G-MY-0004,Rimba Diagnostic Laboratories Sdn Bhd,MY,Diagnostic lab,L,2023-10,,true,,,2026-09
-G-MY-0005,Makmal Patologi Desa Kenari,MY,Diagnostic lab,L,2023-10,,false,,,2026-09
-G-MY-0006,Hospital Lembah Sejahtera,MY,Public hospital,L,2023-10,,true,misattribution_my_2,2026-01,2026-09
-G-MY-0007,Merbau Pathology Sdn Bhd,MY,Diagnostic lab,L,2023-10,,true,,,2026-09
-G-MY-0008,Hospital Desa Gemilang,MY,Public hospital,L,2023-10,2026-02,true,contract_churn_my,2026-02,2026-09
-G-MY-0009,Seri Melati Medical Centre,MY,Private hospital,L,2023-10,,true,,2026-09,2026-09
-G-MY-0010,Pusat Perubatan Sungai Kenari,MY,Private hospital,L,2023-10,,true,,2027-07,2026-09
-G-MY-0011,Hospital Bukit Harmoni,MY,Public hospital,L,2023-10,,true,expander_my,2027-10,2026-09
-G-MY-0012,Pusat Perubatan Seri Teratai,MY,Private hospital,L,2023-10,,true,expander_my,2029-05,2026-09
-G-MY-0013,Damar Pathology Sdn Bhd,MY,Diagnostic lab,L,2023-10,,false,,,2026-09
-G-MY-0014,Pusat Perubatan Padang Bayu,MY,Private hospital,L,2023-10,,false,,2028-03,2026-09
-G-MY-0015,Desa Suria Medical Centre,MY,Private hospital,M,2023-10,,true,expander_my,2027-06,2026-09
-G-MY-0016,Hospital Kuala Aman,MY,Public hospital,L,2023-10,,true,,2028-09,2026-09
-G-MY-0017,Poliklinik Permatang Bayu,MY,Clinic,M,2023-10,,false,,,2026-09
-G-MY-0018,Seri Mulia Biotech Research Centre,MY,Research/academic,M,2023-10,,false,,,2026-09
-G-MY-0019,Sungai Permai Biotech Research Centre,MY,Research/academic,M,2023-10,,true,,,2026-09
-G-MY-0020,Permatang Seroja Medical Centre,MY,Private hospital,M,2023-10,,false,,2027-08,2026-09
-G-MY-0021,Wira Halal Testing Sdn Bhd,MY,Industry,M,2023-10,,true,,,2026-09
-G-MY-0022,Hospital Bandar Makmur,MY,Public hospital,M,2023-10,,false,,2026-05,2026-09
-G-MY-0023,Bukit Puteri Biotech Research Centre,MY,Research/academic,M,2023-10,,false,,,2026-09
-G-MY-0024,Puncak Diagnostic Laboratories Sdn Bhd,MY,Diagnostic lab,M,2023-10,,true,,,2026-09
-G-MY-0025,Hospital Daerah Desa Baiduri,MY,Public hospital,M,2023-10,2026-03,true,contract_churn_my,2026-03,2026-09
-G-MY-0026,Tanjung Puteri Specialist Hospital,MY,Private hospital,M,2023-10,,true,,2027-11,2026-09
-G-MY-0027,Sena Diagnostic Laboratories Sdn Bhd,MY,Diagnostic lab,M,2023-10,,false,,,2026-09
-G-MY-0028,Desa Cempaka Biotech Research Centre,MY,Research/academic,M,2023-10,,true,,,2026-09
-G-MY-0029,Padang Indah Family Clinic,MY,Clinic,M,2023-10,,false,,,2026-09
-G-MY-0030,Kota Suria Specialist Hospital,MY,Private hospital,M,2023-10,,false,,2027-05,2026-09
-G-MY-0031,Hospital Daerah Permatang Dahlia,MY,Public hospital,M,2023-10,,false,,2028-07,2026-09
-G-MY-0032,Belian Gloves Sdn Bhd,MY,Industry,M,2023-10,,true,,,2026-09
-G-MY-0033,Keruing Bioscience Sdn Bhd,MY,Industry,M,2023-10,,false,,,2026-09
-G-MY-0034,Pusat Perubatan Kuala Impian,MY,Private hospital,M,2023-10,,false,,2027-03,2026-09
-G-MY-0035,Hospital Daerah Kota Kenanga,MY,Public hospital,M,2023-10,,false,contract_q1_2027_my,2027-02,2026-09
-G-MY-0036,Hospital Daerah Padang Hijau,MY,Public hospital,M,2023-10,,true,,2026-01,2026-09
-G-MY-0037,Hospital Daerah Ulu Cahaya,MY,Public hospital,M,2023-10,,true,,2026-01,2026-09
-G-MY-0038,Hospital Daerah Bukit Nilam,MY,Public hospital,M,2023-10,,true,,2029-05,2026-09
-G-MY-0039,Kirana Diagnostic Laboratories Sdn Bhd,MY,Diagnostic lab,M,2023-10,,false,,,2026-09
-G-MY-0040,Padang Cahaya Medical Centre,MY,Private hospital,M,2023-10,,true,,2026-08,2026-09
-G-MY-0041,Taman Perdana Medical Centre,MY,Private hospital,M,2023-10,,false,,2027-05,2026-09
-G-MY-0042,Makmal Patologi Kuala Nirwana,MY,Diagnostic lab,M,2023-10,,true,,,2026-09
-G-MY-0043,Ulu Mulia Medical Centre,MY,Private hospital,M,2023-10,,true,,2029-08,2026-09
-G-MY-0044,Hospital Bukit Cempaka,MY,Public hospital,M,2023-10,,true,contract_q1_2027_my,2027-02,2026-09
-G-MY-0045,Desa Kesuma Specialist Hospital,MY,Private hospital,M,2023-10,,false,,2029-02,2026-09
-G-MY-0046,Bunga Raya Halal Testing Sdn Bhd,MY,Industry,M,2023-10,,false,,,2026-09
-G-MY-0047,Rotan Gloves Sdn Bhd,MY,Industry,S,2023-10,,false,,,2026-09
-G-MY-0048,Sungai Aman Medical Centre,MY,Private hospital,M,2023-10,,true,,2027-11,2026-09
-G-MY-0049,Poliklinik Taman Zamrud,MY,Clinic,S,2023-10,,false,,,2026-09
-G-MY-0050,Institut Penyelidikan Nusantara,MY,Research/academic,S,2023-10,,true,,,2026-09
-G-MY-0051,Klinik Kota Sejahtera,MY,Clinic,S,2023-10,,false,,,2026-09
-G-MY-0052,Klinik Kuala Permai,MY,Clinic,M,2023-10,,false,,,2026-09
-G-MY-0053,Bukit Orkid Medical Centre,MY,Private hospital,M,2023-11,,true,,2028-12,2026-09
-G-MY-0054,Hospital Daerah Tanjung Sutera,MY,Public hospital,M,2023-11,,false,,2027-06,2026-09
-G-MY-0055,Sungai Harmoni Family Clinic,MY,Clinic,S,2023-10,,false,,,2026-09
-G-MY-0056,Lembah Murni Specialist Hospital,MY,Private hospital,S,2023-10,,true,,2028-12,2026-09
-G-MY-0057,Tualang Bioscience Sdn Bhd,MY,Industry,S,2023-10,,false,,,2026-09
-G-MY-0058,Jati Halal Testing Sdn Bhd,MY,Industry,S,2023-10,,true,,,2026-09
-G-MY-0059,Tanjung Mulia Family Clinic,MY,Clinic,S,2023-10,,false,,,2026-08
-G-MY-0060,Meranti Pathology Sdn Bhd,MY,Diagnostic lab,S,2023-10,,true,,,2026-09
-G-MY-0061,Hospital Desa Tropika,MY,Public hospital,S,2023-10,,true,,2026-01,2026-07
-G-MY-0062,Poliklinik Bukit Hijau,MY,Clinic,S,2023-10,,false,,,2026-09
-G-MY-0063,Andalas Diagnostic Laboratories Sdn Bhd,MY,Diagnostic lab,S,2023-11,,true,,,2026-08
+G-MY-0004,Bunga Raya Diagnostic Laboratories Sdn Bhd,MY,Diagnostic lab,L,2023-10,,true,,,2026-09
+G-MY-0005,Makmal Patologi Kuala Suria,MY,Diagnostic lab,L,2023-10,,false,,,2026-09
+G-MY-0006,Hospital Daerah Sungai Puteri,MY,Public hospital,L,2023-10,,true,misattribution_my_2,2026-01,2026-09
+G-MY-0007,Makmal Patologi Sungai Delima,MY,Diagnostic lab,L,2023-10,,true,,,2026-09
+G-MY-0008,Hospital Desa Cempaka,MY,Public hospital,L,2023-10,2026-02,true,contract_churn_my,2026-02,2026-09
+G-MY-0009,Sungai Melati Specialist Hospital,MY,Private hospital,L,2023-10,,true,,2026-09,2026-09
+G-MY-0010,Sungai Harmoni Medical Centre,MY,Private hospital,L,2023-10,,true,,2027-07,2026-09
+G-MY-0011,Hospital Kuala Cemerlang,MY,Public hospital,L,2023-10,,true,expander_my,2027-10,2026-09
+G-MY-0012,Pusat Perubatan Seri Aman,MY,Private hospital,L,2023-10,,true,expander_my,2029-05,2026-09
+G-MY-0013,Andalas Pathology Sdn Bhd,MY,Diagnostic lab,L,2023-10,,false,,,2026-09
+G-MY-0014,Ulu Gemilang Specialist Hospital,MY,Private hospital,L,2023-10,,false,,2028-03,2026-09
+G-MY-0015,Pusat Perubatan Sungai Suria,MY,Private hospital,M,2023-10,,true,expander_my,2027-06,2026-09
+G-MY-0016,Hospital Desa Harmoni,MY,Public hospital,L,2023-10,,true,,2028-09,2026-09
+G-MY-0017,Klinik Desa Perdana,MY,Clinic,M,2023-10,,false,,,2026-09
+G-MY-0018,Institut Penyelidikan Kemboja,MY,Research/academic,M,2023-10,,false,,,2026-09
+G-MY-0019,Sungai Selasih Biotech Research Centre,MY,Research/academic,M,2023-10,,true,,,2026-09
+G-MY-0020,Pusat Perubatan Kuala Tropika,MY,Private hospital,M,2023-10,,false,,2027-08,2026-09
+G-MY-0021,Keruing Halal Testing Sdn Bhd,MY,Industry,M,2023-10,,true,,,2026-09
+G-MY-0022,Hospital Sungai Nirwana,MY,Public hospital,M,2023-10,,false,,2026-05,2026-09
+G-MY-0023,Tanjung Wangi Biotech Research Centre,MY,Research/academic,M,2023-10,,false,,,2026-09
+G-MY-0024,Jati Diagnostic Laboratories Sdn Bhd,MY,Diagnostic lab,M,2023-10,,true,,,2026-09
+G-MY-0025,Hospital Lembah Bayu,MY,Public hospital,M,2023-10,2026-03,true,contract_churn_my,2026-03,2026-09
+G-MY-0026,Pusat Perubatan Permatang Mutiara,MY,Private hospital,M,2023-10,,true,,2027-11,2026-09
+G-MY-0027,Halia Diagnostic Laboratories Sdn Bhd,MY,Diagnostic lab,M,2023-10,,false,,,2026-09
+G-MY-0028,Wira Medical Research Institute,MY,Research/academic,M,2023-10,,true,,,2026-09
+G-MY-0029,Klinik Permatang Tropika,MY,Clinic,M,2023-10,,false,,,2026-09
+G-MY-0030,Kota Anggerik Specialist Hospital,MY,Private hospital,M,2023-10,,false,,2027-05,2026-09
+G-MY-0031,Hospital Daerah Bandar Wangi,MY,Public hospital,M,2023-10,,false,,2028-07,2026-09
+G-MY-0032,Puncak Gloves Sdn Bhd,MY,Industry,M,2023-10,,true,,,2026-09
+G-MY-0033,Rimba Gloves Sdn Bhd,MY,Industry,M,2023-10,,false,,,2026-09
+G-MY-0034,Desa Tropika Medical Centre,MY,Private hospital,M,2023-10,,false,,2027-03,2026-09
+G-MY-0035,Hospital Daerah Kuala Idaman,MY,Public hospital,M,2023-10,,false,contract_q1_2027_my,2027-02,2026-09
+G-MY-0036,Hospital Daerah Kota Mahkota,MY,Public hospital,M,2023-10,,true,,2026-01,2026-09
+G-MY-0037,Hospital Permatang Wangi,MY,Public hospital,M,2023-10,,true,,2026-01,2026-09
+G-MY-0038,Hospital Daerah Desa Bayu,MY,Public hospital,M,2023-10,,true,,2029-05,2026-09
+G-MY-0039,Kasturi Diagnostic Laboratories Sdn Bhd,MY,Diagnostic lab,M,2023-10,,false,,,2026-09
+G-MY-0040,Kuala Zamrud Specialist Hospital,MY,Private hospital,M,2023-10,,true,,2026-08,2026-09
+G-MY-0041,Seri Dahlia Medical Centre,MY,Private hospital,M,2023-10,,false,,2027-05,2026-09
+G-MY-0042,Meranti Pathology Sdn Bhd,MY,Diagnostic lab,M,2023-10,,true,,,2026-09
+G-MY-0043,Bandar Kencana Specialist Hospital,MY,Private hospital,M,2023-10,,true,,2029-08,2026-09
+G-MY-0044,Hospital Daerah Ulu Delima,MY,Public hospital,M,2023-10,,true,contract_q1_2027_my,2027-02,2026-09
+G-MY-0045,Bukit Melati Medical Centre,MY,Private hospital,M,2023-10,,false,,2029-02,2026-09
+G-MY-0046,Tualang Gloves Sdn Bhd,MY,Industry,M,2023-10,,false,,,2026-09
+G-MY-0047,Serai Halal Testing Sdn Bhd,MY,Industry,S,2023-10,,false,,,2026-09
+G-MY-0048,Tanjung Kencana Medical Centre,MY,Private hospital,M,2023-10,,true,,2027-11,2026-09
+G-MY-0049,Kuala Indah Family Clinic,MY,Clinic,S,2023-10,,false,,,2026-09
+G-MY-0050,Institut Penyelidikan Kenari,MY,Research/academic,S,2023-10,,true,,,2026-09
+G-MY-0051,Klinik Kuala Anggerik,MY,Clinic,S,2023-10,,false,,,2026-09
+G-MY-0052,Desa Nirwana Family Clinic,MY,Clinic,M,2023-10,,false,,,2026-09
+G-MY-0053,Pusat Perubatan Taman Wangi,MY,Private hospital,M,2023-11,,true,,2028-12,2026-09
+G-MY-0054,Hospital Padang Nilam,MY,Public hospital,M,2023-11,,false,,2027-06,2026-09
+G-MY-0055,Poliklinik Lembah Kesuma,MY,Clinic,S,2023-10,,false,,,2026-09
+G-MY-0056,Pusat Perubatan Tanjung Lestari,MY,Private hospital,S,2023-10,,true,,2028-12,2026-09
+G-MY-0057,Rotan Bioscience Sdn Bhd,MY,Industry,S,2023-10,,false,,,2026-09
+G-MY-0058,Kirana Pharma Sdn Bhd,MY,Industry,S,2023-10,,true,,,2026-09
+G-MY-0059,Taman Permai Family Clinic,MY,Clinic,S,2023-10,,false,,,2026-08
+G-MY-0060,Makmal Patologi Padang Perkasa,MY,Diagnostic lab,S,2023-10,,true,,,2026-09
+G-MY-0061,Hospital Daerah Bukit Perkasa,MY,Public hospital,S,2023-10,,true,,2026-01,2026-07
+G-MY-0062,Poliklinik Padang Melati,MY,Clinic,S,2023-10,,false,,,2026-09
+G-MY-0063,Pelangi Pathology Sdn Bhd,MY,Diagnostic lab,S,2023-11,,true,,,2026-08
 G-MY-0064,Seri Mutiara Family Clinic Klang,MY,Clinic,S,2023-10,,false,near_miss,,2026-09
-G-MY-0065,Hospital Sungai Indah,MY,Public hospital,S,2023-10,,false,,2028-10,2026-09
-G-MY-0066,Halia Pharma Sdn Bhd,MY,Industry,S,2023-10,,false,,,2026-09
-G-MY-0067,Embun Medical Research Institute,MY,Research/academic,S,2023-10,,true,,,2026-09
-G-MY-0068,Institut Penyelidikan Tiara,MY,Research/academic,S,2023-10,,true,,,2026-08
-G-MY-0069,Klinik Lembah Idaman,MY,Clinic,S,2023-10,,false,,,2026-09
-G-MY-0070,Klinik Taman Indah,MY,Clinic,S,2023-10,,false,,,2026-09
-G-MY-0071,Permatang Baiduri Biotech Research Centre,MY,Research/academic,S,2023-10,,true,,,2026-09
-G-MY-0072,Hospital Daerah Lembah Intan,MY,Public hospital,S,2023-10,,false,,2029-04,2026-09
-G-MY-0073,Serai Gloves Sdn Bhd,MY,Industry,S,2023-10,,false,,,2026-09
-G-MY-0074,Kenari Pharma Sdn Bhd,MY,Industry,S,2023-10,,false,,,2026-09
-G-MY-0075,Cengal Pathology Sdn Bhd,MY,Diagnostic lab,S,2023-10,,false,,,2026-09
-G-MY-0076,Klinik Padang Baiduri,MY,Clinic,S,2023-10,,false,,,2026-09
-G-MY-0077,Klinik Desa Bahagia,MY,Clinic,S,2023-10,,false,,,2026-09
-G-MY-0078,Desa Bestari Family Clinic,MY,Clinic,S,2023-10,,false,,,2026-09
-G-MY-0079,Klinik Bandar Suria,MY,Clinic,S,2023-10,,false,,,2026-09
-G-MY-0080,Pusat Perubatan Desa Mahkota,MY,Private hospital,S,2023-10,,false,,2027-12,2026-09
-G-MY-0081,Kasturi Medical Research Institute,MY,Research/academic,S,2023-10,,false,,,2026-09
-G-MY-0082,Pelangi Medical Research Institute,MY,Research/academic,S,2023-10,,false,,,2026-09
-G-MY-0083,Bandar Gemilang Family Clinic,MY,Clinic,S,2023-12,,false,,,2026-07
-G-MY-0084,Kemboja Pathology Sdn Bhd,MY,Diagnostic lab,S,2023-11,,false,,,2026-09
-G-MY-0085,Bukit Makmur Family Clinic,MY,Clinic,S,2023-11,,false,,,2026-07
-G-MY-0086,Taman Tropika Family Clinic,MY,Clinic,S,2024-03,,false,,,2026-08
+G-MY-0065,Hospital Tanjung Bestari,MY,Public hospital,S,2023-10,,false,,2028-10,2026-09
+G-MY-0066,Cengal Bioscience Sdn Bhd,MY,Industry,S,2023-10,,false,,,2026-09
+G-MY-0067,Institut Penyelidikan Merbau,MY,Research/academic,S,2023-10,,true,,,2026-09
+G-MY-0068,Nusantara Medical Research Institute,MY,Research/academic,S,2023-10,,true,,,2026-08
+G-MY-0069,Klinik Padang Cemerlang,MY,Clinic,S,2023-10,,false,,,2026-09
+G-MY-0070,Padang Bahagia Family Clinic,MY,Clinic,S,2023-10,,false,,,2026-09
+G-MY-0071,Institut Penyelidikan Tiara,MY,Research/academic,S,2023-10,,true,,,2026-09
+G-MY-0072,Hospital Bandar Selasih,MY,Public hospital,S,2023-10,,false,,2029-04,2026-09
+G-MY-0073,Damar Halal Testing Sdn Bhd,MY,Industry,S,2023-10,,false,,,2026-09
+G-MY-0074,Belian Halal Testing Sdn Bhd,MY,Industry,S,2023-10,,false,,,2026-09
+G-MY-0075,Makmal Patologi Tanjung Perdana,MY,Diagnostic lab,S,2023-10,,false,,,2026-09
+G-MY-0076,Klinik Sungai Murni,MY,Clinic,S,2023-10,,false,,,2026-09
+G-MY-0077,Klinik Lembah Selasih,MY,Clinic,S,2023-10,,false,,,2026-09
+G-MY-0078,Bandar Perdana Family Clinic,MY,Clinic,S,2023-10,,false,,,2026-09
+G-MY-0079,Klinik Seri Mutiara,MY,Clinic,S,2023-10,,false,,,2026-09
+G-MY-0080,Desa Permai Specialist Hospital,MY,Private hospital,S,2023-10,,false,,2027-12,2026-09
+G-MY-0081,Lembah Impian Biotech Research Centre,MY,Research/academic,S,2023-10,,false,,,2026-09
+G-MY-0082,Seri Melati Biotech Research Centre,MY,Research/academic,S,2023-10,,false,,,2026-09
+G-MY-0083,Klinik Bukit Mulia,MY,Clinic,S,2023-12,,false,,,2026-07
+G-MY-0084,Embun Diagnostic Laboratories Sdn Bhd,MY,Diagnostic lab,S,2023-11,,false,,,2026-09
+G-MY-0085,Klinik Tanjung Harmoni,MY,Clinic,S,2023-11,,false,,,2026-07
+G-MY-0086,Poliklinik Bandar Murni,MY,Clinic,S,2024-03,,false,,,2026-08
 G-MY-0087,Seri Mutiara Family Clinic Ipoh,MY,Clinic,S,2024-03,,false,near_miss,,2026-09
-G-MY-0088,Makmal Patologi Tanjung Baiduri,MY,Diagnostic lab,S,2023-10,,false,,,2026-07
+G-MY-0088,Sena Pathology Sdn Bhd,MY,Diagnostic lab,S,2023-10,,false,,,2026-07
 G-MY-0089,Sunway Medical Centre,MY,Private hospital,M,,,false,pinned_pr_customer,,
 G-MY-0090,Penang General Hospital,MY,Public hospital,M,,,false,pinned_pr_customer,,
 G-SG-0000,National University Hospital,SG,Public hospital,L,,,false,pinned_nuh,,
-G-SG-0001,Ang Mo Kio Bay Hospital,SG,Public hospital,L,2023-10,,true,,,2026-09
-G-SG-0002,Queenstown Vista Medical Centre,SG,Private hospital,L,2023-10,,false,,,2026-09
-G-SG-0003,Senja Diagnostics Pte Ltd,SG,Diagnostic lab,L,2023-10,,true,,,2026-09
-G-SG-0004,Redhill Vista General Hospital,SG,Public hospital,L,2023-10,,false,,,2026-09
-G-SG-0005,Pasir Ris Crest Surgical Centre,SG,Private hospital,L,2023-10,,true,,,2026-09
-G-SG-0006,Siglap Crest General Hospital,SG,Public hospital,L,2023-10,,true,,,2026-09
-G-SG-0007,Jadeleaf Pharma Pte Ltd,SG,Industry,L,2023-10,,true,,,2026-09
-G-SG-0008,Starfruit Food Testing Pte Ltd,SG,Industry,L,2023-10,,false,,,2026-09
-G-SG-0009,Tidewater Pharma Pte Ltd,SG,Industry,L,2023-10,,false,,,2026-09
-G-SG-0010,Saffron Health Clinic,SG,Clinic,M,2023-10,,false,,,2026-09
-G-SG-0011,Bluewater Institute of Molecular Medicine,SG,Research/academic,M,2023-10,,true,,,2026-09
-G-SG-0012,Katong Bay Surgical Centre,SG,Private hospital,M,2023-10,,true,,,2026-09
-G-SG-0013,Lumen Diagnostics Pte Ltd,SG,Diagnostic lab,M,2023-10,,false,,,2026-09
-G-SG-0014,Loyang Green Medical Clinic,SG,Clinic,M,2023-10,,false,,,2026-09
-G-SG-0015,Tanjong Rhu Crest Medical Centre,SG,Private hospital,L,2023-10,,false,hero_sg,,2026-09
-G-SG-0016,Lighthouse Institute of Molecular Medicine,SG,Research/academic,M,2023-10,,true,,,2026-09
-G-SG-0017,Tampines Hill Surgical Centre,SG,Private hospital,M,2023-10,,false,,,2026-09
-G-SG-0018,Marina Gardens Surgical Centre,SG,Private hospital,M,2023-10,,true,,,2026-09
-G-SG-0019,Pioneer Hill Medical Centre,SG,Private hospital,M,2023-10,,true,,,2026-09
-G-SG-0020,Kopitiam Clinical Laboratories Pte Ltd,SG,Diagnostic lab,M,2023-10,,true,,,2026-09
-G-SG-0021,Serangoon Heights Family Clinic,SG,Clinic,M,2023-10,,false,,,2026-09
-G-SG-0022,Hougang Park Surgical Centre,SG,Private hospital,M,2023-10,,false,,,2026-09
-G-SG-0023,Evergreen Diagnostics Pte Ltd,SG,Diagnostic lab,M,2023-10,,false,,,2026-09
-G-SG-0024,Crescent Diagnostics Pte Ltd,SG,Diagnostic lab,S,2023-10,,true,,,2026-09
-G-SG-0025,Boon Lay Heights College of Life Sciences,SG,Research/academic,M,2023-10,,true,,,2026-09
-G-SG-0026,Kallang Point General Hospital,SG,Public hospital,M,2023-10,,true,,,2026-09
-G-SG-0027,Jalan Kayu Park Medical Centre,SG,Private hospital,M,2023-10,,false,,,2026-09
-G-SG-0028,Pandan Pharma Pte Ltd,SG,Industry,M,2023-10,,true,,,2026-09
-G-SG-0029,Keppel Heights Polyclinic,SG,Clinic,M,2023-10,,false,,,2026-09
-G-SG-0030,Siglap Vista Specialist Hospital,SG,Private hospital,M,2023-10,,true,,,2026-09
-G-SG-0031,Sunbird Institute of Molecular Medicine,SG,Research/academic,M,2023-10,,true,,,2026-09
-G-SG-0032,Monsoon Institute of Molecular Medicine,SG,Research/academic,M,2023-10,,true,,,2026-09
-G-SG-0033,Ember Institute of Molecular Medicine,SG,Research/academic,M,2023-10,,true,,,2026-09
-G-SG-0034,Ang Mo Kio Green Family Clinic,SG,Clinic,M,2023-10,,false,,,2026-09
-G-SG-0035,Siglap Point Medical Clinic,SG,Clinic,S,2023-10,,false,,,2026-09
-G-SG-0036,Pasir Panjang Green Polyclinic,SG,Clinic,S,2023-10,,false,,,2026-09
-G-SG-0037,Bedok Green Community Hospital,SG,Public hospital,M,2023-10,,true,,,2026-09
-G-SG-0038,Halcyon Institute of Molecular Medicine,SG,Research/academic,S,2023-10,,true,,,2026-09
-G-SG-0039,Bayfront Diagnostics Pte Ltd,SG,Diagnostic lab,S,2023-10,,true,,,2026-09
-G-SG-0040,Mandai Gardens Polyclinic,SG,Clinic,S,2023-10,,false,,,2026-09
-G-SG-0041,Cinnamon Food Testing Pte Ltd,SG,Industry,M,2023-10,,true,,,2026-09
-G-SG-0042,Hougang Hill Family Clinic,SG,Clinic,S,2023-10,,false,,,2026-09
-G-SG-0043,Pasir Panjang Vista Pathology Lab,SG,Diagnostic lab,S,2023-10,,false,,,2026-09
-G-SG-0044,Banyan Research Institute,SG,Research/academic,S,2023-10,,true,,,2026-09
-G-SG-0045,Serangoon Gardens Pathology Lab,SG,Diagnostic lab,S,2023-10,,false,,,2026-09
-G-SG-0046,Bedok Point College of Life Sciences,SG,Research/academic,S,2023-10,,false,,,2026-09
-G-SG-0047,Arcadia Biologics Pte Ltd,SG,Industry,S,2023-10,,true,,,2026-09
-G-SG-0048,Telok Ayer Crest Community Hospital,SG,Public hospital,S,2023-11,,true,,,2026-09
-G-SG-0049,Seletar Point Polyclinic,SG,Clinic,S,2023-10,,false,,,2026-09
-G-SG-0050,Geylang Bay Family Clinic,SG,Clinic,S,2023-10,,false,,,2026-09
-G-SG-0051,Pasir Panjang Bay Medical Centre,SG,Private hospital,S,2023-10,,true,,,2026-09
-G-SG-0052,Lavender Bay Pathology Lab (Jurong East),SG,Diagnostic lab,S,2023-10,,true,near_miss,,2026-09
-G-SG-0053,Telok Ayer Hill Medical Clinic,SG,Clinic,S,2023-10,,false,,,2026-09
-G-SG-0054,Angsana Food Testing Pte Ltd,SG,Industry,S,2023-10,,false,,,2026-09
-G-SG-0055,Boon Lay Quay Medical Clinic,SG,Clinic,S,2023-10,,false,,,2026-09
-G-SG-0056,Cendana Food Testing Pte Ltd,SG,Industry,S,2023-10,,false,,,2026-09
-G-SG-0057,Kembangan Green Family Clinic,SG,Clinic,S,2023-10,,false,,,2026-09
-G-SG-0058,Siglap Green College of Life Sciences,SG,Research/academic,S,2023-10,,true,,,2026-08
-G-SG-0059,Kembangan Quay Pathology Lab,SG,Diagnostic lab,S,2023-10,,false,,,2026-09
-G-SG-0060,Orchid Health Clinic,SG,Clinic,S,2023-10,,false,,,2026-09
-G-SG-0061,Tuas Bay Community Hospital,SG,Public hospital,S,2023-10,,false,,,2026-09
-G-SG-0062,Lavender Bay Pathology Lab (Bedok),SG,Diagnostic lab,S,2023-10,,false,near_miss,,2026-08
-G-SG-0063,Sapphire Institute of Molecular Medicine,SG,Research/academic,S,2023-10,,true,,,2026-09
-G-SG-0064,Vireo Health Clinic,SG,Clinic,S,2023-10,,false,,,2026-09
-G-SG-0065,Orchard Gardens Family Clinic,SG,Clinic,S,2023-10,,false,,,2026-08
-G-SG-0066,Katong Heights Hospital,SG,Public hospital,S,2023-10,,true,,,2026-09
-G-SG-0067,Tuas Crest Family Clinic,SG,Clinic,S,2023-12,,false,,,2026-07
-G-SG-0068,Katong Park Pathology Lab,SG,Diagnostic lab,S,2023-11,,true,,,2026-09
-G-SG-0069,Kingfisher Biologics Pte Ltd,SG,Industry,S,2023-10,,false,,,2026-09
-G-SG-0070,Tanglin Labs Food Testing Pte Ltd,SG,Industry,S,2023-10,,true,,,2026-08
-G-SG-0071,Coral Food Testing Pte Ltd,SG,Industry,S,2023-10,,true,,,2026-08
-G-SG-0072,Yishun Crest Pathology Lab,SG,Diagnostic lab,S,2023-12,,true,,,2026-08
-G-TH-0001,Saeng Thong Medical Center,TH,Private hospital,L,2023-10,,true,,,2026-09
-G-TH-0002,"Siri Pracharak Lab Co., Ltd.",TH,Diagnostic lab,L,2023-10,,false,,,2026-09
-G-TH-0003,Lanna Phon Medical Center,TH,Private hospital,L,2023-10,,false,,,2026-09
-G-TH-0004,Kaew Phiban Hospital,TH,Public hospital,L,2023-10,,true,,,2026-09
-G-TH-0005,Kanchana Thep General Hospital,TH,Public hospital,L,2023-10,,true,,,2026-09
-G-TH-0006,Suphan Thep Hospital,TH,Private hospital,L,2023-10,,true,,,2026-09
-G-TH-0007,"Suphan Sawang Lab Co., Ltd.",TH,Diagnostic lab,L,2023-10,,false,,,2026-09
-G-TH-0008,Sri Chaloem Hospital,TH,Public hospital,M,2023-10,,true,false_crosssell_th,,2026-09
-G-TH-0009,"Siam Helix Food Lab Co., Ltd.",TH,Industry,M,2023-10,,true,,,2026-09
-G-TH-0010,Chao Phraya Rim Hospital,TH,Private hospital,L,2023-10,,false,hero_th,,2026-09
-G-TH-0011,Sirin Sawang Institute of Tropical Medicine,TH,Research/academic,L,2023-10,,false,,,2026-09
-G-TH-0012,Phon Sawang Hospital,TH,Public hospital,M,2023-10,,false,,,2026-09
-G-TH-0013,Boon Thada General Hospital,TH,Public hospital,M,2023-10,,true,,,2026-09
-G-TH-0014,Thep Pracharak Hospital,TH,Public hospital,M,2023-10,,true,,,2026-09
-G-TH-0015,"Tuk Tuk Bio Medical Laboratory Co., Ltd.",TH,Diagnostic lab,M,2023-10,,false,,,2026-09
-G-TH-0016,Ruen Rungrot Institute of Tropical Medicine,TH,Research/academic,M,2023-10,,true,,,2026-09
+G-SG-0001,Holland Park Community Hospital,SG,Public hospital,L,2023-10,,true,,,2026-09
+G-SG-0002,Holland Grove Specialist Hospital,SG,Private hospital,L,2023-10,,false,,,2026-09
+G-SG-0003,Kingfisher Diagnostics Pte Ltd,SG,Diagnostic lab,L,2023-10,,true,,,2026-09
+G-SG-0004,Hougang Quay Hospital,SG,Public hospital,L,2023-10,,false,,,2026-09
+G-SG-0005,Geylang Park Medical Centre,SG,Private hospital,L,2023-10,,true,,,2026-09
+G-SG-0006,Lavender Heights General Hospital,SG,Public hospital,L,2023-10,,true,,,2026-09
+G-SG-0007,Tanjong Rhu Crest Medical Centre,SG,Private hospital,L,2023-10,,false,hero_sg,,2026-09
+G-SG-0008,Harbourline Biologics Pte Ltd,SG,Industry,L,2023-10,,true,,,2026-09
+G-SG-0009,Merlion Biologics Pte Ltd,SG,Industry,L,2023-10,,false,,,2026-09
+G-SG-0010,Angsana Biologics Pte Ltd,SG,Industry,L,2023-10,,false,,,2026-09
+G-SG-0011,Serangoon Bay Family Clinic,SG,Clinic,M,2023-10,,false,,,2026-09
+G-SG-0012,Palmyra Research Institute,SG,Research/academic,M,2023-10,,true,,,2026-09
+G-SG-0013,Redhill Bay Specialist Hospital,SG,Private hospital,M,2023-10,,true,,,2026-09
+G-SG-0014,Coral Diagnostics Pte Ltd,SG,Diagnostic lab,M,2023-10,,false,,,2026-09
+G-SG-0015,Queenstown Heights Family Clinic,SG,Clinic,M,2023-10,,false,,,2026-09
+G-SG-0016,Vireo Research Institute,SG,Research/academic,M,2023-10,,true,,,2026-09
+G-SG-0017,Bukit Batok Vista Specialist Hospital,SG,Private hospital,M,2023-10,,false,,,2026-09
+G-SG-0018,Pasir Ris Heights Medical Centre,SG,Private hospital,M,2023-10,,true,,,2026-09
+G-SG-0019,Choa Chu Kang Quay Surgical Centre,SG,Private hospital,M,2023-10,,true,,,2026-09
+G-SG-0020,Bayfront Diagnostics Pte Ltd,SG,Diagnostic lab,M,2023-10,,true,,,2026-09
+G-SG-0021,Bedok Vista Family Clinic,SG,Clinic,M,2023-10,,false,,,2026-09
+G-SG-0022,Ang Mo Kio Crest Surgical Centre,SG,Private hospital,M,2023-10,,false,,,2026-09
+G-SG-0023,Tanglin Labs Diagnostics Pte Ltd,SG,Diagnostic lab,S,2023-10,,true,,,2026-09
+G-SG-0024,Seletar Green Pathology Lab,SG,Diagnostic lab,M,2023-10,,false,,,2026-09
+G-SG-0025,Crescent Institute of Molecular Medicine,SG,Research/academic,M,2023-10,,true,,,2026-09
+G-SG-0026,Kallang Bay Community Hospital,SG,Public hospital,M,2023-10,,true,,,2026-09
+G-SG-0027,Pandan Biotech Pte Ltd,SG,Industry,M,2023-10,,true,,,2026-09
+G-SG-0028,Bedok Green Medical Centre,SG,Private hospital,M,2023-10,,false,,,2026-09
+G-SG-0029,Halcyon Health Clinic,SG,Clinic,M,2023-10,,false,,,2026-09
+G-SG-0030,Queenstown Bay Medical Centre,SG,Private hospital,M,2023-10,,true,,,2026-09
+G-SG-0031,Pasir Ris Hill College of Life Sciences,SG,Research/academic,M,2023-10,,true,,,2026-09
+G-SG-0032,Sunbird Research Institute,SG,Research/academic,M,2023-10,,true,,,2026-09
+G-SG-0033,Helix Research Institute,SG,Research/academic,M,2023-10,,true,,,2026-09
+G-SG-0034,Orchard Heights Polyclinic,SG,Clinic,M,2023-10,,false,,,2026-09
+G-SG-0035,Pasir Ris Vista Medical Clinic,SG,Clinic,S,2023-10,,false,,,2026-09
+G-SG-0036,Mandai Green Family Clinic,SG,Clinic,S,2023-10,,false,,,2026-09
+G-SG-0037,Pasir Ris Grove Hospital,SG,Public hospital,M,2023-10,,true,,,2026-09
+G-SG-0038,Tembusu Institute of Molecular Medicine,SG,Research/academic,S,2023-10,,true,,,2026-09
+G-SG-0039,Hornbill Diagnostics Pte Ltd,SG,Diagnostic lab,S,2023-10,,true,,,2026-09
+G-SG-0040,Clementi Park Polyclinic,SG,Clinic,S,2023-10,,false,,,2026-09
+G-SG-0041,Meridian Biotech Pte Ltd,SG,Industry,M,2023-10,,true,,,2026-09
+G-SG-0042,Bukit Batok Heights Medical Clinic,SG,Clinic,S,2023-10,,false,,,2026-09
+G-SG-0043,Bluewater Diagnostics Pte Ltd,SG,Diagnostic lab,S,2023-10,,false,,,2026-09
+G-SG-0044,Cinnamon Institute of Molecular Medicine,SG,Research/academic,S,2023-10,,true,,,2026-09
+G-SG-0045,Tuas Park Pathology Lab,SG,Diagnostic lab,S,2023-10,,false,,,2026-09
+G-SG-0046,Boon Lay Vale College of Life Sciences,SG,Research/academic,S,2023-10,,false,,,2026-09
+G-SG-0047,Saffron Biologics Pte Ltd,SG,Industry,S,2023-10,,true,,,2026-09
+G-SG-0048,Sembawang Point General Hospital,SG,Public hospital,S,2023-11,,true,,,2026-09
+G-SG-0049,Simei Crest Family Clinic,SG,Clinic,S,2023-10,,false,,,2026-09
+G-SG-0050,Boon Lay Hill Medical Centre,SG,Private hospital,S,2023-10,,true,,,2026-08
+G-SG-0051,Loyang Crest Medical Clinic,SG,Clinic,S,2023-10,,false,,,2026-09
+G-SG-0052,Lavender Bay Pathology Lab (Jurong East),SG,Diagnostic lab,S,2023-10,,true,near_miss,,2026-08
+G-SG-0053,Holland Vale Medical Clinic,SG,Clinic,S,2023-10,,false,,,2026-09
+G-SG-0054,Sapphire Biologics Pte Ltd,SG,Industry,S,2023-10,,false,,,2026-09
+G-SG-0055,Telok Ayer Quay Polyclinic,SG,Clinic,S,2023-10,,false,,,2026-09
+G-SG-0056,Jadeleaf Biologics Pte Ltd,SG,Industry,S,2023-10,,false,,,2026-09
+G-SG-0057,Dover Vale Polyclinic,SG,Clinic,S,2023-10,,false,,,2026-09
+G-SG-0058,Cendana Institute of Molecular Medicine,SG,Research/academic,S,2023-10,,true,,,2026-09
+G-SG-0059,Siglap Vale Pathology Lab,SG,Diagnostic lab,S,2023-10,,false,,,2026-09
+G-SG-0060,Yishun Crest Polyclinic,SG,Clinic,S,2023-10,,false,,,2026-09
+G-SG-0061,Bedok Bay General Hospital,SG,Public hospital,S,2023-10,,false,,,2026-09
+G-SG-0062,Lavender Bay Pathology Lab (Bedok),SG,Diagnostic lab,S,2023-10,,false,near_miss,,2026-09
+G-SG-0063,Banyan Research Institute,SG,Research/academic,S,2023-10,,true,,,2026-09
+G-SG-0064,Tampines Hill Polyclinic,SG,Clinic,S,2023-10,,false,,,2026-09
+G-SG-0065,Katong Green Medical Clinic,SG,Clinic,S,2023-10,,false,,,2026-09
+G-SG-0066,Clementi Vista General Hospital,SG,Public hospital,S,2023-11,,true,,,2026-08
+G-SG-0067,Loyang Bay Polyclinic,SG,Clinic,S,2023-12,,false,,,2026-09
+G-SG-0068,Evergreen Biologics Pte Ltd,SG,Industry,S,2023-10,,false,,,2026-09
+G-SG-0069,Tidewater Clinical Laboratories Pte Ltd,SG,Diagnostic lab,S,2023-11,,true,,,2026-08
+G-SG-0070,Northstar Biotech Pte Ltd,SG,Industry,S,2023-10,,true,,,2026-09
+G-SG-0071,Starfruit Pharma Pte Ltd,SG,Industry,S,2023-10,,true,,,2026-08
+G-SG-0072,Boon Lay Vista Pathology Lab,SG,Diagnostic lab,S,2024-01,,true,,,2026-08
+G-TH-0001,Sombat Kamon International Hospital,TH,Private hospital,L,2023-10,,true,,,2026-09
+G-TH-0002,"Somjit Kamon Lab Co., Ltd.",TH,Diagnostic lab,L,2023-10,,false,,,2026-09
+G-TH-0003,Anan Sukkasem Medical Center,TH,Private hospital,L,2023-10,,false,,,2026-09
+G-TH-0004,Phon Nimit Hospital,TH,Public hospital,L,2023-10,,true,,,2026-09
+G-TH-0005,Mongkhon Luang General Hospital,TH,Public hospital,L,2023-10,,true,,,2026-09
+G-TH-0006,Andaman Sombun Medical Center,TH,Private hospital,L,2023-10,,true,,,2026-09
+G-TH-0007,Chao Phraya Rim Hospital,TH,Private hospital,L,2023-10,,false,hero_th,,2026-09
+G-TH-0008,"Saeng Thai Medical Laboratory Co., Ltd.",TH,Diagnostic lab,L,2023-10,,false,,,2026-09
+G-TH-0009,Sri Chaloem Hospital,TH,Public hospital,M,2023-10,,true,false_crosssell_th,,2026-09
+G-TH-0010,"Mali Biotech Co., Ltd.",TH,Industry,M,2023-10,,true,,,2026-09
+G-TH-0011,Chanthra Rungrot Institute of Tropical Medicine,TH,Research/academic,L,2023-10,,false,,,2026-09
+G-TH-0012,Thip Prasit General Hospital,TH,Public hospital,M,2023-10,,false,,,2026-09
+G-TH-0013,Sombat Phaet General Hospital,TH,Public hospital,M,2023-10,,true,,,2026-09
+G-TH-0014,Charoen Thani General Hospital,TH,Public hospital,M,2023-10,,true,,,2026-09
+G-TH-0015,Kanchana Phaet Institute of Tropical Medicine,TH,Research/academic,M,2023-10,,true,,,2026-09
+G-TH-0016,"Chaiyo Medical Laboratory Co., Ltd.",TH,Diagnostic lab,M,2023-10,,false,,,2026-09
 G-TH-0017,Siam Riverside Hospital Chiang Mai,TH,Private hospital,M,2023-10,,false,near_miss,,2026-09
-G-TH-0018,"Thai Sabai Food Lab Co., Ltd.",TH,Industry,M,2023-10,,false,,,2026-09
-G-TH-0019,Nopphon Witthaya Hospital,TH,Public hospital,M,2023-10,,true,,,2026-09
-G-TH-0020,Ploen Phithak Hospital,TH,Public hospital,M,2023-10,,true,,,2026-09
-G-TH-0021,Mongkhon Kamon Institute of Tropical Medicine,TH,Research/academic,M,2023-10,,true,,,2026-09
-G-TH-0022,Rung Sombun Hospital,TH,Private hospital,M,2023-10,,false,,,2026-09
-G-TH-0023,Lanna Mongkhon International Hospital,TH,Private hospital,M,2023-10,,false,,,2026-09
-G-TH-0024,Phisit Phatthana Hospital,TH,Private hospital,M,2023-10,,true,,,2026-09
-G-TH-0025,Yupha Mongkhon General Hospital,TH,Public hospital,M,2023-10,,true,,,2026-09
-G-TH-0026,Ploen Prasit Medical Center,TH,Private hospital,M,2023-10,,false,,,2026-08
-G-TH-0027,Sri Wattana Hospital,TH,Private hospital,M,2023-10,,false,,,2026-09
-G-TH-0028,"Nopphon Wet Lab Co., Ltd.",TH,Diagnostic lab,M,2023-10,,true,,,2026-09
-G-TH-0029,Udon Sukkasem Institute of Tropical Medicine,TH,Research/academic,M,2023-10,,false,,,2026-09
-G-TH-0030,Kasem Ngam Hospital,TH,Public hospital,M,2023-10,,false,,,2026-09
-G-TH-0031,"Chaiyo Biotech Co., Ltd.",TH,Industry,M,2023-10,,false,,,2026-09
-G-TH-0032,"Wanna Rattana Lab Co., Ltd.",TH,Diagnostic lab,M,2023-10,,true,,,2026-09
-G-TH-0033,Ploen Arun General Hospital,TH,Public hospital,M,2023-10,,false,,,2026-09
-G-TH-0034,Lanna Thammarak Hospital,TH,Private hospital,M,2023-10,,false,,,2026-09
-G-TH-0035,Nakhon Sanit Hospital,TH,Public hospital,M,2023-10,,true,,,2026-09
-G-TH-0036,"Lanna Gene Food Lab Co., Ltd.",TH,Industry,M,2023-10,,true,,,2026-09
-G-TH-0037,Narin Wet Hospital,TH,Private hospital,M,2023-10,,false,,,2026-09
-G-TH-0038,Sri Charoen General Hospital,TH,Public hospital,M,2023-10,,false,,,2026-09
-G-TH-0039,"Anan Suk Lab Co., Ltd.",TH,Diagnostic lab,S,2023-10,,false,,,2026-09
-G-TH-0040,"Golden Teak Medical Laboratory Co., Ltd.",TH,Diagnostic lab,M,2023-10,,false,,,2026-09
-G-TH-0041,Bodhi Research Center,TH,Research/academic,S,2023-10,,true,,,2026-09
-G-TH-0042,Phon Kit General Hospital,TH,Public hospital,M,2023-10,,true,,,2026-09
-G-TH-0043,Wanna Thong General Hospital,TH,Public hospital,S,2023-11,,true,,,2026-09
-G-TH-0044,Wanna Suk Institute of Tropical Medicine,TH,Research/academic,M,2023-10,,true,,,2026-09
-G-TH-0045,Kasem Satit Clinic,TH,Clinic,S,2023-10,,false,,,2026-09
-G-TH-0046,"Orchid Siam Pharma Co., Ltd.",TH,Industry,M,2023-10,,false,,,2026-09
-G-TH-0047,Saeng Phithak Clinic,TH,Clinic,S,2023-10,,false,,,2026-09
-G-TH-0048,"Rung Phiban Lab Co., Ltd.",TH,Diagnostic lab,S,2023-10,,false,,,2026-09
-G-TH-0049,Thep Phatthana Clinic,TH,Clinic,S,2023-10,,false,,,2026-07
-G-TH-0050,Sri Phithak Institute of Tropical Medicine,TH,Research/academic,S,2023-10,,true,,,2026-09
-G-TH-0051,"Sukhothai Medical Laboratory Co., Ltd.",TH,Diagnostic lab,S,2023-10,,false,,,2026-09
-G-TH-0052,Suphan Chuen Polyclinic,TH,Clinic,S,2023-10,,false,,,2026-09
-G-TH-0053,"Ratchaphruek Medical Laboratory Co., Ltd.",TH,Diagnostic lab,S,2023-10,,true,,,2026-09
-G-TH-0054,Wiset Thammarak Clinic,TH,Clinic,S,2023-10,,false,,,2026-09
-G-TH-0055,Isan Health Research Center,TH,Research/academic,S,2023-10,,true,,,2026-09
-G-TH-0056,Uthai Phakdi General Hospital,TH,Public hospital,S,2024-01,,true,,,2026-09
-G-TH-0057,Pradit Suk Polyclinic,TH,Clinic,S,2023-10,,false,,,2026-09
-G-TH-0058,Thep Rungrot Clinic,TH,Clinic,S,2023-10,,false,,,2026-09
-G-TH-0059,Rawi Satit International Hospital,TH,Private hospital,S,2023-10,,false,,,2026-09
-G-TH-0060,Somjit Rungrot Hospital,TH,Public hospital,S,2024-01,,true,,,2026-09
-G-TH-0061,"Prasert Rungrot Lab Co., Ltd.",TH,Diagnostic lab,S,2024-01,,false,,,2026-08
-G-TH-0062,Kraisorn Research Center,TH,Research/academic,S,2023-10,,true,,,2026-08
-G-TH-0063,"Phaya Biotech Co., Ltd.",TH,Industry,S,2023-10,,false,,,2026-09
-G-TH-0064,"Saeng Thai Pharma Co., Ltd.",TH,Industry,S,2023-10,,true,,,2026-09
-G-TH-0065,Uthai Phaet Clinic,TH,Clinic,S,2023-11,,false,,,2026-09
-G-TH-0066,Siri Sukkasem Hospital,TH,Public hospital,S,2024-01,,true,,,2026-08
-G-TH-0067,"Kinnaree Food Lab Co., Ltd.",TH,Industry,S,2023-10,,false,,,2026-08
-G-TH-0068,"Thep Mitr Lab Co., Ltd.",TH,Diagnostic lab,S,2023-11,,true,,,2026-09
-G-TH-0069,Sakon Thani Medical Center,TH,Private hospital,S,2023-11,,false,,,2026-08
-G-TH-0070,Nakhon Thep Clinic,TH,Clinic,S,2023-10,,false,,,2026-09
-G-TH-0071,Sri Phon International Hospital,TH,Private hospital,S,2024-01,,true,,,2026-07
-G-TH-0072,"Lotus Siam Medical Laboratory Co., Ltd.",TH,Diagnostic lab,S,2023-11,,false,,,2026-09
-G-TH-0073,Thep Witthaya Institute of Tropical Medicine,TH,Research/academic,S,2023-11,,false,,,2026-09
-G-TH-0074,"Mali Pharma Co., Ltd.",TH,Industry,S,2023-10,,true,,,2026-09
-G-TH-0075,Kaew Phaet General Hospital,TH,Public hospital,S,2023-10,,true,,,2026-08
-G-TH-0076,Thawi Sukkasem Clinic,TH,Clinic,S,2024-02,,false,,,2026-07
-G-TH-0077,Mani Thong Polyclinic,TH,Clinic,S,2024-06,,false,,,2026-08
-G-TH-0078,"Mekong Delta Biotech Co., Ltd.",TH,Industry,S,2023-10,,false,,,2026-08
-G-TH-0079,Chok Witthaya Polyclinic,TH,Clinic,S,2024-02,,false,,,2026-08
-G-TH-0080,Siam Riverside Hospital Phuket,TH,Private hospital,S,2024-01,,false,near_miss,,2026-08
-G-TH-0081,Anan Thep Polyclinic,TH,Clinic,S,2024-01,,false,,,2026-08
-G-TH-0082,Ploen Phaet Polyclinic,TH,Clinic,S,2023-11,,false,,,2026-09
-G-VN-0001,Vinh Sang Hospital,VN,Private hospital,L,2023-10,,false,,,2026-09
-G-VN-0002,Truc Tri Hospital,VN,Private hospital,L,2023-10,,true,,,2026-09
-G-VN-0003,Truong Hoa General Hospital,VN,Public hospital,L,2023-10,,true,,,2026-09
+G-TH-0018,"Ratchaphruek Biotech Co., Ltd.",TH,Industry,M,2023-10,,false,,,2026-09
+G-TH-0019,Duang Khemmarat General Hospital,TH,Public hospital,M,2023-10,,true,,,2026-09
+G-TH-0020,Saeng Satit General Hospital,TH,Public hospital,M,2023-10,,true,,,2026-09
+G-TH-0021,Pradit Prida Institute of Tropical Medicine,TH,Research/academic,M,2023-10,,true,,,2026-09
+G-TH-0022,Suphan Mitr Hospital,TH,Private hospital,M,2023-10,,false,,,2026-09
+G-TH-0023,Pradit Khemmarat International Hospital,TH,Private hospital,M,2023-10,,true,,,2026-09
+G-TH-0024,Thawi Prida General Hospital,TH,Public hospital,M,2023-10,,true,,,2026-09
+G-TH-0025,Uthai Phithak Hospital,TH,Private hospital,M,2023-10,,false,,,2026-09
+G-TH-0026,Chanthra Kamon Hospital,TH,Private hospital,M,2023-10,,false,,,2026-09
+G-TH-0027,Chanthra Witthaya Medical Center,TH,Private hospital,M,2023-10,,false,,,2026-09
+G-TH-0028,"Mongkhon Thammarak Lab Co., Ltd.",TH,Diagnostic lab,M,2023-10,,true,,,2026-09
+G-TH-0029,Boon Luang Institute of Tropical Medicine,TH,Research/academic,M,2023-10,,false,,,2026-09
+G-TH-0030,Andaman Thong General Hospital,TH,Public hospital,M,2023-10,,false,,,2026-09
+G-TH-0031,"Lotus Siam Biotech Co., Ltd.",TH,Industry,M,2023-10,,false,,,2026-09
+G-TH-0032,"Phaya Medical Laboratory Co., Ltd.",TH,Diagnostic lab,M,2023-10,,true,,,2026-09
+G-TH-0033,Yupha Udom General Hospital,TH,Public hospital,M,2023-10,,false,,,2026-09
+G-TH-0034,Kaew Kit Hospital,TH,Private hospital,M,2023-10,,false,,,2026-09
+G-TH-0035,Ruen Thep General Hospital,TH,Public hospital,M,2023-10,,true,,,2026-08
+G-TH-0036,"Mekong Delta Pharma Co., Ltd.",TH,Industry,M,2023-10,,true,,,2026-09
+G-TH-0037,Saeng Sukkasem Hospital,TH,Private hospital,M,2023-10,,false,,,2026-09
+G-TH-0038,Phisit Raksa Hospital,TH,Public hospital,M,2023-10,,false,,,2026-09
+G-TH-0039,"Bodhi Medical Laboratory Co., Ltd.",TH,Diagnostic lab,M,2023-10,,false,,,2026-09
+G-TH-0040,"Yupha Sukkasem Lab Co., Ltd.",TH,Diagnostic lab,S,2023-10,,false,,,2026-09
+G-TH-0041,Champa Research Center,TH,Research/academic,S,2023-10,,true,,,2026-09
+G-TH-0042,Wanna Wet Hospital,TH,Public hospital,M,2023-10,,true,,,2026-09
+G-TH-0043,Sombat Rungrot Hospital,TH,Public hospital,S,2023-11,,true,,,2026-09
+G-TH-0044,Orchid Siam Research Center,TH,Research/academic,M,2023-10,,true,,,2026-09
+G-TH-0045,Khun Sawang Clinic,TH,Clinic,S,2023-10,,false,,,2026-09
+G-TH-0046,"Thai Sabai Food Lab Co., Ltd.",TH,Industry,M,2023-10,,false,,,2026-09
+G-TH-0047,Wanna Charoen Clinic,TH,Clinic,S,2023-10,,false,,,2026-09
+G-TH-0048,"Kraisorn Medical Laboratory Co., Ltd.",TH,Diagnostic lab,S,2023-10,,false,,,2026-09
+G-TH-0049,Mongkhon Phakdi Clinic,TH,Clinic,S,2023-10,,false,,,2026-08
+G-TH-0050,Khun Phakdi Institute of Tropical Medicine,TH,Research/academic,S,2023-10,,true,,,2026-09
+G-TH-0051,"Siam Helix Medical Laboratory Co., Ltd.",TH,Diagnostic lab,S,2023-10,,false,,,2026-09
+G-TH-0052,Khun Thep Polyclinic,TH,Clinic,S,2023-10,,false,,,2026-09
+G-TH-0053,"Saeng Suk Lab Co., Ltd.",TH,Diagnostic lab,S,2023-10,,true,,,2026-09
+G-TH-0054,Wiset Kamon Polyclinic,TH,Clinic,S,2023-10,,false,,,2026-09
+G-TH-0055,Lanna Gene Research Center,TH,Research/academic,S,2023-10,,true,,,2026-08
+G-TH-0056,Pradit Mitr General Hospital,TH,Public hospital,S,2023-12,,true,,,2026-09
+G-TH-0057,Andaman Phon Clinic,TH,Clinic,S,2023-10,,false,,,2026-08
+G-TH-0058,Udon Luang Clinic,TH,Clinic,S,2023-10,,false,,,2026-09
+G-TH-0059,Sombat Thammarak Hospital,TH,Private hospital,S,2023-10,,false,,,2026-08
+G-TH-0060,Kanchana Udom Hospital,TH,Public hospital,S,2023-12,,true,,,2026-09
+G-TH-0061,"Isan Health Medical Laboratory Co., Ltd.",TH,Diagnostic lab,S,2024-01,,false,,,2026-08
+G-TH-0062,Sukhothai Research Center,TH,Research/academic,S,2023-10,,true,,,2026-09
+G-TH-0063,"Udon Nimit North Food Lab Co., Ltd.",TH,Industry,S,2023-10,,false,,,2026-08
+G-TH-0064,"Tuk Tuk Bio Biotech Co., Ltd.",TH,Industry,S,2023-10,,true,,,2026-08
+G-TH-0065,Sakon Phatthana Polyclinic,TH,Clinic,S,2023-11,,false,,,2026-09
+G-TH-0066,Sakon Phakdi Hospital,TH,Public hospital,S,2023-12,,true,,,2026-09
+G-TH-0067,"Chanthra Kit North Biotech Co., Ltd.",TH,Industry,S,2023-10,,false,,,2026-09
+G-TH-0068,"Kinnaree Medical Laboratory Co., Ltd.",TH,Diagnostic lab,S,2023-12,,true,,,2026-08
+G-TH-0069,Charoen Satit International Hospital,TH,Private hospital,S,2023-11,,false,,,2026-07
+G-TH-0070,Yupha Rungrot Clinic,TH,Clinic,S,2023-10,,false,,,2026-09
+G-TH-0071,Pracha Sawang Hospital,TH,Private hospital,S,2024-01,,true,,,2026-05
+G-TH-0072,"Golden Teak Medical Laboratory Co., Ltd.",TH,Diagnostic lab,S,2023-11,,false,,,2026-08
+G-TH-0073,Chalerm Labs Research Center,TH,Research/academic,S,2023-11,,false,,,2026-09
+G-TH-0074,"Naga Biotech Co., Ltd.",TH,Industry,S,2023-10,,true,,,2026-07
+G-TH-0075,Bua Sakun Hospital,TH,Public hospital,S,2023-10,,true,,,2026-05
+G-TH-0076,Narin Phatthana Clinic,TH,Clinic,S,2024-02,,false,,,2026-06
+G-TH-0077,Duang Prida Polyclinic,TH,Clinic,S,2024-07,,false,,,2026-09
+G-TH-0078,"Benjarong Pharma Co., Ltd.",TH,Industry,S,2023-10,,false,,,2026-08
+G-TH-0079,Pradit Suk Polyclinic,TH,Clinic,S,2024-02,,false,,,2026-07
+G-TH-0080,Siam Riverside Hospital Phuket,TH,Private hospital,S,2024-01,,false,near_miss,,2026-09
+G-TH-0081,Bua Mitr Polyclinic,TH,Clinic,S,2024-01,,false,,,2026-09
+G-TH-0082,Wanna Wattana Clinic,TH,Clinic,S,2023-11,,false,,,2026-09
+G-VN-0001,Lac Bao International Hospital,VN,Private hospital,L,2023-10,,false,,,2026-09
+G-VN-0002,Bệnh viện Quốc tế Vạn Tú,VN,Private hospital,L,2023-10,,true,,,2026-09
+G-VN-0003,Bệnh viện Phước Định,VN,Public hospital,L,2023-10,,true,,,2026-09
 G-VN-0004,Bệnh viện Quốc tế Sông Sen,VN,Private hospital,L,2023-10,,false,misattribution_vn,,2026-09
-G-VN-0005,Bệnh viện Quốc tế Thanh Mai,VN,Private hospital,L,2023-10,,false,,,2026-09
-G-VN-0006,Bệnh viện Quốc tế Minh Đăng,VN,Private hospital,L,2023-10,,true,,,2026-09
-G-VN-0007,Công ty TNHH Sinh học Lạc Việt,VN,Industry,L,2023-10,,false,,,2026-09
-G-VN-0008,Thai Tin Laboratory Centre,VN,Diagnostic lab,L,2023-10,,true,,,2026-09
-G-VN-0009,Bệnh viện Đa khoa Hồng Lạc,VN,Public hospital,L,2023-10,,false,hero_vn,,2026-09
-G-VN-0010,Trung tâm Xét nghiệm Nam Sơn,VN,Diagnostic lab,L,2023-10,,true,,,2026-09
-G-VN-0011,Thuan Nhan Hospital,VN,Public hospital,L,2023-10,,false,xsell_gap_vn,,2026-09
-G-VN-0012,Phuc Minh General Hospital,VN,Public hospital,M,2023-10,,true,xsell_gap_vn,,2026-09
-G-VN-0013,Bệnh viện Diệu Uyên,VN,Public hospital,M,2023-10,,true,xsell_gap_vn,,2026-09
-G-VN-0014,Trung tâm Xét nghiệm Mộc Tú,VN,Diagnostic lab,M,2023-10,,true,,,2026-09
-G-VN-0015,Bệnh viện Vĩnh Khang,VN,Public hospital,M,2023-10,,true,xsell_gap_vn,,2026-09
-G-VN-0016,Nam Dang International Hospital,VN,Private hospital,M,2023-10,,true,,,2026-09
-G-VN-0017,Công ty TNHH Xét nghiệm Ánh Dương,VN,Diagnostic lab,L,2023-10,,false,,,2026-09
-G-VN-0018,Vinh Long Clinic,VN,Clinic,M,2023-10,,false,,,2026-09
-G-VN-0019,Viện Nghiên cứu Vĩnh Phát,VN,Research/academic,M,2023-10,,false,,,2026-09
-G-VN-0020,Viện Nghiên cứu Sáng Khôi,VN,Research/academic,M,2023-10,,true,,,2026-09
-G-VN-0021,Bệnh viện Đa khoa Xuân Long,VN,Public hospital,M,2023-10,,true,,,2026-09
-G-VN-0022,Bệnh viện Quốc tế Mộc Tín,VN,Private hospital,M,2023-10,,false,,,2026-09
-G-VN-0023,Phòng khám Xuân Định,VN,Clinic,M,2023-10,,false,,,2026-09
-G-VN-0024,Công ty TNHH Xét nghiệm Bách Việt,VN,Diagnostic lab,M,2023-10,,true,,,2026-09
-G-VN-0025,Bệnh viện Tân Nhân,VN,Public hospital,M,2023-10,,true,,,2026-09
-G-VN-0026,Bệnh viện Đa khoa Lộc Phát,VN,Public hospital,M,2023-10,,false,,,2026-09
-G-VN-0027,Bệnh viện Đa khoa Khánh Việt,VN,Public hospital,M,2023-10,,true,,,2026-09
-G-VN-0028,Phòng khám Cẩm Hải,VN,Clinic,M,2023-10,,false,,,2026-09
-G-VN-0029,Bệnh viện Sáng Phong,VN,Private hospital,S,2024-01,,true,,,2026-04
-G-VN-0030,Bệnh viện Đa khoa Tường Nghĩa,VN,Public hospital,M,2023-10,,false,,,2026-09
-G-VN-0031,Bệnh viện Quốc tế Yên Nghĩa,VN,Private hospital,S,2023-10,,false,,,2026-09
-G-VN-0032,Thai Phong General Hospital,VN,Public hospital,M,2023-10,,false,,,2026-09
-G-VN-0033,Viện Sinh học Tường Hưng,VN,Research/academic,M,2023-10,,false,,,2026-09
-G-VN-0034,Cam Quan General Hospital,VN,Public hospital,M,2023-10,,false,,,2026-09
-G-VN-0035,Bệnh viện Phúc Quân,VN,Public hospital,S,2023-10,,false,,,2026-09
-G-VN-0036,Bệnh viện Thái Linh,VN,Private hospital,M,2023-10,,true,,,2026-09
-G-VN-0037,"Sao Mai Laboratory Co., Ltd.",VN,Diagnostic lab,S,2023-10,,false,,,2026-09
-G-VN-0038,"Truong Thinh Biotech Co., Ltd.",VN,Industry,S,2023-10,,false,,,2026-09
-G-VN-0039,Công ty CP Dược Cửu Long,VN,Industry,S,2023-11,,true,,,2026-09
-G-VN-0040,"Nam Viet Biotech Co., Ltd.",VN,Industry,S,2023-10,,false,,,2026-09
-G-VN-0041,Phòng khám Đa khoa Kiến Bảo,VN,Clinic,S,2023-10,,false,,,2026-09
-G-VN-0042,Phòng khám Đa khoa Phúc Sơn,VN,Clinic,S,2023-10,,false,,,2026-09
-G-VN-0043,Công ty TNHH Xét nghiệm Kim Long,VN,Diagnostic lab,S,2023-10,,true,,,2026-08
-G-VN-0044,Minh Hung Polyclinic,VN,Clinic,S,2023-10,,false,,,2026-09
-G-VN-0045,Bao Khoi Polyclinic,VN,Clinic,S,2023-10,,false,,,2026-08
-G-VN-0046,Bệnh viện Hiếu Vân,VN,Public hospital,S,2023-11,,true,,,2026-09
-G-VN-0047,Trung tâm Xét nghiệm Trường Mai,VN,Diagnostic lab,S,2023-11,,true,,,2026-09
-G-VN-0048,Bệnh viện Quốc tế Bình Thọ,VN,Private hospital,S,2023-11,,true,,,2026-09
-G-VN-0049,Phuong Nam Pharmaceutical JSC,VN,Industry,S,2024-04,,true,,,2026-09
-G-VN-0050,Viện Sinh học Kim Vân,VN,Research/academic,S,2023-10,,false,,,2026-09
-G-VN-0051,Tuong Duong Clinic,VN,Clinic,S,2023-11,,false,,,2026-09
-G-VN-0052,Viện Sinh học Bảo Lộc,VN,Research/academic,S,2023-10,,false,,,2026-08
-G-VN-0053,Thien Minh Clinic,VN,Clinic,S,2023-10,,false,,,2026-07
-G-VN-0054,Lac Uyen Research Institute,VN,Research/academic,S,2023-10,,true,,,2026-09
-G-VN-0055,Công ty CP Dược Tân Á,VN,Industry,S,2023-10,,false,,,2026-09
-G-VN-0056,Dieu Quan Laboratory Centre,VN,Diagnostic lab,S,2023-12,,false,,,2026-08
-G-VN-0057,Viện Nghiên cứu Thiên Thành,VN,Research/academic,S,2023-11,,true,,,2026-09
+G-VN-0005,Bệnh viện Đông Nguyên,VN,Private hospital,L,2023-10,,false,,,2026-09
+G-VN-0006,Dong Hoa International Hospital,VN,Private hospital,L,2023-10,,true,,,2026-09
+G-VN-0007,Bệnh viện Đa khoa Hồng Lạc,VN,Public hospital,L,2023-10,,false,hero_vn,,2026-09
+G-VN-0008,Công ty CP Dược Đại Việt,VN,Industry,L,2023-10,,false,,,2026-09
+G-VN-0009,Tue Thinh Laboratory Centre,VN,Diagnostic lab,L,2023-10,,true,,,2026-09
+G-VN-0010,"Nam Viet Laboratory Co., Ltd.",VN,Diagnostic lab,L,2023-10,,true,,,2026-09
+G-VN-0011,Bệnh viện Đa khoa Hòa Hiền,VN,Public hospital,L,2023-10,,false,xsell_gap_vn,,2026-09
+G-VN-0012,Bệnh viện Đa khoa Xuân Đăng,VN,Public hospital,M,2023-10,,true,xsell_gap_vn,,2026-09
+G-VN-0013,Bệnh viện Đa khoa Thuận Thịnh,VN,Public hospital,M,2023-10,,true,xsell_gap_vn,,2026-09
+G-VN-0014,Công ty TNHH Xét nghiệm Kim Long,VN,Diagnostic lab,M,2023-10,,true,,,2026-09
+G-VN-0015,Bệnh viện Thiên Phúc,VN,Public hospital,M,2023-10,,true,xsell_gap_vn,,2026-09
+G-VN-0016,Bệnh viện Quốc tế Thuận Nghĩa,VN,Private hospital,M,2023-10,,true,,,2026-09
+G-VN-0017,Trung tâm Xét nghiệm Hiếu Lâm,VN,Diagnostic lab,L,2023-10,,false,,,2026-09
+G-VN-0018,Viện Sinh học Lộc Trí,VN,Research/academic,M,2023-10,,false,,,2026-09
+G-VN-0019,Phòng khám Đa khoa Mộc Thành,VN,Clinic,M,2023-10,,false,,,2026-09
+G-VN-0020,Viện Sinh học Bảo Nghĩa,VN,Research/academic,M,2023-10,,true,,,2026-09
+G-VN-0021,Kim Hung General Hospital,VN,Public hospital,M,2023-10,,true,,,2026-09
+G-VN-0022,Bệnh viện Gia Tín,VN,Private hospital,M,2023-10,,false,,,2026-09
+G-VN-0023,Phòng khám Gia Phúc,VN,Clinic,M,2023-10,,false,,,2026-09
+G-VN-0024,Trung tâm Xét nghiệm Xuân Minh,VN,Diagnostic lab,M,2023-10,,true,,,2026-09
+G-VN-0025,Bệnh viện Hưng Quân,VN,Public hospital,M,2023-10,,true,,,2026-09
+G-VN-0026,Bệnh viện Đa khoa Yên Sang,VN,Public hospital,M,2023-10,,false,,,2026-09
+G-VN-0027,Duc Son Hospital,VN,Public hospital,M,2023-10,,true,,,2026-09
+G-VN-0028,Tan Chau Clinic,VN,Clinic,M,2023-10,,false,,,2026-09
+G-VN-0029,Phuoc Thinh Hospital,VN,Private hospital,S,2024-01,,true,,,2026-04
+G-VN-0030,Bệnh viện Đa khoa Quang Châu,VN,Public hospital,M,2023-10,,false,,,2026-09
+G-VN-0031,Bệnh viện Quốc tế Bình Việt,VN,Private hospital,S,2023-10,,false,,,2026-09
+G-VN-0032,Bệnh viện Đa khoa Thanh Nghĩa,VN,Public hospital,M,2023-10,,false,,,2026-09
+G-VN-0033,Binh Son Research Institute,VN,Research/academic,M,2023-10,,false,,,2026-09
+G-VN-0034,Bệnh viện Đa khoa Phú Minh,VN,Public hospital,M,2023-10,,false,,,2026-09
+G-VN-0035,Tan Tu Hospital,VN,Public hospital,S,2023-10,,false,,,2026-09
+G-VN-0036,Bệnh viện Quốc tế Tuệ Lộc,VN,Private hospital,M,2023-10,,true,,,2026-09
+G-VN-0037,Công ty TNHH Xét nghiệm Tân Á,VN,Diagnostic lab,S,2023-10,,false,,,2026-09
+G-VN-0038,Công ty TNHH Sinh học Sen Vàng,VN,Industry,S,2023-10,,false,,,2026-09
+G-VN-0039,Công ty CP Dược Hồng Hà,VN,Industry,S,2023-11,,true,,,2026-09
+G-VN-0040,Công ty TNHH Sinh học Lạc Việt,VN,Industry,S,2023-10,,false,,,2026-09
+G-VN-0041,Tue Hien Clinic,VN,Clinic,S,2023-10,,false,,,2026-09
+G-VN-0042,Thai Loc Clinic,VN,Clinic,S,2023-10,,false,,,2026-09
+G-VN-0043,Trung tâm Xét nghiệm Đông Tín,VN,Diagnostic lab,S,2023-10,,true,,,2026-09
+G-VN-0044,Phòng khám Khánh Lộc,VN,Clinic,S,2023-10,,false,,,2026-07
+G-VN-0045,Truong Hoa Polyclinic,VN,Clinic,S,2023-10,,false,,,2026-08
+G-VN-0046,Bệnh viện Đa khoa Đức Linh,VN,Public hospital,S,2023-11,,true,,,2026-09
+G-VN-0047,Gia Hoa Laboratory Centre,VN,Diagnostic lab,S,2023-11,,true,,,2026-09
+G-VN-0048,Công ty CP Dược Phương Nam,VN,Industry,S,2024-04,,true,,,2026-09
+G-VN-0049,Bệnh viện Quốc tế Hòa Lâm,VN,Private hospital,S,2023-10,,true,,,2026-07
+G-VN-0050,Viện Sinh học Cẩm Phúc,VN,Research/academic,S,2023-10,,false,,,2026-09
+G-VN-0051,Phòng khám Hiếu Hưng,VN,Clinic,S,2023-11,,false,,,2026-09
+G-VN-0052,Viện Sinh học Thanh Nhân,VN,Research/academic,S,2023-10,,false,,,2026-09
+G-VN-0053,Phòng khám Đa khoa Sáng Ngân,VN,Clinic,S,2023-10,,false,,,2026-08
+G-VN-0054,Viện Nghiên cứu Thiện Long,VN,Research/academic,S,2023-10,,true,,,2026-07
+G-VN-0055,Công ty TNHH Sinh học Sao Mai,VN,Industry,S,2023-10,,false,,,2026-09
+G-VN-0056,"Me Kong Laboratory Co., Ltd.",VN,Diagnostic lab,S,2023-12,,false,,,2026-09
+G-VN-0057,Viện Nghiên cứu Thái Châu,VN,Research/academic,S,2023-11,,true,,,2026-09
 G-VN-0058,Bệnh viện Đa khoa Bình An,VN,Clinic,S,2023-10,,false,near_miss,,2026-09
-G-VN-0059,Xuan Tho Polyclinic,VN,Clinic,S,2024-01,,false,,,2026-09
-G-VN-0060,Phòng khám Đa khoa Bình An,VN,Clinic,S,2023-10,,false,near_miss,,2026-09
-G-VN-0061,Bệnh viện Thiện Dương,VN,Public hospital,S,2023-11,,true,,,2026-09
-G-VN-0062,Viện Sinh học Yên Hạnh,VN,Research/academic,S,2023-10,,true,,,2026-09
-G-VN-0063,Viện Nghiên cứu Gia Long,VN,Research/academic,S,2023-10,,true,,,2026-08
-G-VN-0064,Kim Nhan Clinic,VN,Clinic,S,2023-11,,false,,,2026-09
-G-VN-0065,Phòng khám Vĩnh Nguyên,VN,Clinic,S,2023-10,,false,,,2026-09
-G-VN-0066,Công ty TNHH Sinh học Hồng Hà,VN,Industry,S,2023-10,,false,,,2026-08
-G-VN-0067,"Dai Viet Laboratory Co., Ltd.",VN,Diagnostic lab,S,2024-02,,true,,,2026-09
-G-VN-0068,Hai Viet Polyclinic,VN,Clinic,S,2023-10,,false,,,2026-08
-G-VN-0069,Bệnh viện Đa khoa Phước Thành,VN,Public hospital,S,2023-10,,false,,,2026-04
-G-VN-0070,Viet Tin Pharmaceutical JSC,VN,Industry,S,2023-11,,true,,,2026-09
-G-VN-0071,Bệnh viện Nam Lan,VN,Private hospital,S,2023-10,,true,,,2026-09
-G-VN-0072,Phòng khám Gia Dương,VN,Clinic,S,2024-01,,false,,,2026-05
-G-VN-0073,"Sen Vang Biotech Co., Ltd.",VN,Industry,S,2023-10,,false,,,2026-09
-G-VN-0074,An Mai Laboratory Centre,VN,Diagnostic lab,S,2024-07,,true,,,2024-12
+G-VN-0059,Kim Linh Polyclinic,VN,Clinic,S,2024-01,,false,,,2026-08
+G-VN-0060,Phòng khám Đa khoa Bình An,VN,Clinic,S,2023-11,,false,near_miss,,2026-09
+G-VN-0061,Tue Quan General Hospital,VN,Public hospital,S,2023-11,,true,,,2026-09
+G-VN-0062,Loc Viet Institute of Biology,VN,Research/academic,S,2023-10,,true,,,2026-08
+G-VN-0063,Viện Nghiên cứu Hải Khôi,VN,Research/academic,S,2023-10,,true,,,2026-07
+G-VN-0064,Gia Lam Sang Clinic,VN,Clinic,S,2023-11,,false,,,2026-09
+G-VN-0065,Công ty CP Dược Trường Thịnh,VN,Industry,S,2023-10,,false,,,2026-08
+G-VN-0066,Phòng khám Đa khoa Vạn Phát,VN,Clinic,S,2023-10,,false,,,2026-07
+G-VN-0067,Công ty TNHH Xét nghiệm Hưng Phát,VN,Diagnostic lab,S,2024-01,,true,,,2026-08
+G-VN-0068,Tuong Dang Clinic,VN,Clinic,S,2023-10,,false,,,2026-09
+G-VN-0069,Bệnh viện Đa khoa Tuệ Khôi,VN,Public hospital,S,2023-10,,false,,,2026-08
+G-VN-0070,Công ty TNHH Sinh học Cửu Long,VN,Industry,S,2023-11,,true,,,2026-05
+G-VN-0071,Bệnh viện Quốc tế Trúc Trí,VN,Private hospital,S,2023-10,,true,,,2026-06
+G-VN-0072,Truc Hung Clinic,VN,Clinic,S,2024-01,,false,,,2026-06
+G-VN-0073,Công ty TNHH Sinh học Ánh Dương,VN,Industry,S,2023-10,,false,,,2026-09
+G-VN-0074,Công ty TNHH Xét nghiệm Việt Tín,VN,Diagnostic lab,S,2024-07,,true,,,2024-12

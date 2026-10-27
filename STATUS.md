@@ -32,10 +32,13 @@ Deadline: **12:00 SGT Wed 28 Oct 2026**. The user is asleep until ~07:30 and has
 | 01:29 | Wave 2 launched (wf_59d75aac-07d) from scratchpad/wave2.js: lead patch, then intake/approvals/tracker/mdm/pulse-core/pulse-analytics/admin/story/scenes, then integrate + golden-path e2e |
 | 01:29 | Usage pacing: builders at effort=high; heavy Wave 3/4 after the 5:20 AM usage reset; cron resume at 05:27 + hourly heartbeat at :43 |
 
+| 02:11 | Wave 2 DONE + committed (fe37345): tsc 0, vitest 238, build 21 static pages, Playwright golden path 24/24. Expected live date for Amy = Tue 3 Nov (engine: 2+2 business days); use that in the VO |
+| 02:20 | Wave 2b launched (wf_ba318939-d24): MLS molecular pre-check → item requests only (extend goes Business Support + Finance → MDM); triage rules improved on an independent dev set (blind test was 47%) |
+
 ## Waves
 - [x] Wave 1: foundation (engine, store, shell, mocks) + integration
 - [ ] W1-E: Python data + DS → src/data JSON
-- [ ] Wave 2: features (intake, approvals, tracker + MDM, admin, pulse, triage + impact)
+- [x] Wave 2: features (intake, approvals, tracker + MDM, admin, pulse, triage + impact)
 - [ ] Wave 3: integrate + e2e demo path + visual review loop
 - [ ] Wave 4: README, recording, voiceover script, 2 slides, secrets scan, deploy
 

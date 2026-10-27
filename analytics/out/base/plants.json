@@ -4,11 +4,11 @@
  "isSynthetic": true,
  "hero": {
   "SG": {
-   "golden_id": "G-SG-0015",
+   "golden_id": "G-SG-0007",
    "name": "Tanjong Rhu Crest Medical Centre",
-   "yoy": -0.3374,
-   "rank_12m": 22,
-   "sgd_12m": 208401,
+   "yoy": -0.3357,
+   "rank_12m": 11,
+   "sgd_12m": 450411,
    "switch": "2026-02",
    "records": [
     {
@@ -20,7 +20,7 @@
      "perturbation": "",
      "first_po_month": "2023-10",
      "last_po_month": "2026-01",
-     "sgd_12m": 77199
+     "sgd_12m": 156261
     },
     {
      "card_code": "C-SG-00077",
@@ -31,7 +31,7 @@
      "perturbation": "abbreviation;address_format",
      "first_po_month": "2026-02",
      "last_po_month": "2026-09",
-     "sgd_12m": 131202
+     "sgd_12m": 294150
     }
    ]
   },
@@ -79,11 +79,11 @@
    ]
   },
   "TH": {
-   "golden_id": "G-TH-0010",
+   "golden_id": "G-TH-0007",
    "name": "Chao Phraya Rim Hospital",
-   "yoy": -0.273,
-   "rank_12m": 15,
-   "sgd_12m": 184756,
+   "yoy": -0.2555,
+   "rank_12m": 10,
+   "sgd_12m": 336044,
    "switch": "2026-05",
    "records": [
     {
@@ -95,27 +95,27 @@
      "perturbation": "",
      "first_po_month": "2023-10",
      "last_po_month": "2026-04",
-     "sgd_12m": 114959
+     "sgd_12m": 205967
     },
     {
      "card_code": "C-TH-00088",
-     "card_name": "JaoPrayaRim Hospital",
+     "card_name": "Jao Praya Rim Hospital",
      "entity": "QTG",
      "recorded_country": "TH",
      "created_at": "2026-04-11",
      "perturbation": "romanisation;cross_entity;blank_tax_id",
      "first_po_month": "2026-05",
      "last_po_month": "2026-09",
-     "sgd_12m": 69796
+     "sgd_12m": 130077
     }
    ]
   },
   "VN": {
-   "golden_id": "G-VN-0009",
+   "golden_id": "G-VN-0007",
    "name": "Bệnh viện Đa khoa Hồng Lạc",
-   "yoy": -0.2658,
-   "rank_12m": 15,
-   "sgd_12m": 213034,
+   "yoy": -0.2924,
+   "rank_12m": 9,
+   "sgd_12m": 322751,
    "switch": "2026-01",
    "records": [
     {
@@ -127,7 +127,7 @@
      "perturbation": "",
      "first_po_month": "2023-10",
      "last_po_month": "2025-12",
-     "sgd_12m": 58641
+     "sgd_12m": 92384
     },
     {
      "card_code": "C-VN-00076",
@@ -138,16 +138,16 @@
      "perturbation": "romanisation;blank_tax_id",
      "first_po_month": "2026-01",
      "last_po_month": "2026-09",
-     "sgd_12m": 154393
+     "sgd_12m": 230367
     }
    ]
   },
   "MM": {
    "golden_id": "G-MM-0004",
    "name": "Thukha Yeik Specialist Hospital",
-   "yoy": -0.3169,
+   "yoy": -0.3065,
    "rank_12m": 8,
-   "sgd_12m": 158518,
+   "sgd_12m": 151515,
    "switch": "2025-12",
    "records": [
     {
@@ -159,18 +159,18 @@
      "perturbation": "",
      "first_po_month": "2023-10",
      "last_po_month": "2025-11",
-     "sgd_12m": 29432
+     "sgd_12m": 31838
     },
     {
      "card_code": "C-MM-00046",
-     "card_name": "Thka Yeit Specialist Hospital",
+     "card_name": "Thuak Yeit Specialist Hospital",
      "entity": "SPD",
      "recorded_country": "MM",
      "created_at": "2025-11-20",
      "perturbation": "romanisation;typo",
      "first_po_month": "2025-12",
      "last_po_month": "2026-09",
-     "sgd_12m": 129086
+     "sgd_12m": 119677
     }
    ]
   }
@@ -256,7 +256,7 @@
     },
     {
      "golden_id": "G-MY-0006",
-     "name": "Hospital Ulu Selasih",
+     "name": "Hospital Permatang Sutera",
      "sg_record": "C-SG-00075",
      "true_record": "C-MY-00004",
      "entities_moved": [
@@ -268,7 +268,7 @@
      "records": [
       {
        "card_code": "C-MY-00004",
-       "card_name": "Hospital Ulu Selasih",
+       "card_name": "Hospital Permatang Sutera",
        "entity": "SPD",
        "recorded_country": "MY",
        "created_at": "2008-10-31",
@@ -279,7 +279,7 @@
       },
       {
        "card_code": "C-SG-00075",
-       "card_name": "Hosp Ulu Selasih",
+       "card_name": "Hosp Permatang Sutera",
        "entity": "SPD",
        "recorded_country": "SG",
        "created_at": "2026-01-10",
@@ -294,7 +294,7 @@
   },
   "VN": {
    "start": "2026-01",
-   "share_of_country_12m": 0.0425,
+   "share_of_country_12m": 0.0446,
    "named_example": {
     "golden_id": "G-VN-0004",
     "name": "Bệnh viện Quốc tế Sông Sen",
@@ -304,9 +304,9 @@
      "SPD",
      "QTG"
     ],
-    "share_of_lines_moved": 0.802,
-    "sgd_moved_12m": 397417,
-    "share_of_country_12m": 0.0425,
+    "share_of_lines_moved": 0.82,
+    "sgd_moved_12m": 414066,
+    "share_of_country_12m": 0.0446,
     "records": [
      {
       "card_code": "C-SG-00076",
@@ -317,7 +317,7 @@
       "perturbation": "romanisation;blank_tax_id",
       "first_po_month": "2026-01",
       "last_po_month": "2026-09",
-      "sgd_12m": 397417
+      "sgd_12m": 414066
      },
      {
       "card_code": "C-VN-00035",
@@ -328,7 +328,7 @@
       "perturbation": "",
       "first_po_month": "2023-10",
       "last_po_month": "2026-09",
-      "sgd_12m": 219932
+      "sgd_12m": 175895
      }
     ]
    },
@@ -342,9 +342,9 @@
       "SPD",
       "QTG"
      ],
-     "share_of_lines_moved": 0.802,
-     "sgd_moved_12m": 397417,
-     "share_of_country_12m": 0.0425,
+     "share_of_lines_moved": 0.82,
+     "sgd_moved_12m": 414066,
+     "share_of_country_12m": 0.0446,
      "records": [
       {
        "card_code": "C-SG-00076",
@@ -355,7 +355,7 @@
        "perturbation": "romanisation;blank_tax_id",
        "first_po_month": "2026-01",
        "last_po_month": "2026-09",
-       "sgd_12m": 397417
+       "sgd_12m": 414066
       },
       {
        "card_code": "C-VN-00035",
@@ -366,7 +366,7 @@
        "perturbation": "",
        "first_po_month": "2023-10",
        "last_po_month": "2026-09",
-       "sgd_12m": 219932
+       "sgd_12m": 175895
       }
      ]
     }
@@ -383,8 +383,8 @@
    "countries": [
     "TH"
    ],
-   "units_12m": 539,
-   "sgd_12m": 96933
+   "units_12m": 499,
+   "sgd_12m": 89815
   },
   {
    "true_item_code": "I-A-000810",
@@ -395,8 +395,8 @@
    "countries": [
     "TH"
    ],
-   "units_12m": 475,
-   "sgd_12m": 48340
+   "units_12m": 574,
+   "sgd_12m": 58526
   },
   {
    "true_item_code": "I-A-000843",
@@ -408,8 +408,8 @@
     "TH",
     "MM"
    ],
-   "units_12m": 79,
-   "sgd_12m": 8383
+   "units_12m": 166,
+   "sgd_12m": 17555
   },
   {
    "true_item_code": "I-A-000871",
@@ -421,8 +421,8 @@
     "TH",
     "VN"
    ],
-   "units_12m": 4660,
-   "sgd_12m": 176347
+   "units_12m": 4420,
+   "sgd_12m": 166811
   },
   {
    "true_item_code": "I-A-000849",
@@ -433,13 +433,13 @@
    "countries": [
     "TH"
    ],
-   "units_12m": 262,
-   "sgd_12m": 24754
+   "units_12m": 176,
+   "sgd_12m": 16844
   }
  ],
  "th_false_crosssell": [
   {
-   "golden_id": "G-TH-0008",
+   "golden_id": "G-TH-0009",
    "name": "Sri Chaloem Hospital",
    "country": "TH",
    "segment": "Public hospital",
@@ -453,7 +453,7 @@
      "perturbation": "",
      "first_po_month": "2023-10",
      "last_po_month": "2026-09",
-     "sgd_12m": 215932
+     "sgd_12m": 205324
     },
     {
      "card_code": "C-TH-00063",
@@ -485,18 +485,18 @@
      "perturbation": "",
      "first_po_month": "2023-10",
      "last_po_month": "2026-09",
-     "sgd_12m": 147286
+     "sgd_12m": 161526
     },
     {
      "card_code": "C-MM-00038",
-     "card_name": "AongMyitta Hospital",
+     "card_name": "Aong Myitta Hospital",
      "entity": "QTG",
      "recorded_country": "MM",
      "created_at": "2021-02-03",
      "perturbation": "romanisation;cross_entity",
      "first_po_month": "2023-10",
      "last_po_month": "2026-09",
-     "sgd_12m": 47892
+     "sgd_12m": 50487
     }
    ]
   }
@@ -504,25 +504,25 @@
  "vn_xsell_gap": [
   {
    "golden_id": "G-VN-0013",
-   "name": "Khanh Phat Hospital",
+   "name": "Bệnh viện Thuận Phong",
    "country": "VN",
    "segment": "Public hospital"
   },
   {
    "golden_id": "G-VN-0011",
-   "name": "Phuong Khang General Hospital",
+   "name": "Bệnh viện Đa khoa Ngọc Thành",
    "country": "VN",
    "segment": "Public hospital"
   },
   {
    "golden_id": "G-VN-0015",
-   "name": "Dieu Tri Hospital",
+   "name": "Bệnh viện Đa khoa Đông Khang",
    "country": "VN",
    "segment": "Public hospital"
   },
   {
    "golden_id": "G-VN-0012",
-   "name": "Bệnh viện Đông Hiền",
+   "name": "Bệnh viện Đức Nghĩa",
    "country": "VN",
    "segment": "Public hospital"
   }
@@ -530,19 +530,19 @@
  "my_expanders": [
   {
    "golden_id": "G-MY-0015",
-   "name": "Kuala Murni Medical Centre",
+   "name": "Seri Puteri Medical Centre",
    "country": "MY",
    "segment": "Private hospital"
   },
   {
    "golden_id": "G-MY-0012",
-   "name": "Permatang Nilam Medical Centre",
+   "name": "Padang Idaman Specialist Hospital",
    "country": "MY",
    "segment": "Private hospital"
   },
   {
    "golden_id": "G-MY-0011",
-   "name": "Hospital Daerah Desa Puteri",
+   "name": "Hospital Ulu Cemerlang",
    "country": "MY",
    "segment": "Public hospital"
   }
@@ -550,14 +550,14 @@
  "my_contract_churn": [
   {
    "golden_id": "G-MY-0025",
-   "name": "Hospital Tanjung Teratai",
+   "name": "Hospital Daerah Ulu Mawar",
    "country": "MY",
    "segment": "Public hospital",
    "contract_end": "2026-03"
   },
   {
    "golden_id": "G-MY-0008",
-   "name": "Hospital Daerah Bandar Baiduri",
+   "name": "Hospital Daerah Desa Perdana",
    "country": "MY",
    "segment": "Public hospital",
    "contract_end": "2026-02"
@@ -566,14 +566,14 @@
  "my_contracts_q1_2027": [
   {
    "golden_id": "G-MY-0035",
-   "name": "Hospital Daerah Bukit Cahaya",
+   "name": "Hospital Daerah Lembah Indah",
    "country": "MY",
    "segment": "Public hospital",
    "contract_end": "2027-02"
   },
   {
    "golden_id": "G-MY-0044",
-   "name": "Hospital Daerah Kota Lestari",
+   "name": "Hospital Desa Permai",
    "country": "MY",
    "segment": "Public hospital",
    "contract_end": "2027-02"
@@ -634,109 +634,109 @@
  "generic_churners": [
   {
    "golden_id": "G-SG-0048",
-   "name": "Marina Green Community Hospital",
+   "name": "Siglap Crest Community Hospital",
    "country": "SG",
    "segment": "Public hospital"
   },
   {
    "golden_id": "G-SG-0060",
-   "name": "Angsana Health Clinic",
+   "name": "Redhill Hill Medical Clinic",
    "country": "SG",
    "segment": "Clinic"
   },
   {
    "golden_id": "G-MY-0033",
-   "name": "Meranti Bioscience Sdn Bhd",
+   "name": "Bunga Raya Bioscience Sdn Bhd",
    "country": "MY",
    "segment": "Industry"
   },
   {
    "golden_id": "G-MY-0004",
-   "name": "Wira Diagnostic Laboratories Sdn Bhd",
+   "name": "Makmal Patologi Ulu Kenanga",
    "country": "MY",
    "segment": "Diagnostic lab"
   },
   {
    "golden_id": "G-MY-0058",
-   "name": "Jati Halal Testing Sdn Bhd",
+   "name": "Rotan Gloves Sdn Bhd",
    "country": "MY",
    "segment": "Industry"
   },
   {
    "golden_id": "G-MY-0030",
-   "name": "Ulu Murni Specialist Hospital",
+   "name": "Sungai Lestari Medical Centre",
    "country": "MY",
    "segment": "Private hospital"
   },
   {
    "golden_id": "G-MY-0042",
-   "name": "Sena Diagnostic Laboratories Sdn Bhd",
+   "name": "Makmal Patologi Seri Harmoni",
    "country": "MY",
    "segment": "Diagnostic lab"
   },
   {
    "golden_id": "G-MY-0031",
-   "name": "Hospital Kuala Kenanga",
+   "name": "Hospital Bukit Mutiara",
    "country": "MY",
    "segment": "Public hospital"
   },
   {
    "golden_id": "G-TH-0055",
-   "name": "Rung Luang Institute of Tropical Medicine",
+   "name": "Uthai Sawang Institute of Tropical Medicine",
    "country": "TH",
    "segment": "Research/academic"
   },
   {
    "golden_id": "G-TH-0054",
-   "name": "Khun Phakdi Polyclinic",
+   "name": "Nakhon Sawang Polyclinic",
    "country": "TH",
    "segment": "Clinic"
   },
   {
    "golden_id": "G-TH-0065",
-   "name": "Boon Kamon Polyclinic",
+   "name": "Thip Kamon Polyclinic",
    "country": "TH",
    "segment": "Clinic"
   },
   {
    "golden_id": "G-TH-0050",
-   "name": "Pracha Suk Institute of Tropical Medicine",
+   "name": "Golden Teak Research Center",
    "country": "TH",
    "segment": "Research/academic"
   },
   {
-   "golden_id": "G-TH-0040",
-   "name": "Mali Medical Laboratory Co., Ltd.",
+   "golden_id": "G-TH-0039",
+   "name": "Phon Kamon Lab Co., Ltd.",
    "country": "TH",
    "segment": "Diagnostic lab"
   },
   {
    "golden_id": "G-TH-0063",
-   "name": "Ratchaphruek Pharma Co., Ltd.",
+   "name": "Saeng Thai Biotech Co., Ltd.",
    "country": "TH",
    "segment": "Industry"
   },
   {
    "golden_id": "G-VN-0045",
-   "name": "Phòng khám Đa khoa Phương Thịnh",
+   "name": "Phòng khám Đa khoa Tường Lộc",
    "country": "VN",
    "segment": "Clinic"
   },
   {
    "golden_id": "G-VN-0036",
-   "name": "Bệnh viện Quốc tế Bình Thọ",
+   "name": "Bệnh viện Phương Phúc",
    "country": "VN",
    "segment": "Private hospital"
   },
   {
    "golden_id": "G-MM-0020",
-   "name": "Sein Maung Clinic",
+   "name": "Ywar Aye Polyclinic",
    "country": "MM",
    "segment": "Clinic"
   },
   {
    "golden_id": "G-MM-0006",
-   "name": "Sein Thu Hospital",
+   "name": "Yadanar Oo Medical Centre",
    "country": "MM",
    "segment": "Private hospital"
   }
@@ -744,217 +744,217 @@
  "new_customers": [
   {
    "golden_id": "G-SG-0061",
-   "name": "Boon Lay Bay General Hospital",
+   "name": "Serangoon Park Hospital",
    "country": "SG",
    "segment": "Public hospital"
   },
   {
-   "golden_id": "G-SG-0068",
-   "name": "Crescent Diagnostics Pte Ltd",
+   "golden_id": "G-SG-0069",
+   "name": "Coral Diagnostics Pte Ltd",
    "country": "SG",
    "segment": "Diagnostic lab"
   },
   {
    "golden_id": "G-SG-0056",
-   "name": "Tembusu Biologics Pte Ltd",
+   "name": "Nutmeg Biologics Pte Ltd",
    "country": "SG",
    "segment": "Industry"
   },
   {
-   "golden_id": "G-SG-0014",
-   "name": "Keppel Vista Medical Clinic",
+   "golden_id": "G-SG-0015",
+   "name": "Simei Point Family Clinic",
    "country": "SG",
    "segment": "Clinic"
   },
   {
    "golden_id": "G-SG-0066",
-   "name": "Holland Park General Hospital",
+   "name": "Tanjong Rhu Park Hospital",
    "country": "SG",
    "segment": "Public hospital"
   },
   {
    "golden_id": "G-SG-0039",
-   "name": "Kranji Grove Pathology Lab",
+   "name": "Katong Green Pathology Lab",
    "country": "SG",
    "segment": "Diagnostic lab"
   },
   {
    "golden_id": "G-SG-0033",
-   "name": "Palmyra Research Institute",
+   "name": "Punggol Grove College of Life Sciences",
    "country": "SG",
    "segment": "Research/academic"
   },
   {
    "golden_id": "G-SG-0031",
-   "name": "Sembawang Park College of Life Sciences",
+   "name": "Kranji Park College of Life Sciences",
    "country": "SG",
    "segment": "Research/academic"
   },
   {
    "golden_id": "G-MY-0081",
-   "name": "Ulu Impian Biotech Research Centre",
+   "name": "Halia Medical Research Institute",
    "country": "MY",
    "segment": "Research/academic"
   },
   {
    "golden_id": "G-MY-0076",
-   "name": "Poliklinik Padang Cemerlang",
+   "name": "Poliklinik Tanjung Nirwana",
    "country": "MY",
    "segment": "Clinic"
   },
   {
    "golden_id": "G-MY-0057",
-   "name": "Cengal Gloves Sdn Bhd",
+   "name": "Tiara Gloves Sdn Bhd",
    "country": "MY",
    "segment": "Industry"
   },
   {
    "golden_id": "G-MY-0028",
-   "name": "Kota Kesuma Biotech Research Centre",
+   "name": "Kasturi Medical Research Institute",
    "country": "MY",
    "segment": "Research/academic"
   },
   {
    "golden_id": "G-MY-0032",
-   "name": "Kirana Pharma Sdn Bhd",
+   "name": "Pelangi Gloves Sdn Bhd",
    "country": "MY",
    "segment": "Industry"
   },
   {
    "golden_id": "G-MY-0063",
-   "name": "Kemboja Pathology Sdn Bhd",
+   "name": "Belian Diagnostic Laboratories Sdn Bhd",
    "country": "MY",
    "segment": "Diagnostic lab"
   },
   {
    "golden_id": "G-MY-0045",
-   "name": "Bandar Teratai Medical Centre",
+   "name": "Desa Mahkota Specialist Hospital",
    "country": "MY",
    "segment": "Private hospital"
   },
   {
    "golden_id": "G-MY-0047",
-   "name": "Tualang Bioscience Sdn Bhd",
+   "name": "Cengal Halal Testing Sdn Bhd",
    "country": "MY",
    "segment": "Industry"
   },
   {
    "golden_id": "G-MY-0019",
-   "name": "Andalas Medical Research Institute",
+   "name": "Institut Penyelidikan Andalas",
    "country": "MY",
    "segment": "Research/academic"
   },
   {
    "golden_id": "G-MY-0024",
-   "name": "Makmal Patologi Permatang Gemilang",
+   "name": "Makmal Patologi Kuala Bestari",
    "country": "MY",
    "segment": "Diagnostic lab"
   },
   {
    "golden_id": "G-MY-0088",
-   "name": "Makmal Patologi Taman Puteri",
+   "name": "Makmal Patologi Taman Nirwana",
    "country": "MY",
    "segment": "Diagnostic lab"
   },
   {
    "golden_id": "G-MY-0035",
-   "name": "Hospital Daerah Bukit Cahaya",
+   "name": "Hospital Daerah Lembah Indah",
    "country": "MY",
    "segment": "Public hospital"
   },
   {
    "golden_id": "G-MY-0044",
-   "name": "Hospital Daerah Kota Lestari",
+   "name": "Hospital Desa Permai",
    "country": "MY",
    "segment": "Public hospital"
   },
   {
    "golden_id": "G-TH-0043",
-   "name": "Boon Sakun General Hospital",
+   "name": "Khun Kamon General Hospital",
    "country": "TH",
    "segment": "Public hospital"
   },
   {
    "golden_id": "G-TH-0070",
-   "name": "Udon Luang Polyclinic",
+   "name": "Sakon Phakdi Clinic",
    "country": "TH",
    "segment": "Clinic"
   },
   {
    "golden_id": "G-TH-0069",
-   "name": "Chai Phithak Medical Center",
+   "name": "Mongkhon Phaet Medical Center",
    "country": "TH",
    "segment": "Private hospital"
   },
   {
-   "golden_id": "G-TH-0025",
-   "name": "Yupha Suk Hospital",
+   "golden_id": "G-TH-0024",
+   "name": "Mongkhon Prida General Hospital",
    "country": "TH",
    "segment": "Public hospital"
   },
   {
    "golden_id": "G-TH-0029",
-   "name": "Wanna Rattana Institute of Tropical Medicine",
+   "name": "Nakhon Arun Institute of Tropical Medicine",
    "country": "TH",
    "segment": "Research/academic"
   },
   {
    "golden_id": "G-TH-0027",
-   "name": "Ploen Wattana Medical Center",
+   "name": "Sombat Pracharak International Hospital",
    "country": "TH",
    "segment": "Private hospital"
   },
   {
    "golden_id": "G-TH-0078",
-   "name": "Phaya Food Lab Co., Ltd.",
+   "name": "Naga Biotech Co., Ltd.",
    "country": "TH",
    "segment": "Industry"
   },
   {
    "golden_id": "G-TH-0019",
-   "name": "Lanna Khemmarat Hospital",
+   "name": "Somjit Luang Hospital",
    "country": "TH",
    "segment": "Public hospital"
   },
   {
    "golden_id": "G-TH-0082",
-   "name": "Phon Rungrot Clinic",
+   "name": "Wiset Wattana Polyclinic",
    "country": "TH",
    "segment": "Clinic"
   },
   {
    "golden_id": "G-VN-0033",
-   "name": "Viện Nghiên cứu Tuệ Bảo",
+   "name": "Viện Sinh học Trường Châu",
    "country": "VN",
    "segment": "Research/academic"
   },
   {
    "golden_id": "G-VN-0068",
-   "name": "Phòng khám Đa khoa Tuệ Vân",
+   "name": "Phòng khám Đa khoa Lạc Quý",
    "country": "VN",
    "segment": "Clinic"
   },
   {
    "golden_id": "G-VN-0050",
-   "name": "Viện Nghiên cứu Minh Vân",
+   "name": "Viện Sinh học Nam Ngân",
    "country": "VN",
    "segment": "Research/academic"
   },
   {
-   "golden_id": "G-VN-0019",
-   "name": "Viện Nghiên cứu Cẩm Phát",
+   "golden_id": "G-VN-0018",
+   "name": "Viện Sinh học Hòa Hải",
    "country": "VN",
    "segment": "Research/academic"
   },
   {
    "golden_id": "G-MM-0035",
-   "name": "Golden Lotus Biotech Co., Ltd.",
+   "name": "Golden Lotus Pharma Co., Ltd.",
    "country": "MM",
    "segment": "Industry"
   },
   {
    "golden_id": "G-MM-0040",
-   "name": "Hla Sar Diagnostic Centre",
+   "name": "Lin Yadanar Diagnostic Centre",
    "country": "MM",
    "segment": "Diagnostic lab"
   }
@@ -1011,7 +1011,7 @@
   }
  ],
  "stuck_demand": {
-  "sgd": 341512,
+  "sgd": 335110,
   "prs": 12
  },
  "pull_through_placements": 196

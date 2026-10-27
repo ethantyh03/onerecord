@@ -16,8 +16,8 @@
  "summary": {
   "value_12m_dedup": {
    "SG": {
-    "A": 10153462,
-    "B": 3837958,
+    "A": 10141329,
+    "B": 3838666,
     "C": 3663487
    },
    "MY": {
@@ -26,24 +26,24 @@
     "C": 2562453
    },
    "TH": {
-    "A": 5855482,
-    "B": 2195368,
+    "A": 5795427,
+    "B": 2223722,
     "C": 2361350
    },
    "VN": {
-    "A": 4723131,
-    "B": 1802558,
+    "A": 4728487,
+    "B": 1812149,
     "C": 1164643
    },
    "MM": {
-    "A": 2219485,
-    "B": 848968,
+    "A": 2173773,
+    "B": 844882,
     "C": 759505
    }
   },
   "yoy_dedup": {
    "SG": {
-    "A": 0.0098,
+    "A": 0.007,
     "B": 0.0052,
     "C": 0.3336
    },
@@ -53,73 +53,73 @@
     "C": 0.2393
    },
    "TH": {
-    "A": 0.0007,
-    "B": -0.0106,
+    "A": -0.0075,
+    "B": 0.0005,
     "C": 0.1467
    },
    "VN": {
-    "A": -0.0172,
-    "B": -0.0138,
+    "A": -0.0142,
+    "B": 0.0009,
     "C": -0.2945
    },
    "MM": {
-    "A": -0.0426,
-    "B": -0.0019,
+    "A": -0.0652,
+    "B": 0.0043,
     "C": -0.0179
    }
   },
   "country_12m_dedup": {
-   "SG": 17654907,
+   "SG": 17643481,
    "MY": 14477305,
-   "TH": 10412200,
-   "VN": 7690332,
-   "MM": 3827958
+   "TH": 10380499,
+   "VN": 7705279,
+   "MM": 3778160
   },
   "country_yoy_dedup": {
-   "SG": 0.0623,
+   "SG": 0.0605,
    "MY": 0.0374,
-   "TH": 0.0279,
-   "VN": -0.0717,
-   "MM": -0.0289
+   "TH": 0.0257,
+   "VN": -0.0669,
+   "MM": -0.0411
   },
-  "group_12m": 54062701,
-  "group_yoy": 0.0214,
+  "group_12m": 53984724,
+  "group_yoy": 0.0203,
   "country_12m_raw": {
-   "SG": 18622869,
+   "SG": 18603311,
    "MY": 13825901,
-   "TH": 10412200,
-   "VN": 7373774,
-   "MM": 3827958
+   "TH": 10380499,
+   "VN": 7396853,
+   "MM": 3778160
   },
   "raw_minus_dedup_pct": {
-   "SG": 0.0548,
+   "SG": 0.0544,
    "MY": -0.045,
    "TH": 0.0,
-   "VN": -0.0412,
+   "VN": -0.04,
    "MM": 0.0
   },
   "product_12m_dedup": {
-   "A": 31588829,
-   "B": 11962434,
+   "A": 31476286,
+   "B": 11997001,
    "C": 10511438
   },
-  "A_to_C": 3.01,
+  "A_to_C": 2.99,
   "misattribution_share_12m": {
    "SG": 0.0,
    "MY": 0.045,
    "TH": 0.0,
-   "VN": 0.0412,
+   "VN": 0.04,
    "MM": 0.0
   },
-  "misattribution_sgd_12m": 967961,
-  "miscategorised_sgd_12m": 347052,
-  "miscategorised_share_of_A_12m": 0.011,
+  "misattribution_sgd_12m": 959830,
+  "miscategorised_sgd_12m": 350258,
+  "miscategorised_share_of_A_12m": 0.0111,
   "miscategorised_share_of_A_by_country": {
    "SG": 0.0,
    "MY": 0.0,
-   "TH": 0.0477,
-   "VN": 0.013,
-   "MM": 0.003
+   "TH": 0.051,
+   "VN": 0.0107,
+   "MM": 0.0019
   },
   "customer_records": 388,
   "golden_customers": 363,
@@ -131,20 +131,20 @@
   },
   "items": 120,
   "rows": {
-   "pos_lines": 57849,
-   "pos": 43269,
-   "prs": 4509,
-   "enquiries": 10785,
-   "followups": 4314,
-   "mdm_requests_hist": 915
+   "pos_lines": 57783,
+   "pos": 43071,
+   "prs": 4513,
+   "enquiries": 10720,
+   "followups": 4290,
+   "mdm_requests_hist": 898
   },
   "heroes": {
    "SG": {
-    "golden_id": "G-SG-0015",
+    "golden_id": "G-SG-0007",
     "name": "Tanjong Rhu Crest Medical Centre",
-    "yoy": -0.0579,
-    "rank_12m": 14,
-    "sgd_12m": 307295
+    "yoy": -0.0201,
+    "rank_12m": 7,
+    "sgd_12m": 673972
    },
    "MY": {
     "golden_id": "G-MY-0002",
@@ -154,38 +154,38 @@
     "sgd_12m": 1630990
    },
    "TH": {
-    "golden_id": "G-TH-0010",
+    "golden_id": "G-TH-0007",
     "name": "Chao Phraya Rim Hospital",
-    "yoy": 0.0501,
-    "rank_12m": 9,
-    "sgd_12m": 266716
+    "yoy": 0.057,
+    "rank_12m": 7,
+    "sgd_12m": 488468
    },
    "VN": {
-    "golden_id": "G-VN-0009",
+    "golden_id": "G-VN-0007",
     "name": "Bệnh viện Đa khoa Hồng Lạc",
-    "yoy": 0.0328,
-    "rank_12m": 9,
-    "sgd_12m": 315335
+    "yoy": 0.0147,
+    "rank_12m": 6,
+    "sgd_12m": 482479
    },
    "MM": {
     "golden_id": "G-MM-0004",
     "name": "Thukha Yeik Specialist Hospital",
-    "yoy": -0.0337,
+    "yoy": -0.0189,
     "rank_12m": 7,
-    "sgd_12m": 226678
+    "sgd_12m": 216253
    }
   },
-  "stuck_demand_sgd": 311976,
+  "stuck_demand_sgd": 312170,
   "stuck_demand_prs": 12,
-  "mdm_median_cycle_days": 14.0,
+  "mdm_median_cycle_days": 14.1,
   "mdm_median_cycle_days_by_domain": {
-   "costcentre": 11.0,
-   "customer": 13.7,
-   "extend": 8.9,
-   "item": 16.7,
-   "vendor": 14.7
+   "costcentre": 12.7,
+   "customer": 14.0,
+   "extend": 8.1,
+   "item": 16.0,
+   "vendor": 13.9
   },
-  "mdm_bounce_rate": 0.4
+  "mdm_bounce_rate": 0.385
  },
  "assertions": [
   {
@@ -228,7 +228,7 @@
   },
   {
    "name": "misattribution VN: 3-8% of 12M value",
-   "value": 0.0412,
+   "value": 0.04,
    "target": "[0.03, 0.08]",
    "ok": true
   },
@@ -240,7 +240,7 @@
   },
   {
    "name": "raw and de-duplicated group totals identical",
-   "value": 0.0,
+   "value": -0.0,
    "target": 0.0,
    "ok": true
   },
@@ -264,7 +264,7 @@
   },
   {
    "name": "stuck demand S$150-450k",
-   "value": 311976,
+   "value": 312170,
    "target": "[150000, 450000]",
    "ok": true
   },
@@ -294,7 +294,7 @@
   },
   {
    "name": "MDM history ids stay below the app REQ-1001+",
-   "value": 915,
+   "value": 898,
    "target": "< 1000",
    "ok": true
   },

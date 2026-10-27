@@ -8,7 +8,7 @@ import { useSandbox } from "@/lib/store";
 import { PersonChip } from "@/components/common";
 import { Button } from "@/components/ui/button";
 import { BuSheet } from "./bu-sheet";
-import { Chip, roleLabel } from "./shared";
+import { Chip, describeRule, roleLabel } from "./shared";
 
 export function BusinessUnitsTab({ onBuSaved }: { onBuSaved?: (buId: string) => void }) {
   const config = useSandbox((s) => s.config);
@@ -24,6 +24,14 @@ export function BusinessUnitsTab({ onBuSaved }: { onBuSaved?: (buId: string) => 
     }
     return [...byEntity.entries()];
   }, [config.businessUnits, config.people]);
+
+  const fieldLabel = (key: string) => {
+    for (const d of config.domains) {
+      const f = d.fields.find((x) => x.key === key);
+      if (f) return f.label.toLowerCase();
+    }
+    return key;
+  };
 
   const inFlight = (buId: string) =>
     requests.filter((r) => r.entity === buId && (r.status === "in_approval" || r.status === "needs_info" || r.status === "mdm_review")).length;
@@ -103,6 +111,7 @@ export function BusinessUnitsTab({ onBuSaved }: { onBuSaved?: (buId: string) => 
                 bu.extraStages.map((s) => (
                   <Chip key={s.id} tone="brand">
                     + {s.label}
+                    {s.steps.some((st) => st.condition) ? ` · only when ${s.steps.map((st) => describeRule(st.condition, fieldLabel)).filter(Boolean).join(" / ")}` : ""}
                   </Chip>
                 ))
               ) : (

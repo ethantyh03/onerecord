@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Plus, Sparkles } from "lucide-react";
-import type { BusinessUnit, ProductGroup, RoleId, StageDef } from "@/lib/types";
+import type { BusinessUnit, FieldDef, ProductGroup, RoleId, StageDef } from "@/lib/types";
 import { PRODUCT_LABELS } from "@/lib/types";
 import { NEW_BU_TEMPLATE } from "@/config/default-config";
 import { useSandbox } from "@/lib/store";
@@ -75,6 +75,12 @@ function BuForm({ editing, presetCode, onOpenChange, onSaved }: BuSheetProps) {
   const [draft, setDraft] = useState<Draft>(() => (editing ? toDraft(editing) : blankDraft(shared, presetCode)));
   const [tried, setTried] = useState(false);
   const isEdit = !!editing;
+  /** BU stages apply to every request type, so a step condition can use any domain's field (first label wins). */
+  const conditionFields = useMemo(() => {
+    const byKey = new Map<string, FieldDef>();
+    for (const d of config.domains) for (const f of d.fields) if (!byKey.has(f.key)) byKey.set(f.key, f);
+    return [...byKey.values()];
+  }, [config.domains]);
 
   const code = draft.id.trim().toUpperCase();
   const errors: Record<string, string> = {};
@@ -116,6 +122,7 @@ function BuForm({ editing, presetCode, onOpenChange, onSaved }: BuSheetProps) {
       extraStages: draft.extraStages.map((s) => ({
         ...s,
         label: s.label.trim(),
+        // Keep each step's condition (e.g. MLS pre-check only for product requests) exactly as drafted.
         steps: s.steps.map((st) => ({ ...st, label: st.label.trim() || `${roleLabel(st.role)} review` })),
       })),
     };
@@ -255,7 +262,7 @@ function BuForm({ editing, presetCode, onOpenChange, onSaved }: BuSheetProps) {
               <h3 id="bu-stages" className="text-sm font-semibold text-foreground">
                 Extra stages for this BU
               </h3>
-              <p className="text-xs text-muted-foreground">Run after the normal approvals and before the MDM final check, for every request from this BU.</p>
+              <p className="text-xs text-muted-foreground">Run after the normal approvals and before the MDM final check. Add “Only when…” to limit a step, e.g. to product requests.</p>
             </div>
             <Button
               type="button"
@@ -279,6 +286,7 @@ function BuForm({ editing, presetCode, onOpenChange, onSaved }: BuSheetProps) {
                     stage={stage}
                     index={i}
                     testIdPrefix="bu"
+                    fields={conditionFields}
                     isLast={i === draft.extraStages.length - 1}
                     onChange={(s) => set("extraStages", draft.extraStages.map((x, j) => (j === i ? s : x)))}
                     onRemove={() => set("extraStages", draft.extraStages.filter((_, j) => j !== i))}

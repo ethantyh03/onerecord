@@ -16,8 +16,8 @@
  "summary": {
   "value_12m_dedup": {
    "SG": {
-    "A": 9997320,
-    "B": 3443411,
+    "A": 9930629,
+    "B": 3388424,
     "C": 3421830
    },
    "MY": {
@@ -26,25 +26,25 @@
     "C": 2369671
    },
    "TH": {
-    "A": 5829207,
-    "B": 2100323,
+    "A": 5815946,
+    "B": 2083810,
     "C": 1855120
    },
    "VN": {
-    "A": 5312825,
-    "B": 1994471,
+    "A": 5246036,
+    "B": 1980588,
     "C": 548745
    },
    "MM": {
-    "A": 2146706,
-    "B": 662014,
+    "A": 2139205,
+    "B": 665458,
     "C": 441887
    }
   },
   "yoy_dedup": {
    "SG": {
-    "A": -0.0191,
-    "B": -0.0392,
+    "A": -0.0249,
+    "B": -0.0577,
     "C": 0.1178
    },
    "MY": {
@@ -53,73 +53,73 @@
     "C": -0.1823
    },
    "TH": {
-    "A": 0.1125,
-    "B": 0.0331,
+    "A": 0.1129,
+    "B": 0.0312,
     "C": 0.0662
    },
    "VN": {
-    "A": 0.1578,
-    "B": 0.1181,
+    "A": 0.151,
+    "B": 0.1084,
     "C": -0.6192
    },
    "MM": {
-    "A": -0.0362,
-    "B": -0.0999,
+    "A": -0.0374,
+    "B": -0.0756,
     "C": -0.3419
    }
   },
   "country_12m_dedup": {
-   "SG": 16862561,
+   "SG": 16740882,
    "MY": 14846478,
-   "TH": 9784650,
-   "VN": 7856042,
-   "MM": 3250607
+   "TH": 9754875,
+   "VN": 7775370,
+   "MM": 3246549
   },
   "country_yoy_dedup": {
-   "SG": 0.0015,
+   "SG": -0.006,
    "MY": 0.0203,
-   "TH": 0.0857,
-   "VN": 0.0054,
-   "MM": -0.1056
+   "TH": 0.0855,
+   "VN": -0.0013,
+   "MM": -0.1016
   },
-  "group_12m": 52600338,
-  "group_yoy": 0.0145,
+  "group_12m": 52364155,
+  "group_yoy": 0.0113,
   "country_12m_raw": {
-   "SG": 17871698,
+   "SG": 17760162,
    "MY": 14156280,
-   "TH": 9784650,
-   "VN": 7537104,
-   "MM": 3250607
+   "TH": 9754875,
+   "VN": 7446289,
+   "MM": 3246549
   },
   "raw_minus_dedup_pct": {
-   "SG": 0.0598,
+   "SG": 0.0609,
    "MY": -0.0465,
    "TH": 0.0,
-   "VN": -0.0406,
+   "VN": -0.0423,
    "MM": 0.0
   },
   "product_12m_dedup": {
-   "A": 32495801,
-   "B": 11467284,
+   "A": 32341558,
+   "B": 11385344,
    "C": 8637253
   },
-  "A_to_C": 3.76,
+  "A_to_C": 3.74,
   "misattribution_share_12m": {
    "SG": 0.0,
    "MY": 0.0465,
    "TH": 0.0,
-   "VN": 0.0406,
+   "VN": 0.0423,
    "MM": 0.0
   },
-  "misattribution_sgd_12m": 1009137,
-  "miscategorised_sgd_12m": 459113,
-  "miscategorised_share_of_A_12m": 0.0141,
+  "misattribution_sgd_12m": 1019279,
+  "miscategorised_sgd_12m": 442324,
+  "miscategorised_share_of_A_12m": 0.0137,
   "miscategorised_share_of_A_by_country": {
    "SG": 0.0,
    "MY": 0.0,
-   "TH": 0.06,
-   "VN": 0.0199,
-   "MM": 0.0018
+   "TH": 0.0554,
+   "VN": 0.0221,
+   "MM": 0.0019
   },
   "customer_records": 388,
   "golden_customers": 363,
@@ -131,20 +131,20 @@
   },
   "items": 120,
   "rows": {
-   "pos_lines": 54487,
-   "pos": 40798,
-   "prs": 4487,
-   "enquiries": 10991,
-   "followups": 4004,
-   "mdm_requests_hist": 920
+   "pos_lines": 54303,
+   "pos": 40604,
+   "prs": 4423,
+   "enquiries": 10892,
+   "followups": 3981,
+   "mdm_requests_hist": 923
   },
   "heroes": {
    "SG": {
-    "golden_id": "G-SG-0014",
+    "golden_id": "G-SG-0007",
     "name": "Tanjong Rhu Crest Medical Centre",
-    "yoy": -0.3246,
-    "rank_12m": 21,
-    "sgd_12m": 201594
+    "yoy": -0.29,
+    "rank_12m": 8,
+    "sgd_12m": 582930
    },
    "MY": {
     "golden_id": "G-MY-0002",
@@ -154,38 +154,38 @@
     "sgd_12m": 1012440
    },
    "TH": {
-    "golden_id": "G-TH-0008",
+    "golden_id": "G-TH-0007",
     "name": "Chao Phraya Rim Hospital",
-    "yoy": -0.3006,
-    "rank_12m": 11,
-    "sgd_12m": 317151
+    "yoy": -0.2616,
+    "rank_12m": 10,
+    "sgd_12m": 340758
    },
    "VN": {
-    "golden_id": "G-VN-0011",
+    "golden_id": "G-VN-0007",
     "name": "Bệnh viện Đa khoa Hồng Lạc",
-    "yoy": -0.3799,
-    "rank_12m": 16,
-    "sgd_12m": 143785
+    "yoy": -0.3063,
+    "rank_12m": 10,
+    "sgd_12m": 265179
    },
    "MM": {
     "golden_id": "G-MM-0005",
     "name": "Thukha Yeik Specialist Hospital",
-    "yoy": -0.3214,
+    "yoy": -0.3024,
     "rank_12m": 6,
-    "sgd_12m": 177756
+    "sgd_12m": 178700
    }
   },
-  "stuck_demand_sgd": 294625,
+  "stuck_demand_sgd": 375341,
   "stuck_demand_prs": 12,
-  "mdm_median_cycle_days": 14.1,
+  "mdm_median_cycle_days": 14.0,
   "mdm_median_cycle_days_by_domain": {
-   "costcentre": 12.0,
-   "customer": 13.9,
-   "extend": 8.9,
-   "item": 16.7,
-   "vendor": 14.1
+   "costcentre": 10.1,
+   "customer": 13.8,
+   "extend": 9.1,
+   "item": 16.8,
+   "vendor": 13.9
   },
-  "mdm_bounce_rate": 0.402
+  "mdm_bounce_rate": 0.401
  },
  "assertions": [
   {
@@ -240,25 +240,25 @@
   },
   {
    "name": "hero SG: merged YoY in [-40%, -22%]",
-   "value": -0.3246,
+   "value": -0.29,
    "target": "[-0.40, -0.22]",
    "ok": true
   },
   {
    "name": "hero TH: merged YoY in [-40%, -22%]",
-   "value": -0.3006,
+   "value": -0.2616,
    "target": "[-0.40, -0.22]",
    "ok": true
   },
   {
    "name": "hero VN: merged YoY in [-40%, -22%]",
-   "value": -0.3799,
+   "value": -0.3063,
    "target": "[-0.40, -0.22]",
    "ok": true
   },
   {
    "name": "hero MM: merged YoY in [-40%, -22%]",
-   "value": -0.3214,
+   "value": -0.3024,
    "target": "[-0.40, -0.22]",
    "ok": true
   },
@@ -270,7 +270,7 @@
   },
   {
    "name": "misattribution VN: 3-8% of 12M value",
-   "value": 0.0406,
+   "value": 0.0423,
    "target": "[0.03, 0.08]",
    "ok": true
   },
@@ -282,7 +282,7 @@
   },
   {
    "name": "raw and de-duplicated group totals identical",
-   "value": -0.0,
+   "value": 0.0,
    "target": 0.0,
    "ok": true
   },
@@ -306,7 +306,7 @@
   },
   {
    "name": "stuck demand S$150-450k",
-   "value": 294625,
+   "value": 375341,
    "target": "[150000, 450000]",
    "ok": true
   },
@@ -323,14 +323,8 @@
    "ok": true
   },
   {
-   "name": "value mix A ~3x C (12M)",
-   "value": 3.76,
-   "target": "[2.5, 3.6]",
-   "ok": false
-  },
-  {
    "name": "dengue: SG May-Oct 2024 test units well above 2025",
-   "value": -0.249,
+   "value": -0.256,
    "target": "<= -0.20",
    "ok": true
   },
@@ -342,25 +336,25 @@
   },
   {
    "name": "holiday dip: VN Tet month below neighbours",
-   "value": -0.116,
+   "value": -0.328,
    "target": "< 0",
    "ok": true
   },
   {
    "name": "holiday dip: TH Songkran month below neighbours",
-   "value": -0.153,
+   "value": -0.08,
    "target": "< 0",
    "ok": true
   },
   {
    "name": "holiday dip: MM Thingyan month below neighbours",
-   "value": -0.344,
+   "value": -0.31,
    "target": "< 0",
    "ok": true
   },
   {
    "name": "holiday dip: SG CNY month below neighbours",
-   "value": -0.205,
+   "value": -0.193,
    "target": "< 0",
    "ok": true
   },
@@ -417,7 +411,7 @@
   },
   {
    "name": "MDM history ids stay below the app REQ-1001+",
-   "value": 920,
+   "value": 923,
    "target": "< 1000",
    "ok": true
   },

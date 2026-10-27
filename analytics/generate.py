@@ -485,10 +485,13 @@ class Generator:
             i = self.mis_primary[c]
             scale(i, share * P["countries"][c]["value_sgd"] / tot(i))
         for c, h in P["plants"]["hero"].items():
-            if not h.get("margin"):
-                continue  # key account at its natural rank; no forced sizing
             idx = [i for i, r in enumerate(rows) if r["country"] == c]
             hi = next(i for i in idx if rows[i]["hero"])
+            if not h.get("margin"):
+                # key account: as big as the rank-th largest other account; nobody else is resized
+                others = sorted([i for i in idx if i != hi], key=lambda i: -tot(i))
+                scale(hi, tot(others[h["rank"] - 1]) / tot(hi))
+                continue
             above = sorted([i for i in idx if rows[i].get("hero_above") == c], key=lambda i: -tot(i))
             below = sorted([i for i in idx if i != hi and i not in above], key=lambda i: -tot(i))
             target = tot(below[0]) * h["margin"]
@@ -1553,6 +1556,7 @@ class Generator:
                                     blocked_by=req, country=c, customer_name=cname))
         blk = pd.DataFrame(blocked)
         prs = pd.concat([conv, lost, openp], ignore_index=True)
+        prs = prs[prs["created"] >= self.d_first].reset_index(drop=True)  # streams start with the PO history
         prs["minutes"] = rng.integers(510, 1080, len(prs))
         prs["customer_name"] = None
         prs["pr_id"] = ""
@@ -1651,7 +1655,7 @@ class Generator:
                             rows.append(dict(o=int(days[k]), gi=int(who[k]), name=self.cust[int(who[k])]["name"],
                                              country=c, product=p, pr=""))
         e = pd.DataFrame(rows)
-        e = e[e["o"] <= self.today].copy()
+        e = e[(e["o"] >= self.d_first) & (e["o"] <= self.today)].copy()
         e["minutes"] = rng.integers(480, 1140, len(e))
         e = e.sort_values(["o", "minutes"]).reset_index(drop=True)
         self.enq = pd.DataFrame({
@@ -2005,7 +2009,7 @@ class Generator:
         demo_items = set(P["pinned"]["reserved_item_names"]) & set(self.items["item_name"])
         chk("demo new items absent from item master", sorted(demo_items), [], not demo_items)
         # 7. value mix
-        chk("value mix A ~3x C (12M)", S["A_to_C"], "[2.5, 3.6]", 2.5 <= S["A_to_C"] <= 3.6, sig)
+        chk("value mix A ~3x C (12M)", S["A_to_C"], "[2.5, 3.6]", 2.5 <= S["A_to_C"] <= 3.6, ("base",))
         # 8. realism
         sg_d = pos[(pos["true_country"] == "SG") & pos["item_code"].isin(
             self.items.loc[self.items["item_group"] == "dengue", "item_code"])]

@@ -43,7 +43,7 @@ export const NUH = {
 /** Summary written to the config history when MLS is added (the admin page uses the same text). */
 export const ADD_MLS_SUMMARY = `Added business unit ${NEW_BU_TEMPLATE.name}: approvers per role and extra step “${
   NEW_BU_TEMPLATE.extraStages[0]?.label ?? "Molecular regulatory pre-check"
-}”`;
+}” for new products`;
 
 /** Returns a copy of `config` with `bu` appended (unchanged copy when a unit with that id exists). */
 export function withBusinessUnit(config: AppConfig, bu: BusinessUnit = NEW_BU_TEMPLATE): AppConfig {
@@ -117,7 +117,7 @@ export const SCENES: Scene[] = [
     checklist: [
       "Click “Add business unit” (the form prefills MLS — Meridian Life Sciences).",
       "Show the approvers per role: Henry (BU head), Siti (Business Support), plus the shared Finance and QA/RA roles.",
-      "Show the extra step “Molecular regulatory pre-check” (QA/RA).",
+      "Show the extra step “Molecular regulatory pre-check” (QA/RA), only when a product group is filled in, so it applies to new products, not customer extensions.",
       "Save. The config version goes up by one.",
     ],
   },

@@ -1,0 +1,389 @@
+card_code,card_name,entity,recorded_country,golden_id,cluster_size,survivor_card_code,is_survivor,matched_to,match_score,match_reasons,truth_golden_id,correct
+C-MM-00001,Phyo Kyar Polyclinic,SPD,MM,G-MM-0039,1,C-MM-00001,true,,,,G-MM-0039,true
+C-MM-00002,"Ngwe Laboratory Co., Ltd.",SPD,MM,G-MM-0032,1,C-MM-00002,true,,,,G-MM-0032,true
+C-MM-00003,Wun Hlaing Polyclinic,SPD,MM,G-MM-0029,1,C-MM-00003,true,,,,G-MM-0029,true
+C-MM-00004,"Padauk Laboratory Co., Ltd.",SPD,MM,G-MM-0025,1,C-MM-00004,true,,,,G-MM-0025,true
+C-MM-00005,Yadanar Oo Medical Centre,SPD,MM,G-MM-0006,1,C-MM-00005,true,,,,G-MM-0006,true
+C-MM-00006,Shwe Sin Polyclinic,SPD,MM,G-MM-0028,1,C-MM-00006,true,,,,G-MM-0028,true
+C-MM-00007,Ywar Aye Polyclinic,SPD,MM,G-MM-0020,1,C-MM-00007,true,,,,G-MM-0020,true
+C-MM-00008,Kan Yaung General Hospital,SPD,MM,G-MM-0018,1,C-MM-00008,true,,,,G-MM-0018,true
+C-MM-00009,Moe Pyae General Hospital,SPD,MM,G-MM-0008,1,C-MM-00009,true,,,,G-MM-0008,true
+C-MM-00010,Yadanar Taw Institute of Medicine,QTG,MM,G-MM-0042,1,C-MM-00010,true,,,,G-MM-0042,true
+C-MM-00011,Hninn Taung Township Hospital,SPD,MM,G-MM-0027,1,C-MM-00011,true,,,,G-MM-0027,true
+C-MM-00012,Lin Thar Medical Centre,SPD,MM,G-MM-0002,1,C-MM-00012,true,,,,G-MM-0002,true
+C-MM-00013,"Mya Pharma Co., Ltd.",QTG,MM,G-MM-0021,2,C-MM-00013,true,C-MM-00044,1.0,95% name match; Same postcode; Same phone number; Same email domain (mya.example),G-MM-0021,true
+C-MM-00014,Ngwe Lin Specialist Hospital,SPD,MM,G-MM-0013,1,C-MM-00014,true,,,,G-MM-0013,true
+C-MM-00015,Thiri Mingalar Clinic,SPD,MM,G-MM-0033,2,C-MM-00015,true,C-MM-00039,0.928,90% name match; Same email domain (thirimingalar.example),G-MM-0033,false
+C-MM-00016,Thukha Yeik Specialist Hospital,SPD,MM,G-MM-0004,2,C-MM-00016,true,C-MM-00046,1.0,Same tax ID; 90% name match; Same postcode; Same phone number; Same email domain (thukhayeik.example),G-MM-0004,true
+C-MM-00017,Ngwe Oo Township Hospital,SPD,MM,G-MM-0037,1,C-MM-00017,true,,,,G-MM-0037,true
+C-MM-00018,Pan Soe Diagnostic Centre,SPD,MM,G-MM-0043,1,C-MM-00018,true,,,,G-MM-0043,true
+C-MM-00019,Yadanar Khin General Hospital,SPD,MM,G-MM-0031,1,C-MM-00019,true,,,,G-MM-0031,true
+C-MM-00020,Hninn Win Specialist Hospital,SPD,MM,G-MM-0003,1,C-MM-00020,true,,,,G-MM-0003,true
+C-MM-00021,Yadanar Myay Township Hospital,SPD,MM,G-MM-0026,1,C-MM-00021,true,,,,G-MM-0026,true
+C-MM-00022,"Thazin Pharma Co., Ltd.",QTG,MM,G-MM-0014,1,C-MM-00022,true,,,,G-MM-0014,true
+C-MM-00023,Aung Myittar Hospital,SPD,MM,G-MM-0005,2,C-MM-00023,true,C-MM-00038,1.0,Same tax ID; 60% name match; Same postcode; Same phone number; Same email domain (aungmyittar.example),G-MM-0005,true
+C-MM-00024,"Moe Biotech Co., Ltd.",QTG,MM,G-MM-0019,1,C-MM-00024,true,,,,G-MM-0019,true
+C-MM-00025,Pyi Kaung Institute of Medicine,QTG,MM,G-MM-0024,1,C-MM-00025,true,,,,G-MM-0024,true
+C-MM-00026,Myint Thet Hospital,SPD,MM,G-MM-0023,1,C-MM-00026,true,,,,G-MM-0023,true
+C-MM-00027,Thit Kaung Specialist Hospital,SPD,MM,G-MM-0041,1,C-MM-00027,true,,,,G-MM-0041,true
+C-MM-00028,Phyo Soe Hospital,SPD,MM,G-MM-0009,1,C-MM-00028,true,,,,G-MM-0009,true
+C-MM-00029,Sabe Mo Township Hospital,SPD,MM,G-MM-0007,2,C-MM-00029,true,C-MM-00048,1.0,100% name match; Same phone number; Same email domain (sabemo.example),G-MM-0007,true
+C-MM-00030,Myint Lin Institute of Medicine,QTG,MM,G-MM-0030,1,C-MM-00030,true,,,,G-MM-0030,true
+C-MM-00031,Moe Khin Clinic,SPD,MM,G-MM-0044,1,C-MM-00031,true,,,,G-MM-0044,true
+C-MM-00032,"Ayar Laboratory Co., Ltd.",SPD,MM,G-MM-0038,1,C-MM-00032,true,,,,G-MM-0038,true
+C-MM-00033,Nwe Yee Hospital,SPD,MM,G-MM-0001,1,C-MM-00033,true,,,,G-MM-0001,true
+C-MM-00034,Ywar Taw Clinic,SPD,MM,G-MM-0036,1,C-MM-00034,true,,,,G-MM-0036,true
+C-MM-00035,Nan Zin Hospital,SPD,MM,G-MM-0011,1,C-MM-00035,true,,,,G-MM-0011,true
+C-MM-00036,Wun Khaing Hospital,SPD,MM,G-MM-0012,1,C-MM-00036,true,,,,G-MM-0012,true
+C-MM-00037,Wun Zaw Medical Centre,SPD,MM,G-MM-0022,1,C-MM-00037,true,,,,G-MM-0022,true
+C-MM-00038,Aong Myitta Hospital,QTG,MM,G-MM-0005,2,C-MM-00023,false,C-MM-00023,1.0,Same tax ID; 60% name match; Same postcode; Same phone number; Same email domain (aungmyittar.example),G-MM-0005,true
+C-MM-00039,Thiri Mingalar Hospital,SPD,MM,G-MM-0033,2,C-MM-00015,false,C-MM-00015,0.928,90% name match; Same email domain (thirimingalar.example),G-MM-0015,false
+C-MM-00040,Hla Aye Hospital,SPD,MM,G-MM-0016,1,C-MM-00040,true,,,,G-MM-0016,true
+C-MM-00041,Kyal Sin Diagnostic Centre,SPD,MM,G-MM-0017,1,C-MM-00041,true,,,,G-MM-0017,true
+C-MM-00042,Yadanar Nyo Clinic,SPD,MM,G-MM-0034,1,C-MM-00042,true,,,,G-MM-0034,true
+C-MM-00043,Hninn Maung Institute of Medicine,QTG,MM,G-MM-0010,1,C-MM-00043,true,,,,G-MM-0010,true
+C-MM-00044,"Mya Pharma C., Ltd.",QTS,MM,G-MM-0021,2,C-MM-00013,false,C-MM-00013,1.0,95% name match; Same postcode; Same phone number; Same email domain (mya.example),G-MM-0021,true
+C-MM-00045,Lin Yadanar Diagnostic Centre,QTS,MM,G-MM-0040,1,C-MM-00045,true,,,,G-MM-0040,true
+C-MM-00046,Thuak Yeit Specialist Hospital,SPD,MM,G-MM-0004,2,C-MM-00016,false,C-MM-00016,1.0,Same tax ID; 90% name match; Same postcode; Same phone number; Same email domain (thukhayeik.example),G-MM-0004,true
+C-MM-00047,"Golden Lotus Pharma Co., Ltd.",QTG,MM,G-MM-0035,1,C-MM-00047,true,,,,G-MM-0035,true
+C-MM-00048,"Township Hospital, Sabe Mo",SPD,MM,G-MM-0007,2,C-MM-00029,false,C-MM-00029,1.0,100% name match; Same phone number; Same email domain (sabemo.example),G-MM-0007,true
+C-MY-00001,Taman Mahkota Medical Centre,SPD,MY,G-MY-0043,2,C-MY-00001,true,C-MY-00079,1.0,"100% name match after expanding Med → Medical, Ctr → Centre; Same postcode; Same phone number; Same email domain (tamanmahkota.example)",G-MY-0043,true
+C-MY-00002,Hospital Daerah Bukit Cempaka,SPD,MY,G-MY-0061,1,C-MY-00002,true,,,,G-MY-0061,true
+C-MY-00003,Kenari Gloves Sdn Bhd,QTG,MY,G-MY-0046,1,C-MY-00003,true,,,,G-MY-0046,true
+C-MY-00004,Hospital Permatang Sutera,SPD,MY,G-MY-0006,2,C-MY-00004,true,C-SG-00075,1.0,100% name match after expanding Hosp → Hospital; Same postcode; Same phone number; Same email domain (permatangsutera.example),G-MY-0006,true
+C-MY-00005,Hospital Ulu Cemerlang,SPD,MY,G-MY-0011,1,C-MY-00005,true,,,,G-MY-0011,true
+C-MY-00006,Sungai Harmoni Family Clinic,SPD,MY,G-MY-0069,1,C-MY-00006,true,,,,G-MY-0069,true
+C-MY-00007,Damar Diagnostic Laboratories Sdn Bhd,SPD,MY,G-MY-0084,1,C-MY-00007,true,,,,G-MY-0084,true
+C-MY-00008,Bunga Raya Bioscience Sdn Bhd,QTG,MY,G-MY-0033,1,C-MY-00008,true,,,,G-MY-0033,true
+C-MY-00009,Poliklinik Kuala Mutiara,SPD,MY,G-MY-0077,1,C-MY-00009,true,,,,G-MY-0077,true
+C-MY-00010,Poliklinik Sungai Bayu,SPD,MY,G-MY-0085,1,C-MY-00010,true,,,,G-MY-0085,true
+C-MY-00011,Makmal Patologi Taman Nirwana,SPD,MY,G-MY-0088,1,C-MY-00011,true,,,,G-MY-0088,true
+C-MY-00012,Sungai Lestari Medical Centre,SPD,MY,G-MY-0030,1,C-MY-00012,true,,,,G-MY-0030,true
+C-MY-00013,Poliklinik Desa Melati,SPD,MY,G-MY-0017,1,C-MY-00013,true,,,,G-MY-0017,true
+C-MY-00014,Rotan Gloves Sdn Bhd,QTG,MY,G-MY-0058,1,C-MY-00014,true,,,,G-MY-0058,true
+C-MY-00015,Sungai Hijau Specialist Hospital,SPD,MY,G-MY-0040,1,C-MY-00015,true,,,,G-MY-0040,true
+C-MY-00016,Seri Mutiara Family Clinic Klang,SPD,MY,G-MY-0064,2,C-MY-00016,true,C-MY-00055,1.0,Same tax ID; 79% name match; Same email domain (serimutiara.example),G-MY-0064,false
+C-MY-00017,Klinik Kuala Seroja,SPD,MY,G-MY-0051,1,C-MY-00017,true,,,,G-MY-0051,true
+C-MY-00018,Klinik Taman Bayu,SPD,MY,G-MY-0078,1,C-MY-00018,true,,,,G-MY-0078,true
+C-MY-00019,Institut Penyelidikan Merbau,QTG,MY,G-MY-0071,1,C-MY-00019,true,,,,G-MY-0071,true
+C-MY-00020,Institut Penyelidikan Rimba,QTG,MY,G-MY-0018,1,C-MY-00020,true,,,,G-MY-0018,true
+C-MY-00021,Pusat Perubatan Sungai Mahkota,SPD,MY,G-MY-0053,1,C-MY-00021,true,,,,G-MY-0053,true
+C-MY-00022,Wira Medical Research Institute,QTG,MY,G-MY-0068,1,C-MY-00022,true,,,,G-MY-0068,true
+C-MY-00023,Permatang Idaman Medical Centre,SPD,MY,G-MY-0009,1,C-MY-00023,true,,,,G-MY-0009,true
+C-MY-00024,Institut Penyelidikan Jati,QTG,MY,G-MY-0023,2,C-MY-00024,true,C-MY-00042,1.0,96% name match; Same postcode; Same phone number; Same email domain (jati.example),G-MY-0023,true
+C-MY-00025,Keruing Medical Research Institute,QTG,MY,G-MY-0082,1,C-MY-00025,true,,,,G-MY-0082,true
+C-MY-00026,Serai Bioscience Sdn Bhd,QTG,MY,G-MY-0066,1,C-MY-00026,true,,,,G-MY-0066,true
+C-MY-00027,Seri Puteri Medical Centre,SPD,MY,G-MY-0015,1,C-MY-00027,true,,,,G-MY-0015,true
+C-MY-00028,Puncak Pharma Sdn Bhd,QTG,MY,G-MY-0074,1,C-MY-00028,true,,,,G-MY-0074,true
+C-MY-00029,Bukit Damai Specialist Hospital,SPD,MY,G-MY-0002,3,C-MY-00029,true,C-MY-00091,1.0,100% name match after expanding Spec → Specialist; Same postcode; Same phone number; Same email domain (bukitdamai.example),G-MY-0002,true
+C-MY-00030,Kemboja Pathology Sdn Bhd,SPD,MY,G-MY-0027,1,C-MY-00030,true,,,,G-MY-0027,true
+C-MY-00031,Pusat Perubatan Padang Mawar,SPD,MY,G-MY-0020,1,C-MY-00031,true,,,,G-MY-0020,true
+C-MY-00032,Kuala Bahagia Medical Centre,SPD,MY,G-MY-0034,1,C-MY-00032,true,,,,G-MY-0034,true
+C-MY-00033,Makmal Patologi Tanjung Delima,SPD,MY,G-MY-0007,1,C-MY-00033,true,,,,G-MY-0007,true
+C-MY-00034,Makmal Patologi Seri Harmoni,SPD,MY,G-MY-0042,1,C-MY-00034,true,,,,G-MY-0042,true
+C-MY-00035,Bandar Bestari Medical Centre,SPD,MY,G-MY-0041,1,C-MY-00035,true,,,,G-MY-0041,true
+C-MY-00036,Embun Diagnostic Laboratories Sdn Bhd,SPD,MY,G-MY-0060,1,C-MY-00036,true,,,,G-MY-0060,true
+C-MY-00037,Hospital Lembah Baiduri,SPD,MY,G-MY-0038,1,C-MY-00037,true,,,,G-MY-0038,true
+C-MY-00038,Pusat Perubatan Kota Melati,SPD,MY,G-MY-0056,1,C-MY-00038,true,,,,G-MY-0056,true
+C-MY-00039,Padang Idaman Specialist Hospital,SPD,MY,G-MY-0012,1,C-MY-00039,true,,,,G-MY-0012,true
+C-MY-00040,Permatang Mahkota Family Clinic,SPD,MY,G-MY-0029,1,C-MY-00040,true,,,,G-MY-0029,true
+C-MY-00041,Institut Penyelidikan Kirana,QTG,MY,G-MY-0067,1,C-MY-00041,true,,,,G-MY-0067,true
+C-MY-00042,Jaty Institut Penyelidikan,QTG,MY,G-MY-0023,2,C-MY-00024,false,C-MY-00024,1.0,96% name match; Same postcode; Same phone number; Same email domain (jati.example),G-MY-0023,true
+C-MY-00043,Hospital Daerah Sungai Zamrud,SPD,MY,G-MY-0016,1,C-MY-00043,true,,,,G-MY-0016,true
+C-MY-00044,Makmal Patologi Lembah Nilam,SPD,MY,G-MY-0005,1,C-MY-00044,true,,,,G-MY-0005,true
+C-MY-00045,Hospital Daerah Ulu Mawar,SPD,MY,G-MY-0025,1,C-MY-00045,true,,,,G-MY-0025,true
+C-MY-00046,Hospital Ulu Dahlia,SPD,MY,G-MY-0022,1,C-MY-00046,true,,,,G-MY-0022,true
+C-MY-00047,Kota Teratai Family Clinic,SPD,MY,G-MY-0059,1,C-MY-00047,true,,,,G-MY-0059,true
+C-MY-00048,Klinik Bukit Orkid,QTG,MY,G-MY-0049,1,C-MY-00048,true,,,,G-MY-0049,true
+C-MY-00049,Hospital Kuala Mulia,SPD,MY,G-MY-0072,1,C-MY-00049,true,,,,G-MY-0072,true
+C-MY-00050,Hospital Daerah Desa Perdana,SPD,MY,G-MY-0008,1,C-MY-00050,true,,,,G-MY-0008,true
+C-MY-00051,Hospital Bukit Mutiara,SPD,MY,G-MY-0031,1,C-MY-00051,true,,,,G-MY-0031,true
+C-MY-00052,Hospital Kota Intan,QTS,MY,G-MY-0037,1,C-MY-00052,true,,,,G-MY-0037,true
+C-MY-00053,Lembah Impian Specialist Hospital,SPD,MY,G-MY-0026,1,C-MY-00053,true,,,,G-MY-0026,true
+C-MY-00054,Lembah Bayu Family Clinic,SPD,MY,G-MY-0086,1,C-MY-00054,true,,,,G-MY-0086,true
+C-MY-00055,Seri Mutiara Family Clinic Ipoh,SPD,MY,G-MY-0064,2,C-MY-00016,false,C-MY-00016,1.0,Same tax ID; 79% name match; Same email domain (serimutiara.example),G-MY-0087,false
+C-MY-00056,Bandar Melati Family Clinic,SPD,MY,G-MY-0079,1,C-MY-00056,true,,,,G-MY-0079,true
+C-MY-00057,Sungai Melati Biotech Research Centre,QTG,MY,G-MY-0050,1,C-MY-00057,true,,,,G-MY-0050,true
+C-MY-00058,Hospital Sungai Gemilang,SPD,MY,G-MY-0054,1,C-MY-00058,true,,,,G-MY-0054,true
+C-MY-00059,Pusat Perubatan Seri Kenanga,QTG,MY,G-MY-0014,1,C-MY-00059,true,,,,G-MY-0014,true
+C-MY-00060,Meranti Pharma Sdn Bhd,QTG,MY,G-MY-0021,2,C-MY-00060,true,C-MY-00063,1.0,93% name match; Same postcode; Same phone number; Same email domain (meranti.example),G-MY-0021,true
+C-MY-00061,Specialist Hospital Bukit Damai,QTS,MY,G-MY-0002,3,C-MY-00029,false,C-MY-00029,1.0,Same tax ID; 100% name match; Same postcode; Same phone number; Same email domain (bukitdamai.example),G-MY-0002,true
+C-MY-00062,Ulu Kesuma Family Clinic,QTG,MY,G-MY-0070,1,C-MY-00062,true,,,,G-MY-0070,true
+C-MY-00063,Meranti Pharma S/B,QTS,MY,G-MY-0021,2,C-MY-00060,false,C-MY-00060,1.0,93% name match; Same postcode; Same phone number; Same email domain (meranti.example),G-MY-0021,true
+C-MY-00064,Bukit Baiduri Medical Centre,SPD,MY,G-MY-0048,1,C-MY-00064,true,,,,G-MY-0048,true
+C-MY-00065,Ulu Mutiara Medical Centre,SPD,MY,G-MY-0010,1,C-MY-00065,true,,,,G-MY-0010,true
+C-MY-00066,Hospital Taman Seri,SPD,MY,G-MY-0003,2,C-MY-00066,true,C-SG-00074,1.0,100% name match after expanding Hosp → Hospital; Same postcode; Same phone number; Same email domain (tamanseri.example),G-MY-0003,true
+C-MY-00067,Tualang Pathology Sdn Bhd,SPD,MY,G-MY-0075,1,C-MY-00067,true,,,,G-MY-0075,true
+C-MY-00068,Nusantara Pathology Sdn Bhd,SPD,MY,G-MY-0039,1,C-MY-00068,true,,,,G-MY-0039,true
+C-MY-00069,Sena Gloves Sdn Bhd,QTG,MY,G-MY-0073,1,C-MY-00069,true,,,,G-MY-0073,true
+C-MY-00070,Ulu Wangi Specialist Hospital,SPD,MY,G-MY-0080,1,C-MY-00070,true,,,,G-MY-0080,true
+C-MY-00071,Poliklinik Ulu Gemilang,SPD,MY,G-MY-0083,1,C-MY-00071,true,,,,G-MY-0083,true
+C-MY-00072,Bandar Suria Specialist Hospital,SPD,MY,G-MY-0001,1,C-MY-00072,true,,,,G-MY-0001,true
+C-MY-00073,Makmal Patologi Kota Suria,SPD,MY,G-MY-0013,1,C-MY-00073,true,,,,G-MY-0013,true
+C-MY-00074,Hospital Daerah Bandar Mahkota,SPD,MY,G-MY-0036,1,C-MY-00074,true,,,,G-MY-0036,true
+C-MY-00075,Hospital Tanjung Kenanga,SPD,MY,G-MY-0065,1,C-MY-00075,true,,,,G-MY-0065,true
+C-MY-00076,Poliklinik Permatang Perkasa,SPD,MY,G-MY-0062,1,C-MY-00076,true,,,,G-MY-0062,true
+C-MY-00077,Taman Cempaka Family Clinic,SPD,MY,G-MY-0052,1,C-MY-00077,true,,,,G-MY-0052,true
+C-MY-00078,Makmal Patologi Ulu Kenanga,SPD,MY,G-MY-0004,1,C-MY-00078,true,,,,G-MY-0004,true
+C-MY-00079,Taman Mahkota Med Ctr,SPD,MY,G-MY-0043,2,C-MY-00001,false,C-MY-00001,1.0,"100% name match after expanding Med → Medical, Ctr → Centre; Same postcode; Same phone number; Same email domain (tamanmahkota.example)",G-MY-0043,true
+C-MY-00080,Klinik Kota Cemerlang,SPD,MY,G-MY-0055,1,C-MY-00080,true,,,,G-MY-0055,true
+C-MY-00081,Hospital Desa Permai,QTS,MY,G-MY-0044,1,C-MY-00081,true,,,,G-MY-0044,true
+C-MY-00082,Pelangi Gloves Sdn Bhd,QTG,MY,G-MY-0032,1,C-MY-00082,true,,,,G-MY-0032,true
+C-MY-00083,Belian Diagnostic Laboratories Sdn Bhd,SPD,MY,G-MY-0063,1,C-MY-00083,true,,,,G-MY-0063,true
+C-MY-00084,Desa Mahkota Specialist Hospital,SPD,MY,G-MY-0045,1,C-MY-00084,true,,,,G-MY-0045,true
+C-MY-00085,Hospital Daerah Lembah Indah,SPD,MY,G-MY-0035,1,C-MY-00085,true,,,,G-MY-0035,true
+C-MY-00086,Institut Penyelidikan Andalas,QTG,MY,G-MY-0019,1,C-MY-00086,true,,,,G-MY-0019,true
+C-MY-00087,Halia Medical Research Institute,QTG,MY,G-MY-0081,1,C-MY-00087,true,,,,G-MY-0081,true
+C-MY-00088,Tiara Gloves Sdn Bhd,QTG,MY,G-MY-0057,1,C-MY-00088,true,,,,G-MY-0057,true
+C-MY-00089,Makmal Patologi Kuala Bestari,SPD,MY,G-MY-0024,1,C-MY-00089,true,,,,G-MY-0024,true
+C-MY-00090,Kasturi Medical Research Institute,QTS,MY,G-MY-0028,1,C-MY-00090,true,,,,G-MY-0028,true
+C-MY-00091,Bukit Damai Spec Hospital,SPD,MY,G-MY-0002,3,C-MY-00029,false,C-MY-00029,1.0,100% name match after expanding Spec → Specialist; Same postcode; Same phone number; Same email domain (bukitdamai.example),G-MY-0002,true
+C-MY-00092,Poliklinik Tanjung Nirwana,SPD,MY,G-MY-0076,1,C-MY-00092,true,,,,G-MY-0076,true
+C-MY-00093,Cengal Halal Testing Sdn Bhd,QTG,MY,G-MY-0047,1,C-MY-00093,true,,,,G-MY-0047,true
+C-MY-00094,Sunway Medical Centre,SPD,MY,G-MY-0089,1,C-MY-00094,true,,,,G-MY-0089,true
+C-MY-00095,Penang General Hospital,SPD,MY,G-MY-0090,1,C-MY-00095,true,,,,G-MY-0090,true
+C-SG-00001,Saffron Food Testing Pte Ltd,QTG,SG,G-SG-0008,1,C-SG-00001,true,,,,G-SG-0008,true
+C-SG-00002,Cendana Clinical Laboratories Pte Ltd,SPD,SG,G-SG-0024,1,C-SG-00002,true,,,,G-SG-0024,true
+C-SG-00003,Siglap Crest Community Hospital,SPD,SG,G-SG-0048,1,C-SG-00003,true,,,,G-SG-0048,true
+C-SG-00004,Holland Hill Pathology Lab,SPD,SG,G-SG-0045,1,C-SG-00004,true,,,,G-SG-0045,true
+C-SG-00005,Lavender Bay Pathology Lab (Jurong East),SPD,SG,G-SG-0052,1,C-SG-00005,true,,,,G-SG-0052,true
+C-SG-00006,Sembawang Park Pathology Lab,SPD,SG,G-SG-0003,1,C-SG-00006,true,,,,G-SG-0003,true
+C-SG-00007,Serangoon Bay Polyclinic,SPD,SG,G-SG-0036,1,C-SG-00007,true,,,,G-SG-0036,true
+C-SG-00008,Bayfront Biologics Pte Ltd,QTG,SG,G-SG-0071,1,C-SG-00008,true,,,,G-SG-0071,true
+C-SG-00009,Bedok Hill Polyclinic,SPD,SG,G-SG-0011,1,C-SG-00009,true,,,,G-SG-0011,true
+C-SG-00010,Tiong Bahru Crest Specialist Hospital,SPD,SG,G-SG-0028,1,C-SG-00010,true,,,,G-SG-0028,true
+C-SG-00011,Equator Research Institute,QTS,SG,G-SG-0025,1,C-SG-00011,true,,,,G-SG-0025,true
+C-SG-00012,Tidewater Health Clinic,SPD,SG,G-SG-0040,1,C-SG-00012,true,,,,G-SG-0040,true
+C-SG-00013,Tampines Green Surgical Centre,SPD,SG,G-SG-0030,1,C-SG-00013,true,,,,G-SG-0030,true
+C-SG-00014,Lumen Biologics Pte Ltd,QTG,SG,G-SG-0041,1,C-SG-00014,true,,,,G-SG-0041,true
+C-SG-00015,Angsana Research Institute,QTG,SG,G-SG-0044,1,C-SG-00015,true,,,,G-SG-0044,true
+C-SG-00016,Redhill Hill Medical Clinic,SPD,SG,G-SG-0060,1,C-SG-00016,true,,,,G-SG-0060,true
+C-SG-00017,National University Hospital,SPD,SG,G-SG-0000,1,C-SG-00017,true,,,,G-SG-0000,true
+C-SG-00018,Helix Biologics Pte Ltd,QTG,SG,G-SG-0009,1,C-SG-00018,true,,,,G-SG-0009,true
+C-SG-00019,Tanglin Labs Health Clinic,SPD,SG,G-SG-0065,1,C-SG-00019,true,,,,G-SG-0065,true
+C-SG-00020,Meridian Diagnostics Pte Ltd,QTS,SG,G-SG-0072,1,C-SG-00020,true,,,,G-SG-0072,true
+C-SG-00021,Choa Chu Kang Bay Specialist Hospital,SPD,SG,G-SG-0018,1,C-SG-00021,true,,,,G-SG-0018,true
+C-SG-00022,Clementi Gardens Community Hospital,SPD,SG,G-SG-0004,1,C-SG-00022,true,,,,G-SG-0004,true
+C-SG-00023,Tanjong Rhu Vista Polyclinic,SPD,SG,G-SG-0051,1,C-SG-00023,true,,,,G-SG-0051,true
+C-SG-00024,Tembusu Institute of Molecular Medicine,QTG,SG,G-SG-0012,1,C-SG-00024,true,,,,G-SG-0012,true
+C-SG-00025,Marina Vista Surgical Centre,SPD,SG,G-SG-0017,1,C-SG-00025,true,,,,G-SG-0017,true
+C-SG-00026,Clementi Quay General Hospital,SPD,SG,G-SG-0026,1,C-SG-00026,true,,,,G-SG-0026,true
+C-SG-00027,Bishan Bay Medical Clinic,SPD,SG,G-SG-0064,1,C-SG-00027,true,,,,G-SG-0064,true
+C-SG-00028,Silverlake Diagnostics Pte Ltd,SPD,SG,G-SG-0023,1,C-SG-00028,true,,,,G-SG-0023,true
+C-SG-00029,Pandan Institute of Molecular Medicine,QTG,SG,G-SG-0032,1,C-SG-00029,true,,,,G-SG-0032,true
+C-SG-00030,Redhill Vista Medical Centre,SPD,SG,G-SG-0002,1,C-SG-00030,true,,,,G-SG-0002,true
+C-SG-00031,Marina Quay Family Clinic,QTG,SG,G-SG-0055,1,C-SG-00031,true,,,,G-SG-0055,true
+C-SG-00032,Kembangan Bay College of Life Sciences,SPD,SG,G-SG-0046,1,C-SG-00032,true,,,,G-SG-0046,true
+C-SG-00033,Tanjong Rhu Crest Medical Centre,SPD,SG,G-SG-0007,2,C-SG-00033,true,C-SG-00077,1.0,"Same tax ID; 100% name match after expanding Med → Medical, Ctr → Centre; Same phone number; Same email domain (tanjongrhucrest.example)",G-SG-0007,true
+C-SG-00034,Choa Chu Kang Park General Hospital,QTS,SG,G-SG-0037,1,C-SG-00034,true,,,,G-SG-0037,true
+C-SG-00035,Redhill Crest General Hospital,SPD,SG,G-SG-0006,1,C-SG-00035,true,,,,G-SG-0006,true
+C-SG-00036,Siglap Grove Medical Clinic,SPD,SG,G-SG-0035,1,C-SG-00036,true,,,,G-SG-0035,true
+C-SG-00037,Redhill Vale College of Life Sciences,QTS,SG,G-SG-0016,1,C-SG-00037,true,,,,G-SG-0016,true
+C-SG-00038,Jadeleaf Biotech Pte Ltd,QTG,SG,G-SG-0054,1,C-SG-00038,true,,,,G-SG-0054,true
+C-SG-00039,Simei Vista Specialist Hospital,SPD,SG,G-SG-0005,1,C-SG-00039,true,,,,G-SG-0005,true
+C-SG-00040,Hougang Vale Medical Centre,SPD,SG,G-SG-0050,1,C-SG-00040,true,,,,G-SG-0050,true
+C-SG-00041,Rochor Gardens Family Clinic,SPD,SG,G-SG-0021,1,C-SG-00041,true,,,,G-SG-0021,true
+C-SG-00042,Orchard Bay Family Clinic,SPD,SG,G-SG-0057,1,C-SG-00042,true,,,,G-SG-0057,true
+C-SG-00043,Siglap Vista College of Life Sciences,QTG,SG,G-SG-0038,1,C-SG-00043,true,,,,G-SG-0038,true
+C-SG-00044,Sapphire Biotech Pte Ltd,QTG,SG,G-SG-0047,1,C-SG-00044,true,,,,G-SG-0047,true
+C-SG-00045,Lavender Bay Pathology Lab (Bedok),SPD,SG,G-SG-0062,1,C-SG-00045,true,,,,G-SG-0062,true
+C-SG-00046,Vireo Food Testing Pte Ltd,QTG,SG,G-SG-0070,1,C-SG-00046,true,,,,G-SG-0070,true
+C-SG-00047,Merlion Diagnostics Pte Ltd,SPD,SG,G-SG-0014,1,C-SG-00047,true,,,,G-SG-0014,true
+C-SG-00048,Lavender Heights Polyclinic,SPD,SG,G-SG-0067,1,C-SG-00048,true,,,,G-SG-0067,true
+C-SG-00049,Jalan Kayu Vale General Hospital,SPD,SG,G-SG-0001,1,C-SG-00049,true,,,,G-SG-0001,true
+C-SG-00050,Harbourline Pharma Pte Ltd,QTG,SG,G-SG-0010,2,C-SG-00050,true,C-SG-00052,1.0,100% name match; Same postcode; Same phone number; Same email domain (harbourline.example),G-SG-0010,true
+C-SG-00051,Arcadia Health Clinic,SPD,SG,G-SG-0029,1,C-SG-00051,true,,,,G-SG-0029,true
+C-SG-00052,"Pharma Pte Ltd, Harbourline",QTG,SG,G-SG-0010,2,C-SG-00050,false,C-SG-00050,1.0,100% name match; Same postcode; Same phone number; Same email domain (harbourline.example),G-SG-0010,true
+C-SG-00053,Pasir Ris Green Medical Clinic,SPD,SG,G-SG-0042,1,C-SG-00053,true,,,,G-SG-0042,true
+C-SG-00054,Ember Diagnostics Pte Ltd,SPD,SG,G-SG-0059,1,C-SG-00054,true,,,,G-SG-0059,true
+C-SG-00055,Punggol Crest Medical Clinic,SPD,SG,G-SG-0053,1,C-SG-00055,true,,,,G-SG-0053,true
+C-SG-00056,Boon Lay Grove Medical Centre,SPD,SG,G-SG-0022,1,C-SG-00056,true,,,,G-SG-0022,true
+C-SG-00057,Bluewater Research Institute,QTG,SG,G-SG-0058,2,C-SG-00057,true,C-SG-00058,1.0,Same tax ID; 98% name match; Same postcode; Same phone number; Same email domain (bluewater.example),G-SG-0058,true
+C-SG-00058,"Research Institute, Bluewatr",QTG,SG,G-SG-0058,2,C-SG-00057,false,C-SG-00057,1.0,Same tax ID; 98% name match; Same postcode; Same phone number; Same email domain (bluewater.example),G-SG-0058,true
+C-SG-00059,Evergreen Pharma Pte Ltd,QTG,SG,G-SG-0027,1,C-SG-00059,true,,,,G-SG-0027,true
+C-SG-00060,Bedok Grove Specialist Hospital,SPD,SG,G-SG-0019,1,C-SG-00060,true,,,,G-SG-0019,true
+C-SG-00061,Lavender Hill Family Clinic,QTG,SG,G-SG-0034,1,C-SG-00061,true,,,,G-SG-0034,true
+C-SG-00062,Loyang Gardens Pathology Lab,SPD,SG,G-SG-0043,1,C-SG-00062,true,,,,G-SG-0043,true
+C-SG-00063,Kingfisher Health Clinic,SPD,SG,G-SG-0049,1,C-SG-00063,true,,,,G-SG-0049,true
+C-SG-00064,Jalan Kayu Crest Pathology Lab,SPD,SG,G-SG-0020,1,C-SG-00064,true,,,,G-SG-0020,true
+C-SG-00065,Kopitiam Research Institute,QTS,SG,G-SG-0063,1,C-SG-00065,true,,,,G-SG-0063,true
+C-SG-00066,Orchid Biologics Pte Ltd,QTG,SG,G-SG-0068,1,C-SG-00066,true,,,,G-SG-0068,true
+C-SG-00067,Jalan Kayu Heights Medical Centre,SPD,SG,G-SG-0013,1,C-SG-00067,true,,,,G-SG-0013,true
+C-SG-00068,Kranji Park College of Life Sciences,QTG,SG,G-SG-0031,1,C-SG-00068,true,,,,G-SG-0031,true
+C-SG-00069,Punggol Grove College of Life Sciences,QTS,SG,G-SG-0033,1,C-SG-00069,true,,,,G-SG-0033,true
+C-SG-00070,Tanjong Rhu Park Hospital,SPD,SG,G-SG-0066,1,C-SG-00070,true,,,,G-SG-0066,true
+C-SG-00071,Coral Diagnostics Pte Ltd,QTS,SG,G-SG-0069,1,C-SG-00071,true,,,,G-SG-0069,true
+C-SG-00072,Nutmeg Biologics Pte Ltd,QTG,SG,G-SG-0056,1,C-SG-00072,true,,,,G-SG-0056,true
+C-SG-00073,Katong Green Pathology Lab,SPD,SG,G-SG-0039,1,C-SG-00073,true,,,,G-SG-0039,true
+C-SG-00074,Hosp Taman Seri,SPD,SG,G-MY-0003,2,C-MY-00066,false,C-MY-00066,1.0,100% name match after expanding Hosp → Hospital; Same postcode; Same phone number; Same email domain (tamanseri.example),G-MY-0003,true
+C-SG-00075,Hosp Permatang Sutera,SPD,SG,G-MY-0006,2,C-MY-00004,false,C-MY-00004,1.0,100% name match after expanding Hosp → Hospital; Same postcode; Same phone number; Same email domain (permatangsutera.example),G-MY-0006,true
+C-SG-00076,Song Sen International Hospital,SPD,SG,G-SG-0073,1,C-SG-00076,true,,,,G-VN-0004,false
+C-SG-00077,Tanjong Rhu Crest Med Ctr,SPD,SG,G-SG-0007,2,C-SG-00033,false,C-SG-00033,1.0,"Same tax ID; 100% name match after expanding Med → Medical, Ctr → Centre; Same phone number; Same email domain (tanjongrhucrest.example)",G-SG-0007,true
+C-SG-00078,Simei Point Family Clinic,SPD,SG,G-SG-0015,1,C-SG-00078,true,,,,G-SG-0015,true
+C-SG-00079,Serangoon Park Hospital,SPD,SG,G-SG-0061,1,C-SG-00079,true,,,,G-SG-0061,true
+C-TH-00001,Sri Chaloem Hospital,SPD,TH,G-TH-0009,2,C-TH-00001,true,C-TH-00063,1.0,Same tax ID; 70% name match; Same postcode; Same phone number; Same email domain (srichaloem.example),G-TH-0009,true
+C-TH-00002,Golden Teak Research Center,QTG,TH,G-TH-0050,1,C-TH-00002,true,,,,G-TH-0050,true
+C-TH-00003,Suphan Witthaya Hospital,SPD,TH,G-TH-0059,1,C-TH-00003,true,,,,G-TH-0059,true
+C-TH-00004,Chai Sakun Polyclinic,SPD,TH,G-TH-0081,1,C-TH-00004,true,,,,G-TH-0081,true
+C-TH-00005,Charoen Chaloem Institute of Tropical Medicine,QTG,TH,G-TH-0041,1,C-TH-00005,true,,,,G-TH-0041,true
+C-TH-00006,Mani Kit General Hospital,SPD,TH,G-TH-0005,1,C-TH-00006,true,,,,G-TH-0005,true
+C-TH-00007,Champa Research Center,QTG,TH,G-TH-0044,1,C-TH-00007,true,,,,G-TH-0044,true
+C-TH-00008,"Saeng Prida Lab Co., Ltd.",SPD,TH,G-TH-0053,1,C-TH-00008,true,,,,G-TH-0053,true
+C-TH-00009,"Saeng Thai Biotech Co., Ltd.",QTG,TH,G-TH-0063,1,C-TH-00009,true,,,,G-TH-0063,true
+C-TH-00010,"Phaya Medical Laboratory Co., Ltd.",SPD,TH,G-TH-0051,1,C-TH-00010,true,,,,G-TH-0051,true
+C-TH-00011,Thip Sakun Hospital,SPD,TH,G-TH-0035,2,C-TH-00011,true,C-TH-00069,1.0,Same tax ID; 100% name match after expanding Hosp → Hospital; Same phone number; Same email domain (thipsakun.example),G-TH-0035,true
+C-TH-00012,Kanchana Sawang Hospital,SPD,TH,G-TH-0030,1,C-TH-00012,true,,,,G-TH-0030,true
+C-TH-00013,Wiset Wattana Polyclinic,SPD,TH,G-TH-0082,1,C-TH-00013,true,,,,G-TH-0082,true
+C-TH-00014,Thanya Thong Hospital,SPD,TH,G-TH-0025,1,C-TH-00014,true,,,,G-TH-0025,true
+C-TH-00015,"Phon Kamon Lab Co., Ltd.",QTG,TH,G-TH-0039,1,C-TH-00015,true,,,,G-TH-0039,true
+C-TH-00016,"Lanna Gene Food Lab Co., Ltd.",QTG,TH,G-TH-0010,2,C-TH-00016,true,C-TH-00056,1.0,Same tax ID; 100% name match after expanding Lab → Laboratory; Same postcode; Same phone number; Same email domain (lannagene.example),G-TH-0010,true
+C-TH-00017,Chai Arun Hospital,SPD,TH,G-TH-0004,1,C-TH-00017,true,,,,G-TH-0004,true
+C-TH-00018,"Rung Sombun Lab Co., Ltd.",SPD,TH,G-TH-0068,1,C-TH-00018,true,,,,G-TH-0068,true
+C-TH-00019,"Chaiyo Food Lab Co., Ltd.",QTG,TH,G-TH-0074,1,C-TH-00019,true,,,,G-TH-0074,true
+C-TH-00020,Siam Riverside Hospital Phuket,SPD,TH,G-TH-0080,1,C-TH-00020,true,,,,G-TH-0080,true
+C-TH-00021,"Siri Charoen Lab Co., Ltd.",SPD,TH,G-TH-0016,1,C-TH-00021,true,,,,G-TH-0016,true
+C-TH-00022,Thip Wattana Clinic,SPD,TH,G-TH-0052,1,C-TH-00022,true,,,,G-TH-0052,true
+C-TH-00023,Thep Chuen Hospital,SPD,TH,G-TH-0056,1,C-TH-00023,true,,,,G-TH-0056,true
+C-TH-00024,"Ratchaphruek Pharma Co., Ltd.",QTG,TH,G-TH-0067,1,C-TH-00024,true,,,,G-TH-0067,true
+C-TH-00025,Chao Phraya Rim Hospital,SPD,TH,G-TH-0007,1,C-TH-00025,true,,,,G-TH-0007,false
+C-TH-00026,Sombat Phatthana Clinic,SPD,TH,G-TH-0077,1,C-TH-00026,true,,,,G-TH-0077,true
+C-TH-00027,Rung Phon Hospital,SPD,TH,G-TH-0042,1,C-TH-00027,true,,,,G-TH-0042,true
+C-TH-00028,Duang Wet General Hospital,SPD,TH,G-TH-0033,1,C-TH-00028,true,,,,G-TH-0033,true
+C-TH-00029,"Ploen Phakdi Lab Co., Ltd.",SPD,TH,G-TH-0040,1,C-TH-00029,true,,,,G-TH-0040,true
+C-TH-00030,Mani Rungrot Clinic,SPD,TH,G-TH-0057,1,C-TH-00030,true,,,,G-TH-0057,true
+C-TH-00031,Isan Health Research Center,QTG,TH,G-TH-0011,2,C-TH-00031,true,C-TH-00083,1.0,Same tax ID; Same postcode; Same phone number; Same email domain (isanhealth.example),G-TH-0011,true
+C-TH-00032,Thip Kamon Polyclinic,SPD,TH,G-TH-0065,1,C-TH-00032,true,,,,G-TH-0065,true
+C-TH-00033,"Thip Pracharak Lab Co., Ltd.",SPD,TH,G-TH-0008,1,C-TH-00033,true,,,,G-TH-0008,true
+C-TH-00034,Tuk Tuk Bio Research Center,QTG,TH,G-TH-0021,1,C-TH-00034,true,,,,G-TH-0021,true
+C-TH-00035,Sap Chuen Medical Center,SPD,TH,G-TH-0022,1,C-TH-00035,true,,,,G-TH-0022,true
+C-TH-00036,Sap Udom Hospital,SPD,TH,G-TH-0066,1,C-TH-00036,true,,,,G-TH-0066,true
+C-TH-00037,"Sap Thani Lab Co., Ltd.",SPD,TH,G-TH-0048,1,C-TH-00037,true,,,,G-TH-0048,true
+C-TH-00038,Phisit Satit International Hospital,SPD,TH,G-TH-0034,1,C-TH-00038,true,,,,G-TH-0034,true
+C-TH-00039,Duang Wattana Hospital,SPD,TH,G-TH-0013,1,C-TH-00039,true,,,,G-TH-0013,true
+C-TH-00040,Kaew Thammarak Hospital,SPD,TH,G-TH-0060,1,C-TH-00040,true,,,,G-TH-0060,true
+C-TH-00041,Udon Charoen Hospital,SPD,TH,G-TH-0012,1,C-TH-00041,true,,,,G-TH-0012,true
+C-TH-00042,Wiset Mongkhon International Hospital,SPD,TH,G-TH-0037,1,C-TH-00042,true,,,,G-TH-0037,true
+C-TH-00043,Siri Phiban Polyclinic,SPD,TH,G-TH-0079,1,C-TH-00043,true,,,,G-TH-0079,true
+C-TH-00044,"Lotus Siam Pharma Co., Ltd.",QTG,TH,G-TH-0064,1,C-TH-00044,true,,,,G-TH-0064,true
+C-TH-00045,"Sukhothai Biotech Co., Ltd.",QTG,TH,G-TH-0031,1,C-TH-00045,true,,,,G-TH-0031,true
+C-TH-00046,Chok Prida Clinic,SPD,TH,G-TH-0049,1,C-TH-00046,true,,,,G-TH-0049,true
+C-TH-00047,Anan Chaloem Clinic,SPD,TH,G-TH-0058,1,C-TH-00047,true,,,,G-TH-0058,true
+C-TH-00048,"Pradit Rattana Lab Co., Ltd.",SPD,TH,G-TH-0028,1,C-TH-00048,true,,,,G-TH-0028,true
+C-TH-00049,Uthai Sawang Institute of Tropical Medicine,QTG,TH,G-TH-0055,1,C-TH-00049,true,,,,G-TH-0055,true
+C-TH-00050,Kaew Rattana Medical Center,SPD,TH,G-TH-0026,1,C-TH-00050,true,,,,G-TH-0026,true
+C-TH-00051,"Benjarong Pharma Co., Ltd.",QTG,TH,G-TH-0046,1,C-TH-00051,true,,,,G-TH-0046,true
+C-TH-00052,Rattana Sanit Hospital,SPD,TH,G-TH-0075,1,C-TH-00052,true,,,,G-TH-0075,true
+C-TH-00053,Mongkhon Sukkasem Hospital,SPD,TH,G-TH-0003,1,C-TH-00053,true,,,,G-TH-0003,true
+C-TH-00054,Phisit Rungrot Hospital,SPD,TH,G-TH-0071,1,C-TH-00054,true,,,,G-TH-0071,true
+C-TH-00055,Rattana Thong Clinic,SPD,TH,G-TH-0047,1,C-TH-00055,true,,,,G-TH-0047,true
+C-TH-00056,Lanna Gene Food Lab Co Ltd,QTG,TH,G-TH-0010,2,C-TH-00016,false,C-TH-00016,1.0,Same tax ID; 100% name match after expanding Lab → Laboratory; Same postcode; Same phone number; Same email domain (lannagene.example),G-TH-0010,true
+C-TH-00057,Yupha Sombun Hospital,SPD,TH,G-TH-0006,1,C-TH-00057,true,,,,G-TH-0006,true
+C-TH-00058,Mani Sanit International Hospital,SPD,TH,G-TH-0023,1,C-TH-00058,true,,,,G-TH-0023,true
+C-TH-00059,Wanna Nimit Hospital,SPD,TH,G-TH-0001,1,C-TH-00059,true,,,,G-TH-0001,true
+C-TH-00060,"Siam Helix Medical Laboratory Co., Ltd.",SPD,TH,G-TH-0072,1,C-TH-00060,true,,,,G-TH-0072,true
+C-TH-00061,"Bodhi Medical Laboratory Co., Ltd.",SPD,TH,G-TH-0061,1,C-TH-00061,true,,,,G-TH-0061,true
+C-TH-00062,"Kinnaree Medical Laboratory Co., Ltd.",SPD,TH,G-TH-0032,1,C-TH-00062,true,,,,G-TH-0032,true
+C-TH-00063,Si Chalerm Hosp,QTS,TH,G-TH-0009,2,C-TH-00001,false,C-TH-00001,1.0,Same tax ID; 70% name match; Same postcode; Same phone number; Same email domain (srichaloem.example),G-TH-0009,true
+C-TH-00064,Nakhon Sawang Polyclinic,SPD,TH,G-TH-0054,1,C-TH-00064,true,,,,G-TH-0054,true
+C-TH-00065,"Thai Sabai Food Lab Co., Ltd.",QTG,TH,G-TH-0036,1,C-TH-00065,true,,,,G-TH-0036,true
+C-TH-00066,Siam Riverside Hospital Chiang Mai,SPD,TH,G-TH-0017,1,C-TH-00066,true,,,,G-TH-0017,true
+C-TH-00067,Orchid Siam Research Center,QTS,TH,G-TH-0062,1,C-TH-00067,true,,,,G-TH-0062,true
+C-TH-00068,Lanna Thammarak Polyclinic,SPD,TH,G-TH-0076,1,C-TH-00068,true,,,,G-TH-0076,true
+C-TH-00069,"Hosp, Thip Sakun",QTS,TH,G-TH-0035,2,C-TH-00011,false,C-TH-00011,1.0,Same tax ID; 100% name match after expanding Hosp → Hospital; Same phone number; Same email domain (thipsakun.example),G-TH-0035,true
+C-TH-00070,Phisit Charoen Polyclinic,SPD,TH,G-TH-0045,1,C-TH-00070,true,,,,G-TH-0045,true
+C-TH-00071,Saeng Suk Hospital,SPD,TH,G-TH-0020,1,C-TH-00071,true,,,,G-TH-0020,true
+C-TH-00072,"Mali Medical Laboratory Co., Ltd.",SPD,TH,G-TH-0002,1,C-TH-00072,true,,,,G-TH-0002,true
+C-TH-00073,Khun Phatthana Institute of Tropical Medicine,QTG,TH,G-TH-0073,1,C-TH-00073,true,,,,G-TH-0073,true
+C-TH-00074,Isan Pracharak General Hospital,SPD,TH,G-TH-0038,1,C-TH-00074,true,,,,G-TH-0038,true
+C-TH-00075,Sakon Phiban Institute of Tropical Medicine,QTS,TH,G-TH-0015,1,C-TH-00075,true,,,,G-TH-0015,true
+C-TH-00076,Boon Thada Hospital,SPD,TH,G-TH-0014,1,C-TH-00076,true,,,,G-TH-0014,true
+C-TH-00077,"Kraisorn Pharma Co., Ltd.",QTG,TH,G-TH-0018,2,C-TH-00077,true,C-TH-00078,1.0,Same tax ID; 97% name match; Same postcode; Same phone number; Same email domain (kraisorn.example),G-TH-0018,true
+C-TH-00078,Kraisornh Pharma Co Ltd,QTG,TH,G-TH-0018,2,C-TH-00077,false,C-TH-00077,1.0,Same tax ID; 97% name match; Same postcode; Same phone number; Same email domain (kraisorn.example),G-TH-0018,true
+C-TH-00079,Nakhon Arun Institute of Tropical Medicine,QTG,TH,G-TH-0029,1,C-TH-00079,true,,,,G-TH-0029,true
+C-TH-00080,Mongkhon Phaet Medical Center,SPD,TH,G-TH-0069,1,C-TH-00080,true,,,,G-TH-0069,true
+C-TH-00081,Sombat Pracharak International Hospital,SPD,TH,G-TH-0027,1,C-TH-00081,true,,,,G-TH-0027,true
+C-TH-00082,Khun Kamon General Hospital,SPD,TH,G-TH-0043,1,C-TH-00082,true,,,,G-TH-0043,true
+C-TH-00083,"Res Ctr, Isan Health",QTG,TH,G-TH-0011,2,C-TH-00031,false,C-TH-00031,1.0,Same tax ID; Same postcode; Same phone number; Same email domain (isanhealth.example),G-TH-0011,true
+C-TH-00084,Sakon Phakdi Clinic,SPD,TH,G-TH-0070,1,C-TH-00084,true,,,,G-TH-0070,true
+C-TH-00085,"Naga Biotech Co., Ltd.",QTG,TH,G-TH-0078,1,C-TH-00085,true,,,,G-TH-0078,true
+C-TH-00086,Mongkhon Prida General Hospital,SPD,TH,G-TH-0024,1,C-TH-00086,true,,,,G-TH-0024,true
+C-TH-00087,Somjit Luang Hospital,SPD,TH,G-TH-0019,1,C-TH-00087,true,,,,G-TH-0019,true
+C-TH-00088,Jao Praya Rim Hospital,QTG,TH,G-TH-0083,1,C-TH-00088,true,,,,G-TH-0007,false
+C-VN-00001,Thuan Son Laboratory Centre,SPD,VN,G-VN-0056,1,C-VN-00001,true,,,,G-VN-0056,true
+C-VN-00002,Truc Sang International Hospital,SPD,VN,G-VN-0031,1,C-VN-00002,true,,,,G-VN-0031,true
+C-VN-00003,Hieu Tu Hospital,SPD,VN,G-VN-0061,1,C-VN-00003,true,,,,G-VN-0061,true
+C-VN-00004,Phu Hanh International Hospital,SPD,VN,G-VN-0022,1,C-VN-00004,true,,,,G-VN-0022,true
+C-VN-00005,Thanh Chau International Hospital,QTS,VN,G-VN-0029,1,C-VN-00005,true,,,,G-VN-0029,true
+C-VN-00006,Công ty TNHH Xét nghiệm Trường Thịnh,SPD,VN,G-VN-0014,1,C-VN-00006,true,,,,G-VN-0014,true
+C-VN-00007,Bệnh viện Hòa Mai,SPD,VN,G-VN-0005,1,C-VN-00007,true,,,,G-VN-0005,true
+C-VN-00008,Phòng khám Đa khoa Hưng Tú,SPD,VN,G-VN-0072,1,C-VN-00008,true,,,,G-VN-0072,true
+C-VN-00009,Công ty CP Dược Sen Vàng,QTG,VN,G-VN-0040,1,C-VN-00009,true,,,,G-VN-0040,true
+C-VN-00010,Phòng khám Đa khoa Phương Hạnh,SPD,VN,G-VN-0042,1,C-VN-00010,true,,,,G-VN-0042,true
+C-VN-00011,"Viet Tin Laboratory Co., Ltd.",SPD,VN,G-VN-0009,2,C-VN-00011,true,C-VN-00072,0.932,84% name match; Same postcode; Same phone number; Same email domain (viettin.example),G-VN-0009,true
+C-VN-00012,Khanh Tam Laboratory Centre,QTS,VN,G-VN-0067,1,C-VN-00012,true,,,,G-VN-0067,true
+C-VN-00013,Bệnh viện Thiên Sang,QTS,VN,G-VN-0027,1,C-VN-00013,true,,,,G-VN-0027,true
+C-VN-00014,Bệnh viện Quốc tế Vĩnh Long,QTS,VN,G-VN-0002,1,C-VN-00014,true,,,,G-VN-0002,true
+C-VN-00015,Dieu Nhan Clinic,SPD,VN,G-VN-0064,1,C-VN-00015,true,,,,G-VN-0064,true
+C-VN-00016,Phòng khám Đa khoa Hoàng Khôi,SPD,VN,G-VN-0051,1,C-VN-00016,true,,,,G-VN-0051,true
+C-VN-00017,Công ty CP Dược Bạch Đằng,QTG,VN,G-VN-0073,1,C-VN-00017,true,,,,G-VN-0073,true
+C-VN-00018,Viện Nghiên cứu Hoàng Trí,QTG,VN,G-VN-0054,1,C-VN-00018,true,,,,G-VN-0054,true
+C-VN-00019,Bệnh viện Quốc tế Diệu Tâm,SPD,VN,G-VN-0049,1,C-VN-00019,true,,,,G-VN-0049,true
+C-VN-00020,Nam Tin Clinic,SPD,VN,G-VN-0028,1,C-VN-00020,true,,,,G-VN-0028,true
+C-VN-00021,Hong Ha Pharmaceutical JSC,QTG,VN,G-VN-0039,1,C-VN-00021,true,,,,G-VN-0039,true
+C-VN-00022,Phòng khám Thanh Thọ,SPD,VN,G-VN-0044,1,C-VN-00022,true,,,,G-VN-0044,true
+C-VN-00023,Phòng khám Đa khoa Hải Vân,SPD,VN,G-VN-0019,1,C-VN-00023,true,,,,G-VN-0019,true
+C-VN-00024,Công ty CP Dược Cửu Long,QTG,VN,G-VN-0065,1,C-VN-00024,true,,,,G-VN-0065,true
+C-VN-00025,Bệnh viện Đa khoa Ngọc Thành,SPD,VN,G-VN-0011,1,C-VN-00025,true,,,,G-VN-0011,true
+C-VN-00026,Bệnh viện Đa khoa Đông Khang,SPD,VN,G-VN-0015,1,C-VN-00026,true,,,,G-VN-0015,true
+C-VN-00027,Bệnh viện Đa khoa Hồng Lạc,SPD,VN,G-VN-0007,2,C-VN-00027,true,C-VN-00076,0.971,88% name match; Same postcode; Same phone number; Same email domain (honglac.example),G-VN-0007,true
+C-VN-00028,Bệnh viện Cẩm Nhân,SPD,VN,G-VN-0046,1,C-VN-00028,true,,,,G-VN-0046,true
+C-VN-00029,Phuoc Linh Institute of Biology,QTG,VN,G-VN-0020,1,C-VN-00029,true,,,,G-VN-0020,true
+C-VN-00030,Viện Sinh học Sáng Thành,QTS,VN,G-VN-0057,1,C-VN-00030,true,,,,G-VN-0057,true
+C-VN-00031,Công ty CP Dược Phương Nam,QTG,VN,G-VN-0038,1,C-VN-00031,true,,,,G-VN-0038,true
+C-VN-00032,Bệnh viện Quốc tế Phú Ngân,SPD,VN,G-VN-0001,1,C-VN-00032,true,,,,G-VN-0001,true
+C-VN-00033,Bệnh viện Đa khoa Kiến Lộc,SPD,VN,G-VN-0030,2,C-VN-00033,true,C-VN-00073,1.0,98% name match; Same phone number; Same email domain (kienloc.example),G-VN-0030,true
+C-VN-00034,Công ty CP Dược Mê Kông,QTG,VN,G-VN-0008,1,C-VN-00034,true,,,,G-VN-0008,true
+C-VN-00035,Bệnh viện Quốc tế Sông Sen,SPD,VN,G-VN-0004,1,C-VN-00035,true,,,,G-VN-0004,false
+C-VN-00036,"Hung Phat Laboratory Co., Ltd.",SPD,VN,G-VN-0017,2,C-VN-00036,true,C-VN-00075,0.947,86% name match; Same postcode; Same phone number; Same email domain (hungphat.example),G-VN-0017,true
+C-VN-00037,Bệnh viện Phương Phúc,QTS,VN,G-VN-0036,1,C-VN-00037,true,,,,G-VN-0036,true
+C-VN-00038,Công ty TNHH Xét nghiệm Kim Long,SPD,VN,G-VN-0010,1,C-VN-00038,true,,,,G-VN-0010,true
+C-VN-00039,Thanh Son General Hospital,SPD,VN,G-VN-0034,1,C-VN-00039,true,,,,G-VN-0034,true
+C-VN-00040,Công ty TNHH Xét nghiệm Ánh Dương,SPD,VN,G-VN-0037,1,C-VN-00040,true,,,,G-VN-0037,true
+C-VN-00041,Phòng khám Đa khoa Thái Sang,SPD,VN,G-VN-0053,1,C-VN-00041,true,,,,G-VN-0053,true
+C-VN-00042,Phuc Phat Hospital,SPD,VN,G-VN-0035,1,C-VN-00042,true,,,,G-VN-0035,true
+C-VN-00043,Phòng khám Đa khoa Bình An,SPD,VN,G-VN-0060,1,C-VN-00043,true,,,,G-VN-0060,true
+C-VN-00044,Bệnh viện Nhật Minh,SPD,VN,G-VN-0021,1,C-VN-00044,true,,,,G-VN-0021,true
+C-VN-00045,Phòng khám Đa khoa Đông Minh,SPD,VN,G-VN-0059,1,C-VN-00045,true,,,,G-VN-0059,true
+C-VN-00046,Trung tâm Xét nghiệm Phương Sơn,SPD,VN,G-VN-0047,1,C-VN-00046,true,,,,G-VN-0047,true
+C-VN-00047,Bệnh viện Đa khoa Hải Định,SPD,VN,G-VN-0032,1,C-VN-00047,true,,,,G-VN-0032,true
+C-VN-00048,Viện Sinh học Bình Lâm,QTG,VN,G-VN-0063,1,C-VN-00048,true,,,,G-VN-0063,true
+C-VN-00049,Bệnh viện Trúc Tú,SPD,VN,G-VN-0069,1,C-VN-00049,true,,,,G-VN-0069,true
+C-VN-00050,Công ty TNHH Sinh học Đại Việt,QTG,VN,G-VN-0055,1,C-VN-00050,true,,,,G-VN-0055,true
+C-VN-00051,Bach Viet Pharmaceutical JSC,QTS,VN,G-VN-0048,1,C-VN-00051,true,,,,G-VN-0048,true
+C-VN-00052,Bệnh viện Đa khoa Kim Châu,QTG,VN,G-VN-0026,1,C-VN-00052,true,,,,G-VN-0026,true
+C-VN-00053,Phòng khám Đa khoa Tường Lộc,SPD,VN,G-VN-0045,1,C-VN-00053,true,,,,G-VN-0045,true
+C-VN-00054,Bệnh viện Thuận Phong,SPD,VN,G-VN-0013,1,C-VN-00054,true,,,,G-VN-0013,true
+C-VN-00055,Bệnh viện Quốc tế Lạc Đăng,SPD,VN,G-VN-0071,1,C-VN-00055,true,,,,G-VN-0071,true
+C-VN-00056,Bệnh viện Đa khoa Bình An,SPD,VN,G-VN-0058,1,C-VN-00056,true,,,,G-VN-0058,true
+C-VN-00057,Phòng khám Đa khoa Trúc Thịnh,SPD,VN,G-VN-0066,1,C-VN-00057,true,,,,G-VN-0066,true
+C-VN-00058,Bệnh viện Đức Nghĩa,SPD,VN,G-VN-0012,1,C-VN-00058,true,,,,G-VN-0012,true
+C-VN-00059,Phuc Phong Polyclinic,SPD,VN,G-VN-0041,1,C-VN-00059,true,,,,G-VN-0041,true
+C-VN-00060,Truc Khoi Clinic,SPD,VN,G-VN-0023,1,C-VN-00060,true,,,,G-VN-0023,true
+C-VN-00061,Hung Tin International Hospital,SPD,VN,G-VN-0006,1,C-VN-00061,true,,,,G-VN-0006,true
+C-VN-00062,Hieu Nghia Laboratory Centre,SPD,VN,G-VN-0074,1,C-VN-00062,true,,,,G-VN-0074,true
+C-VN-00063,Công ty TNHH Xét nghiệm Lạc Việt,QTS,VN,G-VN-0043,1,C-VN-00063,true,,,,G-VN-0043,true
+C-VN-00064,Công ty TNHH Sinh học Sao Mai,QTG,VN,G-VN-0070,1,C-VN-00064,true,,,,G-VN-0070,true
+C-VN-00065,Công ty TNHH Xét nghiệm Tân Á,SPD,VN,G-VN-0024,1,C-VN-00065,true,,,,G-VN-0024,true
+C-VN-00066,Viện Nghiên cứu Tường Khôi,QTG,VN,G-VN-0052,1,C-VN-00066,true,,,,G-VN-0052,true
+C-VN-00067,Viện Nghiên cứu Trường Tín,QTG,VN,G-VN-0062,1,C-VN-00067,true,,,,G-VN-0062,true
+C-VN-00068,Bệnh viện Đa khoa Mộc Phát,SPD,VN,G-VN-0025,1,C-VN-00068,true,,,,G-VN-0025,true
+C-VN-00069,Bệnh viện Quốc tế Ngọc Trí,SPD,VN,G-VN-0016,1,C-VN-00069,true,,,,G-VN-0016,true
+C-VN-00070,Bệnh viện Thái Hưng,QTS,VN,G-VN-0003,1,C-VN-00070,true,,,,G-VN-0003,true
+C-VN-00071,Viện Sinh học Hòa Hải,QTG,VN,G-VN-0018,1,C-VN-00071,true,,,,G-VN-0018,true
+C-VN-00072,Cty TNHH XN Việt Tín,QTG,VN,G-VN-0009,2,C-VN-00011,false,C-VN-00011,0.932,84% name match; Same postcode; Same phone number; Same email domain (viettin.example),G-VN-0009,true
+C-VN-00073,Bệnh viện Đa khoa Kếin Lộc,QTG,VN,G-VN-0030,2,C-VN-00033,false,C-VN-00033,1.0,98% name match; Same phone number; Same email domain (kienloc.example),G-VN-0030,true
+C-VN-00074,Viện Sinh học Nam Ngân,QTG,VN,G-VN-0050,1,C-VN-00074,true,,,,G-VN-0050,true
+C-VN-00075,Cty TNHH XN Hưng Phát,QTG,VN,G-VN-0017,2,C-VN-00036,false,C-VN-00036,0.947,86% name match; Same postcode; Same phone number; Same email domain (hungphat.example),G-VN-0017,true
+C-VN-00076,Benh vien Da khoa Hong Lac,SPD,VN,G-VN-0007,2,C-VN-00027,false,C-VN-00027,0.971,88% name match; Same postcode; Same phone number; Same email domain (honglac.example),G-VN-0007,true
+C-VN-00077,Viện Sinh học Trường Châu,QTG,VN,G-VN-0033,1,C-VN-00077,true,,,,G-VN-0033,true
+C-VN-00078,Phòng khám Đa khoa Lạc Quý,SPD,VN,G-VN-0068,1,C-VN-00078,true,,,,G-VN-0068,true

@@ -163,7 +163,10 @@ def read_table(name: str, scenario: str = "base", out_dir: Path | str | None = N
     for col, typ in _NUMERIC.get(name, {}).items():
         if col in df.columns:
             s = pd.to_numeric(df[col].replace("", np.nan), errors="coerce")
-            df[col] = s.astype("Int64") if typ is int else s.astype(float)
+            if typ is int:
+                df[col] = s.astype("Int64") if s.isna().any() else s.astype("int64")
+            else:
+                df[col] = s.astype(float)
     for col in _BOOL.get(name, []):
         if col in df.columns:
             df[col] = df[col].str.lower().eq("true")
@@ -192,7 +195,7 @@ def monthly_series(pos: pd.DataFrame, view: str = "dedup", measure: str = "units
         months = month_range(p["history_start"], p["history_end"])
     g = g.reindex(months).fillna(0)
     cols = pd.MultiIndex.from_product([COUNTRIES, list(products)], names=["country", "product"])
-    return g.reindex(columns=cols, fill_value=0).fillna(0)
+    return g.reindex(columns=cols, fill_value=0).fillna(0).astype(float)
 
 
 def window_value(pos: pd.DataFrame, months: list[str], view: str = "dedup", measure: str = "sgd") -> pd.DataFrame:

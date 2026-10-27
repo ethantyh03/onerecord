@@ -802,7 +802,16 @@ export const NEW_BU_TEMPLATE: BusinessUnit = {
       id: "mls-regulatory",
       label: "Molecular regulatory pre-check",
       mode: "sequential",
-      steps: [{ id: "mls-reg", label: "QA/RA — molecular IVD pre-market check", role: "qa_ra" }],
+      // Product (item) requests only: they are the only ones that carry a product group. Customer
+      // extensions, vendors etc. raised in MLS skip it (no molecular product to check).
+      steps: [
+        {
+          id: "mls-reg",
+          label: "QA/RA — molecular IVD pre-market check",
+          role: "qa_ra",
+          condition: { field: "productGroup", op: "notEmpty" },
+        },
+      ],
     },
   ],
 };

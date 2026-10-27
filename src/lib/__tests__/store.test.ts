@@ -612,7 +612,9 @@ describe("lead patch: sim clock, auto-link, segregation of duties, extend, lastU
     const r = req(id);
     expect(r.steps.find((s) => s.role === "finance")?.assigneeId).toBe("weijie");
     expect(r.steps.find((s) => s.role === "business_support")?.assigneeId).toBe("siti");
-    expect(r.steps.some((s) => s.stageId === "mls-regulatory")).toBe(true);
+    // The MLS molecular pre-check is for product requests only: an extension goes BS + Finance → MDM.
+    expect(r.steps.some((s) => s.stageId === "mls-regulatory")).toBe(false);
+    expect(r.steps.map((s) => s.role)).toEqual(["business_support", "finance", "mdm"]);
     const before = S().sapRecords.find((x) => x.code === "C-SG-00017")!;
     approveAll(id);
     S().setPersona("priya");
@@ -626,6 +628,37 @@ describe("lead patch: sim clock, auto-link, segregation of duties, extend, lastU
     expect(res.record?.fields.U_Entities.split(", ")).toEqual([...before.fields.U_Entities.split(", "), "MLS"]);
     expect(res.record?.fields.CreditLimit).toBe("40000");
     expect(req(id).sapCode).toBe("C-SG-00017");
+  });
+
+  it("MLS item request includes the molecular regulatory pre-check (QA/RA) before MDM", () => {
+    S().setPersona("priya");
+    S().updateConfig({ ...S().config, businessUnits: [...S().config.businessUnits, NEW_BU_TEMPLATE] }, "Add MLS");
+    S().setPersona("marcus");
+    const id = S().createDraft("item", {
+      itemName: "MLS SARS-CoV-2 PCR Kit 96T",
+      category: "IVD reagent",
+      productGroup: "A",
+      manufacturer: "Meridian Life Sciences",
+      regLicenceNo: "HSA-DE-0099999",
+      regCertificate: "HSA-registration-PCR-96T.pdf",
+      uom: "PCK",
+      packSize: 1,
+      costPrice: 300,
+      salesPrice: 480,
+      storage: "Ambient (15–30 °C)",
+      entity: "MLS",
+      countries: "SG",
+    });
+    const res = S().submitRequest(id);
+    expect(res.ok).toBe(true);
+    const r = req(id);
+    const pre = r.steps.find((s) => s.stageId === "mls-regulatory");
+    expect(pre?.role).toBe("qa_ra");
+    expect(pre?.assigneeId).toBe("ploy");
+    expect(pre?.addedBecause).toContain("Business unit MLS rule");
+    expect(pre?.addedBecause).toContain("Product group provided");
+    expect(r.steps.at(-1)?.role).toBe("mdm");
+    expect(pre!.stageIndex).toBe(r.steps.at(-1)!.stageIndex - 1);
   });
 
   it("an entity with no BU config still routes (shared roles)", () => {

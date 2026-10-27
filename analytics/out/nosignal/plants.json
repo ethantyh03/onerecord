@@ -4,11 +4,11 @@
  "isSynthetic": true,
  "hero": {
   "SG": {
-   "golden_id": "G-SG-0015",
+   "golden_id": "G-SG-0007",
    "name": "Tanjong Rhu Crest Medical Centre",
-   "yoy": -0.0579,
-   "rank_12m": 14,
-   "sgd_12m": 307295,
+   "yoy": -0.0201,
+   "rank_12m": 7,
+   "sgd_12m": 673972,
    "switch": "2026-02",
    "records": [
     {
@@ -20,7 +20,7 @@
      "perturbation": "",
      "first_po_month": "2023-10",
      "last_po_month": "2026-01",
-     "sgd_12m": 98077
+     "sgd_12m": 227407
     },
     {
      "card_code": "C-SG-00079",
@@ -31,7 +31,7 @@
      "perturbation": "abbreviation;address_format",
      "first_po_month": "2026-02",
      "last_po_month": "2026-09",
-     "sgd_12m": 209218
+     "sgd_12m": 446565
     }
    ]
   },
@@ -67,7 +67,7 @@
     },
     {
      "card_code": "C-MY-00092",
-     "card_name": "Bukit Damai Spec Hosp",
+     "card_name": "Bukit Damai Spec Hospital",
      "entity": "SPD",
      "recorded_country": "MY",
      "created_at": "2026-03-12",
@@ -79,11 +79,11 @@
    ]
   },
   "TH": {
-   "golden_id": "G-TH-0010",
+   "golden_id": "G-TH-0007",
    "name": "Chao Phraya Rim Hospital",
-   "yoy": 0.0501,
-   "rank_12m": 9,
-   "sgd_12m": 266716,
+   "yoy": 0.057,
+   "rank_12m": 7,
+   "sgd_12m": 488468,
    "switch": "2026-05",
    "records": [
     {
@@ -95,7 +95,7 @@
      "perturbation": "",
      "first_po_month": "2023-10",
      "last_po_month": "2026-04",
-     "sgd_12m": 161177
+     "sgd_12m": 298141
     },
     {
      "card_code": "C-TH-00088",
@@ -106,16 +106,16 @@
      "perturbation": "romanisation;cross_entity;blank_tax_id",
      "first_po_month": "2026-05",
      "last_po_month": "2026-09",
-     "sgd_12m": 105539
+     "sgd_12m": 190327
     }
    ]
   },
   "VN": {
-   "golden_id": "G-VN-0009",
+   "golden_id": "G-VN-0007",
    "name": "Bệnh viện Đa khoa Hồng Lạc",
-   "yoy": 0.0328,
-   "rank_12m": 9,
-   "sgd_12m": 315335,
+   "yoy": 0.0147,
+   "rank_12m": 6,
+   "sgd_12m": 482479,
    "switch": "2026-01",
    "records": [
     {
@@ -127,7 +127,7 @@
      "perturbation": "",
      "first_po_month": "2023-10",
      "last_po_month": "2025-12",
-     "sgd_12m": 85852
+     "sgd_12m": 122373
     },
     {
      "card_code": "C-VN-00077",
@@ -138,16 +138,16 @@
      "perturbation": "romanisation;blank_tax_id",
      "first_po_month": "2026-01",
      "last_po_month": "2026-09",
-     "sgd_12m": 229483
+     "sgd_12m": 360106
     }
    ]
   },
   "MM": {
    "golden_id": "G-MM-0004",
    "name": "Thukha Yeik Specialist Hospital",
-   "yoy": -0.0337,
+   "yoy": -0.0189,
    "rank_12m": 7,
-   "sgd_12m": 226678,
+   "sgd_12m": 216253,
    "switch": "2025-12",
    "records": [
     {
@@ -159,18 +159,18 @@
      "perturbation": "",
      "first_po_month": "2023-10",
      "last_po_month": "2025-11",
-     "sgd_12m": 37511
+     "sgd_12m": 38630
     },
     {
      "card_code": "C-MM-00047",
-     "card_name": "Thuke Yeit Specialist Hospital",
+     "card_name": "Thukka Yeit Specialist Hospital",
      "entity": "SPD",
      "recorded_country": "MM",
      "created_at": "2025-11-11",
      "perturbation": "romanisation;typo",
      "first_po_month": "2025-12",
      "last_po_month": "2026-09",
-     "sgd_12m": 189167
+     "sgd_12m": 177623
     }
    ]
   }
@@ -256,7 +256,7 @@
     },
     {
      "golden_id": "G-MY-0006",
-     "name": "Hospital Lembah Sejahtera",
+     "name": "Hospital Daerah Sungai Puteri",
      "sg_record": "C-SG-00077",
      "true_record": "C-MY-00089",
      "entities_moved": [
@@ -269,7 +269,7 @@
      "records": [
       {
        "card_code": "C-MY-00089",
-       "card_name": "Hospital Lembah Sejahtera",
+       "card_name": "Hospital Daerah Sungai Puteri",
        "entity": "SPD",
        "recorded_country": "MY",
        "created_at": "2022-12-17",
@@ -280,7 +280,7 @@
       },
       {
        "card_code": "C-SG-00077",
-       "card_name": "Hosp Lembah Sejahtera",
+       "card_name": "Hosp Daerah Sungai Puteri",
        "entity": "SPD",
        "recorded_country": "SG",
        "created_at": "2026-01-10",
@@ -295,7 +295,7 @@
   },
   "VN": {
    "start": "2026-01",
-   "share_of_country_12m": 0.0412,
+   "share_of_country_12m": 0.04,
    "named_example": {
     "golden_id": "G-VN-0004",
     "name": "Bệnh viện Quốc tế Sông Sen",
@@ -305,20 +305,20 @@
      "SPD",
      "QTG"
     ],
-    "share_of_lines_moved": 0.846,
-    "sgd_moved_12m": 316558,
-    "share_of_country_12m": 0.0412,
+    "share_of_lines_moved": 0.858,
+    "sgd_moved_12m": 308426,
+    "share_of_country_12m": 0.04,
     "records": [
      {
       "card_code": "C-SG-00078",
-      "card_name": "Song Sen International Hospital",
+      "card_name": "Benh vien Quoc te Song Sen",
       "entity": "SPD",
       "recorded_country": "SG",
       "created_at": "2026-01-12",
       "perturbation": "romanisation;blank_tax_id",
       "first_po_month": "2026-01",
       "last_po_month": "2026-09",
-      "sgd_12m": 316558
+      "sgd_12m": 308426
      },
      {
       "card_code": "C-VN-00056",
@@ -329,7 +329,7 @@
       "perturbation": "",
       "first_po_month": "2023-10",
       "last_po_month": "2026-09",
-      "sgd_12m": 177555
+      "sgd_12m": 169063
      }
     ]
    },
@@ -343,20 +343,20 @@
       "SPD",
       "QTG"
      ],
-     "share_of_lines_moved": 0.846,
-     "sgd_moved_12m": 316558,
-     "share_of_country_12m": 0.0412,
+     "share_of_lines_moved": 0.858,
+     "sgd_moved_12m": 308426,
+     "share_of_country_12m": 0.04,
      "records": [
       {
        "card_code": "C-SG-00078",
-       "card_name": "Song Sen International Hospital",
+       "card_name": "Benh vien Quoc te Song Sen",
        "entity": "SPD",
        "recorded_country": "SG",
        "created_at": "2026-01-12",
        "perturbation": "romanisation;blank_tax_id",
        "first_po_month": "2026-01",
        "last_po_month": "2026-09",
-       "sgd_12m": 316558
+       "sgd_12m": 308426
       },
       {
        "card_code": "C-VN-00056",
@@ -367,7 +367,7 @@
        "perturbation": "",
        "first_po_month": "2023-10",
        "last_po_month": "2026-09",
-       "sgd_12m": 177555
+       "sgd_12m": 169063
       }
      ]
     }
@@ -384,8 +384,8 @@
    "countries": [
     "TH"
    ],
-   "units_12m": 505,
-   "sgd_12m": 91014
+   "units_12m": 650,
+   "sgd_12m": 116903
   },
   {
    "true_item_code": "I-A-000810",
@@ -397,7 +397,7 @@
     "TH"
    ],
    "units_12m": 421,
-   "sgd_12m": 43099
+   "sgd_12m": 42305
   },
   {
    "true_item_code": "I-A-000843",
@@ -409,8 +409,8 @@
     "TH",
     "MM"
    ],
-   "units_12m": 128,
-   "sgd_12m": 13488
+   "units_12m": 81,
+   "sgd_12m": 8422
   },
   {
    "true_item_code": "I-A-000871",
@@ -422,8 +422,8 @@
     "TH",
     "VN"
    ],
-   "units_12m": 4831,
-   "sgd_12m": 181661
+   "units_12m": 4401,
+   "sgd_12m": 166047
   },
   {
    "true_item_code": "I-A-000849",
@@ -434,13 +434,13 @@
    "countries": [
     "TH"
    ],
-   "units_12m": 188,
-   "sgd_12m": 17790
+   "units_12m": 173,
+   "sgd_12m": 16582
   }
  ],
  "th_false_crosssell": [
   {
-   "golden_id": "G-TH-0008",
+   "golden_id": "G-TH-0009",
    "name": "Sri Chaloem Hospital",
    "country": "TH",
    "segment": "Public hospital",
@@ -454,7 +454,7 @@
      "perturbation": "",
      "first_po_month": "2023-10",
      "last_po_month": "2026-09",
-     "sgd_12m": 205302
+     "sgd_12m": 195627
     },
     {
      "card_code": "C-TH-00062",
@@ -486,7 +486,7 @@
      "perturbation": "romanisation;cross_entity",
      "first_po_month": "2023-10",
      "last_po_month": "2026-09",
-     "sgd_12m": 51717
+     "sgd_12m": 50210
     },
     {
      "card_code": "C-MM-00037",
@@ -497,7 +497,7 @@
      "perturbation": "",
      "first_po_month": "2023-10",
      "last_po_month": "2026-09",
-     "sgd_12m": 169447
+     "sgd_12m": 164860
     }
    ]
   }
@@ -505,25 +505,25 @@
  "vn_xsell_gap": [
   {
    "golden_id": "G-VN-0013",
-   "name": "Bệnh viện Diệu Uyên",
+   "name": "Bệnh viện Đa khoa Thuận Thịnh",
    "country": "VN",
    "segment": "Public hospital"
   },
   {
    "golden_id": "G-VN-0011",
-   "name": "Thuan Nhan Hospital",
+   "name": "Bệnh viện Đa khoa Hòa Hiền",
    "country": "VN",
    "segment": "Public hospital"
   },
   {
    "golden_id": "G-VN-0015",
-   "name": "Bệnh viện Vĩnh Khang",
+   "name": "Bệnh viện Thiên Phúc",
    "country": "VN",
    "segment": "Public hospital"
   },
   {
    "golden_id": "G-VN-0012",
-   "name": "Phuc Minh General Hospital",
+   "name": "Bệnh viện Đa khoa Xuân Đăng",
    "country": "VN",
    "segment": "Public hospital"
   }
@@ -531,19 +531,19 @@
  "my_expanders": [
   {
    "golden_id": "G-MY-0015",
-   "name": "Desa Suria Medical Centre",
+   "name": "Pusat Perubatan Sungai Suria",
    "country": "MY",
    "segment": "Private hospital"
   },
   {
    "golden_id": "G-MY-0012",
-   "name": "Pusat Perubatan Seri Teratai",
+   "name": "Pusat Perubatan Seri Aman",
    "country": "MY",
    "segment": "Private hospital"
   },
   {
    "golden_id": "G-MY-0011",
-   "name": "Hospital Bukit Harmoni",
+   "name": "Hospital Kuala Cemerlang",
    "country": "MY",
    "segment": "Public hospital"
   }
@@ -551,14 +551,14 @@
  "my_contract_churn": [
   {
    "golden_id": "G-MY-0025",
-   "name": "Hospital Daerah Desa Baiduri",
+   "name": "Hospital Lembah Bayu",
    "country": "MY",
    "segment": "Public hospital",
    "contract_end": "2026-03"
   },
   {
    "golden_id": "G-MY-0008",
-   "name": "Hospital Desa Gemilang",
+   "name": "Hospital Desa Cempaka",
    "country": "MY",
    "segment": "Public hospital",
    "contract_end": "2026-02"
@@ -567,14 +567,14 @@
  "my_contracts_q1_2027": [
   {
    "golden_id": "G-MY-0035",
-   "name": "Hospital Daerah Kota Kenanga",
+   "name": "Hospital Daerah Kuala Idaman",
    "country": "MY",
    "segment": "Public hospital",
    "contract_end": "2027-02"
   },
   {
    "golden_id": "G-MY-0044",
-   "name": "Hospital Bukit Cempaka",
+   "name": "Hospital Daerah Ulu Delima",
    "country": "MY",
    "segment": "Public hospital",
    "contract_end": "2027-02"
@@ -686,7 +686,7 @@
   }
  ],
  "stuck_demand": {
-  "sgd": 311976,
+  "sgd": 312170,
   "prs": 12
  },
  "pull_through_placements": 0

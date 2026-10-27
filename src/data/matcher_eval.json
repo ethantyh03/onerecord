@@ -1,6 +1,6 @@
 {
- "isMock": true,
- "threshold": 0.85,
+ "isMock": false,
+ "threshold": 0.905,
  "tunedOn": [
   "SG",
   "MY"
@@ -10,153 +10,223 @@
   "VN",
   "MM"
  ],
- "method": "Blocking on country + phonetic first token; score = max(token-set, Jaro-Winkler) on the normalised name, + tax ID, postcode, phone/email domain. Threshold chosen to maximise F1 on SG+MY, then frozen.",
+ "method": "Blocking: same recorded country and a shared Soundex code on any distinctive name word, or the same tax ID in any country; a record whose phone dialling code points to another country is also compared in that country. Score: the live intake scorer (src/lib/engine/dedupe.ts, ported 1:1 to Python and parity-tested): max(Jaro-Winkler, token-set ratio) on the normalised name (lowercase, punctuation and legal suffixes removed, abbreviations expanded), capped by how much of the distinctive wording both names share; the same tax ID lifts it to 0.97; same postcode, phone or company email domain add 0.03 each. Matches are grouped into golden IDs (transitive). Blocking design and threshold (0.905, the middle of the F1-best range) were chosen on SG+MY only, then frozen and scored once on TH/VN/MM. The duplicates were generated with typos, word reorder, romanisation, blank tax IDs and other address formats that the normaliser does not know about.",
  "heldOutMetrics": {
-  "precision": 0.89,
-  "recall": 0.86,
-  "f1": 0.875,
-  "tp": 31,
-  "fp": 4,
-  "fn": 5,
-  "pairsScored": 1240,
-  "truePairs": 36
+  "precision": 0.929,
+  "recall": 0.867,
+  "f1": 0.897,
+  "tp": 13,
+  "fp": 1,
+  "fn": 2,
+  "pairsScored": 1088,
+  "truePairs": 15
  },
  "tuningMetrics": {
-  "precision": 0.92,
-  "recall": 0.88,
-  "f1": 0.9,
-  "tp": 44,
-  "fp": 4,
-  "fn": 6
+  "precision": 0.917,
+  "recall": 1.0,
+  "f1": 0.957,
+  "tp": 11,
+  "fp": 1,
+  "fn": 0
  },
  "plain": {
-  "precision": "Of 100 duplicate warnings, 89 are real",
-  "recall": "Catches 86 of every 100 real duplicates"
+  "precision": "Of 100 duplicate warnings, 93 are real",
+  "recall": "Catches 87 of every 100 real duplicates"
  },
  "prCurve": [
   {
    "threshold": 0.7,
-   "precision": 0.71,
-   "recall": 0.97
+   "precision": 0.093,
+   "recall": 0.933
   },
   {
    "threshold": 0.75,
-   "precision": 0.79,
-   "recall": 0.95
+   "precision": 0.25,
+   "recall": 0.933
   },
   {
    "threshold": 0.8,
-   "precision": 0.86,
-   "recall": 0.92
+   "precision": 0.722,
+   "recall": 0.867
   },
   {
    "threshold": 0.83,
-   "precision": 0.89,
-   "recall": 0.9
+   "precision": 0.812,
+   "recall": 0.867
   },
   {
    "threshold": 0.85,
-   "precision": 0.91,
-   "recall": 0.87
+   "precision": 0.812,
+   "recall": 0.867
   },
   {
    "threshold": 0.88,
-   "precision": 0.94,
-   "recall": 0.8
+   "precision": 0.929,
+   "recall": 0.867
   },
   {
    "threshold": 0.9,
-   "precision": 0.96,
-   "recall": 0.72
+   "precision": 0.929,
+   "recall": 0.867
+  },
+  {
+   "threshold": 0.905,
+   "precision": 0.929,
+   "recall": 0.867
+  },
+  {
+   "threshold": 0.93,
+   "precision": 1.0,
+   "recall": 0.867
   },
   {
    "threshold": 0.95,
-   "precision": 0.99,
-   "recall": 0.51
+   "precision": 1.0,
+   "recall": 0.733
+  },
+  {
+   "threshold": 0.97,
+   "precision": 1.0,
+   "recall": 0.733
   }
  ],
  "perPerturbation": [
   {
    "type": "abbreviation",
-   "label": "Abbreviations (Hosp, Natl, Ctr)",
-   "n": 9,
+   "label": "Abbreviations (Hosp, Med Ctr, S/B)",
+   "n": 7,
    "recall": 1.0
   },
   {
    "type": "typo",
    "label": "Typos",
-   "n": 7,
-   "recall": 0.86
+   "n": 3,
+   "recall": 1.0
   },
   {
    "type": "word_reorder",
    "label": "Word reorder",
-   "n": 6,
-   "recall": 0.83
+   "n": 3,
+   "recall": 1.0
   },
   {
    "type": "romanisation",
-   "label": "Thai/Vietnamese romanisation variants",
-   "n": 6,
-   "recall": 0.67
+   "label": "Thai/Vietnamese/Burmese romanisation variants",
+   "n": 8,
+   "recall": 0.75
   },
   {
    "type": "blank_tax_id",
-   "label": "Blank tax ID",
-   "n": 5,
-   "recall": 0.8
+   "label": "Blank tax ID on the duplicate",
+   "n": 8,
+   "recall": 0.75
   },
   {
    "type": "address_format",
    "label": "Different address format",
-   "n": 3,
+   "n": 4,
    "recall": 1.0
+  },
+  {
+   "type": "cross_entity",
+   "label": "Created by another entity (SPD/QTS/QTG)",
+   "n": 8,
+   "recall": 0.875
+  },
+  {
+   "type": "misattributed_country",
+   "label": "Booked under the wrong country",
+   "n": 1,
+   "recall": 0.0
   }
  ],
  "examples": [
   {
    "kind": "missed",
    "a": {
-    "cardCode": "C-VN-00001",
-    "cardName": "Song Sen General Hospital",
-    "country": "VN"
+    "cardCode": "C-TH-00025",
+    "cardName": "Chao Phraya Rim Hospital",
+    "country": "TH"
    },
    "b": {
-    "cardCode": "C-VN-00049",
-    "cardName": "Bệnh viện Đa khoa Sông Sen",
-    "country": "VN"
+    "cardCode": "C-TH-00088",
+    "cardName": "Jao Praya Rim Hospital",
+    "country": "TH"
    },
-   "score": 0.62,
-   "why": "Vietnamese name vs English name share only 'Song Sen'; the normaliser doesn't translate 'Bệnh viện Đa khoa' to 'General Hospital'. Same phone saved the cluster in production via the second record."
+   "score": 0.777,
+   "why": "The distinctive words are romanised differently (Chao/Jao, Phraya/Praya), so only 'rim' matches on both sides. Name scored 0.69; same postcode, phone number and email domain added +0.09, so the total (0.78) stayed under the 0.905 threshold."
   },
   {
    "kind": "missed",
    "a": {
-    "cardCode": "C-MM-00001",
-    "cardName": "Yangon Lakeside Hospital",
-    "country": "MM"
+    "cardCode": "C-SG-00076",
+    "cardName": "Song Sen International Hospital",
+    "country": "SG"
    },
    "b": {
-    "cardCode": "C-MM-00029",
-    "cardName": "Rangoon Lakeside Hosp",
-    "country": "MM"
+    "cardCode": "C-VN-00035",
+    "cardName": "Bệnh viện Quốc tế Sông Sen",
+    "country": "VN"
    },
-   "score": 0.81,
-   "why": "Old romanisation (Rangoon) of Yangon plus a blank tax ID; just under the 0.85 threshold."
+   "score": 0.534,
+   "why": "One record is booked under SG, but its +84 phone number put it next to the VN record, so the pair was compared. The names are a translation, not a spelling variant ('quoc te' means 'International'), and the normaliser does not translate, so only 'song sen' matches on both sides. Name scored 0.44; same postcode, phone number and email domain added +0.09, so the total (0.53) stayed under the 0.905 threshold."
   },
   {
    "kind": "false_positive",
    "a": {
-    "cardName": "Chao Phraya Riverside Hospital",
-    "country": "TH"
+    "cardCode": "C-MM-00015",
+    "cardName": "Thiri Mingalar Clinic",
+    "country": "MM"
    },
    "b": {
-    "cardName": "Chao Phraya Riverside Clinic",
-    "country": "TH"
+    "cardCode": "C-MM-00039",
+    "cardName": "Thiri Mingalar Hospital",
+    "country": "MM"
    },
-   "score": 0.88,
-   "why": "Different legal entities (hospital and an unrelated clinic) on the same road with the same postcode; name tokens nearly identical."
+   "score": 0.928,
+   "why": "Different organisations with the same distinctive name, differing only by facility word (clinic vs hospital). Facility words are deliberately treated as generic so 'Hosp' vs 'Hospital' still matches, which makes a hospital and a clinic of the same name look alike. Score 0.93."
   }
  ],
- "duplicateRate": 0.0565
+ "duplicateRate": 0.0644,
+ "predictedDuplicateRate": 0.0644,
+ "records": 388,
+ "goldenCustomersTrue": 363,
+ "goldenCustomersPredicted": 363,
+ "heldOutRecords": 215,
+ "comparisons": {
+  "allPossiblePairs": 75078,
+  "pairsScored": 1712,
+  "reductionRatio": 0.9772
+ },
+ "blockingAblation": [
+  {
+   "blocking": "country + Soundex of first distinctive word",
+   "pairsScoredSGMY": 168,
+   "threshold": 0.905,
+   "f1SGMY": 0.737,
+   "recallSGMY": 0.636,
+   "precisionSGMY": 0.875
+  },
+  {
+   "blocking": "country + Soundex of any distinctive word",
+   "pairsScoredSGMY": 606,
+   "threshold": 0.905,
+   "f1SGMY": 0.857,
+   "recallSGMY": 0.818,
+   "precisionSGMY": 0.9
+  },
+  {
+   "blocking": "any distinctive word + dialling-code country check (chosen)",
+   "pairsScoredSGMY": 624,
+   "threshold": 0.905,
+   "f1SGMY": 0.957,
+   "recallSGMY": 1.0,
+   "precisionSGMY": 0.917
+  }
+ ],
+ "notes": [
+  "13 of 15 held-out duplicate pairs found; 1 false warning(s) among 14.",
+  "Small sample: one pair moves recall by about 7 points on the held-out countries.",
+  "Merging duplicate records alone does not change any country x product total; only records booked under the wrong country or product do."
+ ]
 }
