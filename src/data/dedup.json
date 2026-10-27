@@ -1,0 +1,213 @@
+{
+ "isMock": true,
+ "customers": {
+  "rawRecords": 301,
+  "goldenCustomers": 284,
+  "duplicateRecords": 17,
+  "duplicateRate": 0.0565,
+  "clustersOf2": 13,
+  "clustersOf3Plus": 2
+ },
+ "byCountry": [
+  {
+   "country": "SG",
+   "rawRecords": 86,
+   "goldenCustomers": 81,
+   "duplicateRecords": 3,
+   "sgdMisattributedIn12m": 1040989,
+   "sgdMisattributedOut12m": 0,
+   "netCorrectionSgd12m": -1040989,
+   "pctOfCountry12m": -0.057
+  },
+  {
+   "country": "MY",
+   "rawRecords": 76,
+   "goldenCustomers": 72,
+   "duplicateRecords": 5,
+   "sgdMisattributedIn12m": 0,
+   "sgdMisattributedOut12m": 693347,
+   "netCorrectionSgd12m": 693347,
+   "pctOfCountry12m": 0.0457
+  },
+  {
+   "country": "TH",
+   "rawRecords": 58,
+   "goldenCustomers": 55,
+   "duplicateRecords": 3,
+   "sgdMisattributedIn12m": 0,
+   "sgdMisattributedOut12m": 0,
+   "netCorrectionSgd12m": 0,
+   "pctOfCountry12m": 0.0
+  },
+  {
+   "country": "VN",
+   "rawRecords": 51,
+   "goldenCustomers": 48,
+   "duplicateRecords": 4,
+   "sgdMisattributedIn12m": 0,
+   "sgdMisattributedOut12m": 347642,
+   "netCorrectionSgd12m": 347642,
+   "pctOfCountry12m": 0.0389
+  },
+  {
+   "country": "MM",
+   "rawRecords": 30,
+   "goldenCustomers": 28,
+   "duplicateRecords": 2,
+   "sgdMisattributedIn12m": 0,
+   "sgdMisattributedOut12m": 0,
+   "netCorrectionSgd12m": 0,
+   "pctOfCountry12m": 0.0
+  }
+ ],
+ "misattribution": {
+  "startedMonth": "2026-01",
+  "totalSgdMoved12m": 1040989,
+  "description": "From Jan 2026 two SG-coded duplicate records (created by SG staff for regional billing) captured POs of a MY hospital and a VN hospital, so the raw SG series gains a level and the MY/VN series lose one."
+ },
+ "miscategorisation": {
+  "units12m": 921,
+  "sgd12m": 170391,
+  "country": "TH",
+  "fromProduct": "A",
+  "toProduct": "B",
+  "items": [
+   {
+    "itemCode": "I-B-000875",
+    "itemName": "Influenza A/B Ag Rapid Test 25T",
+    "recordedProduct": "B",
+    "trueProduct": "A",
+    "recordedCategory": "Lab consumable",
+    "trueCategory": "IVD reagent"
+   },
+   {
+    "itemCode": "I-B-000882",
+    "itemName": "Chikungunya IgM Rapid Test 20T",
+    "recordedProduct": "B",
+    "trueProduct": "A",
+    "recordedCategory": "Lab consumable",
+    "trueCategory": "IVD reagent"
+   }
+  ]
+ },
+ "examples": [
+  {
+   "country": "SG",
+   "goldenId": "G-MY-0002",
+   "title": "Two 'SG customers' are really a MY and a VN hospital",
+   "records": [
+    {
+     "cardCode": "C-SG-00082",
+     "cardName": "Taman Seri Medical Ctr (SG billing)",
+     "entity": "SPD",
+     "country": "SG"
+    },
+    {
+     "cardCode": "C-SG-00083",
+     "cardName": "Benh vien Da khoa Song Sen",
+     "entity": "QTG",
+     "country": "SG"
+    }
+   ],
+   "rawStory": "Raw: two new SG customers from Jan 2026 worth S$1.04M in the last 12 months.",
+   "dedupStory": "De-duplicated: they are Taman Seri Medical Centre (MY) and Song Sen General Hospital (VN). SG's 12M value falls by 5.7%."
+  },
+  {
+   "country": "MY",
+   "goldenId": "G-MY-0001",
+   "title": "A top-3 account is shrinking, hidden behind a 'new' customer",
+   "records": [
+    {
+     "cardCode": "C-MY-00001",
+     "cardName": "Bukit Damai Specialist Hospital",
+     "entity": "SPD",
+     "country": "MY"
+    },
+    {
+     "cardCode": "C-MY-00073",
+     "cardName": "Bukit Damai Specialist Hosp. Sdn Bhd",
+     "entity": "SPD",
+     "country": "MY"
+    },
+    {
+     "cardCode": "C-MY-00074",
+     "cardName": "BDSH - Bukit Damai Spec. Hospital",
+     "entity": "QTS",
+     "country": "MY"
+    }
+   ],
+   "rawStory": "Raw: one customer lost (no POs after Mar 2026), one new customer (first PO Apr 2026), one flat.",
+   "dedupStory": "De-duplicated: one hospital, a top-3 MY account, down 35% year on year."
+  },
+  {
+   "country": "TH",
+   "goldenId": "G-TH-0001",
+   "title": "The real cross-sell gap is consumables, not instruments",
+   "records": [
+    {
+     "cardCode": "C-TH-00001",
+     "cardName": "Siam Lotus Hospital",
+     "entity": "SPD",
+     "country": "TH"
+    },
+    {
+     "cardCode": "C-TH-00056",
+     "cardName": "Siamlotus Hosp. Co., Ltd.",
+     "entity": "QTS",
+     "country": "TH"
+    }
+   ],
+   "rawStory": "Raw: an 'A-only' SPD customer and a separate 'C-only' QTS customer, two false cross-sell gaps.",
+   "dedupStory": "De-duplicated: one hospital that buys reagents (A) and instruments (C) but no lab consumables (B)."
+  },
+  {
+   "country": "VN",
+   "goldenId": "G-VN-0001",
+   "title": "VN's growth is understated",
+   "records": [
+    {
+     "cardCode": "C-VN-00001",
+     "cardName": "Song Sen General Hospital",
+     "entity": "QTG",
+     "country": "VN"
+    },
+    {
+     "cardCode": "C-VN-00049",
+     "cardName": "Bệnh viện Đa khoa Sông Sen",
+     "entity": "SPD",
+     "country": "VN"
+    },
+    {
+     "cardCode": "C-SG-00083",
+     "cardName": "Benh vien Da khoa Song Sen",
+     "entity": "QTG",
+     "country": "SG"
+    }
+   ],
+   "rawStory": "Raw: Song Sen General Hospital appears under three spellings, one of them coded to SG.",
+   "dedupStory": "De-duplicated: S$348k of VN orders move back from SG (3.9% of VN's 12M value)."
+  },
+  {
+   "country": "MM",
+   "goldenId": "G-MM-0001",
+   "title": "A 'lost' customer that never left",
+   "records": [
+    {
+     "cardCode": "C-MM-00001",
+     "cardName": "Yangon Lakeside Hospital",
+     "entity": "SPD",
+     "country": "MM"
+    },
+    {
+     "cardCode": "C-MM-00029",
+     "cardName": "Rangoon Lakeside Hosp",
+     "entity": "SPD",
+     "country": "MM"
+    }
+   ],
+   "rawStory": "Raw: Yangon Lakeside Hospital looks lost and 'Rangoon Lakeside Hosp' looks new.",
+   "dedupStory": "De-duplicated: the same hospital (Rangoon is the old romanisation of Yangon), ordering steadily."
+  }
+ ],
+ "note": "Merging duplicate customers alone does not change country × product totals. Only misattribution (wrong country) and miscategorisation (wrong product) move value between cells, and those are the only changes the de-duplicated view shows."
+}

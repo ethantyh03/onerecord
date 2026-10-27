@@ -1,0 +1,319 @@
+{
+ "isMock": true,
+ "generatedAt": "2026-10-28T02:00:00+08:00",
+ "seed": 42,
+ "synthetic": true,
+ "generator": "analytics/run_all.py --seed 42 (mock contract v1)",
+ "window": {
+  "label": "Oct 2025 – Sep 2026",
+  "start": "2025-10",
+  "end": "2026-09",
+  "priorStart": "2024-10",
+  "priorEnd": "2025-09",
+  "momentumStart": "2026-07",
+  "momentumEnd": "2026-09",
+  "historyStart": "2023-10",
+  "historyEnd": "2026-09",
+  "forecastStart": "2026-10",
+  "forecastEnd": "2026-12"
+ },
+ "growthFormula": "Growth = PO value (Oct 2025–Sep 2026) ÷ PO value (Oct 2024–Sep 2025) − 1, per country × product, on de-duplicated customers (golden IDs). SGD across products; units within a product.",
+ "momentumFormula": "Momentum = PO value (Jul–Sep 2026) ÷ PO value (Jul–Sep 2025) − 1",
+ "wapeFormula": "WAPE = Σ|actual − forecast| ÷ Σ actual",
+ "biasFormula": "Bias = Σ(forecast − actual) ÷ Σ actual",
+ "seasonalityNote": "We do not compare half-years: dengue season, fiscal-year flushes and CNY/Tet would make that seasonality, not growth.",
+ "currency": "SGD",
+ "fx": [
+  {
+   "country": "SG",
+   "currency": "SGD",
+   "sgdPerUnit": 1.0
+  },
+  {
+   "country": "MY",
+   "currency": "MYR",
+   "sgdPerUnit": 0.3
+  },
+  {
+   "country": "TH",
+   "currency": "THB",
+   "sgdPerUnit": 0.039
+  },
+  {
+   "country": "VN",
+   "currency": "VND",
+   "sgdPerUnit": 5.2e-05
+  },
+  {
+   "country": "MM",
+   "currency": "MMK",
+   "sgdPerUnit": 0.00063
+  }
+ ],
+ "params": {
+  "seed": 42,
+  "historyMonths": 36,
+  "customersGolden": 284,
+  "customerRecords": 301,
+  "duplicateRate": 0.0565,
+  "items": 120,
+  "misattributionStart": "2026-01",
+  "misattributionShareMY": 0.0457,
+  "misattributionShareVN": 0.0389,
+  "miscategorisationShareTH_A": 0.03,
+  "unitPriceA": 185.0,
+  "unitPriceB": 42.0,
+  "unitPriceC": 36000.0,
+  "backtestOrigins": "2026-03,2026-04,2026-05,2026-06,2026-07,2026-08",
+  "matcherThreshold": 0.85,
+  "crossSellConversion": 0.2,
+  "dropOffSaveRate": 0.5,
+  "stuckDemandLeakRate": 0.1
+ },
+ "modelCard": {
+  "purpose": "Give regional management one consistent view of customer demand by country × product, and show how much clean master data changes it.",
+  "intendedUse": "Illustrative prototype on synthetic data; methods are meant to be rerun on SAP B1 extracts in the pilot.",
+  "notIntendedFor": [
+   "Real stock or budget decisions before the pilot validates the method on real data",
+   "Forecasting Product C (instruments), which is planned from the tender/PR pipeline"
+  ],
+  "methods": [
+   {
+    "name": "Entity resolution",
+    "detail": "Country + phonetic blocking, name token-set / Jaro-Winkler + tax ID + postcode + phone/email; threshold tuned on SG+MY, reported on TH/VN/MM."
+   },
+   {
+    "name": "Forecast",
+    "detail": "Damped Holt-Winters ETS vs rolling 6/12-month average and seasonal naive; leak-free 6-origin backtest."
+   },
+   {
+    "name": "Signals",
+    "detail": "Drop-off (trailing-6M slope + recency vs reorder interval); cross-sell (peer gap within segment; installed-base pull-through as a signal, not a forecast feature)."
+   }
+  ],
+  "limitations": [
+   "All data is synthetic; the planted patterns are known in advance, so good scores here show the pipeline works, not that the patterns exist in Lives Group's data.",
+   "Fixed illustrative FX rates.",
+   "Product C is excluded from the forecast headline.",
+   "The TS duplicate matcher at intake is a simpler port of the Python matcher."
+  ]
+ },
+ "dataHonesty": [
+  {
+   "item": "Customers, items, orders, PRs, enquiries, MDM history",
+   "status": "synthetic",
+   "detail": "Generated with seed 42; all names fictional except the pinned demo record."
+  },
+  {
+   "item": "Dengue seasonality and year swings",
+   "status": "synthetic",
+   "detail": "Shape taken from NEA / MOH / KKM case data (research log)."
+  },
+  {
+   "item": "Fiscal-year flushes on instruments",
+   "status": "synthetic",
+   "detail": "SG/MM Apr–Mar, MY/VN Jan–Dec, TH Oct–Sep (research log)."
+  },
+  {
+   "item": "Value mix A ≈ 3× C",
+   "status": "assumption",
+   "detail": "Sysmex FY3/2026: reagents 61.6%, instruments 20.6%."
+  },
+  {
+   "item": "Backtest method and metrics",
+   "status": "validated",
+   "detail": "Leak-free and pre-registered; validated on synthetic data only."
+  },
+  {
+   "item": "Matcher precision/recall",
+   "status": "validated",
+   "detail": "Measured on held-out countries with perturbations the normaliser was not written for."
+  },
+  {
+   "item": "Forecast gain on real data",
+   "status": "needs_pilot",
+   "detail": "Must be re-measured on 24–36 months of real B1 orders."
+  },
+  {
+   "item": "Real duplicate rate",
+   "status": "needs_pilot",
+   "detail": "A13 assumes 6%; the pilot measures it on OCRD."
+  },
+  {
+   "item": "Conversion rates on cross-sell / save rate on drop-off",
+   "status": "assumption",
+   "detail": "20% / 50%, shown next to every S$ figure."
+  }
+ ],
+ "plantedPatterns": [
+  {
+   "id": "hero_my",
+   "name": "Hidden shrinking account (MY)",
+   "description": "3 records (2 SPD spellings + 1 QTS): one stops after Mar 2026, one starts Apr 2026, one flat; merged it is a top-3 MY account at about −35% YoY.",
+   "source": "Brief S4 (duplicates hide drop-off)",
+   "assertion": "Merged YoY between −30% and −40%"
+  },
+  {
+   "id": "misattribution",
+   "name": "Country misattribution from Jan 2026",
+   "description": "SG-coded duplicates capture a MY and a VN hospital's POs from Jan 2026, a level shift in the raw series.",
+   "source": "Brief S4 (regional numbers wrong)",
+   "assertion": "Moves 3–8% of the affected country's 12M value"
+  },
+  {
+   "id": "false_crosssell",
+   "name": "False cross-sell gap (TH)",
+   "description": "One hospital looks 'A only' (SPD) plus 'C only' (QTS); merged, the real gap is B.",
+   "source": "Brief S4 (cross-sell blind spot)",
+   "assertion": "Merged gap = B"
+  },
+  {
+   "id": "dengue",
+   "name": "Dengue seasonality and swings",
+   "description": "Peaks by country (SG May–Oct, TH Jun–Sep, VN Jul–Nov, MM Jun–Aug, MY mild Nov–Mar); 2024 high → 2025 low; VN 2026 surge.",
+   "source": "NEA, KKM, WHO SEARO, VN press (research log)",
+   "assertion": "ETS beats rolling-12 on A in ≥3 of 5 countries"
+  },
+  {
+   "id": "holidays",
+   "name": "Holiday dips",
+   "description": "CNY (SG/MY Feb), Tet (VN Feb), Songkran / Thingyan (TH/MM Apr).",
+   "source": "MOM, VN government (research log)",
+   "assertion": "Visible Feb/Apr dips"
+  },
+  {
+   "id": "fiscal",
+   "name": "Fiscal-year flushes on C",
+   "description": "SG/MM Mar, MY/VN Dec, TH Sep.",
+   "source": "Government fiscal calendars (research log)",
+   "assertion": "C peaks in the fiscal year-end month"
+  },
+  {
+   "id": "dup_rate",
+   "name": "Duplicate rate",
+   "description": "≈6% of customer records are duplicates.",
+   "source": "A13 (illustrative)",
+   "assertion": "Held-out P and R each between 0.80 and 0.97"
+  },
+  {
+   "id": "miscategorisation",
+   "name": "Miscategorised items (TH)",
+   "description": "Two rapid-test kits coded as lab consumables (B) instead of reagents (A).",
+   "source": "Brief S4 (inconsistent categorisation)",
+   "assertion": "≈3% of TH A value sits in B in the raw view"
+  }
+ ],
+ "validatedVsPilot": {
+  "validatedHere": [
+   "Pipeline runs end to end and is reproducible from one seed",
+   "Backtest is leak-free; losses are reported",
+   "Matcher measured on held-out countries",
+   "Falsification: no advantage when there is no signal"
+  ],
+  "needsPilot": [
+   "Forecast gain on real orders",
+   "Real duplicate and misattribution rates",
+   "Conversion and save rates",
+   "Analyst hours saved (A21)"
+  ]
+ },
+ "pilotPlan": {
+  "summary": "6-week pilot in SG + MY on Customer + Item domains for SPD + QTS; rerun this pipeline on B1 extracts in week 1.",
+  "weeks": 6,
+  "scope": "SG + MY · Customer + Item · SPD + QTS",
+  "sapMapping": [
+   {
+    "sapTable": "ORDR / RDR1",
+    "sapDescription": "Sales order header / lines",
+    "feeds": "Purchase orders (volume)",
+    "ourFile": "pos.csv",
+    "keyFields": [
+     "DocEntry",
+     "DocDate",
+     "CardCode",
+     "ItemCode",
+     "Quantity",
+     "LineTotal"
+    ]
+   },
+   {
+    "sapTable": "OQUT / QUT1",
+    "sapDescription": "Sales quotations",
+    "feeds": "Purchase requests (pipeline)",
+    "ourFile": "prs.csv",
+    "keyFields": [
+     "DocEntry",
+     "DocDate",
+     "CardCode",
+     "DocStatus",
+     "DocTotal"
+    ]
+   },
+   {
+    "sapTable": "OCRD / CRD1",
+    "sapDescription": "Business partner master / addresses",
+    "feeds": "Customer records for de-duplication",
+    "ourFile": "customers_records.csv",
+    "keyFields": [
+     "CardCode",
+     "CardName",
+     "LicTradNum",
+     "Phone1",
+     "E_Mail",
+     "ZipCode"
+    ]
+   },
+   {
+    "sapTable": "OITM / OITB",
+    "sapDescription": "Item master / item groups",
+    "feeds": "Item → product group mapping",
+    "ourFile": "items.csv",
+    "keyFields": [
+     "ItemCode",
+     "ItemName",
+     "ItmsGrpCod"
+    ]
+   }
+  ],
+  "steps": [
+   "Week 1: extract ORDR/RDR1, OQUT, OCRD, OITM per entity database; run the pipeline unchanged",
+   "Week 2: MDM team reviews the top 50 duplicate suggestions; measure real precision",
+   "Weeks 3–6: rerun the backtest monthly; compare with today's rolling average",
+   "Week 6: keep/kill on the KPIs in the business case"
+  ]
+ },
+ "assumptions": [
+  {
+   "id": "A1",
+   "text": "Five countries: SG, MY, TH, VN, MM."
+  },
+  {
+   "id": "A2",
+   "text": "Entities: SPD (A, diagnostics), QTS (C, instruments), QTG (B, consumables)."
+  },
+  {
+   "id": "A4",
+   "text": "SGD with fixed illustrative FX."
+  },
+  {
+   "id": "A5",
+   "text": "History Oct 2023–Sep 2026; window Oct 2025–Sep 2026; forecast Oct–Dec 2026."
+  },
+  {
+   "id": "A6",
+   "text": "Only confirmed POs are volume; PRs are pipeline; enquiries a leading indicator; follow-ups excluded; MDM requests are internal work."
+  },
+  {
+   "id": "A7",
+   "text": "Units within a product; SGD across products."
+  },
+  {
+   "id": "A13",
+   "text": "≈6% of customer records are duplicates."
+  },
+  {
+   "id": "A17",
+   "text": "All data is synthetic with documented planted patterns."
+  }
+ ]
+}

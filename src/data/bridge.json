@@ -1,0 +1,1260 @@
+{
+ "isMock": true,
+ "window": {
+  "label": "Oct 2025 – Sep 2026",
+  "start": "2025-10",
+  "end": "2026-09",
+  "priorStart": "2024-10",
+  "priorEnd": "2025-09",
+  "momentumStart": "2026-07",
+  "momentumEnd": "2026-09",
+  "historyStart": "2023-10",
+  "historyEnd": "2026-09",
+  "forecastStart": "2026-10",
+  "forecastEnd": "2026-12"
+ },
+ "definition": "Prior 12M + new + expanding − declining − lost = current 12M. Customers are classified on the view selected: raw SAP records, or de-duplicated golden IDs.",
+ "countries": [
+  {
+   "country": "SG",
+   "raw": [
+    {
+     "key": "prior",
+     "label": "Prior 12M (Oct 2024–Sep 2025)",
+     "sgd": 18212403,
+     "customers": 74
+    },
+    {
+     "key": "new",
+     "label": "New customers",
+     "sgd": 2170158,
+     "customers": 7
+    },
+    {
+     "key": "expanding",
+     "label": "Expanding",
+     "sgd": 2036155,
+     "customers": 28
+    },
+    {
+     "key": "declining",
+     "label": "Declining",
+     "sgd": -2003364,
+     "customers": 20
+    },
+    {
+     "key": "lost",
+     "label": "Lost customers",
+     "sgd": -1107314,
+     "customers": 7
+    },
+    {
+     "key": "current",
+     "label": "Current 12M (Oct 2025–Sep 2026)",
+     "sgd": 19308038,
+     "customers": 75
+    }
+   ],
+   "dedup": [
+    {
+     "key": "prior",
+     "label": "Prior 12M (Oct 2024–Sep 2025)",
+     "sgd": 18212403,
+     "customers": 66
+    },
+    {
+     "key": "new",
+     "label": "New customers",
+     "sgd": 910620,
+     "customers": 5
+    },
+    {
+     "key": "expanding",
+     "label": "Expanding",
+     "sgd": 2058011,
+     "customers": 28
+    },
+    {
+     "key": "declining",
+     "label": "Declining",
+     "sgd": -2003364,
+     "customers": 20
+    },
+    {
+     "key": "lost",
+     "label": "Lost customers",
+     "sgd": -910620,
+     "customers": 5
+    },
+    {
+     "key": "current",
+     "label": "Current 12M (Oct 2025–Sep 2026)",
+     "sgd": 18267050,
+     "customers": 67
+    }
+   ],
+   "example": {
+    "country": "SG",
+    "goldenId": "G-MY-0002",
+    "title": "Two 'SG customers' are really a MY and a VN hospital",
+    "records": [
+     {
+      "cardCode": "C-SG-00082",
+      "cardName": "Taman Seri Medical Ctr (SG billing)",
+      "entity": "SPD",
+      "country": "SG"
+     },
+     {
+      "cardCode": "C-SG-00083",
+      "cardName": "Benh vien Da khoa Song Sen",
+      "entity": "QTG",
+      "country": "SG"
+     }
+    ],
+    "rawStory": "Raw: two new SG customers from Jan 2026 worth S$1.04M in the last 12 months.",
+    "dedupStory": "De-duplicated: they are Taman Seri Medical Centre (MY) and Song Sen General Hospital (VN). SG's 12M value falls by 5.7%."
+   },
+   "topAccounts": {
+    "raw": [
+     {
+      "cardCode": "C-SG-00001",
+      "name": "Kent Vale General Hospital",
+      "goldenId": "G-SG-0001",
+      "sgd12m": 2377753,
+      "sgdPrior12m": 1999009,
+      "yoy": 0.1895,
+      "status": "expanding"
+     },
+     {
+      "cardCode": "C-SG-00002",
+      "name": "Marina Heights Medical Centre",
+      "goldenId": "G-SG-0002",
+      "sgd12m": 1969624,
+      "sgdPrior12m": 1636142,
+      "yoy": 0.2038,
+      "status": "expanding"
+     },
+     {
+      "cardCode": "C-SG-00003",
+      "name": "Tampines Ridge Hospital",
+      "goldenId": "G-SG-0003",
+      "sgd12m": 1355315,
+      "sgdPrior12m": 1303748,
+      "yoy": 0.0396,
+      "status": "expanding"
+     },
+     {
+      "cardCode": "C-SG-00004",
+      "name": "Bukit Teresa Specialist Centre",
+      "goldenId": "G-SG-0004",
+      "sgd12m": 1306555,
+      "sgdPrior12m": 1625399,
+      "yoy": -0.1962,
+      "status": "declining"
+     },
+     {
+      "cardCode": "C-SG-00005",
+      "name": "Orchard Crest Medical Clinic",
+      "goldenId": "G-SG-0005",
+      "sgd12m": 600218,
+      "sgdPrior12m": 529259,
+      "yoy": 0.1341,
+      "status": "expanding"
+     },
+     {
+      "cardCode": "C-SG-00006",
+      "name": "Jurong Lake Diagnostic Laboratory",
+      "goldenId": "G-SG-0006",
+      "sgd12m": 510340,
+      "sgdPrior12m": 452974,
+      "yoy": 0.1266,
+      "status": "expanding"
+     },
+     {
+      "cardCode": "C-SG-00007",
+      "name": "Novena Point Women's Clinic",
+      "goldenId": "G-SG-0007",
+      "sgd12m": 494379,
+      "sgdPrior12m": 450612,
+      "yoy": 0.0971,
+      "status": "expanding"
+     },
+     {
+      "cardCode": "C-SG-00008",
+      "name": "Serangoon Garden Family Clinic",
+      "goldenId": "G-SG-0008",
+      "sgd12m": 419626,
+      "sgdPrior12m": 356286,
+      "yoy": 0.1778,
+      "status": "expanding"
+     }
+    ],
+    "dedup": [
+     {
+      "goldenId": "G-SG-0001",
+      "name": "Kent Vale General Hospital",
+      "sgd12m": 2377753,
+      "sgdPrior12m": 1999009,
+      "yoy": 0.1895,
+      "records": 2
+     },
+     {
+      "goldenId": "G-SG-0002",
+      "name": "Marina Heights Medical Centre",
+      "sgd12m": 1969624,
+      "sgdPrior12m": 1636142,
+      "yoy": 0.2038,
+      "records": 2
+     },
+     {
+      "goldenId": "G-SG-0003",
+      "name": "Tampines Ridge Hospital",
+      "sgd12m": 1355315,
+      "sgdPrior12m": 1303748,
+      "yoy": 0.0396,
+      "records": 2
+     },
+     {
+      "goldenId": "G-SG-0004",
+      "name": "Bukit Teresa Specialist Centre",
+      "sgd12m": 1306555,
+      "sgdPrior12m": 1625399,
+      "yoy": -0.1962,
+      "records": 1
+     },
+     {
+      "goldenId": "G-SG-0005",
+      "name": "Orchard Crest Medical Clinic",
+      "sgd12m": 600218,
+      "sgdPrior12m": 529259,
+      "yoy": 0.1341,
+      "records": 1
+     },
+     {
+      "goldenId": "G-SG-0006",
+      "name": "Jurong Lake Diagnostic Laboratory",
+      "sgd12m": 510340,
+      "sgdPrior12m": 452974,
+      "yoy": 0.1266,
+      "records": 1
+     },
+     {
+      "goldenId": "G-SG-0007",
+      "name": "Novena Point Women's Clinic",
+      "sgd12m": 494379,
+      "sgdPrior12m": 450612,
+      "yoy": 0.0971,
+      "records": 1
+     },
+     {
+      "goldenId": "G-SG-0008",
+      "name": "Serangoon Garden Family Clinic",
+      "sgd12m": 419626,
+      "sgdPrior12m": 356286,
+      "yoy": 0.1778,
+      "records": 1
+     }
+    ]
+   }
+  },
+  {
+   "country": "MY",
+   "raw": [
+    {
+     "key": "prior",
+     "label": "Prior 12M (Oct 2024–Sep 2025)",
+     "sgd": 14813017,
+     "customers": 67
+    },
+    {
+     "key": "new",
+     "label": "New customers",
+     "sgd": 2060452,
+     "customers": 9
+    },
+    {
+     "key": "expanding",
+     "label": "Expanding",
+     "sgd": 1713413,
+     "customers": 25
+    },
+    {
+     "key": "declining",
+     "label": "Declining",
+     "sgd": -1311388,
+     "customers": 18
+    },
+    {
+     "key": "lost",
+     "label": "Lost customers",
+     "sgd": -2781967,
+     "customers": 8
+    },
+    {
+     "key": "current",
+     "label": "Current 12M (Oct 2025–Sep 2026)",
+     "sgd": 14493527,
+     "customers": 69
+    }
+   ],
+   "dedup": [
+    {
+     "key": "prior",
+     "label": "Prior 12M (Oct 2024–Sep 2025)",
+     "sgd": 14813017,
+     "customers": 60
+    },
+    {
+     "key": "new",
+     "label": "New customers",
+     "sgd": 1036911,
+     "customers": 6
+    },
+    {
+     "key": "expanding",
+     "label": "Expanding",
+     "sgd": 1410767,
+     "customers": 25
+    },
+    {
+     "key": "declining",
+     "label": "Declining",
+     "sgd": -1185041,
+     "customers": 18
+    },
+    {
+     "key": "lost",
+     "label": "Lost customers",
+     "sgd": -888781,
+     "customers": 5
+    },
+    {
+     "key": "current",
+     "label": "Current 12M (Oct 2025–Sep 2026)",
+     "sgd": 15186873,
+     "customers": 61
+    }
+   ],
+   "example": {
+    "country": "MY",
+    "goldenId": "G-MY-0001",
+    "title": "A top-3 account is shrinking, hidden behind a 'new' customer",
+    "records": [
+     {
+      "cardCode": "C-MY-00001",
+      "cardName": "Bukit Damai Specialist Hospital",
+      "entity": "SPD",
+      "country": "MY"
+     },
+     {
+      "cardCode": "C-MY-00073",
+      "cardName": "Bukit Damai Specialist Hosp. Sdn Bhd",
+      "entity": "SPD",
+      "country": "MY"
+     },
+     {
+      "cardCode": "C-MY-00074",
+      "cardName": "BDSH - Bukit Damai Spec. Hospital",
+      "entity": "QTS",
+      "country": "MY"
+     }
+    ],
+    "rawStory": "Raw: one customer lost (no POs after Mar 2026), one new customer (first PO Apr 2026), one flat.",
+    "dedupStory": "De-duplicated: one hospital, a top-3 MY account, down 35% year on year."
+   },
+   "topAccounts": {
+    "raw": [
+     {
+      "cardCode": "C-MY-00002",
+      "name": "Taman Seri Medical Centre",
+      "goldenId": "G-MY-0002",
+      "sgd12m": 1876870,
+      "sgdPrior12m": 1981548,
+      "yoy": -0.0528,
+      "status": "declining"
+     },
+     {
+      "cardCode": "C-MY-00003",
+      "name": "Sunway Medical Centre",
+      "goldenId": "G-MY-0003",
+      "sgd12m": 1080917,
+      "sgdPrior12m": 1098691,
+      "yoy": -0.0162,
+      "status": "flat"
+     },
+     {
+      "cardCode": "C-MY-00004",
+      "name": "Penang General Hospital",
+      "goldenId": "G-MY-0004",
+      "sgd12m": 742722,
+      "sgdPrior12m": 806971,
+      "yoy": -0.0796,
+      "status": "declining"
+     },
+     {
+      "cardCode": "C-MY-00074",
+      "name": "BDSH - Bukit Damai Spec. Hospital",
+      "goldenId": "G-MY-0001",
+      "sgd12m": 648000,
+      "sgdPrior12m": 648000,
+      "yoy": 0.0,
+      "status": "flat"
+     },
+     {
+      "cardCode": "C-MY-00005",
+      "name": "Klang Lembah Diagnostik",
+      "goldenId": "G-MY-0005",
+      "sgd12m": 449115,
+      "sgdPrior12m": 416060,
+      "yoy": 0.0794,
+      "status": "expanding"
+     },
+     {
+      "cardCode": "C-MY-00006",
+      "name": "Shah Alam Permata Hospital",
+      "goldenId": "G-MY-0006",
+      "sgd12m": 318920,
+      "sgdPrior12m": 277910,
+      "yoy": 0.1476,
+      "status": "expanding"
+     },
+     {
+      "cardCode": "C-MY-00007",
+      "name": "Ipoh Bukit Merah Clinic",
+      "goldenId": "G-MY-0007",
+      "sgd12m": 259134,
+      "sgdPrior12m": 298010,
+      "yoy": -0.1305,
+      "status": "declining"
+     },
+     {
+      "cardCode": "C-MY-00008",
+      "name": "Johor Selat Specialist Centre",
+      "goldenId": "G-MY-0008",
+      "sgd12m": 254972,
+      "sgdPrior12m": 239857,
+      "yoy": 0.063,
+      "status": "expanding"
+     },
+     {
+      "cardCode": "C-MY-00073",
+      "name": "Bukit Damai Specialist Hosp. Sdn Bhd",
+      "goldenId": "G-MY-0001",
+      "sgd12m": 210600,
+      "sgdPrior12m": 0,
+      "yoy": null,
+      "status": "new"
+     },
+     {
+      "cardCode": "C-MY-00001",
+      "name": "Bukit Damai Specialist Hospital",
+      "goldenId": "G-MY-0001",
+      "sgd12m": 194400,
+      "sgdPrior12m": 972000,
+      "yoy": -0.8,
+      "status": "lost"
+     }
+    ],
+    "dedup": [
+     {
+      "goldenId": "G-MY-0002",
+      "name": "Taman Seri Medical Centre",
+      "sgd12m": 1876870,
+      "sgdPrior12m": 1981548,
+      "yoy": -0.0528,
+      "records": 2
+     },
+     {
+      "goldenId": "G-MY-0003",
+      "name": "Sunway Medical Centre",
+      "sgd12m": 1080917,
+      "sgdPrior12m": 1098691,
+      "yoy": -0.0162,
+      "records": 1
+     },
+     {
+      "goldenId": "G-MY-0001",
+      "name": "Bukit Damai Specialist Hospital",
+      "sgd12m": 1053000,
+      "sgdPrior12m": 1620000,
+      "yoy": -0.35,
+      "records": 3,
+      "hero": true
+     },
+     {
+      "goldenId": "G-MY-0004",
+      "name": "Penang General Hospital",
+      "sgd12m": 742722,
+      "sgdPrior12m": 806971,
+      "yoy": -0.0796,
+      "records": 1
+     },
+     {
+      "goldenId": "G-MY-0005",
+      "name": "Klang Lembah Diagnostik",
+      "sgd12m": 449115,
+      "sgdPrior12m": 416060,
+      "yoy": 0.0794,
+      "records": 1
+     },
+     {
+      "goldenId": "G-MY-0006",
+      "name": "Shah Alam Permata Hospital",
+      "sgd12m": 318920,
+      "sgdPrior12m": 277910,
+      "yoy": 0.1476,
+      "records": 2
+     },
+     {
+      "goldenId": "G-MY-0007",
+      "name": "Ipoh Bukit Merah Clinic",
+      "sgd12m": 259134,
+      "sgdPrior12m": 298010,
+      "yoy": -0.1305,
+      "records": 1
+     },
+     {
+      "goldenId": "G-MY-0008",
+      "name": "Johor Selat Specialist Centre",
+      "sgd12m": 254972,
+      "sgdPrior12m": 239857,
+      "yoy": 0.063,
+      "records": 1
+     }
+    ]
+   }
+  },
+  {
+   "country": "TH",
+   "raw": [
+    {
+     "key": "prior",
+     "label": "Prior 12M (Oct 2024–Sep 2025)",
+     "sgd": 8878509,
+     "customers": 52
+    },
+    {
+     "key": "new",
+     "label": "New customers",
+     "sgd": 621496,
+     "customers": 6
+    },
+    {
+     "key": "expanding",
+     "label": "Expanding",
+     "sgd": 1337109,
+     "customers": 19
+    },
+    {
+     "key": "declining",
+     "label": "Declining",
+     "sgd": -621496,
+     "customers": 14
+    },
+    {
+     "key": "lost",
+     "label": "Lost customers",
+     "sgd": -435047,
+     "customers": 4
+    },
+    {
+     "key": "current",
+     "label": "Current 12M (Oct 2025–Sep 2026)",
+     "sgd": 9780571,
+     "customers": 53
+    }
+   ],
+   "dedup": [
+    {
+     "key": "prior",
+     "label": "Prior 12M (Oct 2024–Sep 2025)",
+     "sgd": 8878509,
+     "customers": 46
+    },
+    {
+     "key": "new",
+     "label": "New customers",
+     "sgd": 532711,
+     "customers": 4
+    },
+    {
+     "key": "expanding",
+     "label": "Expanding",
+     "sgd": 1345987,
+     "customers": 19
+    },
+    {
+     "key": "declining",
+     "label": "Declining",
+     "sgd": -621496,
+     "customers": 14
+    },
+    {
+     "key": "lost",
+     "label": "Lost customers",
+     "sgd": -355140,
+     "customers": 3
+    },
+    {
+     "key": "current",
+     "label": "Current 12M (Oct 2025–Sep 2026)",
+     "sgd": 9780571,
+     "customers": 47
+    }
+   ],
+   "example": {
+    "country": "TH",
+    "goldenId": "G-TH-0001",
+    "title": "The real cross-sell gap is consumables, not instruments",
+    "records": [
+     {
+      "cardCode": "C-TH-00001",
+      "cardName": "Siam Lotus Hospital",
+      "entity": "SPD",
+      "country": "TH"
+     },
+     {
+      "cardCode": "C-TH-00056",
+      "cardName": "Siamlotus Hosp. Co., Ltd.",
+      "entity": "QTS",
+      "country": "TH"
+     }
+    ],
+    "rawStory": "Raw: an 'A-only' SPD customer and a separate 'C-only' QTS customer, two false cross-sell gaps.",
+    "dedupStory": "De-duplicated: one hospital that buys reagents (A) and instruments (C) but no lab consumables (B)."
+   },
+   "topAccounts": {
+    "raw": [
+     {
+      "cardCode": "C-TH-00001",
+      "name": "Siam Lotus Hospital",
+      "goldenId": "G-TH-0001",
+      "sgd12m": 1990213,
+      "sgdPrior12m": 1946386,
+      "yoy": 0.0225,
+      "status": "expanding"
+     },
+     {
+      "cardCode": "C-TH-00002",
+      "name": "Chao Phraya Riverside Hospital",
+      "goldenId": "G-TH-0002",
+      "sgd12m": 735864,
+      "sgdPrior12m": 601700,
+      "yoy": 0.223,
+      "status": "expanding"
+     },
+     {
+      "cardCode": "C-TH-00003",
+      "name": "Sukhumvit Garden Clinic",
+      "goldenId": "G-TH-0003",
+      "sgd12m": 611527,
+      "sgdPrior12m": 545534,
+      "yoy": 0.121,
+      "status": "expanding"
+     },
+     {
+      "cardCode": "C-TH-00004",
+      "name": "Chiang Mai Doi Medical Centre",
+      "goldenId": "G-TH-0004",
+      "sgd12m": 432939,
+      "sgdPrior12m": 399600,
+      "yoy": 0.0834,
+      "status": "expanding"
+     },
+     {
+      "cardCode": "C-TH-00005",
+      "name": "Khon Kaen Isan Laboratory",
+      "goldenId": "G-TH-0005",
+      "sgd12m": 349464,
+      "sgdPrior12m": 338013,
+      "yoy": 0.0339,
+      "status": "expanding"
+     },
+     {
+      "cardCode": "C-TH-00006",
+      "name": "Phuket Andaman Hospital",
+      "goldenId": "G-TH-0006",
+      "sgd12m": 262349,
+      "sgdPrior12m": 258741,
+      "yoy": 0.0139,
+      "status": "flat"
+     },
+     {
+      "cardCode": "C-TH-00007",
+      "name": "Hat Yai Southern Clinic",
+      "goldenId": "G-TH-0007",
+      "sgd12m": 252956,
+      "sgdPrior12m": 231098,
+      "yoy": 0.0946,
+      "status": "expanding"
+     },
+     {
+      "cardCode": "C-TH-00008",
+      "name": "Nonthaburi Golden Hospital",
+      "goldenId": "G-TH-0008",
+      "sgd12m": 202727,
+      "sgdPrior12m": 196877,
+      "yoy": 0.0297,
+      "status": "expanding"
+     }
+    ],
+    "dedup": [
+     {
+      "goldenId": "G-TH-0001",
+      "name": "Siam Lotus Hospital",
+      "sgd12m": 1990213,
+      "sgdPrior12m": 1946386,
+      "yoy": 0.0225,
+      "records": 2
+     },
+     {
+      "goldenId": "G-TH-0002",
+      "name": "Chao Phraya Riverside Hospital",
+      "sgd12m": 735864,
+      "sgdPrior12m": 601700,
+      "yoy": 0.223,
+      "records": 2
+     },
+     {
+      "goldenId": "G-TH-0003",
+      "name": "Sukhumvit Garden Clinic",
+      "sgd12m": 611527,
+      "sgdPrior12m": 545534,
+      "yoy": 0.121,
+      "records": 1
+     },
+     {
+      "goldenId": "G-TH-0004",
+      "name": "Chiang Mai Doi Medical Centre",
+      "sgd12m": 432939,
+      "sgdPrior12m": 399600,
+      "yoy": 0.0834,
+      "records": 1
+     },
+     {
+      "goldenId": "G-TH-0005",
+      "name": "Khon Kaen Isan Laboratory",
+      "sgd12m": 349464,
+      "sgdPrior12m": 338013,
+      "yoy": 0.0339,
+      "records": 1
+     },
+     {
+      "goldenId": "G-TH-0006",
+      "name": "Phuket Andaman Hospital",
+      "sgd12m": 262349,
+      "sgdPrior12m": 258741,
+      "yoy": 0.0139,
+      "records": 2
+     },
+     {
+      "goldenId": "G-TH-0007",
+      "name": "Hat Yai Southern Clinic",
+      "sgd12m": 252956,
+      "sgdPrior12m": 231098,
+      "yoy": 0.0946,
+      "records": 1
+     },
+     {
+      "goldenId": "G-TH-0008",
+      "name": "Nonthaburi Golden Hospital",
+      "sgd12m": 202727,
+      "sgdPrior12m": 196877,
+      "yoy": 0.0297,
+      "records": 1
+     }
+    ]
+   }
+  },
+  {
+   "country": "VN",
+   "raw": [
+    {
+     "key": "prior",
+     "label": "Prior 12M (Oct 2024–Sep 2025)",
+     "sgd": 7684121,
+     "customers": 46
+    },
+    {
+     "key": "new",
+     "label": "New customers",
+     "sgd": 806833,
+     "customers": 8
+    },
+    {
+     "key": "expanding",
+     "label": "Expanding",
+     "sgd": 1156469,
+     "customers": 17
+    },
+    {
+     "key": "declining",
+     "label": "Declining",
+     "sgd": -731848,
+     "customers": 12
+    },
+    {
+     "key": "lost",
+     "label": "Lost customers",
+     "sgd": -334259,
+     "customers": 3
+    },
+    {
+     "key": "current",
+     "label": "Current 12M (Oct 2025–Sep 2026)",
+     "sgd": 8581316,
+     "customers": 47
+    }
+   ],
+   "dedup": [
+    {
+     "key": "prior",
+     "label": "Prior 12M (Oct 2024–Sep 2025)",
+     "sgd": 7684121,
+     "customers": 41
+    },
+    {
+     "key": "new",
+     "label": "New customers",
+     "sgd": 691571,
+     "customers": 5
+    },
+    {
+     "key": "expanding",
+     "label": "Expanding",
+     "sgd": 1167996,
+     "customers": 17
+    },
+    {
+     "key": "declining",
+     "label": "Declining",
+     "sgd": -384206,
+     "customers": 12
+    },
+    {
+     "key": "lost",
+     "label": "Lost customers",
+     "sgd": -230524,
+     "customers": 2
+    },
+    {
+     "key": "current",
+     "label": "Current 12M (Oct 2025–Sep 2026)",
+     "sgd": 8928958,
+     "customers": 42
+    }
+   ],
+   "example": {
+    "country": "VN",
+    "goldenId": "G-VN-0001",
+    "title": "VN's growth is understated",
+    "records": [
+     {
+      "cardCode": "C-VN-00001",
+      "cardName": "Song Sen General Hospital",
+      "entity": "QTG",
+      "country": "VN"
+     },
+     {
+      "cardCode": "C-VN-00049",
+      "cardName": "Bệnh viện Đa khoa Sông Sen",
+      "entity": "SPD",
+      "country": "VN"
+     },
+     {
+      "cardCode": "C-SG-00083",
+      "cardName": "Benh vien Da khoa Song Sen",
+      "entity": "QTG",
+      "country": "SG"
+     }
+    ],
+    "rawStory": "Raw: Song Sen General Hospital appears under three spellings, one of them coded to SG.",
+    "dedupStory": "De-duplicated: S$348k of VN orders move back from SG (3.9% of VN's 12M value)."
+   },
+   "topAccounts": {
+    "raw": [
+     {
+      "cardCode": "C-VN-00001",
+      "name": "Song Sen General Hospital",
+      "goldenId": "G-VN-0001",
+      "sgd12m": 947143,
+      "sgdPrior12m": 1072076,
+      "yoy": -0.1165,
+      "status": "declining"
+     },
+     {
+      "cardCode": "C-VN-00002",
+      "name": "Lotus River International Clinic",
+      "goldenId": "G-VN-0002",
+      "sgd12m": 779996,
+      "sgdPrior12m": 696197,
+      "yoy": 0.1204,
+      "status": "expanding"
+     },
+     {
+      "cardCode": "C-VN-00003",
+      "name": "Hong Ha Diagnostic Centre",
+      "goldenId": "G-VN-0003",
+      "sgd12m": 695171,
+      "sgdPrior12m": 902460,
+      "yoy": -0.2297,
+      "status": "declining"
+     },
+     {
+      "cardCode": "C-VN-00004",
+      "name": "Da Nang Han River Hospital",
+      "goldenId": "G-VN-0004",
+      "sgd12m": 550275,
+      "sgdPrior12m": 483628,
+      "yoy": 0.1378,
+      "status": "expanding"
+     },
+     {
+      "cardCode": "C-VN-00005",
+      "name": "Can Tho Mekong Hospital",
+      "goldenId": "G-VN-0005",
+      "sgd12m": 546497,
+      "sgdPrior12m": 620352,
+      "yoy": -0.1191,
+      "status": "declining"
+     },
+     {
+      "cardCode": "C-VN-00006",
+      "name": "Hai Phong Harbour Clinic",
+      "goldenId": "G-VN-0006",
+      "sgd12m": 510368,
+      "sgdPrior12m": 478583,
+      "yoy": 0.0664,
+      "status": "expanding"
+     },
+     {
+      "cardCode": "C-VN-00007",
+      "name": "Thu Duc Tech Lab",
+      "goldenId": "G-VN-0007",
+      "sgd12m": 461670,
+      "sgdPrior12m": 441493,
+      "yoy": 0.0457,
+      "status": "expanding"
+     },
+     {
+      "cardCode": "C-VN-00008",
+      "name": "Nha Trang Coastal Hospital",
+      "goldenId": "G-VN-0008",
+      "sgd12m": 163823,
+      "sgdPrior12m": 136480,
+      "yoy": 0.2003,
+      "status": "expanding"
+     }
+    ],
+    "dedup": [
+     {
+      "goldenId": "G-VN-0001",
+      "name": "Song Sen General Hospital",
+      "sgd12m": 947143,
+      "sgdPrior12m": 1072076,
+      "yoy": -0.1165,
+      "records": 3
+     },
+     {
+      "goldenId": "G-VN-0002",
+      "name": "Lotus River International Clinic",
+      "sgd12m": 779996,
+      "sgdPrior12m": 696197,
+      "yoy": 0.1204,
+      "records": 1
+     },
+     {
+      "goldenId": "G-VN-0003",
+      "name": "Hong Ha Diagnostic Centre",
+      "sgd12m": 695171,
+      "sgdPrior12m": 902460,
+      "yoy": -0.2297,
+      "records": 1
+     },
+     {
+      "goldenId": "G-VN-0004",
+      "name": "Da Nang Han River Hospital",
+      "sgd12m": 550275,
+      "sgdPrior12m": 483628,
+      "yoy": 0.1378,
+      "records": 2
+     },
+     {
+      "goldenId": "G-VN-0005",
+      "name": "Can Tho Mekong Hospital",
+      "sgd12m": 546497,
+      "sgdPrior12m": 620352,
+      "yoy": -0.1191,
+      "records": 1
+     },
+     {
+      "goldenId": "G-VN-0006",
+      "name": "Hai Phong Harbour Clinic",
+      "sgd12m": 510368,
+      "sgdPrior12m": 478583,
+      "yoy": 0.0664,
+      "records": 1
+     },
+     {
+      "goldenId": "G-VN-0007",
+      "name": "Thu Duc Tech Lab",
+      "sgd12m": 461670,
+      "sgdPrior12m": 441493,
+      "yoy": 0.0457,
+      "records": 1
+     },
+     {
+      "goldenId": "G-VN-0008",
+      "name": "Nha Trang Coastal Hospital",
+      "sgd12m": 163823,
+      "sgdPrior12m": 136480,
+      "yoy": 0.2003,
+      "records": 1
+     }
+    ]
+   }
+  },
+  {
+   "country": "MM",
+   "raw": [
+    {
+     "key": "prior",
+     "label": "Prior 12M (Oct 2024–Sep 2025)",
+     "sgd": 3494491,
+     "customers": 27
+    },
+    {
+     "key": "new",
+     "label": "New customers",
+     "sgd": 244614,
+     "customers": 3
+    },
+    {
+     "key": "expanding",
+     "label": "Expanding",
+     "sgd": 277390,
+     "customers": 10
+    },
+    {
+     "key": "declining",
+     "label": "Declining",
+     "sgd": -279559,
+     "customers": 7
+    },
+    {
+     "key": "lost",
+     "label": "Lost customers",
+     "sgd": -237625,
+     "customers": 3
+    },
+    {
+     "key": "current",
+     "label": "Current 12M (Oct 2025–Sep 2026)",
+     "sgd": 3499311,
+     "customers": 27
+    }
+   ],
+   "dedup": [
+    {
+     "key": "prior",
+     "label": "Prior 12M (Oct 2024–Sep 2025)",
+     "sgd": 3494491,
+     "customers": 24
+    },
+    {
+     "key": "new",
+     "label": "New customers",
+     "sgd": 174725,
+     "customers": 2
+    },
+    {
+     "key": "expanding",
+     "label": "Expanding",
+     "sgd": 284379,
+     "customers": 10
+    },
+    {
+     "key": "declining",
+     "label": "Declining",
+     "sgd": -279559,
+     "customers": 7
+    },
+    {
+     "key": "lost",
+     "label": "Lost customers",
+     "sgd": -174725,
+     "customers": 2
+    },
+    {
+     "key": "current",
+     "label": "Current 12M (Oct 2025–Sep 2026)",
+     "sgd": 3499311,
+     "customers": 24
+    }
+   ],
+   "example": {
+    "country": "MM",
+    "goldenId": "G-MM-0001",
+    "title": "A 'lost' customer that never left",
+    "records": [
+     {
+      "cardCode": "C-MM-00001",
+      "cardName": "Yangon Lakeside Hospital",
+      "entity": "SPD",
+      "country": "MM"
+     },
+     {
+      "cardCode": "C-MM-00029",
+      "cardName": "Rangoon Lakeside Hosp",
+      "entity": "SPD",
+      "country": "MM"
+     }
+    ],
+    "rawStory": "Raw: Yangon Lakeside Hospital looks lost and 'Rangoon Lakeside Hosp' looks new.",
+    "dedupStory": "De-duplicated: the same hospital (Rangoon is the old romanisation of Yangon), ordering steadily."
+   },
+   "topAccounts": {
+    "raw": [
+     {
+      "cardCode": "C-MM-00001",
+      "name": "Yangon Lakeside Hospital",
+      "goldenId": "G-MM-0001",
+      "sgd12m": 492077,
+      "sgdPrior12m": 479454,
+      "yoy": 0.0263,
+      "status": "expanding"
+     },
+     {
+      "cardCode": "C-MM-00002",
+      "name": "Mandalay Golden Hills Clinic",
+      "goldenId": "G-MM-0002",
+      "sgd12m": 299480,
+      "sgdPrior12m": 340349,
+      "yoy": -0.1201,
+      "status": "declining"
+     },
+     {
+      "cardCode": "C-MM-00003",
+      "name": "Bagan Plains Medical",
+      "goldenId": "G-MM-0003",
+      "sgd12m": 244815,
+      "sgdPrior12m": 261289,
+      "yoy": -0.063,
+      "status": "declining"
+     },
+     {
+      "cardCode": "C-MM-00004",
+      "name": "Naypyitaw Central Laboratory",
+      "goldenId": "G-MM-0004",
+      "sgd12m": 180926,
+      "sgdPrior12m": 181751,
+      "yoy": -0.0045,
+      "status": "flat"
+     },
+     {
+      "cardCode": "C-MM-00005",
+      "name": "Mawlamyine Coastal Clinic",
+      "goldenId": "G-MM-0005",
+      "sgd12m": 176424,
+      "sgdPrior12m": 146118,
+      "yoy": 0.2074,
+      "status": "expanding"
+     },
+     {
+      "cardCode": "C-MM-00006",
+      "name": "Taunggyi Highland Hospital",
+      "goldenId": "G-MM-0006",
+      "sgd12m": 149381,
+      "sgdPrior12m": 151924,
+      "yoy": -0.0167,
+      "status": "flat"
+     },
+     {
+      "cardCode": "C-MM-00007",
+      "name": "Pathein Delta Clinic",
+      "goldenId": "G-MM-0007",
+      "sgd12m": 117602,
+      "sgdPrior12m": 103448,
+      "yoy": 0.1368,
+      "status": "expanding"
+     },
+     {
+      "cardCode": "C-MM-00008",
+      "name": "Yangon Inya Diagnostic Centre",
+      "goldenId": "G-MM-0008",
+      "sgd12m": 77973,
+      "sgdPrior12m": 78334,
+      "yoy": -0.0046,
+      "status": "flat"
+     }
+    ],
+    "dedup": [
+     {
+      "goldenId": "G-MM-0001",
+      "name": "Yangon Lakeside Hospital",
+      "sgd12m": 492077,
+      "sgdPrior12m": 479454,
+      "yoy": 0.0263,
+      "records": 2
+     },
+     {
+      "goldenId": "G-MM-0002",
+      "name": "Mandalay Golden Hills Clinic",
+      "sgd12m": 299480,
+      "sgdPrior12m": 340349,
+      "yoy": -0.1201,
+      "records": 2
+     },
+     {
+      "goldenId": "G-MM-0003",
+      "name": "Bagan Plains Medical",
+      "sgd12m": 244815,
+      "sgdPrior12m": 261289,
+      "yoy": -0.063,
+      "records": 1
+     },
+     {
+      "goldenId": "G-MM-0004",
+      "name": "Naypyitaw Central Laboratory",
+      "sgd12m": 180926,
+      "sgdPrior12m": 181751,
+      "yoy": -0.0045,
+      "records": 1
+     },
+     {
+      "goldenId": "G-MM-0005",
+      "name": "Mawlamyine Coastal Clinic",
+      "sgd12m": 176424,
+      "sgdPrior12m": 146118,
+      "yoy": 0.2074,
+      "records": 1
+     },
+     {
+      "goldenId": "G-MM-0006",
+      "name": "Taunggyi Highland Hospital",
+      "sgd12m": 149381,
+      "sgdPrior12m": 151924,
+      "yoy": -0.0167,
+      "records": 1
+     },
+     {
+      "goldenId": "G-MM-0007",
+      "name": "Pathein Delta Clinic",
+      "sgd12m": 117602,
+      "sgdPrior12m": 103448,
+      "yoy": 0.1368,
+      "records": 1
+     },
+     {
+      "goldenId": "G-MM-0008",
+      "name": "Yangon Inya Diagnostic Centre",
+      "sgd12m": 77973,
+      "sgdPrior12m": 78334,
+      "yoy": -0.0046,
+      "records": 1
+     }
+    ]
+   }
+  }
+ ]
+}

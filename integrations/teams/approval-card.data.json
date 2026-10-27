@@ -1,0 +1,29 @@
+{
+  "request": {
+    "id": "REQ-1042",
+    "title": "New Item: Dengue IgG/IgM Combo 30T",
+    "entity": "SPD",
+    "countryName": "Malaysia"
+  },
+  "requestor": {
+    "name": "Amy Lim",
+    "email": "amy.lim@livesgroup.example"
+  },
+  "step": {
+    "id": "item-review-qa_ra",
+    "label": "QA/RA — regulatory review",
+    "addedBecause": "Category = IVD reagent → regulatory review required"
+  },
+  "sla": {
+    "label": "Due in 1.5 business days",
+    "overdue": false
+  },
+  "facts": [
+    { "label": "Item name", "value": "Dengue IgG/IgM Combo 30T" },
+    { "label": "Product group", "value": "Product A · IVD reagents & test kits" },
+    { "label": "Category", "value": "IVD reagent" },
+    { "label": "Regulatory licence", "value": "MDA-IVD-2026-04418" },
+    { "label": "Blocked demand", "value": "2 customer PRs · S$70,000" }
+  ],
+  "detailsUrl": "https://onerecord.livesgroup.example/requests/REQ-1042"
+}

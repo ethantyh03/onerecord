@@ -1,0 +1,625 @@
+{
+ "name": "OneRecord inbox-triage blind test set v1",
+ "writtenBlind": true,
+ "writtenAt": "2026-10-28T01:04+08:00",
+ "protocol": "Written and hand-labelled BEFORE the author read src/lib/engine/triage.ts or its tests; never used to tune the rules. sha256 of messages recorded at write time so later edits are detectable.",
+ "sha256": "6283636c95d88c44dde547d2d666a22b5a0322a338ac4e16b1300ee041796d69",
+ "labelPolicy": {
+  "po": "Confirmed order that carries a customer PO / order number (incl. 'P/O', 'order no ... raised in Ariba').",
+  "pr": "Committed intent to buy a specific product + quantity (quote accepted, requisition approved) but NO PO number yet.",
+  "enquiry": "Price / availability / spec / regulatory question with no commitment (a quantity may appear).",
+  "followup": "About an existing order: delivery, short-ship, backorder, invoice, payment, documents, installation, amendment.",
+  "mdm": "Asks to create/extend/change a customer, vendor or item record: new account, bill-to, ship-to, name/tax ID, new item code.",
+  "mixed": "One label per message = the primary action the inbox owner must take. A PO with a ship-to aside is 'po'; a message whose blocking ask is a record change is 'mdm'."
+ },
+ "counts": {
+  "enquiry": 12,
+  "followup": 12,
+  "mdm": 12,
+  "po": 12,
+  "pr": 12
+ },
+ "hardCount": 33,
+ "messages": [
+  {
+   "id": "BT-001",
+   "subject": "where's my stuff",
+   "body": "eh the order last week still never come leh. PO 88213. pls chase thx",
+   "from": "store@amkfamilyclinic.example",
+   "label": "followup",
+   "note": "Singlish chaser.",
+   "country": "SG",
+   "hard": false
+  },
+  {
+   "id": "BT-002",
+   "subject": "FW: Approved - PO 7781203",
+   "body": "FYI, finance has approved. PO 7781203 is now released for the 2 units Centrifuge (Model CX-24). Please proceed and book delivery + installation.\n\n-----Original Message-----\nFrom: Tan, Kelvin\nSent: Monday, 26 October 2026 9:14 AM\nSubject: RE: quotation QT-26-0915 centrifuge\n\nHi, can you confirm the warranty is 2 years? Is installation included? Thanks",
+   "from": "kelvin.tan@ntfgh.example",
+   "label": "po",
+   "note": "Hard: forwarded thread; quoted part is an enquiry (questions), top is the released PO.",
+   "country": "SG",
+   "hard": true
+  },
+  {
+   "id": "BT-003",
+   "subject": "malaria RDT stock?",
+   "body": "got stock for malaria Pf/Pv RDT? need to know asap",
+   "from": "lab@hospital-sibu.example",
+   "label": "enquiry",
+   "note": "Terse availability question.",
+   "country": "MY",
+   "hard": false
+  },
+  {
+   "id": "BT-004",
+   "subject": "dengue NS1 rapid test - available?",
+   "body": "hi do u all have NS1 rapid test in stock? recently many cases here, how much per box of 25 and lead time? tq",
+   "from": "drlim@kliniklim.example",
+   "label": "enquiry",
+   "note": "Availability + price + lead time.",
+   "country": "MY",
+   "hard": false
+  },
+  {
+   "id": "BT-005",
+   "subject": "Installation date for analyser",
+   "body": "Dear Sam,\nThe haematology analyser on our PO 7781190 arrived yesterday. When can your engineer come to install and do training? Our lab is free Tue/Wed next week.",
+   "from": "lab.mgr@mtelizabeth-lab.example",
+   "label": "followup",
+   "note": "Hard: installation scheduling (post-delivery service) on an existing PO; question words.",
+   "country": "SG",
+   "hard": true
+  },
+  {
+   "id": "BT-006",
+   "subject": "Order",
+   "body": "Hello,\nKindly process our order ref PO-MMH-0926-07:\n- Typhoid IgG/IgM rapid test 20 kits\n- Dengue IgG/IgM Combo 30T 20 kits\nPayment by TT after receiving goods.\nRegards,\nDaw Khin\nPun Hlaing Hospital, Yangon",
+   "from": "dawkhin.purchase@punhlaing.example",
+   "label": "po",
+   "note": "Generic subject; PO in body. Myanmar.",
+   "country": "MM",
+   "hard": false
+  },
+  {
+   "id": "BT-007",
+   "subject": "Tempahan stok - microscope slides",
+   "body": "Salam Encik Jason,\nKami nak book 30 box frosted microscope slides as per quote last month. Please keep the stock for us, LO (local order) will be issued by end of month. TQ",
+   "from": "makmal.hsa@moh-jb.example",
+   "label": "pr",
+   "note": "Hard: Malay-English; 'LO' (Malaysian government local order = their PO) not yet issued.",
+   "country": "MY",
+   "hard": true
+  },
+  {
+   "id": "BT-008",
+   "subject": "re: urine cups",
+   "body": "ok can, go ahead. order no 4500209917 already raised in Ariba, 50 ctn urine container 60ml sterile. send to CGH loading bay pls",
+   "from": "loadingbay.store@cgh.example",
+   "label": "po",
+   "note": "Hard: no 'PO' keyword at all ('order no ... raised in Ariba'); Singlish 'ok can, go ahead' looks like a PR acceptance.",
+   "country": "SG",
+   "hard": true
+  },
+  {
+   "id": "BT-009",
+   "subject": "PO#88213",
+   "body": "see attached. 10 x HIV 1/2 Ab rapid 40T. thx",
+   "from": "store@amkfamilyclinic.example",
+   "label": "po",
+   "note": "Terse: PO in subject only.",
+   "country": "SG",
+   "hard": false
+  },
+  {
+   "id": "BT-010",
+   "subject": "Send PO No. 6910-0452 please confirm",
+   "body": "Dear Khun Somchai,\nAttach is PO No. 6910-0452 for CRP latex reagent 10 bottle and control 2 set. Please confirm receive and send invoice together with goods. Thank you ka.\nNattaya, Bumrungrad Lab",
+   "from": "nattaya.lab@bumrungrad.example",
+   "label": "po",
+   "note": "Hard: mentions invoice (follow-up vocabulary) but is a new PO. Thai-English.",
+   "country": "TH",
+   "hard": true
+  },
+  {
+   "id": "BT-011",
+   "subject": "Re: PO 55871 delivered - repeat order",
+   "body": "Thanks, PO 55871 goods received in good order.\n\nWe'll need the same again - 25 boxes of the blood culture bottles (aerobic) - for December. I'll raise a new PO when our requisition is approved; can you keep 25 aside?",
+   "from": "micro.lab@khoo-teck-puat.example",
+   "label": "pr",
+   "note": "Hard: opens like a follow-up on an existing PO, but the actionable content is a NEW intent with qty and no PO yet.",
+   "country": "SG",
+   "hard": true
+  },
+  {
+   "id": "BT-012",
+   "subject": "Change of billing address",
+   "body": "Dear Sir/Madam,\nPlease be informed that effective 1 Nov 2026, all invoices to Gleneagles Hospital Kuala Lumpur should be billed to our new finance shared-service centre: Level 9, Menara IHH, Jalan Tun Razak, 50400 KL. Kindly update your records.",
+   "from": "finance.ssc@gleneagles-kl.example",
+   "label": "mdm",
+   "note": "Bill-to change. Mentions invoices (follow-up vocabulary).",
+   "country": "MY",
+   "hard": false
+  },
+  {
+   "id": "BT-013",
+   "subject": "Inquiry for blood bank reagents",
+   "body": "Dear Sir,\nWe are private hospital in Yangon. We are interested in your blood grouping reagent anti-A, anti-B, anti-D. Can you please provide catalogue and price in USD and delivery time to Yangon?\nThank you.",
+   "from": "purchase@victoria-ygn.example",
+   "label": "enquiry",
+   "note": "Myanmar catalogue/price enquiry.",
+   "country": "MM",
+   "hard": false
+  },
+  {
+   "id": "BT-014",
+   "subject": "Can we proceed with 50 kits?",
+   "body": "Hi Mei, your price for the HbA1c kit is fine with us. Can we proceed with 50 kits for delivery in Nov? I will get the PO raised after you confirm stock.",
+   "from": "mei.chua@polyclinic-east.example",
+   "label": "pr",
+   "note": "Hard: acceptance phrased as a question (subject and body).",
+   "country": "SG",
+   "hard": true
+  },
+  {
+   "id": "BT-015",
+   "subject": "RE: Quote QTS-26-118 Haematology analyser",
+   "body": "Hi Jason,\n\nManagement has agreed to go ahead with 1 unit of the 5-part diff haematology analyser as per your quote. Our procurement will raise the PO next week once budget is released. Pls hold the price for us ya.\n\nThanks,\nJasmine",
+   "from": "jasmine.ong@sunwaymedical.example",
+   "label": "pr",
+   "note": "Quote accepted, PO to follow.",
+   "country": "MY",
+   "hard": false
+  },
+  {
+   "id": "BT-016",
+   "subject": "pls add new ship to",
+   "body": "pls add ship-to: Ward 5B store, Block 2, same hospital. tq",
+   "from": "ward5b@cgh.example",
+   "label": "mdm",
+   "note": "Terse new ship-to.",
+   "country": "SG",
+   "hard": false
+  },
+  {
+   "id": "BT-017",
+   "subject": "Hỏi giá / price inquiry micropipette",
+   "body": "Dear sir/madam,\nPlease send us price list for micropipette single channel 0.5-10uL, 10-100uL, 100-1000uL. We are research lab in Ho Chi Minh University of Science. Do you have distributor in Vietnam?",
+   "from": "lab.bio@hcmus.example",
+   "label": "enquiry",
+   "note": "Vietnamese-English price-list request.",
+   "country": "VN",
+   "hard": false
+  },
+  {
+   "id": "BT-018",
+   "subject": "Đơn đặt hàng / Purchase order #BM-2610-031",
+   "body": "Dear Lives team,\nWe send you purchase order #BM-2610-031 for 5 box of Pipette tips 200uL (1000pcs/box) and 3 box 1000uL. Please arrange deliver to Bach Mai hospital, Microbiology dept.\nBest regards,\nNguyen Thi Lan",
+   "from": "lan.nt@bachmai.example",
+   "label": "po",
+   "note": "Vietnamese subject, 'purchase order #' spelled out.",
+   "country": "VN",
+   "hard": false
+  },
+  {
+   "id": "BT-019",
+   "subject": "PO from Siriraj - Glucose reagent",
+   "body": "Dear sale,\nSiriraj hospital issue P/O number 2569/0781 for Glucose GOD-PAP reagent 4x100ml quantity 24 box. Delivery to central lab building 72 year. Thank you krub",
+   "from": "centrallab@siriraj.example",
+   "label": "po",
+   "note": "'P/O' spelling; Thai Buddhist-era year 2569 in PO number.",
+   "country": "TH",
+   "hard": false
+  },
+  {
+   "id": "BT-020",
+   "subject": "FW: Budget approved for ELISA reader",
+   "body": "Hi Sam, see below - budget approved. We'd like to proceed with 1x ELISA microplate reader + 1x washer per your quotation dated 3 Oct. Tender committee meets 5 Nov, formal PO after that.\n\n> From: Dr. Wong\n> Subject: Budget approved for ELISA reader\n> Approved under FY26 capex line 4.2. Pls inform vendor.",
+   "from": "sam.lee@usm-lab.example",
+   "label": "pr",
+   "note": "Hard: forwarded internal approval; Product C tender pipeline, PO after committee.",
+   "country": "MY",
+   "hard": true
+  },
+  {
+   "id": "BT-021",
+   "subject": "Price for 500 boxes gloves?",
+   "body": "Hi, what is your best price if we take 500 boxes of nitrile gloves size M? Comparing with 2 other suppliers for our FY27 tender. Also, are they EN455 certified?",
+   "from": "tender@ihis-proc.example",
+   "label": "enquiry",
+   "note": "Hard: enquiry WITH a quantity (price-break question, explicitly comparing suppliers).",
+   "country": "SG",
+   "hard": true
+  },
+  {
+   "id": "BT-022",
+   "subject": "Confirm order 3 box tips",
+   "body": "Chị ơi,\nWe agree with quotation number 0915/LG. Please prepare 3 box filter tips 10uL and 2 box 200uL for us. Our accountant will send the PO in few days.\nCảm ơn chị",
+   "from": "mai.tt@ump-lab.example",
+   "label": "pr",
+   "note": "Quote agreed, PO 'in few days'. Vietnamese-English.",
+   "country": "VN",
+   "hard": false
+  },
+  {
+   "id": "BT-023",
+   "subject": "Ask price HbA1c",
+   "body": "Hello, I am from Chiang Mai Ram hospital lab. I want to know price of HbA1c reagent and do you have demo machine? Thank you ka",
+   "from": "lab@chiangmairam.example",
+   "label": "enquiry",
+   "note": "Thai-English price + demo question.",
+   "country": "TH",
+   "hard": false
+  },
+  {
+   "id": "BT-024",
+   "subject": "Đề nghị cập nhật thông tin / Update customer info",
+   "body": "Dear Lives,\nCho Ray hospital moved our pharmacy warehouse to new address 201B Nguyen Chi Thanh, District 5, HCMC. Please update delivery address and the contact person is Mr. Tran Van Hung 0903 555 012. Thank you.",
+   "from": "kho.duoc@choray.example",
+   "label": "mdm",
+   "note": "Vietnamese ship-to + contact update.",
+   "country": "VN",
+   "hard": false
+  },
+  {
+   "id": "BT-025",
+   "subject": "Reagents for new project - pls reserve",
+   "body": "Hi Lives team, we're starting a new grant and will need 12 x Taq polymerase 500U and 6 x dNTP mix 10mM monthly from Dec. Grant office is processing the purchase requisition (PR-NUS-26-5512). Pls lock in the academic pricing.",
+   "from": "grants.lab@nus-bio.example",
+   "label": "pr",
+   "note": "Hard: contains a requisition number 'PR-NUS-26-5512' that is NOT a PO.",
+   "country": "SG",
+   "hard": true
+  },
+  {
+   "id": "BT-026",
+   "subject": "Order for the HbA1c reagent",
+   "body": "Hi Mei Ling, as discussed on phone just now, our PO no. is SGH/PUR/26/08812, qty 12 kits HbA1c reagent cat 08-HBA-200. Can deliver by next Thurs? Thks ah.",
+   "from": "purchasing.lab@sgh.example",
+   "label": "po",
+   "note": "Hard: ends with a delivery question, but this is the order itself (PO number with slashes, not 'PO-123').",
+   "country": "SG",
+   "hard": true
+  },
+  {
+   "id": "BT-027",
+   "subject": "PO 260117 + pls use new delivery address",
+   "body": "Hi, attached PO 260117 for 30 boxes Malaria Pf/Pv rapid test.\n\nNote: from this order onwards please deliver to our new warehouse at No. 12 Jalan Teknologi 3, Kota Damansara instead of the old Petaling Jaya address.\n\nTQ\nAzlan",
+   "from": "stores@klinikmedivest.example",
+   "label": "po",
+   "note": "Hard: MDM request (new ship-to) embedded in an order. Primary label = po (an order to book); a good triage would also flag the ship-to change.",
+   "country": "MY",
+   "hard": true
+  },
+  {
+   "id": "BT-028",
+   "subject": "New account opening - Sunrise Medical Clinic",
+   "body": "Hi, we are a new GP clinic opening in Tampines in Dec. Would like to open a credit account with Lives. Attached ACRA bizfile, UEN 202612345K. What other forms do you need?",
+   "from": "dr.goh@sunriseclinic.example",
+   "label": "mdm",
+   "note": "New customer setup.",
+   "country": "SG",
+   "hard": false
+  },
+  {
+   "id": "BT-029",
+   "subject": "Order request - Mandalay General",
+   "body": "Dear Sir,\nMandalay General Hospital laboratory would like to purchase 100 tests Dengue NS1 and 100 tests Dengue IgG/IgM (combo). Requisition is approved by medical superintendent. PO will be issue by procurement unit. Please confirm price in USD.\nThank you.",
+   "from": "lab.mgh@mandalaygh.example",
+   "label": "pr",
+   "note": "Hard: 'confirm price' could look like an enquiry, but intent and qty are committed (approved requisition).",
+   "country": "MM",
+   "hard": true
+  },
+  {
+   "id": "BT-030",
+   "subject": "RE: PO coming - but please fix our account first",
+   "body": "Hi Jason, PO for the 20 boxes is ready but our procurement can't issue it because your quotation shows our old company name and old bill-to. Pls update our customer record to 'Sunway Medical Centre Velocity' and bill-to Finance, Level 3, then reissue the quote.",
+   "from": "jasmine.ong@sunwaymedical.example",
+   "label": "mdm",
+   "note": "Hard: 'PO' + qty in subject/body, but the blocking ask is a customer-record update (name + bill-to).",
+   "country": "MY",
+   "hard": true
+  },
+  {
+   "id": "BT-031",
+   "subject": "Vendor registration - Vinmec",
+   "body": "Dear partner,\nTo supply to Vinmec from 2027, please complete the attached vendor registration form (tax code, bank account, business licence) and return by 15 Nov. Your company will be created in our supplier master after review.",
+   "from": "procurement@vinmec.example",
+   "label": "mdm",
+   "note": "Vendor-record setup on the customer's side.",
+   "country": "VN",
+   "hard": false
+  },
+  {
+   "id": "BT-032",
+   "subject": "FW: Looking for -80 freezer",
+   "body": "Hi Lives, forwarding from our PI. Do you supply ultra-low temperature freezers? What's the lead time to Penang and is there local service support?\n\n---------- Forwarded message ---------\nFrom: Prof. Lim\nWe need a -80 for the new biobank, can you ask around?",
+   "from": "admin@penang-biobank.example",
+   "label": "enquiry",
+   "note": "Hard: forwarded; 'We need a -80' in the quoted part sounds like intent but there is no product/qty commitment.",
+   "country": "MY",
+   "hard": true
+  },
+  {
+   "id": "BT-033",
+   "subject": "PO 4500177102 - ETA?",
+   "body": "Hi, any update on delivery for PO 4500177102? The ward is asking. Thanks",
+   "from": "ward.store@ttsh.example",
+   "label": "followup",
+   "note": "Delivery status on an existing PO.",
+   "country": "SG",
+   "hard": false
+  },
+  {
+   "id": "BT-034",
+   "subject": "Confirm 2 unit",
+   "body": "Confirm 2 unit centrifuge same quote. wait PO from finance 2 weeks. thanks",
+   "from": "purchase@ramathibodi-lab.example",
+   "label": "pr",
+   "note": "Terse Thai-English acceptance.",
+   "country": "TH",
+   "hard": false
+  },
+  {
+   "id": "BT-035",
+   "subject": "Spec sheet for CRP analyser",
+   "body": "Dear Sir,\nCould you share the spec sheet and IFU for your point-of-care CRP analyser? We want to know the sample volume, time to result and whether it can connect to our LIS (HL7).\nThank you.",
+   "from": "biomed@mtalvernia.example",
+   "label": "enquiry",
+   "note": "Spec question.",
+   "country": "SG",
+   "hard": false
+  },
+  {
+   "id": "BT-036",
+   "subject": "Update tax ID on our account",
+   "body": "Hi AR, our tax ID on your invoices is wrong (shows 0105538012345). Correct one is 0105538012346. Pls amend in your system before next invoice.\nBangkok Hospital Pattaya",
+   "from": "ar.contact@bph-pattaya.example",
+   "label": "mdm",
+   "note": "Hard: invoice vocabulary (looks like a follow-up), but the fix is to the customer record.",
+   "country": "TH",
+   "hard": true
+  },
+  {
+   "id": "BT-037",
+   "subject": "Backorder status - pipette tips",
+   "body": "Hi, your team told us the 1000uL tips on our last order are backordered. Is there a new date? If more than 3 weeks we may need to cancel that line item.",
+   "from": "lab.ops@nuhs-lab.example",
+   "label": "followup",
+   "note": "Hard: no PO number at all ('our last order'); backorder.",
+   "country": "SG",
+   "hard": true
+  },
+  {
+   "id": "BT-038",
+   "subject": "FW: FW: Delivery - Penang General",
+   "body": "Hi Jason, can help check? Store says nothing arrived.\n\n-----Original Message-----\nFrom: Stores PGH\nSubject: Delivery\n\nPO PGH/26/5521-B, 15 cartons urine containers, expected 20 Oct, not received as of today.",
+   "from": "jason.koh@livesgroup.example",
+   "label": "followup",
+   "note": "Hard: forwarded twice; PO + qty in quoted part.",
+   "country": "MY",
+   "hard": true
+  },
+  {
+   "id": "BT-039",
+   "subject": "Hoá đơn VAT for PO BM-2609-017",
+   "body": "Dear Lives,\nPlease send red invoice (hóa đơn đỏ) for PO BM-2609-017 to our accounting email. Goods received already. Thank you.",
+   "from": "ketoan@bachmai.example",
+   "label": "followup",
+   "note": "Vietnamese VAT invoice request on a delivered PO.",
+   "country": "VN",
+   "hard": false
+  },
+  {
+   "id": "BT-040",
+   "subject": "Add delivery address - new satellite lab",
+   "body": "Hi Mei Ling, we've opened a satellite lab at Jurong East. Pls add as a new delivery location under our account (same billing). Address: 1 Jurong East St 21, #03-01, S609606. Contact: Ms Tan 6716 2000.",
+   "from": "tan.lab@jurong-diag.example",
+   "label": "mdm",
+   "note": "New ship-to.",
+   "country": "SG",
+   "hard": false
+  },
+  {
+   "id": "BT-041",
+   "subject": "Also buy from QTG - same account?",
+   "body": "Hi, we already have an account with SPD (cust code C-MY-00431). Our research unit now wants to buy lab consumables from QTG. Can you extend our account to QTG instead of opening a new one? Same company reg 199701012345.",
+   "from": "research.office@um-medical.example",
+   "label": "mdm",
+   "note": "Hard: cross-entity extension phrased as a question; 'wants to buy' looks like PR/enquiry.",
+   "country": "MY",
+   "hard": true
+  },
+  {
+   "id": "BT-042",
+   "subject": "New SKU from Jan 2027 - please create item",
+   "body": "Dear Lives Group,\nWe are launching the Dengue NS1 Ag 50T pack (cat. DNS-50) from Jan 2027, replacing the 25T. Please create the new item in your system (UOM: kit of 50, HSA reg DE0512345, shelf life 18 months). Updated price list attached.",
+   "from": "regulatory@asiadiag-principal.example",
+   "label": "mdm",
+   "note": "Inbound from a principal (vendor): new item code request.",
+   "country": "SG",
+   "hard": true
+  },
+  {
+   "id": "BT-043",
+   "subject": "Invoice INV-SPD-26-04412 wrong unit price",
+   "body": "Dear AR team,\nInvoice INV-SPD-26-04412 for our PO KPJD-PO-2026-0992 shows RM 92.00/box but agreed price was RM 85.00. Pls issue credit note or revised invoice. Our finance cannot pay until corrected.",
+   "from": "finance.ap@kpjdamansara.example",
+   "label": "followup",
+   "note": "Hard: invoice dispute with a PO number and prices.",
+   "country": "MY",
+   "hard": true
+  },
+  {
+   "id": "BT-044",
+   "subject": "We want to order",
+   "body": "Dear K. Ploy,\nOur lab want to order Troponin I rapid test 15 box. Please send official quotation with hospital name for we open PO. Thank you",
+   "from": "lab.chiangmairam@cmram.example",
+   "label": "pr",
+   "note": "Hard: 'want to order' + qty + product, asks for formal quote to open PO. Intent is committed, so PR, not enquiry.",
+   "country": "TH",
+   "hard": true
+  },
+  {
+   "id": "BT-045",
+   "subject": "Product range question",
+   "body": "Hi Ken, separate from our PO 4500188812 (no issue with that one), wanted to ask if you also carry chikungunya rapid tests? If yes pls send brochure + indicative price.",
+   "from": "ken.ho@parkwaylab.example",
+   "label": "enquiry",
+   "note": "Hard: a PO number is mentioned, but explicitly not the topic; the ask is a new-product enquiry.",
+   "country": "SG",
+   "hard": true
+  },
+  {
+   "id": "BT-046",
+   "subject": "PO 4500183321",
+   "body": "Pls find attached PO 4500183321 for Dengue NS1 Ag rapid test 25T x 40 boxes. Deliver to Lab Medicine L2. Thanks.\n\nRegards\nShirley | Procurement",
+   "from": "procurement@ttsh.example",
+   "label": "po",
+   "note": "Plain PO: number + item + qty.",
+   "country": "SG",
+   "hard": false
+  },
+  {
+   "id": "BT-047",
+   "subject": "go ahead",
+   "body": "ok go ahead with the 40 boxes nitrile M at 7.80/box. will send PO once boss signs.",
+   "from": "ops@heartlandmedical.example",
+   "label": "pr",
+   "note": "Terse acceptance; PO pending.",
+   "country": "SG",
+   "hard": false
+  },
+  {
+   "id": "BT-048",
+   "subject": "RE: Quotation Q-26-4471 - accepted",
+   "body": "Dear Ms Lim,\n\nWe accept your quotation Q-26-4471. Our official PO No. 2026/NTFGH/3381 is attached for 6 cartons of serological pipettes 10ml. Kindly deliver within 2 weeks.\n\nThank you.",
+   "from": "procurement@ntfgh.example",
+   "label": "po",
+   "note": "Hard: 'accept your quotation' is PR vocabulary, but a PO number is given, so it is a confirmed order.",
+   "country": "SG",
+   "hard": true
+  },
+  {
+   "id": "BT-049",
+   "subject": "HSA registration for troponin test",
+   "body": "Hi, is your Troponin I rapid test registered with HSA? And what's the shelf life upon delivery? If ok we may consider switching from our current supplier.",
+   "from": "qa.lab@farrerpark.example",
+   "label": "enquiry",
+   "note": "Hard: regulatory/spec question with a conditional ('may consider switching').",
+   "country": "SG",
+   "hard": true
+  },
+  {
+   "id": "BT-050",
+   "subject": "Quotation pls",
+   "body": "Hi can quote me for 10 box serological pipette 25ml and 10 box 50ml? Just for budgeting next year, not buying yet hor.",
+   "from": "pi.office@a-star-lab.example",
+   "label": "enquiry",
+   "note": "Hard: quantities given, but 'not buying yet' = no commitment.",
+   "country": "SG",
+   "hard": true
+  },
+  {
+   "id": "BT-051",
+   "subject": "Setup before our first order",
+   "body": "Hello,\nThammasat University Hospital will start ordering Troponin and CRP tests from November. Before we send the PO, please register our hospital as customer: tax ID 0994000158378, bill-to Finance Division, ship-to Central Lab. Form attached.",
+   "from": "finance@tuh-thammasat.example",
+   "label": "mdm",
+   "note": "Hard: mentions ordering and a future PO, but the ask is customer setup (bill-to + ship-to).",
+   "country": "TH",
+   "hard": true
+  },
+  {
+   "id": "BT-052",
+   "subject": "need 20 box dengue combo",
+   "body": "Hi, we confirm want 20 box of the Dengue IgG/IgM Combo 30T, same price as last time. PR already submitted internally, PO number will send u once approved. Can reserve stock first?",
+   "from": "lab.admin@raffles-med.example",
+   "label": "pr",
+   "note": "Hard: commitment + qty, mentions internal PR, ends with a question; no PO number.",
+   "country": "SG",
+   "hard": true
+  },
+  {
+   "id": "BT-053",
+   "subject": "PO 260117 - can increase qty?",
+   "body": "Hi, for PO 260117 (malaria RDT 30 boxes) can we increase to 45 boxes? Will send revised PO if ok. Also pls confirm delivery still on Fri.",
+   "from": "stores@klinikmedivest.example",
+   "label": "followup",
+   "note": "Hard: amendment of an existing PO (qty change + delivery check) - could be read as new order/PR.",
+   "country": "MY",
+   "hard": true
+  },
+  {
+   "id": "BT-054",
+   "subject": "Company name change notice",
+   "body": "Dear valued supplier,\nKindly note our company name has changed from 'Pantai Medical Lab Sdn Bhd' to 'Pathlab Diagnostics Sdn Bhd' w.e.f. 1 Oct 2026. Registration no. remains 200501023456. Please update your customer master and future invoices accordingly.",
+   "from": "admin@pathlab-diag.example",
+   "label": "mdm",
+   "note": "Customer name change.",
+   "country": "MY",
+   "hard": false
+  },
+  {
+   "id": "BT-055",
+   "subject": "PURCHASE ORDER - KPJ DAMANSARA",
+   "body": "Dear Sir/Madam,\n\nPlease be informed that we have issued Purchase Order No: KPJD-PO-2026-1147 for the following items:\n1) Nitrile examination gloves (M) - 200 boxes\n2) Nitrile examination gloves (L) - 150 boxes\n\nKindly acknowledge receipt and advise delivery date.\n\nThank you.\nPuan Rosnah\nPurchasing Dept",
+   "from": "rosnah.purchasing@kpjdamansara.example",
+   "label": "po",
+   "note": "Hard: 'advise delivery date' reads like a follow-up, but it is a new PO being issued.",
+   "country": "MY",
+   "hard": true
+  },
+  {
+   "id": "BT-056",
+   "subject": "RE: PO 2026/TTSH/1190 - short delivered",
+   "body": "Hi Mei Ling, we received only 30 of the 40 boxes on PO 2026/TTSH/1190 (Dengue NS1 25T). DO no. DO-88123. When can the balance 10 boxes come?",
+   "from": "procurement@ttsh.example",
+   "label": "followup",
+   "note": "Hard: PO number + item + quantities, but it is a short-delivery follow-up.",
+   "country": "SG",
+   "hard": true
+  },
+  {
+   "id": "BT-057",
+   "subject": "Payment made - please confirm",
+   "body": "Dear Sir,\nWe have make TT payment USD 4,820 for invoice LG-MM-0912 (PO PH-0926-03). Please check and confirm received and release the shipment from Singapore.",
+   "from": "accounts@punhlaing.example",
+   "label": "followup",
+   "note": "Payment confirmation on an existing PO.",
+   "country": "MM",
+   "hard": false
+  },
+  {
+   "id": "BT-058",
+   "subject": "COA required for delivered lot",
+   "body": "Hi team, for the HbA1c reagent delivered on 14 Oct under our PO SGH/PUR/26/07710, pls send the Certificate of Analysis for lot 2609A. QA needs it before release.",
+   "from": "qa@sgh-lab.example",
+   "label": "followup",
+   "note": "Hard: document request on a delivered PO; no delivery/invoice keyword in subject.",
+   "country": "SG",
+   "hard": true
+  },
+  {
+   "id": "BT-059",
+   "subject": "Alternative to our current blood agar",
+   "body": "Our usual supplier is out of stock for blood agar plates. Do you have an equivalent? We normally order around 300 plates a week, so let me know what volume you can support and the price per plate.",
+   "from": "micro@bnh-hospital.example",
+   "label": "enquiry",
+   "note": "Hard: contains 'order' and a quantity, but describes usual volume; no commitment yet.",
+   "country": "TH",
+   "hard": true
+  },
+  {
+   "id": "BT-060",
+   "subject": "Not receive goods yet",
+   "body": "Dear Khun Ploy,\nOur PO 6909-0331 order since 2 weeks still not receive CRP reagent. Lab almost run out. Please check and inform delivery date urgently krub.",
+   "from": "lab.bkk@phyathai.example",
+   "label": "followup",
+   "note": "Thai-English late delivery.",
+   "country": "TH",
+   "hard": false
+  }
+ ]
+}

@@ -1,0 +1,8830 @@
+{
+ "isMock": true,
+ "origins": [
+  "2026-03",
+  "2026-04",
+  "2026-05",
+  "2026-06",
+  "2026-07",
+  "2026-08"
+ ],
+ "horizons": [
+  1,
+  2,
+  3
+ ],
+ "forecastMonths": [
+  "2026-10",
+  "2026-11",
+  "2026-12"
+ ],
+ "preRegistration": "Origins, horizons, methods and metrics fixed before any result was seen. At each origin every method is refit on data up to and including the origin month only; the next 1–3 months are then scored. 6 origins × 3 horizons (the Aug-2026 origin contributes h=1 only; Jul-2026 h=1–2).",
+ "methods": [
+  {
+   "id": "rolling6",
+   "label": "Rolling 6-month average",
+   "role": "baseline",
+   "description": "Mean of the last 6 months, held flat."
+  },
+  {
+   "id": "rolling12",
+   "label": "Rolling 12-month average (today's method)",
+   "role": "baseline",
+   "description": "Mean of the last 12 months, held flat. This is the brief's current method."
+  },
+  {
+   "id": "seasonalNaive",
+   "label": "Seasonal naive",
+   "role": "challenger",
+   "description": "Same month last year."
+  },
+  {
+   "id": "etsDamped",
+   "label": "Damped Holt-Winters ETS (ours)",
+   "role": "ours",
+   "description": "statsmodels ExponentialSmoothing: additive damped trend + additive seasonality, period 12."
+  }
+ ],
+ "baselineMethod": "rolling12",
+ "oursMethod": "etsDamped",
+ "wapeFormula": "WAPE = Σ|actual − forecast| ÷ Σ actual",
+ "biasFormula": "Bias = Σ(forecast − actual) ÷ Σ actual",
+ "headline": {
+  "scope": "Products A + B, all 5 countries, merged customers (golden IDs)",
+  "weighting": "sgd",
+  "baselineWape": 0.1465,
+  "oursWape": 0.1211,
+  "baselineBias": -0.1146,
+  "oursBias": 0.0013,
+  "rolling6Wape": 0.1788,
+  "seasonalNaiveWape": 0.1113,
+  "improvementPts": 2.5,
+  "plainBaseline": "Today's method is off by 15 units per 100 ordered",
+  "plainOurs": "Ours is off by 12 units per 100 ordered",
+  "plainBiasBaseline": "Today's method tends to under-forecast by 11.5%",
+  "plainBiasOurs": "Ours tends to over-forecast by 0.1%"
+ },
+ "winLoss": {
+  "cells": 10,
+  "oursWins": 6,
+  "baselineWins": 4,
+  "ties": 0,
+  "byProduct": {
+   "A": {
+    "oursWins": 3,
+    "baselineWins": 2
+   },
+   "B": {
+    "oursWins": 3,
+    "baselineWins": 2
+   }
+  },
+  "baselineWinCells": [
+   "SG·A",
+   "SG·B",
+   "MY·A",
+   "MY·B"
+  ],
+  "sentence": "Ours beats today's method in 6 of 10 country × product cells; today's method wins 4 (SG·A, SG·B, MY·A, MY·B). Losses are shown, not hidden."
+ },
+ "productC": {
+  "baselineWape": 0.3414,
+  "oursWape": 0.4418,
+  "baselineBias": -0.0031,
+  "oursBias": -0.0494,
+  "note": "Product C (instruments) is lumpy and tender-driven: neither method is good. C is planned from the tender/PR pipeline, not from a time-series forecast, and is excluded from the headline."
+ },
+ "intervalMethod": "P10/P90 = ETS point forecast × the 10th/90th percentile of actual ÷ forecast ratios from this backtest, pooled within product.",
+ "cells": [
+  {
+   "country": "SG",
+   "product": "A",
+   "measure": "units",
+   "inHeadline": true,
+   "actuals": [
+    {
+     "month": "2023-10",
+     "value": 6221
+    },
+    {
+     "month": "2023-11",
+     "value": 3478
+    },
+    {
+     "month": "2023-12",
+     "value": 4031
+    },
+    {
+     "month": "2024-01",
+     "value": 4099
+    },
+    {
+     "month": "2024-02",
+     "value": 2709
+    },
+    {
+     "month": "2024-03",
+     "value": 3432
+    },
+    {
+     "month": "2024-04",
+     "value": 3879
+    },
+    {
+     "month": "2024-05",
+     "value": 7384
+    },
+    {
+     "month": "2024-06",
+     "value": 7584
+    },
+    {
+     "month": "2024-07",
+     "value": 7094
+    },
+    {
+     "month": "2024-08",
+     "value": 8169
+    },
+    {
+     "month": "2024-09",
+     "value": 8127
+    },
+    {
+     "month": "2024-10",
+     "value": 7710
+    },
+    {
+     "month": "2024-11",
+     "value": 4259
+    },
+    {
+     "month": "2024-12",
+     "value": 4063
+    },
+    {
+     "month": "2025-01",
+     "value": 3656
+    },
+    {
+     "month": "2025-02",
+     "value": 3404
+    },
+    {
+     "month": "2025-03",
+     "value": 3643
+    },
+    {
+     "month": "2025-04",
+     "value": 4233
+    },
+    {
+     "month": "2025-05",
+     "value": 5263
+    },
+    {
+     "month": "2025-06",
+     "value": 5219
+    },
+    {
+     "month": "2025-07",
+     "value": 5021
+    },
+    {
+     "month": "2025-08",
+     "value": 5844
+    },
+    {
+     "month": "2025-09",
+     "value": 5271
+    },
+    {
+     "month": "2025-10",
+     "value": 5167
+    },
+    {
+     "month": "2025-11",
+     "value": 3911
+    },
+    {
+     "month": "2025-12",
+     "value": 4206
+    },
+    {
+     "month": "2026-01",
+     "value": 4162
+    },
+    {
+     "month": "2026-02",
+     "value": 3518
+    },
+    {
+     "month": "2026-03",
+     "value": 4204
+    },
+    {
+     "month": "2026-04",
+     "value": 4772
+    },
+    {
+     "month": "2026-05",
+     "value": 5027
+    },
+    {
+     "month": "2026-06",
+     "value": 4995
+    },
+    {
+     "month": "2026-07",
+     "value": 4882
+    },
+    {
+     "month": "2026-08",
+     "value": 5492
+    },
+    {
+     "month": "2026-09",
+     "value": 5721
+    }
+   ],
+   "origins": [
+    {
+     "origin": "2026-03",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 4195
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 4195
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 4195
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 4668
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 4668
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 4668
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 4233
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 5263
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 5219
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 4720
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 6984
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 7060
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-04",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 4129
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 4129
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 4129
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 4713
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 4713
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 4713
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 5263
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 5219
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 5021
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 7033
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 7107
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 6762
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-05",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 4315
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 4315
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 4315
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 4693
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 4693
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 4693
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 5219
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 5021
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 5844
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 5154
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 4850
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 5809
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-06",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 4446
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 4446
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 4446
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 4675
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 4675
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 4675
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 5021
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 5844
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 5271
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 4674
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 5638
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 5337
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-07",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 4566
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 4566
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 4663
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 4663
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 5844
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 5271
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 5837
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 5534
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-08",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 4895
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 4634
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 5271
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 5201
+       }
+      ]
+     }
+    }
+   ],
+   "scores": {
+    "rolling6": {
+     "wape": 0.1641,
+     "bias": -0.1641,
+     "n": 15
+    },
+    "rolling12": {
+     "wape": 0.101,
+     "bias": -0.101,
+     "n": 15
+    },
+    "seasonalNaive": {
+     "wape": 0.0577,
+     "bias": 0.0093,
+     "n": 15
+    },
+    "etsDamped": {
+     "wape": 0.1584,
+     "bias": 0.1229,
+     "n": 15
+    }
+   },
+   "winner": "seasonalNaive",
+   "baselineWape": 0.101,
+   "oursWape": 0.1584,
+   "deltaWapePts": 5.7,
+   "oursBeatsBaseline": false,
+   "next3": [
+    {
+     "month": "2026-10",
+     "p50": 5519,
+     "p10": 4806,
+     "p90": 6788,
+     "p50Sgd": 1020966
+    },
+    {
+     "month": "2026-11",
+     "p50": 3072,
+     "p10": 2622,
+     "p90": 3892,
+     "p50Sgd": 568298
+    },
+    {
+     "month": "2026-12",
+     "p50": 3304,
+     "p10": 2762,
+     "p90": 4308,
+     "p50Sgd": 611212
+    }
+   ]
+  },
+  {
+   "country": "SG",
+   "product": "B",
+   "measure": "units",
+   "inHeadline": true,
+   "actuals": [
+    {
+     "month": "2023-10",
+     "value": 10546
+    },
+    {
+     "month": "2023-11",
+     "value": 7984
+    },
+    {
+     "month": "2023-12",
+     "value": 8021
+    },
+    {
+     "month": "2024-01",
+     "value": 7705
+    },
+    {
+     "month": "2024-02",
+     "value": 7693
+    },
+    {
+     "month": "2024-03",
+     "value": 11764
+    },
+    {
+     "month": "2024-04",
+     "value": 8237
+    },
+    {
+     "month": "2024-05",
+     "value": 12412
+    },
+    {
+     "month": "2024-06",
+     "value": 12340
+    },
+    {
+     "month": "2024-07",
+     "value": 12480
+    },
+    {
+     "month": "2024-08",
+     "value": 13164
+    },
+    {
+     "month": "2024-09",
+     "value": 12567
+    },
+    {
+     "month": "2024-10",
+     "value": 13059
+    },
+    {
+     "month": "2024-11",
+     "value": 8950
+    },
+    {
+     "month": "2024-12",
+     "value": 9138
+    },
+    {
+     "month": "2025-01",
+     "value": 8001
+    },
+    {
+     "month": "2025-02",
+     "value": 6671
+    },
+    {
+     "month": "2025-03",
+     "value": 11425
+    },
+    {
+     "month": "2025-04",
+     "value": 8708
+    },
+    {
+     "month": "2025-05",
+     "value": 9787
+    },
+    {
+     "month": "2025-06",
+     "value": 10120
+    },
+    {
+     "month": "2025-07",
+     "value": 11623
+    },
+    {
+     "month": "2025-08",
+     "value": 9694
+    },
+    {
+     "month": "2025-09",
+     "value": 11259
+    },
+    {
+     "month": "2025-10",
+     "value": 9073
+    },
+    {
+     "month": "2025-11",
+     "value": 9010
+    },
+    {
+     "month": "2025-12",
+     "value": 9409
+    },
+    {
+     "month": "2026-01",
+     "value": 8293
+    },
+    {
+     "month": "2026-02",
+     "value": 8300
+    },
+    {
+     "month": "2026-03",
+     "value": 12968
+    },
+    {
+     "month": "2026-04",
+     "value": 9148
+    },
+    {
+     "month": "2026-05",
+     "value": 10105
+    },
+    {
+     "month": "2026-06",
+     "value": 11250
+    },
+    {
+     "month": "2026-07",
+     "value": 10400
+    },
+    {
+     "month": "2026-08",
+     "value": 9515
+    },
+    {
+     "month": "2026-09",
+     "value": 9667
+    }
+   ],
+   "origins": [
+    {
+     "origin": "2026-03",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 9509
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 9509
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 9509
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 9854
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 9854
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 9854
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 8708
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 9787
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 10120
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 9938
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 12744
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 13014
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-04",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 9521
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 9521
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 9521
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 9890
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 9890
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 9890
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 9787
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 10120
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 11623
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 12523
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 12750
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 13682
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-05",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 9704
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 9704
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 9704
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 9917
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 9917
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 9917
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 10120
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 11623
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 9694
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 11147
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 12034
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 11378
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-06",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 10011
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 10011
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 10011
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 10011
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 10011
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 10011
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 11623
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 9694
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 11259
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 12076
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 11432
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 11928
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-07",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 10362
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 10362
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 9909
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 9909
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 9694
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 11259
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 10159
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 10387
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-08",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 10564
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 9894
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 11259
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 9915
+       }
+      ]
+     }
+    }
+   ],
+   "scores": {
+    "rolling6": {
+     "wape": 0.0789,
+     "bias": -0.0285,
+     "n": 15
+    },
+    "rolling12": {
+     "wape": 0.0576,
+     "bias": -0.0206,
+     "n": 15
+    },
+    "seasonalNaive": {
+     "wape": 0.0886,
+     "bias": 0.0298,
+     "n": 15
+    },
+    "etsDamped": {
+     "wape": 0.1545,
+     "bias": 0.1531,
+     "n": 15
+    }
+   },
+   "winner": "rolling12",
+   "baselineWape": 0.0576,
+   "oursWape": 0.1545,
+   "deltaWapePts": 9.7,
+   "oursBeatsBaseline": false,
+   "next3": [
+    {
+     "month": "2026-10",
+     "p50": 9148,
+     "p10": 7907,
+     "p90": 10598,
+     "p50Sgd": 384197
+    },
+    {
+     "month": "2026-11",
+     "p50": 6952,
+     "p10": 5889,
+     "p90": 8296,
+     "p50Sgd": 292002
+    },
+    {
+     "month": "2026-12",
+     "p50": 7250,
+     "p10": 6015,
+     "p90": 8903,
+     "p50Sgd": 304482
+    }
+   ]
+  },
+  {
+   "country": "SG",
+   "product": "C",
+   "measure": "units",
+   "inHeadline": false,
+   "actuals": [
+    {
+     "month": "2023-10",
+     "value": 3
+    },
+    {
+     "month": "2023-11",
+     "value": 6
+    },
+    {
+     "month": "2023-12",
+     "value": 4
+    },
+    {
+     "month": "2024-01",
+     "value": 7
+    },
+    {
+     "month": "2024-02",
+     "value": 8
+    },
+    {
+     "month": "2024-03",
+     "value": 12
+    },
+    {
+     "month": "2024-04",
+     "value": 3
+    },
+    {
+     "month": "2024-05",
+     "value": 4
+    },
+    {
+     "month": "2024-06",
+     "value": 7
+    },
+    {
+     "month": "2024-07",
+     "value": 7
+    },
+    {
+     "month": "2024-08",
+     "value": 4
+    },
+    {
+     "month": "2024-09",
+     "value": 2
+    },
+    {
+     "month": "2024-10",
+     "value": 2
+    },
+    {
+     "month": "2024-11",
+     "value": 7
+    },
+    {
+     "month": "2024-12",
+     "value": 4
+    },
+    {
+     "month": "2025-01",
+     "value": 4
+    },
+    {
+     "month": "2025-02",
+     "value": 4
+    },
+    {
+     "month": "2025-03",
+     "value": 8
+    },
+    {
+     "month": "2025-04",
+     "value": 8
+    },
+    {
+     "month": "2025-05",
+     "value": 7
+    },
+    {
+     "month": "2025-06",
+     "value": 4
+    },
+    {
+     "month": "2025-07",
+     "value": 6
+    },
+    {
+     "month": "2025-08",
+     "value": 6
+    },
+    {
+     "month": "2025-09",
+     "value": 11
+    },
+    {
+     "month": "2025-10",
+     "value": 3
+    },
+    {
+     "month": "2025-11",
+     "value": 6
+    },
+    {
+     "month": "2025-12",
+     "value": 8
+    },
+    {
+     "month": "2026-01",
+     "value": 11
+    },
+    {
+     "month": "2026-02",
+     "value": 5
+    },
+    {
+     "month": "2026-03",
+     "value": 12
+    },
+    {
+     "month": "2026-04",
+     "value": 8
+    },
+    {
+     "month": "2026-05",
+     "value": 2
+    },
+    {
+     "month": "2026-06",
+     "value": 6
+    },
+    {
+     "month": "2026-07",
+     "value": 14
+    },
+    {
+     "month": "2026-08",
+     "value": 7
+    },
+    {
+     "month": "2026-09",
+     "value": 1
+    }
+   ],
+   "origins": [
+    {
+     "origin": "2026-03",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 7
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 7
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 7
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 7
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 7
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 7
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 8
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 7
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 4
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 7
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 7
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 7
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-04",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 8
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 8
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 8
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 7
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 7
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 7
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 7
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 4
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 6
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 7
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 7
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 8
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-05",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 8
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 8
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 8
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 7
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 7
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 7
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 4
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 6
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 6
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 6
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 7
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 6
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-06",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 7
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 7
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 7
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 7
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 7
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 7
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 6
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 6
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 11
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 7
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 6
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 8
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-07",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 8
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 8
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 8
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 8
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 6
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 11
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 6
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 8
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-08",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 8
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 8
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 11
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 8
+       }
+      ]
+     }
+    }
+   ],
+   "scores": {
+    "rolling6": {
+     "wape": 0.5549,
+     "bias": 0.1909,
+     "n": 15
+    },
+    "rolling12": {
+     "wape": 0.5262,
+     "bias": 0.1135,
+     "n": 15
+    },
+    "seasonalNaive": {
+     "wape": 0.7553,
+     "bias": 0.0613,
+     "n": 15
+    },
+    "etsDamped": {
+     "wape": 0.5097,
+     "bias": 0.0761,
+     "n": 15
+    }
+   },
+   "winner": "etsDamped",
+   "baselineWape": 0.5262,
+   "oursWape": 0.5097,
+   "deltaWapePts": -1.6,
+   "oursBeatsBaseline": true,
+   "next3": [
+    {
+     "month": "2026-10",
+     "p50": 3,
+     "p10": 1,
+     "p90": 7,
+     "p50Sgd": 124964
+    },
+    {
+     "month": "2026-11",
+     "p50": 7,
+     "p10": 3,
+     "p90": 15,
+     "p50Sgd": 252575
+    },
+    {
+     "month": "2026-12",
+     "p50": 7,
+     "p10": 3,
+     "p90": 16,
+     "p50Sgd": 253219
+    }
+   ]
+  },
+  {
+   "country": "MY",
+   "product": "A",
+   "measure": "units",
+   "inHeadline": true,
+   "actuals": [
+    {
+     "month": "2023-10",
+     "value": 2780
+    },
+    {
+     "month": "2023-11",
+     "value": 3688
+    },
+    {
+     "month": "2023-12",
+     "value": 3651
+    },
+    {
+     "month": "2024-01",
+     "value": 4150
+    },
+    {
+     "month": "2024-02",
+     "value": 3943
+    },
+    {
+     "month": "2024-03",
+     "value": 4305
+    },
+    {
+     "month": "2024-04",
+     "value": 3050
+    },
+    {
+     "month": "2024-05",
+     "value": 2852
+    },
+    {
+     "month": "2024-06",
+     "value": 2710
+    },
+    {
+     "month": "2024-07",
+     "value": 3027
+    },
+    {
+     "month": "2024-08",
+     "value": 3156
+    },
+    {
+     "month": "2024-09",
+     "value": 3642
+    },
+    {
+     "month": "2024-10",
+     "value": 3244
+    },
+    {
+     "month": "2024-11",
+     "value": 4827
+    },
+    {
+     "month": "2024-12",
+     "value": 4324
+    },
+    {
+     "month": "2025-01",
+     "value": 3452
+    },
+    {
+     "month": "2025-02",
+     "value": 3046
+    },
+    {
+     "month": "2025-03",
+     "value": 3638
+    },
+    {
+     "month": "2025-04",
+     "value": 3905
+    },
+    {
+     "month": "2025-05",
+     "value": 3138
+    },
+    {
+     "month": "2025-06",
+     "value": 3607
+    },
+    {
+     "month": "2025-07",
+     "value": 3156
+    },
+    {
+     "month": "2025-08",
+     "value": 3679
+    },
+    {
+     "month": "2025-09",
+     "value": 3552
+    },
+    {
+     "month": "2025-10",
+     "value": 3424
+    },
+    {
+     "month": "2025-11",
+     "value": 4053
+    },
+    {
+     "month": "2025-12",
+     "value": 3878
+    },
+    {
+     "month": "2026-01",
+     "value": 4517
+    },
+    {
+     "month": "2026-02",
+     "value": 3637
+    },
+    {
+     "month": "2026-03",
+     "value": 3985
+    },
+    {
+     "month": "2026-04",
+     "value": 3235
+    },
+    {
+     "month": "2026-05",
+     "value": 3677
+    },
+    {
+     "month": "2026-06",
+     "value": 4111
+    },
+    {
+     "month": "2026-07",
+     "value": 3721
+    },
+    {
+     "month": "2026-08",
+     "value": 3662
+    },
+    {
+     "month": "2026-09",
+     "value": 3806
+    }
+   ],
+   "origins": [
+    {
+     "origin": "2026-03",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 3916
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 3916
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 3916
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 3711
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 3711
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 3711
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 3905
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 3138
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 3607
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 3548
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 3047
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 3201
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-04",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 3884
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 3884
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 3884
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 3655
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 3655
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 3655
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 3138
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 3607
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 3156
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 3052
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 3180
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 3130
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-05",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 3821
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 3821
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 3821
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 3700
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 3700
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 3700
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 3607
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 3156
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 3679
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 3164
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 3210
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 3488
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-06",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 3860
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 3860
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 3860
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 3742
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 3742
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 3742
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 3156
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 3679
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 3552
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 3284
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 3638
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 3767
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-07",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 3728
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 3728
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 3789
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 3789
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 3679
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 3552
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 3673
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 3830
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-08",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 3732
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 3788
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 3552
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 3832
+       }
+      ]
+     }
+    }
+   ],
+   "scores": {
+    "rolling6": {
+     "wape": 0.0509,
+     "bias": 0.0202,
+     "n": 15
+    },
+    "rolling12": {
+     "wape": 0.0399,
+     "bias": -0.0124,
+     "n": 15
+    },
+    "seasonalNaive": {
+     "wape": 0.1021,
+     "bias": -0.0767,
+     "n": 15
+    },
+    "etsDamped": {
+     "wape": 0.1096,
+     "bias": -0.0964,
+     "n": 15
+    }
+   },
+   "winner": "rolling12",
+   "baselineWape": 0.0399,
+   "oursWape": 0.1096,
+   "deltaWapePts": 7.0,
+   "oursBeatsBaseline": false,
+   "next3": [
+    {
+     "month": "2026-10",
+     "p50": 3574,
+     "p10": 3113,
+     "p90": 4396,
+     "p50Sgd": 661218
+    },
+    {
+     "month": "2026-11",
+     "p50": 4600,
+     "p10": 3925,
+     "p90": 5827,
+     "p50Sgd": 850915
+    },
+    {
+     "month": "2026-12",
+     "p50": 4354,
+     "p10": 3640,
+     "p90": 5677,
+     "p50Sgd": 805471
+    }
+   ]
+  },
+  {
+   "country": "MY",
+   "product": "B",
+   "measure": "units",
+   "inHeadline": true,
+   "actuals": [
+    {
+     "month": "2023-10",
+     "value": 7451
+    },
+    {
+     "month": "2023-11",
+     "value": 7674
+    },
+    {
+     "month": "2023-12",
+     "value": 9528
+    },
+    {
+     "month": "2024-01",
+     "value": 7331
+    },
+    {
+     "month": "2024-02",
+     "value": 7082
+    },
+    {
+     "month": "2024-03",
+     "value": 8983
+    },
+    {
+     "month": "2024-04",
+     "value": 7047
+    },
+    {
+     "month": "2024-05",
+     "value": 6296
+    },
+    {
+     "month": "2024-06",
+     "value": 6246
+    },
+    {
+     "month": "2024-07",
+     "value": 7978
+    },
+    {
+     "month": "2024-08",
+     "value": 8058
+    },
+    {
+     "month": "2024-09",
+     "value": 7014
+    },
+    {
+     "month": "2024-10",
+     "value": 6932
+    },
+    {
+     "month": "2024-11",
+     "value": 9290
+    },
+    {
+     "month": "2024-12",
+     "value": 9903
+    },
+    {
+     "month": "2025-01",
+     "value": 6112
+    },
+    {
+     "month": "2025-02",
+     "value": 7038
+    },
+    {
+     "month": "2025-03",
+     "value": 7574
+    },
+    {
+     "month": "2025-04",
+     "value": 7359
+    },
+    {
+     "month": "2025-05",
+     "value": 7301
+    },
+    {
+     "month": "2025-06",
+     "value": 7635
+    },
+    {
+     "month": "2025-07",
+     "value": 8311
+    },
+    {
+     "month": "2025-08",
+     "value": 7561
+    },
+    {
+     "month": "2025-09",
+     "value": 7932
+    },
+    {
+     "month": "2025-10",
+     "value": 6337
+    },
+    {
+     "month": "2025-11",
+     "value": 8099
+    },
+    {
+     "month": "2025-12",
+     "value": 9905
+    },
+    {
+     "month": "2026-01",
+     "value": 6464
+    },
+    {
+     "month": "2026-02",
+     "value": 6771
+    },
+    {
+     "month": "2026-03",
+     "value": 8281
+    },
+    {
+     "month": "2026-04",
+     "value": 8376
+    },
+    {
+     "month": "2026-05",
+     "value": 7010
+    },
+    {
+     "month": "2026-06",
+     "value": 7899
+    },
+    {
+     "month": "2026-07",
+     "value": 7612
+    },
+    {
+     "month": "2026-08",
+     "value": 7748
+    },
+    {
+     "month": "2026-09",
+     "value": 8637
+    }
+   ],
+   "origins": [
+    {
+     "origin": "2026-03",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 7643
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 7643
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 7643
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 7663
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 7663
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 7663
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 7359
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 7301
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 7635
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 7185
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 6784
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 6928
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-04",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 7983
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 7983
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 7983
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 7748
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 7748
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 7748
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 7301
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 7635
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 8311
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 6859
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 7001
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 8203
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-05",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 7801
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 7801
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 7801
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 7723
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 7723
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 7723
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 7635
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 8311
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 7561
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 7009
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 8213
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 7879
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-06",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 7467
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 7467
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 7467
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 7745
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 7745
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 7745
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 8311
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 7561
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 7932
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 8279
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 7945
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 7606
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-07",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 7658
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 7658
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 7687
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 7687
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 7561
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 7932
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 7889
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 7543
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-08",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 7821
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 7703
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 7932
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 7548
+       }
+      ]
+     }
+    }
+   ],
+   "scores": {
+    "rolling6": {
+     "wape": 0.0582,
+     "bias": -0.0192,
+     "n": 15
+    },
+    "rolling12": {
+     "wape": 0.0501,
+     "bias": -0.0201,
+     "n": 15
+    },
+    "seasonalNaive": {
+     "wape": 0.0607,
+     "bias": -0.0153,
+     "n": 15
+    },
+    "etsDamped": {
+     "wape": 0.0836,
+     "bias": -0.0442,
+     "n": 15
+    }
+   },
+   "winner": "rolling12",
+   "baselineWape": 0.0501,
+   "oursWape": 0.0836,
+   "deltaWapePts": 3.3,
+   "oursBeatsBaseline": false,
+   "next3": [
+    {
+     "month": "2026-10",
+     "p50": 7099,
+     "p10": 6136,
+     "p90": 8225,
+     "p50Sgd": 298175
+    },
+    {
+     "month": "2026-11",
+     "p50": 8546,
+     "p10": 7239,
+     "p90": 10199,
+     "p50Sgd": 358948
+    },
+    {
+     "month": "2026-12",
+     "p50": 9970,
+     "p10": 8273,
+     "p90": 12244,
+     "p50Sgd": 418737
+    }
+   ]
+  },
+  {
+   "country": "MY",
+   "product": "C",
+   "measure": "units",
+   "inHeadline": false,
+   "actuals": [
+    {
+     "month": "2023-10",
+     "value": 5
+    },
+    {
+     "month": "2023-11",
+     "value": 6
+    },
+    {
+     "month": "2023-12",
+     "value": 9
+    },
+    {
+     "month": "2024-01",
+     "value": 5
+    },
+    {
+     "month": "2024-02",
+     "value": 4
+    },
+    {
+     "month": "2024-03",
+     "value": 13
+    },
+    {
+     "month": "2024-04",
+     "value": 3
+    },
+    {
+     "month": "2024-05",
+     "value": 2
+    },
+    {
+     "month": "2024-06",
+     "value": 5
+    },
+    {
+     "month": "2024-07",
+     "value": 3
+    },
+    {
+     "month": "2024-08",
+     "value": 1
+    },
+    {
+     "month": "2024-09",
+     "value": 2
+    },
+    {
+     "month": "2024-10",
+     "value": 12
+    },
+    {
+     "month": "2024-11",
+     "value": 4
+    },
+    {
+     "month": "2024-12",
+     "value": 4
+    },
+    {
+     "month": "2025-01",
+     "value": 11
+    },
+    {
+     "month": "2025-02",
+     "value": 2
+    },
+    {
+     "month": "2025-03",
+     "value": 15
+    },
+    {
+     "month": "2025-04",
+     "value": 4
+    },
+    {
+     "month": "2025-05",
+     "value": 10
+    },
+    {
+     "month": "2025-06",
+     "value": 4
+    },
+    {
+     "month": "2025-07",
+     "value": 6
+    },
+    {
+     "month": "2025-08",
+     "value": 4
+    },
+    {
+     "month": "2025-09",
+     "value": 4
+    },
+    {
+     "month": "2025-10",
+     "value": 5
+    },
+    {
+     "month": "2025-11",
+     "value": 9
+    },
+    {
+     "month": "2025-12",
+     "value": 12
+    },
+    {
+     "month": "2026-01",
+     "value": 5
+    },
+    {
+     "month": "2026-02",
+     "value": 3
+    },
+    {
+     "month": "2026-03",
+     "value": 4
+    },
+    {
+     "month": "2026-04",
+     "value": 10
+    },
+    {
+     "month": "2026-05",
+     "value": 3
+    },
+    {
+     "month": "2026-06",
+     "value": 5
+    },
+    {
+     "month": "2026-07",
+     "value": 8
+    },
+    {
+     "month": "2026-08",
+     "value": 6
+    },
+    {
+     "month": "2026-09",
+     "value": 7
+    }
+   ],
+   "origins": [
+    {
+     "origin": "2026-03",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 6
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 6
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 6
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 6
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 6
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 6
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 4
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 10
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 4
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 3
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 6
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 5
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-04",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 7
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 7
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 7
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 6
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 6
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 6
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 10
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 4
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 6
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 6
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 5
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 5
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-05",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 6
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 6
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 6
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 6
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 6
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 6
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 4
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 6
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 4
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 5
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 5
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 3
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-06",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 5
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 5
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 5
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 6
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 6
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 6
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 6
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 4
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 4
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 5
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 3
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 3
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-07",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 6
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 6
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 6
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 6
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 4
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 4
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 3
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 4
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-08",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 6
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 6
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 4
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 4
+       }
+      ]
+     }
+    }
+   ],
+   "scores": {
+    "rolling6": {
+     "wape": 0.2889,
+     "bias": -0.0649,
+     "n": 15
+    },
+    "rolling12": {
+     "wape": 0.2405,
+     "bias": -0.0844,
+     "n": 15
+    },
+    "seasonalNaive": {
+     "wape": 0.4922,
+     "bias": -0.2139,
+     "n": 15
+    },
+    "etsDamped": {
+     "wape": 0.4684,
+     "bias": -0.3377,
+     "n": 15
+    }
+   },
+   "winner": "rolling12",
+   "baselineWape": 0.2405,
+   "oursWape": 0.4684,
+   "deltaWapePts": 22.8,
+   "oursBeatsBaseline": false,
+   "next3": [
+    {
+     "month": "2026-10",
+     "p50": 9,
+     "p10": 4,
+     "p90": 19,
+     "p50Sgd": 327630
+    },
+    {
+     "month": "2026-11",
+     "p50": 8,
+     "p10": 3,
+     "p90": 17,
+     "p50Sgd": 287618
+    },
+    {
+     "month": "2026-12",
+     "p50": 10,
+     "p10": 4,
+     "p90": 22,
+     "p50Sgd": 362921
+    }
+   ]
+  },
+  {
+   "country": "TH",
+   "product": "A",
+   "measure": "units",
+   "inHeadline": true,
+   "actuals": [
+    {
+     "month": "2023-10",
+     "value": 1683
+    },
+    {
+     "month": "2023-11",
+     "value": 1786
+    },
+    {
+     "month": "2023-12",
+     "value": 1904
+    },
+    {
+     "month": "2024-01",
+     "value": 1882
+    },
+    {
+     "month": "2024-02",
+     "value": 1839
+    },
+    {
+     "month": "2024-03",
+     "value": 1877
+    },
+    {
+     "month": "2024-04",
+     "value": 1602
+    },
+    {
+     "month": "2024-05",
+     "value": 1934
+    },
+    {
+     "month": "2024-06",
+     "value": 3621
+    },
+    {
+     "month": "2024-07",
+     "value": 2587
+    },
+    {
+     "month": "2024-08",
+     "value": 3210
+    },
+    {
+     "month": "2024-09",
+     "value": 3334
+    },
+    {
+     "month": "2024-10",
+     "value": 2004
+    },
+    {
+     "month": "2024-11",
+     "value": 1909
+    },
+    {
+     "month": "2024-12",
+     "value": 1699
+    },
+    {
+     "month": "2025-01",
+     "value": 2039
+    },
+    {
+     "month": "2025-02",
+     "value": 2272
+    },
+    {
+     "month": "2025-03",
+     "value": 1760
+    },
+    {
+     "month": "2025-04",
+     "value": 1853
+    },
+    {
+     "month": "2025-05",
+     "value": 1972
+    },
+    {
+     "month": "2025-06",
+     "value": 2972
+    },
+    {
+     "month": "2025-07",
+     "value": 2748
+    },
+    {
+     "month": "2025-08",
+     "value": 2935
+    },
+    {
+     "month": "2025-09",
+     "value": 3346
+    },
+    {
+     "month": "2025-10",
+     "value": 2172
+    },
+    {
+     "month": "2025-11",
+     "value": 2374
+    },
+    {
+     "month": "2025-12",
+     "value": 2293
+    },
+    {
+     "month": "2026-01",
+     "value": 2180
+    },
+    {
+     "month": "2026-02",
+     "value": 2411
+    },
+    {
+     "month": "2026-03",
+     "value": 2201
+    },
+    {
+     "month": "2026-04",
+     "value": 1959
+    },
+    {
+     "month": "2026-05",
+     "value": 2096
+    },
+    {
+     "month": "2026-06",
+     "value": 3302
+    },
+    {
+     "month": "2026-07",
+     "value": 3116
+    },
+    {
+     "month": "2026-08",
+     "value": 3579
+    },
+    {
+     "month": "2026-09",
+     "value": 3019
+    }
+   ],
+   "origins": [
+    {
+     "origin": "2026-03",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 2272
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 2272
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 2272
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 2455
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 2455
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 2455
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 1853
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 1972
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 2972
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 1947
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 2174
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 3539
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-04",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 2236
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 2236
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 2236
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 2464
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 2464
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 2464
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 1972
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 2972
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 2748
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 2187
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 3530
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 2899
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-05",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 2190
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 2190
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 2190
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 2474
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 2474
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 2474
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 2972
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 2748
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 2935
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 3483
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 2840
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 3235
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-06",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 2358
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 2358
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 2358
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 2501
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 2501
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 2501
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 2748
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 2935
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 3346
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 2870
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 3271
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 3537
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-07",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 2514
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 2514
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 2532
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 2532
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 2935
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 3346
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 3301
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 3548
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-08",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 2709
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 2586
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 3346
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 3565
+       }
+      ]
+     }
+    }
+   ],
+   "scores": {
+    "rolling6": {
+     "wape": 0.2556,
+     "bias": -0.2278,
+     "n": 15
+    },
+    "rolling12": {
+     "wape": 0.2282,
+     "bias": -0.1741,
+     "n": 15
+    },
+    "seasonalNaive": {
+     "wape": 0.1186,
+     "bias": -0.0752,
+     "n": 15
+    },
+    "etsDamped": {
+     "wape": 0.0906,
+     "bias": 0.0161,
+     "n": 15
+    }
+   },
+   "winner": "etsDamped",
+   "baselineWape": 0.2282,
+   "oursWape": 0.0906,
+   "deltaWapePts": -13.8,
+   "oursBeatsBaseline": true,
+   "next3": [
+    {
+     "month": "2026-10",
+     "p50": 2230,
+     "p10": 1942,
+     "p90": 2742,
+     "p50Sgd": 412466
+    },
+    {
+     "month": "2026-11",
+     "p50": 2292,
+     "p10": 1956,
+     "p90": 2904,
+     "p50Sgd": 423971
+    },
+    {
+     "month": "2026-12",
+     "p50": 2227,
+     "p10": 1861,
+     "p90": 2903,
+     "p50Sgd": 411909
+    }
+   ]
+  },
+  {
+   "country": "TH",
+   "product": "B",
+   "measure": "units",
+   "inHeadline": true,
+   "actuals": [
+    {
+     "month": "2023-10",
+     "value": 3711
+    },
+    {
+     "month": "2023-11",
+     "value": 3924
+    },
+    {
+     "month": "2023-12",
+     "value": 4376
+    },
+    {
+     "month": "2024-01",
+     "value": 4258
+    },
+    {
+     "month": "2024-02",
+     "value": 4621
+    },
+    {
+     "month": "2024-03",
+     "value": 4287
+    },
+    {
+     "month": "2024-04",
+     "value": 3057
+    },
+    {
+     "month": "2024-05",
+     "value": 4061
+    },
+    {
+     "month": "2024-06",
+     "value": 4760
+    },
+    {
+     "month": "2024-07",
+     "value": 5055
+    },
+    {
+     "month": "2024-08",
+     "value": 5935
+    },
+    {
+     "month": "2024-09",
+     "value": 7264
+    },
+    {
+     "month": "2024-10",
+     "value": 3462
+    },
+    {
+     "month": "2024-11",
+     "value": 3844
+    },
+    {
+     "month": "2024-12",
+     "value": 4212
+    },
+    {
+     "month": "2025-01",
+     "value": 3807
+    },
+    {
+     "month": "2025-02",
+     "value": 4008
+    },
+    {
+     "month": "2025-03",
+     "value": 4358
+    },
+    {
+     "month": "2025-04",
+     "value": 4011
+    },
+    {
+     "month": "2025-05",
+     "value": 4496
+    },
+    {
+     "month": "2025-06",
+     "value": 4188
+    },
+    {
+     "month": "2025-07",
+     "value": 5274
+    },
+    {
+     "month": "2025-08",
+     "value": 5199
+    },
+    {
+     "month": "2025-09",
+     "value": 6971
+    },
+    {
+     "month": "2025-10",
+     "value": 4348
+    },
+    {
+     "month": "2025-11",
+     "value": 3668
+    },
+    {
+     "month": "2025-12",
+     "value": 4202
+    },
+    {
+     "month": "2026-01",
+     "value": 4638
+    },
+    {
+     "month": "2026-02",
+     "value": 3884
+    },
+    {
+     "month": "2026-03",
+     "value": 4992
+    },
+    {
+     "month": "2026-04",
+     "value": 3969
+    },
+    {
+     "month": "2026-05",
+     "value": 4806
+    },
+    {
+     "month": "2026-06",
+     "value": 5235
+    },
+    {
+     "month": "2026-07",
+     "value": 5867
+    },
+    {
+     "month": "2026-08",
+     "value": 6003
+    },
+    {
+     "month": "2026-09",
+     "value": 7353
+    }
+   ],
+   "origins": [
+    {
+     "origin": "2026-03",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 4289
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 4289
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 4289
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 4656
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 4656
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 4656
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 4011
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 4496
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 4188
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 3533
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 4278
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 4474
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-04",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 4226
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 4226
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 4226
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 4652
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 4652
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 4652
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 4496
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 4188
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 5274
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 4357
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 4561
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 5243
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-05",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 4415
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 4415
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 4415
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 4678
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 4678
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 4678
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 4188
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 5274
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 5199
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 4593
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 5279
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 5686
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-06",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 4587
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 4587
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 4587
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 4766
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 4766
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 4766
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 5274
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 5199
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 6971
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 5321
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 5773
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 7303
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-07",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 4792
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 4792
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 4815
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 4815
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 5199
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 6971
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 5828
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 7368
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-08",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 5145
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 4882
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 6971
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 7385
+       }
+      ]
+     }
+    }
+   ],
+   "scores": {
+    "rolling6": {
+     "wape": 0.2336,
+     "bias": -0.2263,
+     "n": 15
+    },
+    "rolling12": {
+     "wape": 0.202,
+     "bias": -0.1862,
+     "n": 15
+    },
+    "seasonalNaive": {
+     "wape": 0.1051,
+     "bias": -0.1042,
+     "n": 15
+    },
+    "etsDamped": {
+     "wape": 0.0698,
+     "bias": -0.0687,
+     "n": 15
+    }
+   },
+   "winner": "etsDamped",
+   "baselineWape": 0.202,
+   "oursWape": 0.0698,
+   "deltaWapePts": -13.2,
+   "oursBeatsBaseline": true,
+   "next3": [
+    {
+     "month": "2026-10",
+     "p50": 4286,
+     "p10": 3705,
+     "p90": 4966,
+     "p50Sgd": 180027
+    },
+    {
+     "month": "2026-11",
+     "p50": 4287,
+     "p10": 3632,
+     "p90": 5116,
+     "p50Sgd": 180072
+    },
+    {
+     "month": "2026-12",
+     "p50": 4763,
+     "p10": 3952,
+     "p90": 5849,
+     "p50Sgd": 200035
+    }
+   ]
+  },
+  {
+   "country": "TH",
+   "product": "C",
+   "measure": "units",
+   "inHeadline": false,
+   "actuals": [
+    {
+     "month": "2023-10",
+     "value": 4
+    },
+    {
+     "month": "2023-11",
+     "value": 2
+    },
+    {
+     "month": "2023-12",
+     "value": 4
+    },
+    {
+     "month": "2024-01",
+     "value": 4
+    },
+    {
+     "month": "2024-02",
+     "value": 3
+    },
+    {
+     "month": "2024-03",
+     "value": 2
+    },
+    {
+     "month": "2024-04",
+     "value": 3
+    },
+    {
+     "month": "2024-05",
+     "value": 3
+    },
+    {
+     "month": "2024-06",
+     "value": 4
+    },
+    {
+     "month": "2024-07",
+     "value": 6
+    },
+    {
+     "month": "2024-08",
+     "value": 4
+    },
+    {
+     "month": "2024-09",
+     "value": 14
+    },
+    {
+     "month": "2024-10",
+     "value": 4
+    },
+    {
+     "month": "2024-11",
+     "value": 1
+    },
+    {
+     "month": "2024-12",
+     "value": 2
+    },
+    {
+     "month": "2025-01",
+     "value": 4
+    },
+    {
+     "month": "2025-02",
+     "value": 3
+    },
+    {
+     "month": "2025-03",
+     "value": 1
+    },
+    {
+     "month": "2025-04",
+     "value": 2
+    },
+    {
+     "month": "2025-05",
+     "value": 4
+    },
+    {
+     "month": "2025-06",
+     "value": 2
+    },
+    {
+     "month": "2025-07",
+     "value": 7
+    },
+    {
+     "month": "2025-08",
+     "value": 7
+    },
+    {
+     "month": "2025-09",
+     "value": 6
+    },
+    {
+     "month": "2025-10",
+     "value": 6
+    },
+    {
+     "month": "2025-11",
+     "value": 5
+    },
+    {
+     "month": "2025-12",
+     "value": 4
+    },
+    {
+     "month": "2026-01",
+     "value": 1
+    },
+    {
+     "month": "2026-02",
+     "value": 1
+    },
+    {
+     "month": "2026-03",
+     "value": 2
+    },
+    {
+     "month": "2026-04",
+     "value": 2
+    },
+    {
+     "month": "2026-05",
+     "value": 5
+    },
+    {
+     "month": "2026-06",
+     "value": 3
+    },
+    {
+     "month": "2026-07",
+     "value": 5
+    },
+    {
+     "month": "2026-08",
+     "value": 6
+    },
+    {
+     "month": "2026-09",
+     "value": 5
+    }
+   ],
+   "origins": [
+    {
+     "origin": "2026-03",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 3
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 3
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 3
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 4
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 4
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 4
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 2
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 4
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 2
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 2
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 3
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 3
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-04",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 3
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 3
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 3
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 4
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 4
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 4
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 4
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 2
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 7
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 3
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 3
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 6
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-05",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 3
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 3
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 3
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 4
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 4
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 4
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 2
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 7
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 7
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 3
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 6
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 5
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-06",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 2
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 2
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 2
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 4
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 4
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 4
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 7
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 7
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 6
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 6
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 5
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 10
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-07",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 3
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 3
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 4
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 4
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 7
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 6
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 5
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 10
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-08",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 4
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 4
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 6
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 10
+       }
+      ]
+     }
+    }
+   ],
+   "scores": {
+    "rolling6": {
+     "wape": 0.4174,
+     "bias": -0.3755,
+     "n": 15
+    },
+    "rolling12": {
+     "wape": 0.2577,
+     "bias": -0.1085,
+     "n": 15
+    },
+    "seasonalNaive": {
+     "wape": 0.2693,
+     "bias": 0.1229,
+     "n": 15
+    },
+    "etsDamped": {
+     "wape": 0.3519,
+     "bias": 0.222,
+     "n": 15
+    }
+   },
+   "winner": "rolling12",
+   "baselineWape": 0.2577,
+   "oursWape": 0.3519,
+   "deltaWapePts": 9.4,
+   "oursBeatsBaseline": false,
+   "next3": [
+    {
+     "month": "2026-10",
+     "p50": 4,
+     "p10": 2,
+     "p90": 9,
+     "p50Sgd": 153708
+    },
+    {
+     "month": "2026-11",
+     "p50": 2,
+     "p10": 1,
+     "p90": 5,
+     "p50Sgd": 88414
+    },
+    {
+     "month": "2026-12",
+     "p50": 2,
+     "p10": 1,
+     "p90": 5,
+     "p50Sgd": 85305
+    }
+   ]
+  },
+  {
+   "country": "VN",
+   "product": "A",
+   "measure": "units",
+   "inHeadline": true,
+   "actuals": [
+    {
+     "month": "2023-10",
+     "value": 2149
+    },
+    {
+     "month": "2023-11",
+     "value": 2267
+    },
+    {
+     "month": "2023-12",
+     "value": 1561
+    },
+    {
+     "month": "2024-01",
+     "value": 1683
+    },
+    {
+     "month": "2024-02",
+     "value": 929
+    },
+    {
+     "month": "2024-03",
+     "value": 1553
+    },
+    {
+     "month": "2024-04",
+     "value": 1392
+    },
+    {
+     "month": "2024-05",
+     "value": 1590
+    },
+    {
+     "month": "2024-06",
+     "value": 1529
+    },
+    {
+     "month": "2024-07",
+     "value": 2216
+    },
+    {
+     "month": "2024-08",
+     "value": 2813
+    },
+    {
+     "month": "2024-09",
+     "value": 2514
+    },
+    {
+     "month": "2024-10",
+     "value": 2551
+    },
+    {
+     "month": "2024-11",
+     "value": 2458
+    },
+    {
+     "month": "2024-12",
+     "value": 1543
+    },
+    {
+     "month": "2025-01",
+     "value": 1699
+    },
+    {
+     "month": "2025-02",
+     "value": 1142
+    },
+    {
+     "month": "2025-03",
+     "value": 1715
+    },
+    {
+     "month": "2025-04",
+     "value": 1735
+    },
+    {
+     "month": "2025-05",
+     "value": 1880
+    },
+    {
+     "month": "2025-06",
+     "value": 1668
+    },
+    {
+     "month": "2025-07",
+     "value": 2264
+    },
+    {
+     "month": "2025-08",
+     "value": 2811
+    },
+    {
+     "month": "2025-09",
+     "value": 2543
+    },
+    {
+     "month": "2025-10",
+     "value": 2871
+    },
+    {
+     "month": "2025-11",
+     "value": 2740
+    },
+    {
+     "month": "2025-12",
+     "value": 1788
+    },
+    {
+     "month": "2026-01",
+     "value": 1874
+    },
+    {
+     "month": "2026-02",
+     "value": 1488
+    },
+    {
+     "month": "2026-03",
+     "value": 2163
+    },
+    {
+     "month": "2026-04",
+     "value": 1882
+    },
+    {
+     "month": "2026-05",
+     "value": 1912
+    },
+    {
+     "month": "2026-06",
+     "value": 2068
+    },
+    {
+     "month": "2026-07",
+     "value": 3416
+    },
+    {
+     "month": "2026-08",
+     "value": 3794
+    },
+    {
+     "month": "2026-09",
+     "value": 3720
+    }
+   ],
+   "origins": [
+    {
+     "origin": "2026-03",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 2154
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 2154
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 2154
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 2152
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 2152
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 2152
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 1735
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 1880
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 1668
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 1875
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 2046
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 1907
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-04",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 1989
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 1989
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 1989
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 2164
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 2164
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 2164
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 1880
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 1668
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 2264
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 2047
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 1908
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 2547
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-05",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 1851
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 1851
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 1851
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 2167
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 2167
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 2167
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 1668
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 2264
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 2811
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 1895
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 2534
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 3105
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-06",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 1898
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 1898
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 1898
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 2200
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 2200
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 2200
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 2264
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 2811
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 2543
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 2567
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 3141
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 2853
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-07",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 2155
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 2155
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 2296
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 2296
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 2811
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 2543
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 3984
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 3701
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-08",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 2539
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 2378
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 2543
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 3504
+       }
+      ]
+     }
+    }
+   ],
+   "scores": {
+    "rolling6": {
+     "wape": 0.3475,
+     "bias": -0.3171,
+     "n": 15
+    },
+    "rolling12": {
+     "wape": 0.3079,
+     "bias": -0.2612,
+     "n": 15
+    },
+    "seasonalNaive": {
+     "wape": 0.2537,
+     "bias": -0.2537,
+     "n": 15
+    },
+    "etsDamped": {
+     "wape": 0.1343,
+     "bias": -0.1138,
+     "n": 15
+    }
+   },
+   "winner": "etsDamped",
+   "baselineWape": 0.3079,
+   "oursWape": 0.1343,
+   "deltaWapePts": -17.4,
+   "oursBeatsBaseline": true,
+   "next3": [
+    {
+     "month": "2026-10",
+     "p50": 3896,
+     "p10": 3393,
+     "p90": 4793,
+     "p50Sgd": 720807
+    },
+    {
+     "month": "2026-11",
+     "p50": 3855,
+     "p10": 3290,
+     "p90": 4884,
+     "p50Sgd": 713199
+    },
+    {
+     "month": "2026-12",
+     "p50": 2991,
+     "p10": 2500,
+     "p90": 3900,
+     "p50Sgd": 553294
+    }
+   ]
+  },
+  {
+   "country": "VN",
+   "product": "B",
+   "measure": "units",
+   "inHeadline": true,
+   "actuals": [
+    {
+     "month": "2023-10",
+     "value": 4060
+    },
+    {
+     "month": "2023-11",
+     "value": 3723
+    },
+    {
+     "month": "2023-12",
+     "value": 3654
+    },
+    {
+     "month": "2024-01",
+     "value": 2435
+    },
+    {
+     "month": "2024-02",
+     "value": 2083
+    },
+    {
+     "month": "2024-03",
+     "value": 3170
+    },
+    {
+     "month": "2024-04",
+     "value": 3237
+    },
+    {
+     "month": "2024-05",
+     "value": 3856
+    },
+    {
+     "month": "2024-06",
+     "value": 3660
+    },
+    {
+     "month": "2024-07",
+     "value": 3977
+    },
+    {
+     "month": "2024-08",
+     "value": 4460
+    },
+    {
+     "month": "2024-09",
+     "value": 4229
+    },
+    {
+     "month": "2024-10",
+     "value": 4302
+    },
+    {
+     "month": "2024-11",
+     "value": 4500
+    },
+    {
+     "month": "2024-12",
+     "value": 4790
+    },
+    {
+     "month": "2025-01",
+     "value": 3096
+    },
+    {
+     "month": "2025-02",
+     "value": 2705
+    },
+    {
+     "month": "2025-03",
+     "value": 3259
+    },
+    {
+     "month": "2025-04",
+     "value": 3615
+    },
+    {
+     "month": "2025-05",
+     "value": 4395
+    },
+    {
+     "month": "2025-06",
+     "value": 3730
+    },
+    {
+     "month": "2025-07",
+     "value": 4929
+    },
+    {
+     "month": "2025-08",
+     "value": 4487
+    },
+    {
+     "month": "2025-09",
+     "value": 4695
+    },
+    {
+     "month": "2025-10",
+     "value": 4498
+    },
+    {
+     "month": "2025-11",
+     "value": 4489
+    },
+    {
+     "month": "2025-12",
+     "value": 4664
+    },
+    {
+     "month": "2026-01",
+     "value": 3588
+    },
+    {
+     "month": "2026-02",
+     "value": 2532
+    },
+    {
+     "month": "2026-03",
+     "value": 4118
+    },
+    {
+     "month": "2026-04",
+     "value": 4280
+    },
+    {
+     "month": "2026-05",
+     "value": 4082
+    },
+    {
+     "month": "2026-06",
+     "value": 3903
+    },
+    {
+     "month": "2026-07",
+     "value": 5718
+    },
+    {
+     "month": "2026-08",
+     "value": 5420
+    },
+    {
+     "month": "2026-09",
+     "value": 6016
+    }
+   ],
+   "origins": [
+    {
+     "origin": "2026-03",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 3981
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 3981
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 3981
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 4145
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 4145
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 4145
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 3615
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 4395
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 3730
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 3874
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 4511
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 4146
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-04",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 3945
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 3945
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 3945
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 4200
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 4200
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 4200
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 4395
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 3730
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 4929
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 4591
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 4163
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 4841
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-05",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 3877
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 3877
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 3877
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 4174
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 4174
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 4174
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 3730
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 4929
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 4487
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 4144
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 4679
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 4863
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-06",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 3751
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 3751
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 3751
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 4189
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 4189
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 4189
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 4929
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 4487
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 4695
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 4741
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 4791
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 4734
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-07",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 4106
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 4106
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 4254
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 4254
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 4487
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 4695
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 4917
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 4842
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-08",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 4587
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 4332
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 4695
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 4950
+       }
+      ]
+     }
+    }
+   ],
+   "scores": {
+    "rolling6": {
+     "wape": 0.2168,
+     "bias": -0.2136,
+     "n": 15
+    },
+    "rolling12": {
+     "wape": 0.1935,
+     "bias": -0.1673,
+     "n": 15
+    },
+    "seasonalNaive": {
+     "wape": 0.1446,
+     "bias": -0.1281,
+     "n": 15
+    },
+    "etsDamped": {
+     "wape": 0.1347,
+     "bias": -0.0903,
+     "n": 15
+    }
+   },
+   "winner": "etsDamped",
+   "baselineWape": 0.1935,
+   "oursWape": 0.1347,
+   "deltaWapePts": -5.9,
+   "oursBeatsBaseline": true,
+   "next3": [
+    {
+     "month": "2026-10",
+     "p50": 5211,
+     "p10": 4504,
+     "p90": 6037,
+     "p50Sgd": 218872
+    },
+    {
+     "month": "2026-11",
+     "p50": 5134,
+     "p10": 4348,
+     "p90": 6126,
+     "p50Sgd": 215613
+    },
+    {
+     "month": "2026-12",
+     "p50": 5246,
+     "p10": 4353,
+     "p90": 6443,
+     "p50Sgd": 220342
+    }
+   ]
+  },
+  {
+   "country": "VN",
+   "product": "C",
+   "measure": "units",
+   "inHeadline": false,
+   "actuals": [
+    {
+     "month": "2023-10",
+     "value": 1
+    },
+    {
+     "month": "2023-11",
+     "value": 1
+    },
+    {
+     "month": "2023-12",
+     "value": 10
+    },
+    {
+     "month": "2024-01",
+     "value": 2
+    },
+    {
+     "month": "2024-02",
+     "value": 2
+    },
+    {
+     "month": "2024-03",
+     "value": 2
+    },
+    {
+     "month": "2024-04",
+     "value": 1
+    },
+    {
+     "month": "2024-05",
+     "value": 2
+    },
+    {
+     "month": "2024-06",
+     "value": 3
+    },
+    {
+     "month": "2024-07",
+     "value": 3
+    },
+    {
+     "month": "2024-08",
+     "value": 3
+    },
+    {
+     "month": "2024-09",
+     "value": 1
+    },
+    {
+     "month": "2024-10",
+     "value": 4
+    },
+    {
+     "month": "2024-11",
+     "value": 4
+    },
+    {
+     "month": "2024-12",
+     "value": 11
+    },
+    {
+     "month": "2025-01",
+     "value": 4
+    },
+    {
+     "month": "2025-02",
+     "value": 1
+    },
+    {
+     "month": "2025-03",
+     "value": 2
+    },
+    {
+     "month": "2025-04",
+     "value": 1
+    },
+    {
+     "month": "2025-05",
+     "value": 2
+    },
+    {
+     "month": "2025-06",
+     "value": 0
+    },
+    {
+     "month": "2025-07",
+     "value": 1
+    },
+    {
+     "month": "2025-08",
+     "value": 3
+    },
+    {
+     "month": "2025-09",
+     "value": 2
+    },
+    {
+     "month": "2025-10",
+     "value": 3
+    },
+    {
+     "month": "2025-11",
+     "value": 3
+    },
+    {
+     "month": "2025-12",
+     "value": 7
+    },
+    {
+     "month": "2026-01",
+     "value": 4
+    },
+    {
+     "month": "2026-02",
+     "value": 1
+    },
+    {
+     "month": "2026-03",
+     "value": 2
+    },
+    {
+     "month": "2026-04",
+     "value": 1
+    },
+    {
+     "month": "2026-05",
+     "value": 2
+    },
+    {
+     "month": "2026-06",
+     "value": 2
+    },
+    {
+     "month": "2026-07",
+     "value": 2
+    },
+    {
+     "month": "2026-08",
+     "value": 4
+    },
+    {
+     "month": "2026-09",
+     "value": 2
+    }
+   ],
+   "origins": [
+    {
+     "origin": "2026-03",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 3
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 3
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 3
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 2
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 2
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 2
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 1
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 2
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 0
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 0
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 1
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 1
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-04",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 3
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 3
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 3
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 2
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 2
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 2
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 2
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 0
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 1
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 2
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 2
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 2
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-05",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 3
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 3
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 3
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 2
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 2
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 2
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 0
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 1
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 3
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 2
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 2
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 3
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-06",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 2
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 2
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 2
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 3
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 3
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 3
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 1
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 3
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 2
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 2
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 3
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 2
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-07",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 2
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 2
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 3
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 3
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 3
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 2
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 3
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 2
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-08",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 2
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 3
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 2
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 2
+       }
+      ]
+     }
+    }
+   ],
+   "scores": {
+    "rolling6": {
+     "wape": 0.3816,
+     "bias": 0.0499,
+     "n": 15
+    },
+    "rolling12": {
+     "wape": 0.2057,
+     "bias": -0.0055,
+     "n": 15
+    },
+    "seasonalNaive": {
+     "wape": 0.4182,
+     "bias": -0.4182,
+     "n": 15
+    },
+    "etsDamped": {
+     "wape": 0.2326,
+     "bias": -0.2162,
+     "n": 15
+    }
+   },
+   "winner": "rolling12",
+   "baselineWape": 0.2057,
+   "oursWape": 0.2326,
+   "deltaWapePts": 2.7,
+   "oursBeatsBaseline": false,
+   "next3": [
+    {
+     "month": "2026-10",
+     "p50": 4,
+     "p10": 2,
+     "p90": 8,
+     "p50Sgd": 138728
+    },
+    {
+     "month": "2026-11",
+     "p50": 4,
+     "p10": 1,
+     "p90": 8,
+     "p50Sgd": 140836
+    },
+    {
+     "month": "2026-12",
+     "p50": 10,
+     "p10": 4,
+     "p90": 23,
+     "p50Sgd": 376308
+    }
+   ]
+  },
+  {
+   "country": "MM",
+   "product": "A",
+   "measure": "units",
+   "inHeadline": true,
+   "actuals": [
+    {
+     "month": "2023-10",
+     "value": 799
+    },
+    {
+     "month": "2023-11",
+     "value": 780
+    },
+    {
+     "month": "2023-12",
+     "value": 681
+    },
+    {
+     "month": "2024-01",
+     "value": 769
+    },
+    {
+     "month": "2024-02",
+     "value": 792
+    },
+    {
+     "month": "2024-03",
+     "value": 722
+    },
+    {
+     "month": "2024-04",
+     "value": 674
+    },
+    {
+     "month": "2024-05",
+     "value": 692
+    },
+    {
+     "month": "2024-06",
+     "value": 1349
+    },
+    {
+     "month": "2024-07",
+     "value": 1344
+    },
+    {
+     "month": "2024-08",
+     "value": 1202
+    },
+    {
+     "month": "2024-09",
+     "value": 817
+    },
+    {
+     "month": "2024-10",
+     "value": 643
+    },
+    {
+     "month": "2024-11",
+     "value": 725
+    },
+    {
+     "month": "2024-12",
+     "value": 783
+    },
+    {
+     "month": "2025-01",
+     "value": 735
+    },
+    {
+     "month": "2025-02",
+     "value": 853
+    },
+    {
+     "month": "2025-03",
+     "value": 939
+    },
+    {
+     "month": "2025-04",
+     "value": 625
+    },
+    {
+     "month": "2025-05",
+     "value": 760
+    },
+    {
+     "month": "2025-06",
+     "value": 1291
+    },
+    {
+     "month": "2025-07",
+     "value": 1435
+    },
+    {
+     "month": "2025-08",
+     "value": 1151
+    },
+    {
+     "month": "2025-09",
+     "value": 842
+    },
+    {
+     "month": "2025-10",
+     "value": 949
+    },
+    {
+     "month": "2025-11",
+     "value": 721
+    },
+    {
+     "month": "2025-12",
+     "value": 748
+    },
+    {
+     "month": "2026-01",
+     "value": 808
+    },
+    {
+     "month": "2026-02",
+     "value": 804
+    },
+    {
+     "month": "2026-03",
+     "value": 897
+    },
+    {
+     "month": "2026-04",
+     "value": 732
+    },
+    {
+     "month": "2026-05",
+     "value": 727
+    },
+    {
+     "month": "2026-06",
+     "value": 1396
+    },
+    {
+     "month": "2026-07",
+     "value": 1283
+    },
+    {
+     "month": "2026-08",
+     "value": 1488
+    },
+    {
+     "month": "2026-09",
+     "value": 815
+    }
+   ],
+   "origins": [
+    {
+     "origin": "2026-03",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 821
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 821
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 821
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 919
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 919
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 919
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 625
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 760
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 1291
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 688
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 764
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 1358
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-04",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 785
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 785
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 785
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 928
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 928
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 928
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 760
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 1291
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 1435
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 768
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 1362
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 1431
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-05",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 786
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 786
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 786
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 925
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 925
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 925
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 1291
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 1435
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 1151
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 1359
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 1428
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 1215
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-06",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 894
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 894
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 894
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 934
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 934
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 934
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 1435
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 1151
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 842
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 1430
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 1219
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 870
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-07",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 973
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 973
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 922
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 922
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 1151
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 842
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 1206
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 857
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-08",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 1087
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 950
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 842
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 878
+       }
+      ]
+     }
+    }
+   ],
+   "scores": {
+    "rolling6": {
+     "wape": 0.3351,
+     "bias": -0.2476,
+     "n": 15
+    },
+    "rolling12": {
+     "wape": 0.2977,
+     "bias": -0.188,
+     "n": 15
+    },
+    "seasonalNaive": {
+     "wape": 0.1187,
+     "bias": -0.0486,
+     "n": 15
+    },
+    "etsDamped": {
+     "wape": 0.0965,
+     "bias": -0.0177,
+     "n": 15
+    }
+   },
+   "winner": "etsDamped",
+   "baselineWape": 0.2977,
+   "oursWape": 0.0965,
+   "deltaWapePts": -20.1,
+   "oursBeatsBaseline": true,
+   "next3": [
+    {
+     "month": "2026-10",
+     "p50": 857,
+     "p10": 746,
+     "p90": 1054,
+     "p50Sgd": 158493
+    },
+    {
+     "month": "2026-11",
+     "p50": 801,
+     "p10": 684,
+     "p90": 1015,
+     "p50Sgd": 148274
+    },
+    {
+     "month": "2026-12",
+     "p50": 797,
+     "p10": 666,
+     "p90": 1039,
+     "p50Sgd": 147392
+    }
+   ]
+  },
+  {
+   "country": "MM",
+   "product": "B",
+   "measure": "units",
+   "inHeadline": true,
+   "actuals": [
+    {
+     "month": "2023-10",
+     "value": 1506
+    },
+    {
+     "month": "2023-11",
+     "value": 1660
+    },
+    {
+     "month": "2023-12",
+     "value": 1692
+    },
+    {
+     "month": "2024-01",
+     "value": 1656
+    },
+    {
+     "month": "2024-02",
+     "value": 1387
+    },
+    {
+     "month": "2024-03",
+     "value": 2095
+    },
+    {
+     "month": "2024-04",
+     "value": 1256
+    },
+    {
+     "month": "2024-05",
+     "value": 1645
+    },
+    {
+     "month": "2024-06",
+     "value": 1757
+    },
+    {
+     "month": "2024-07",
+     "value": 2059
+    },
+    {
+     "month": "2024-08",
+     "value": 1864
+    },
+    {
+     "month": "2024-09",
+     "value": 1464
+    },
+    {
+     "month": "2024-10",
+     "value": 1728
+    },
+    {
+     "month": "2024-11",
+     "value": 1671
+    },
+    {
+     "month": "2024-12",
+     "value": 1562
+    },
+    {
+     "month": "2025-01",
+     "value": 1838
+    },
+    {
+     "month": "2025-02",
+     "value": 1593
+    },
+    {
+     "month": "2025-03",
+     "value": 2074
+    },
+    {
+     "month": "2025-04",
+     "value": 1441
+    },
+    {
+     "month": "2025-05",
+     "value": 1581
+    },
+    {
+     "month": "2025-06",
+     "value": 2120
+    },
+    {
+     "month": "2025-07",
+     "value": 1960
+    },
+    {
+     "month": "2025-08",
+     "value": 1985
+    },
+    {
+     "month": "2025-09",
+     "value": 1863
+    },
+    {
+     "month": "2025-10",
+     "value": 1544
+    },
+    {
+     "month": "2025-11",
+     "value": 1362
+    },
+    {
+     "month": "2025-12",
+     "value": 1910
+    },
+    {
+     "month": "2026-01",
+     "value": 2042
+    },
+    {
+     "month": "2026-02",
+     "value": 1646
+    },
+    {
+     "month": "2026-03",
+     "value": 1801
+    },
+    {
+     "month": "2026-04",
+     "value": 1417
+    },
+    {
+     "month": "2026-05",
+     "value": 1674
+    },
+    {
+     "month": "2026-06",
+     "value": 2091
+    },
+    {
+     "month": "2026-07",
+     "value": 1939
+    },
+    {
+     "month": "2026-08",
+     "value": 2233
+    },
+    {
+     "month": "2026-09",
+     "value": 1803
+    }
+   ],
+   "origins": [
+    {
+     "origin": "2026-03",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 1718
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 1718
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 1718
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 1771
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 1771
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 1771
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 1441
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 1581
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 2120
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 1404
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 1666
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 1985
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-04",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 1696
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 1696
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 1696
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 1769
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 1769
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 1769
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 1581
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 2120
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 1960
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 1667
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 1986
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 2057
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-05",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 1748
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 1748
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 1748
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 1777
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 1777
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 1777
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 2120
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 1960
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 1985
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 1995
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 2060
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 1974
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-06",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 1778
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 1778
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 1778
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 1775
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 1775
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 1775
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 1960
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 1985
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 1863
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 2075
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 1989
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 1727
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-07",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 1761
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 1761
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 1773
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 1773
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 1985
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 1863
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 1966
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 1703
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-08",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 1859
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 1793
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 1863
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 1736
+       }
+      ]
+     }
+    }
+   ],
+   "scores": {
+    "rolling6": {
+     "wape": 0.1244,
+     "bias": -0.0952,
+     "n": 15
+    },
+    "rolling12": {
+     "wape": 0.1188,
+     "bias": -0.081,
+     "n": 15
+    },
+    "seasonalNaive": {
+     "wape": 0.0443,
+     "bias": -0.0198,
+     "n": 15
+    },
+    "etsDamped": {
+     "wape": 0.0594,
+     "bias": -0.0335,
+     "n": 15
+    }
+   },
+   "winner": "seasonalNaive",
+   "baselineWape": 0.1188,
+   "oursWape": 0.0594,
+   "deltaWapePts": -5.9,
+   "oursBeatsBaseline": true,
+   "next3": [
+    {
+     "month": "2026-10",
+     "p50": 1715,
+     "p10": 1483,
+     "p90": 1987,
+     "p50Sgd": 72047
+    },
+    {
+     "month": "2026-11",
+     "p50": 1678,
+     "p10": 1421,
+     "p90": 2002,
+     "p50Sgd": 70467
+    },
+    {
+     "month": "2026-12",
+     "p50": 1841,
+     "p10": 1528,
+     "p90": 2261,
+     "p50Sgd": 77328
+    }
+   ]
+  },
+  {
+   "country": "MM",
+   "product": "C",
+   "measure": "units",
+   "inHeadline": false,
+   "actuals": [
+    {
+     "month": "2023-10",
+     "value": 0
+    },
+    {
+     "month": "2023-11",
+     "value": 2
+    },
+    {
+     "month": "2023-12",
+     "value": 1
+    },
+    {
+     "month": "2024-01",
+     "value": 2
+    },
+    {
+     "month": "2024-02",
+     "value": 1
+    },
+    {
+     "month": "2024-03",
+     "value": 3
+    },
+    {
+     "month": "2024-04",
+     "value": 2
+    },
+    {
+     "month": "2024-05",
+     "value": 2
+    },
+    {
+     "month": "2024-06",
+     "value": 1
+    },
+    {
+     "month": "2024-07",
+     "value": 1
+    },
+    {
+     "month": "2024-08",
+     "value": 2
+    },
+    {
+     "month": "2024-09",
+     "value": 0
+    },
+    {
+     "month": "2024-10",
+     "value": 1
+    },
+    {
+     "month": "2024-11",
+     "value": 1
+    },
+    {
+     "month": "2024-12",
+     "value": 0
+    },
+    {
+     "month": "2025-01",
+     "value": 1
+    },
+    {
+     "month": "2025-02",
+     "value": 2
+    },
+    {
+     "month": "2025-03",
+     "value": 2
+    },
+    {
+     "month": "2025-04",
+     "value": 1
+    },
+    {
+     "month": "2025-05",
+     "value": 3
+    },
+    {
+     "month": "2025-06",
+     "value": 1
+    },
+    {
+     "month": "2025-07",
+     "value": 2
+    },
+    {
+     "month": "2025-08",
+     "value": 2
+    },
+    {
+     "month": "2025-09",
+     "value": 1
+    },
+    {
+     "month": "2025-10",
+     "value": 2
+    },
+    {
+     "month": "2025-11",
+     "value": 1
+    },
+    {
+     "month": "2025-12",
+     "value": 1
+    },
+    {
+     "month": "2026-01",
+     "value": 3
+    },
+    {
+     "month": "2026-02",
+     "value": 1
+    },
+    {
+     "month": "2026-03",
+     "value": 1
+    },
+    {
+     "month": "2026-04",
+     "value": 1
+    },
+    {
+     "month": "2026-05",
+     "value": 2
+    },
+    {
+     "month": "2026-06",
+     "value": 1
+    },
+    {
+     "month": "2026-07",
+     "value": 2
+    },
+    {
+     "month": "2026-08",
+     "value": 1
+    },
+    {
+     "month": "2026-09",
+     "value": 1
+    }
+   ],
+   "origins": [
+    {
+     "origin": "2026-03",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 1
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 1
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 1
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 1
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 1
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 1
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 1
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 3
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 1
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-04",
+        "h": 1,
+        "value": 2
+       },
+       {
+        "month": "2026-05",
+        "h": 2,
+        "value": 2
+       },
+       {
+        "month": "2026-06",
+        "h": 3,
+        "value": 1
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-04",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 1
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 1
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 1
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 1
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 1
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 1
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 3
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 1
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 2
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-05",
+        "h": 1,
+        "value": 2
+       },
+       {
+        "month": "2026-06",
+        "h": 2,
+        "value": 1
+       },
+       {
+        "month": "2026-07",
+        "h": 3,
+        "value": 1
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-05",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 1
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 1
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 1
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 1
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 1
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 1
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 1
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 2
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 2
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-06",
+        "h": 1,
+        "value": 1
+       },
+       {
+        "month": "2026-07",
+        "h": 2,
+        "value": 1
+       },
+       {
+        "month": "2026-08",
+        "h": 3,
+        "value": 2
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-06",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 1
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 1
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 1
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 1
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 1
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 1
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 2
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 2
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 1
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-07",
+        "h": 1,
+        "value": 1
+       },
+       {
+        "month": "2026-08",
+        "h": 2,
+        "value": 2
+       },
+       {
+        "month": "2026-09",
+        "h": 3,
+        "value": 0
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-07",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 1
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 1
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 1
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 1
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 2
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 1
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-08",
+        "h": 1,
+        "value": 2
+       },
+       {
+        "month": "2026-09",
+        "h": 2,
+        "value": 0
+       }
+      ]
+     }
+    },
+    {
+     "origin": "2026-08",
+     "forecasts": {
+      "rolling6": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 1
+       }
+      ],
+      "rolling12": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 1
+       }
+      ],
+      "seasonalNaive": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 1
+       }
+      ],
+      "etsDamped": [
+       {
+        "month": "2026-09",
+        "h": 1,
+        "value": 0
+       }
+      ]
+     }
+    }
+   ],
+   "scores": {
+    "rolling6": {
+     "wape": 0.471,
+     "bias": 0.1028,
+     "n": 15
+    },
+    "rolling12": {
+     "wape": 0.509,
+     "bias": 0.2442,
+     "n": 15
+    },
+    "seasonalNaive": {
+     "wape": 0.6184,
+     "bias": 0.4948,
+     "n": 15
+    },
+    "etsDamped": {
+     "wape": 0.7343,
+     "bias": 0.1984,
+     "n": 15
+    }
+   },
+   "winner": "rolling6",
+   "baselineWape": 0.509,
+   "oursWape": 0.7343,
+   "deltaWapePts": 22.5,
+   "oursBeatsBaseline": false,
+   "next3": [
+    {
+     "month": "2026-10",
+     "p50": 1,
+     "p10": 0,
+     "p90": 1,
+     "p50Sgd": 19990
+    },
+    {
+     "month": "2026-11",
+     "p50": 1,
+     "p10": 0,
+     "p90": 2,
+     "p50Sgd": 40844
+    },
+    {
+     "month": "2026-12",
+     "p50": 1,
+     "p10": 0,
+     "p90": 1,
+     "p50Sgd": 18824
+    }
+   ]
+  }
+ ]
+}

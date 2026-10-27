@@ -1,0 +1,256 @@
+{
+ "isMock": false,
+ "note": "Fictional sample messages. humanLabel is the hand label for comparison; the app classifies live with the TS rules.",
+ "messages": [
+  {
+   "id": "MSG-2001",
+   "from": "purchasing@kentvalegeneralhospita.example",
+   "company": "Kent Vale General Hospital",
+   "country": "SG",
+   "subject": "PO-778812 – Dengue NS1 Ag ELISA 96T",
+   "body": "Dear Lives team,\n\nPlease find attached PO-778812 for 40 boxes of Dengue NS1 Ag ELISA 96T (I-A-000812), delivery to our Level 2 lab by 6 Nov.\n\nRegards,\nPurchasing Dept",
+   "receivedAt": "2026-10-27T08:00:00+08:00",
+   "humanLabel": "po"
+  },
+  {
+   "id": "MSG-2002",
+   "from": "lab.manager@marinaheightsmedicalce.example",
+   "company": "Marina Heights Medical Centre",
+   "country": "SG",
+   "subject": "Do you carry dengue NS1 rapid kits?",
+   "body": "Hi, do you carry dengue NS1 kits? What is the price and lead time for Singapore? We are comparing suppliers for the season.",
+   "receivedAt": "2026-10-27T15:13:00+08:00",
+   "humanLabel": "enquiry"
+  },
+  {
+   "id": "MSG-2003",
+   "from": "stores@tamanserimedicalcentre.example",
+   "company": "Taman Seri Medical Centre",
+   "country": "MY",
+   "subject": "When will PO-55120 be delivered?",
+   "body": "Hello, when will PO-55120 be delivered? Our ward is running low. Can you share the tracking number?",
+   "receivedAt": "2026-10-27T12:26:00+08:00",
+   "humanLabel": "followup"
+  },
+  {
+   "id": "MSG-2004",
+   "from": "procurement@sunwaymedicalcentre.example",
+   "company": "Sunway Medical Centre",
+   "country": "MY",
+   "subject": "Quote Q-2207 accepted – Dengue IgG/IgM Combo 30T",
+   "body": "We accept quotation Q-2207 and intend to order 300 kits of Dengue IgG/IgM Combo 30T. Please confirm and we will raise the PO once the item is in your system.",
+   "receivedAt": "2026-10-27T09:39:00+08:00",
+   "humanLabel": "pr"
+  },
+  {
+   "id": "MSG-2005",
+   "from": "amy.lim@livesgroup.example",
+   "company": "Lives Group (internal)",
+   "country": "SG",
+   "subject": "New item code needed: Dengue NS1 Ag Rapid Test 25T",
+   "body": "Hi MDM, please set up a new item code for Dengue NS1 Ag Rapid Test 25T (Product A, IVD reagent). Supplier details and HSA licence to follow.",
+   "receivedAt": "2026-10-27T16:52:00+08:00",
+   "humanLabel": "mdm"
+  },
+  {
+   "id": "MSG-2006",
+   "from": "purchasing@siamlotushospital.example",
+   "company": "Siam Lotus Hospital",
+   "country": "TH",
+   "subject": "Purchase order PO#450921",
+   "body": "Please process PO#450921: 12 x Haematology Diluent 20L and 6 x Haematology Lyse 5L. Ship to Bangkok main warehouse.",
+   "receivedAt": "2026-10-27T13:05:00+08:00",
+   "humanLabel": "po"
+  },
+  {
+   "id": "MSG-2007",
+   "from": "khoaxetnghiem@songsengeneralhospital.example",
+   "company": "Song Sen General Hospital",
+   "country": "VN",
+   "subject": "Pipette tips availability?",
+   "body": "Could you tell us whether you have 200µL filtered pipette tips in stock in Ho Chi Minh City, and the price per pack?",
+   "receivedAt": "2026-10-27T10:18:00+08:00",
+   "humanLabel": "enquiry"
+  },
+  {
+   "id": "MSG-2008",
+   "from": "finance@penanggeneralhospital.example",
+   "company": "Penang General Hospital",
+   "country": "MY",
+   "subject": "Invoice INV-30418 query",
+   "body": "Dear sir, invoice INV-30418 for our last order shows the wrong unit price. Please send a corrected invoice.",
+   "receivedAt": "2026-10-27T17:31:00+08:00",
+   "humanLabel": "followup"
+  },
+  {
+   "id": "MSG-2009",
+   "from": "procurement@penanggeneralhospital.example",
+   "company": "Penang General Hospital",
+   "country": "MY",
+   "subject": "Intend to order 120 kits – combo dengue",
+   "body": "Following your quote Q-2213, we intend to order 120 kits of the Dengue IgG/IgM Combo 30T. Waiting for your item code to raise PO.",
+   "receivedAt": "2026-10-27T14:44:00+08:00",
+   "humanLabel": "pr"
+  },
+  {
+   "id": "MSG-2010",
+   "from": "siti.rahman@livesgroup.example",
+   "company": "Lives Group (internal)",
+   "country": "MY",
+   "subject": "Please set up new customer: Klang Lembah Diagnostik",
+   "body": "Hi team, new customer setup needed for Klang Lembah Diagnostik (SSM 202101012345). They want to start ordering CRP reagents next month.",
+   "receivedAt": "2026-10-26T11:57:00+08:00",
+   "humanLabel": "mdm"
+  },
+  {
+   "id": "MSG-2011",
+   "from": "store.keeper@yangonlakesidehospital.example",
+   "company": "Yangon Lakeside Hospital",
+   "country": "MM",
+   "subject": "PO 6620145 – urinalysis strips",
+   "body": "Kindly supply as per PO 6620145: 50 boxes Urinalysis Strip 10-Parameter 100s. Payment by bank transfer as usual.",
+   "receivedAt": "2026-10-26T08:10:00+08:00",
+   "humanLabel": "po"
+  },
+  {
+   "id": "MSG-2012",
+   "from": "admin@mandalaygoldenhillscli.example",
+   "company": "Mandalay Golden Hills Clinic",
+   "country": "MM",
+   "subject": "Information on PCR kits",
+   "body": "Good day. Does Lives Group supply dengue PCR kits in Myanmar? Please share the catalogue and registration status.",
+   "receivedAt": "2026-10-26T15:23:00+08:00",
+   "humanLabel": "enquiry"
+  },
+  {
+   "id": "MSG-2013",
+   "from": "lab@chaophrayariversidehos.example",
+   "company": "Chao Phraya Riverside Hospital",
+   "country": "TH",
+   "subject": "Delivery status – order SO-88213",
+   "body": "Hi, could you update us on the delivery status of our order SO-88213? It was due last Friday.",
+   "receivedAt": "2026-10-26T12:36:00+08:00",
+   "humanLabel": "followup"
+  },
+  {
+   "id": "MSG-2014",
+   "from": "vattu@hanoiwestlakehospital.example",
+   "company": "Hanoi West Lake Hospital",
+   "country": "VN",
+   "subject": "Quotation accepted – nitrile gloves",
+   "body": "Quotation Q-2240 is accepted. We plan to purchase 800 boxes Nitrile Gloves M 100/bx (I-B-000224). Please prepare contract.",
+   "receivedAt": "2026-10-26T09:49:00+08:00",
+   "humanLabel": "pr"
+  },
+  {
+   "id": "MSG-2015",
+   "from": "ploy.srisuk@livesgroup.example",
+   "company": "Lives Group (internal)",
+   "country": "TH",
+   "subject": "Vendor setup – new reagent supplier",
+   "body": "Please create a new vendor record for our new Thai reagent supplier; registration documents attached for QA review.",
+   "receivedAt": "2026-10-26T16:02:00+08:00",
+   "humanLabel": "mdm"
+  },
+  {
+   "id": "MSG-2016",
+   "from": "purchasing@bukitdamaispecialistho.example",
+   "company": "Bukit Damai Specialist Hospital",
+   "country": "MY",
+   "subject": "PO-2026-10-0441",
+   "body": "Attached PO-2026-10-0441 for 25 units of hs-Troponin I Cartridge 25T. Please deliver to the main lab.",
+   "receivedAt": "2026-10-26T13:15:00+08:00",
+   "humanLabel": "po"
+  },
+  {
+   "id": "MSG-2017",
+   "from": "clinic.admin@orchardcrestmedicalcli.example",
+   "company": "Orchard Crest Medical Clinic",
+   "country": "SG",
+   "subject": "Price for HbA1c point-of-care analyser?",
+   "body": "Hello, what would an HbA1c point-of-care analyser cost, and do you offer reagent rental?",
+   "receivedAt": "2026-10-26T10:28:00+08:00",
+   "humanLabel": "enquiry"
+  },
+  {
+   "id": "MSG-2018",
+   "from": "kho@dananghanriverhospital.example",
+   "company": "Da Nang Han River Hospital",
+   "country": "VN",
+   "subject": "PO-778190 partial delivery",
+   "body": "We received only half of PO-778190. When will the remaining boxes arrive? Please advise.",
+   "receivedAt": "2026-10-26T17:41:00+08:00",
+   "humanLabel": "followup"
+  },
+  {
+   "id": "MSG-2019",
+   "from": "procurement@phuketandamanhospital.example",
+   "company": "Phuket Andaman Hospital",
+   "country": "TH",
+   "subject": "Ready to order – CO2 incubator",
+   "body": "We have approval and intend to order 2 units of CO2 Incubator 170L as per your quote Q-2251. Please send final terms.",
+   "receivedAt": "2026-10-25T14:54:00+08:00",
+   "humanLabel": "pr"
+  },
+  {
+   "id": "MSG-2020",
+   "from": "nguyen.lan@livesgroup.example",
+   "company": "Lives Group (internal)",
+   "country": "VN",
+   "subject": "Extend customer to QTG",
+   "body": "Please extend customer Song Sen General Hospital to QTG so we can quote consumables. Existing SPD record.",
+   "receivedAt": "2026-10-25T11:07:00+08:00",
+   "humanLabel": "mdm"
+  },
+  {
+   "id": "MSG-2021",
+   "from": "purchasing@changibayheartcentre.example",
+   "company": "Changi Bay Heart Centre",
+   "country": "SG",
+   "subject": "PO 300987 – reagents",
+   "body": "Please accept PO 300987 for 60 packs CRP Latex Reagent 4x50mL and 30 packs Creatinine Enzymatic 4x60mL.",
+   "receivedAt": "2026-10-25T08:20:00+08:00",
+   "humanLabel": "po"
+  },
+  {
+   "id": "MSG-2022",
+   "from": "research@bangnabioresearchcoltd.example",
+   "company": "Bang Na Bio Research Co., Ltd.",
+   "country": "TH",
+   "subject": "Do you distribute agarose?",
+   "body": "Hi, do you distribute Agarose LE in Thailand? What pack sizes are available?",
+   "receivedAt": "2026-10-25T15:33:00+08:00",
+   "humanLabel": "enquiry"
+  },
+  {
+   "id": "MSG-2023",
+   "from": "accounts@cheraswawasanhospital.example",
+   "company": "Cheras Wawasan Hospital",
+   "country": "MY",
+   "subject": "Credit note for returned goods",
+   "body": "Following our return last week on PO-55311, please issue the credit note so we can close the account.",
+   "receivedAt": "2026-10-25T12:46:00+08:00",
+   "humanLabel": "followup"
+  },
+  {
+   "id": "MSG-2024",
+   "from": "marcus.wong@livesgroup.example",
+   "company": "Lives Group (internal)",
+   "country": "SG",
+   "subject": "New cost centre for new BU",
+   "body": "Hi MDM, please create a new cost centre for the new BU starting 1 Dec; budget owner is me.",
+   "receivedAt": "2026-10-25T09:59:00+08:00",
+   "humanLabel": "mdm"
+  },
+  {
+   "id": "MSG-2025",
+   "from": "vattu@canthomekonghospital.example",
+   "company": "Can Tho Mekong Hospital",
+   "country": "VN",
+   "subject": "Confirm order intent – PCR plates",
+   "body": "We accept the quote and intend to order 150 packs PCR Plate 96-Well Skirted 25/pk. Please confirm availability before we issue the PO.",
+   "receivedAt": "2026-10-25T16:12:00+08:00",
+   "humanLabel": "pr"
+  }
+ ]
+}

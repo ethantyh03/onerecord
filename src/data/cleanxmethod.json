@@ -1,0 +1,44 @@
+{
+ "isMock": true,
+ "scope": "Headline scope (Products A + B, all 5 countries), same backtest as backtest.json, run on raw SAP records vs golden IDs. Raw differs where misattribution (SG/MY/VN from Jan 2026) and miscategorisation (TH) shift the series.",
+ "rows": [
+  "raw",
+  "golden"
+ ],
+ "cols": [
+  "rolling",
+  "ours"
+ ],
+ "rowLabels": {
+  "raw": "Raw customer records",
+  "golden": "Golden IDs (de-duplicated, re-attributed)"
+ },
+ "colLabels": {
+  "rolling": "Rolling 12-month average (today)",
+  "ours": "Damped ETS (ours)"
+ },
+ "table": {
+  "raw": {
+   "rolling": 0.1601,
+   "ours": 0.1185
+  },
+  "golden": {
+   "rolling": 0.1465,
+   "ours": 0.1211
+  }
+ },
+ "fromCleaningPts": 1.4,
+ "fromModellingPts": 2.5,
+ "totalImprovementPts": 3.9,
+ "sentence": "Cleaning master data alone cuts the error by 1.4 points before any modelling; the better method adds another 2.5 points. Part of the improvement comes from clean data, not the model.",
+ "plain": {
+  "raw": {
+   "rolling": "off by 16 per 100 ordered",
+   "ours": "off by 12 per 100 ordered"
+  },
+  "golden": {
+   "rolling": "off by 15 per 100 ordered",
+   "ours": "off by 12 per 100 ordered"
+  }
+ }
+}

@@ -1,0 +1,2 @@
+ParentKey,LineNum,BankCode,Country,AccountNo,AccountName,Branch,BICSwiftCode,IBAN,ControlKey,Street,City,ZipCode
+CardCode,LineNum,BankCode,Country,Account,AcctName,Branch,SwiftNum,IBAN,ControlKey,Street,City,ZipCode

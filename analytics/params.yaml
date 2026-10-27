@@ -1,0 +1,455 @@
+# OneRecord synthetic-data generator parameters. Every tunable number lives here.
+#
+# Source tags used in the comments:
+#   [R: <section>]  research log  docs/research/2026-10-23-business-case-facts.md, section "<section>"
+#   [A<n>]          assumption register, design doc §4 (A1–A18) and final model §6.1 (A19–A26)
+#   [FM §x]         final model docs/superpowers/specs/2026-10-28-final-model.md
+#   [DS<n>]         DS-judge binding decision n (lead's prompt, 28 Oct 00:50)
+#   [T]             team assumption: illustrative, no source; listed so a judge can challenge it
+#
+# All data is SYNTHETIC and FICTIONAL. Change a number here, rerun generate.py, and every
+# downstream file changes with it. Nothing in generate.py is a magic constant that matters.
+
+version: 1
+
+# ---------------------------------------------------------------- time
+time:
+  history_start: "2023-10"   # 36 months so seasonal ETS has >= 2 full seasons at every backtest origin [FM decision 21]
+  history_end: "2026-09"     # last complete month as of 28 Oct 2026 [A5]
+  window_start: "2025-10"    # stated window Oct 2025 - Sep 2026 [DS1]
+  window_end: "2026-09"
+  prior_start: "2024-10"     # YoY comparison window [DS1]
+  prior_end: "2025-09"
+  momentum_start: "2026-07"  # momentum = last-3-months YoY [DS1]
+  momentum_end: "2026-09"
+  reference_month: "2025-04" # month at which customer base values are expressed (mid prior window) [T]
+  app_display_months: 24     # the app shows the last 24 months [lead prompt]
+  timezone: "+08:00"         # all timestamps in SGT [analytics/SCHEMA.md]
+
+# ---------------------------------------------------------------- scenarios
+# nosignal  = DS3(a): seasonality AND trend switched off -> flat noise around the same level.
+#             Data-quality plants (duplicates, misattribution, miscategorisation) stay on so the
+#             pipeline is identical; only demand signal is removed.
+# halfdengue = DS3(b): different seed (7) and dengue amplitude x 0.5.
+scenarios:
+  base:       {seed: 42, signal: true,  dengue_scale: 1.0}
+  nosignal:   {seed: 42, signal: false, dengue_scale: 0.0}
+  halfdengue: {seed: 7,  signal: true,  dengue_scale: 0.5}
+
+# ---------------------------------------------------------------- countries
+# value_sgd = annual PO value at reference_month, S$ (A4 fixed FX). Weights SG > MY > TH > VN > MM.
+#   SG largest as HQ; MY/TH/VN market sizes are similar (USD 334-437m) so weights reflect presence;
+#   MM assumed small (~7%) because no market figure exists [R: IVD market size - Malaysia, Thailand, Vietnam, Myanmar & SEA]
+#   [R: IVD market size - Singapore]. Group total lands in the S$40-60M/yr band the lead asked for.
+# n_golden = real-world customers per country [R: Customer base size - hospitals per country]
+#   (research says 10-20 SG hospitals, 40-80 TH/VN, 10-30 MM *hospitals*; we add labs, clinics,
+#   research and industry accounts on top) [T].
+# trend = organic annual growth per product (log-linear), before customer churn/new/pull-through.
+#   VN fast (VN 2026 demand surge, Res. 30 placement model), MM declining with instability,
+#   SG/MY steady, TH mixed (A up, B down) [R: IVD market size ... growth 4-7%/yr] [T].
+# fy_start_month: [R: Fiscal year - Singapore/Malaysia/Thailand/Vietnam/Myanmar]
+countries:
+  SG: {name: Singapore, value_sgd: 17000000, n_golden: 72, fy_start_month: 4,  trend: {A: 0.030, B: 0.030, C: 0.020}, macro_sd: 0.025, price_factor: 1.00}
+  MY: {name: Malaysia,  value_sgd: 14500000, n_golden: 88, fy_start_month: 1,  trend: {A: 0.050, B: 0.035, C: 0.020}, macro_sd: 0.030, price_factor: 0.95}
+  TH: {name: Thailand,  value_sgd: 9800000,  n_golden: 82, fy_start_month: 10, trend: {A: 0.035, B: -0.030, C: 0.000}, macro_sd: 0.035, price_factor: 0.93}
+  VN: {name: Vietnam,   value_sgd: 8000000,  n_golden: 74, fy_start_month: 1,  trend: {A: 0.150, B: 0.120, C: 0.060}, macro_sd: 0.035, price_factor: 0.92}
+  MM: {name: Myanmar,   value_sgd: 3800000,  n_golden: 44, fy_start_month: 4,  trend: {A: -0.070, B: -0.060, C: -0.150}, macro_sd: 0.060, price_factor: 0.95}
+
+# ---------------------------------------------------------------- value mix
+# Reagents ~3x instruments by value: Sysmex FY3/2026 reagents 61.6% / instruments 20.6%
+# [R: Razor-and-blade evidence - reagent vs instrument revenue mix] [FM §5.6 #7].
+# We keep A:C = 3.0 and give the remainder to B (consumables).
+product_mix_target: {A: 0.585, B: 0.22, C: 0.195}
+
+# Entities [A2]: SPD sells A, QTG sells B, QTS sells C.
+product_entity: {A: SPD, B: QTG, C: QTS}
+
+# ---------------------------------------------------------------- customers
+segments:
+  # share of golden customers per country, and relative product appetite (normalised per customer).
+  # p_buy = probability a customer of this segment buys the product at all (cross-sell gaps come from here).
+  # flush = how strongly the segment follows the public fiscal-year flush (1 = public buyer).
+  # tier_p = probability of size tier L/M/S (hospitals are bigger, clinics smaller).
+  # Segment list from the CustomerMaster contract (src/lib/types.ts). Mix values [T].
+  Public hospital:   {share: {SG: 0.12, MY: 0.20, TH: 0.24, VN: 0.24, MM: 0.30}, mix: {A: 0.62, B: 0.18, C: 0.20}, p_buy: {A: 0.98, B: 0.85, C: 0.70}, flush: 1.0, tier_p: {L: 0.35, M: 0.45, S: 0.20}}
+  Private hospital:  {share: {SG: 0.15, MY: 0.20, TH: 0.18, VN: 0.16, MM: 0.20}, mix: {A: 0.58, B: 0.20, C: 0.22}, p_buy: {A: 0.97, B: 0.80, C: 0.60}, flush: 0.3, tier_p: {L: 0.25, M: 0.45, S: 0.30}}
+  Diagnostic lab:    {share: {SG: 0.18, MY: 0.16, TH: 0.16, VN: 0.16, MM: 0.14}, mix: {A: 0.72, B: 0.16, C: 0.12}, p_buy: {A: 0.98, B: 0.65, C: 0.45}, flush: 0.3, tier_p: {L: 0.10, M: 0.35, S: 0.55}}
+  Clinic:            {share: {SG: 0.25, MY: 0.20, TH: 0.18, VN: 0.20, MM: 0.18}, mix: {A: 0.72, B: 0.28, C: 0.00}, p_buy: {A: 0.92, B: 0.50, C: 0.00}, flush: 0.0, tier_p: {L: 0.00, M: 0.10, S: 0.90}}
+  Research/academic: {share: {SG: 0.15, MY: 0.12, TH: 0.12, VN: 0.12, MM: 0.10}, mix: {A: 0.12, B: 0.68, C: 0.20}, p_buy: {A: 0.45, B: 0.98, C: 0.65}, flush: 1.0, tier_p: {L: 0.05, M: 0.35, S: 0.60}}
+  Industry:          {share: {SG: 0.15, MY: 0.12, TH: 0.12, VN: 0.12, MM: 0.08}, mix: {A: 0.05, B: 0.82, C: 0.13}, p_buy: {A: 0.10, B: 0.98, C: 0.40}, flush: 0.0, tier_p: {L: 0.05, M: 0.30, S: 0.65}}
+
+size_tiers:
+  # relative size (lognormal median, sd) before country scaling; tier mix per segment is in segments.tier_p [T].
+  # discount = negotiated discount off list price (bigger accounts get more) [T].
+  # noise_cv = month-to-month demand noise of one customer (gamma CV); big accounts order more regularly [T].
+  L: {median: 12.0, sd: 0.35, discount: 0.12, noise_cv: 0.16}
+  M: {median: 3.0,  sd: 0.40, discount: 0.07, noise_cv: 0.24}
+  S: {median: 0.6,  sd: 0.55, discount: 0.02, noise_cv: 0.34}
+
+customer_dynamics:
+  idio_growth_sd: 0.06        # customer-level annual growth noise -> expanding/declining customers for the bridge [T]
+  new_customer_share: 0.10    # share of (non-planted) customers whose first PO falls inside the history [T]
+  new_customer_ramp: [0.4, 0.7, 1.0]   # first three months of a new account [T]
+  churn_share: 0.05           # generic gradual churners outside the MY contract plant [T]
+  churn_taper_months: 4       # gradual drop-off before the last PO (drop-off signal) [T]
+  line_value_sgd: {A: 3200, B: 1600}   # average PO-line value; sets lines per month (keeps pos.csv small) [T]
+  lines_per_po_p: 0.35        # extra lines join the same PO with this probability [T]
+  record_created_before_first_po_days: [10, 45]   # new-customer record is set up 10-45 days before the first PO [T]
+
+# ---------------------------------------------------------------- Product A composition and seasonality
+product_a_groups:
+  # Share of A value by disease group. Dengue group = dengue NS1 / IgG-IgM / duo / PCR + chikungunya.
+  # Respiratory group = influenza / COVID / RSV / strep. Remainder = routine chemistry, cardiac, infectious serology [T].
+  dengue_share: {SG: 0.20, MY: 0.20, TH: 0.22, VN: 0.24, MM: 0.20}
+  respiratory_share: {SG: 0.15, MY: 0.12, TH: 0.14, VN: 0.12, MM: 0.10}
+
+dengue:
+  # Demand for dengue tests = floor (fever screening regardless of cases) + case-driven part.
+  floor: 0.40                 # [T]
+  # Monthly shape (Jan..Dec, normalised to mean 1):
+  #   SG May-Oct peak [R: Disease seasonality - dengue (Singapore)]; MY flat with mild Nov-Mar uplift
+  #   [R: dengue (Malaysia)]; TH Jun-Sep, VN Jul-Nov, MM Jun-Aug [R: dengue (Thailand, Vietnam, Myanmar)].
+  shape:
+    SG: [0.60, 0.55, 0.60, 0.75, 1.10, 1.40, 1.55, 1.45, 1.25, 1.05, 0.85, 0.70]
+    MY: [1.15, 1.10, 1.05, 0.95, 0.90, 0.92, 0.95, 0.95, 0.92, 0.95, 1.05, 1.15]
+    TH: [0.60, 0.55, 0.60, 0.70, 0.95, 1.30, 1.60, 1.65, 1.45, 1.10, 0.80, 0.70]
+    VN: [0.75, 0.60, 0.60, 0.65, 0.75, 0.95, 1.25, 1.45, 1.55, 1.50, 1.25, 0.95]
+    MM: [0.60, 0.55, 0.60, 0.70, 0.95, 1.50, 1.75, 1.60, 1.25, 0.95, 0.75, 0.65]
+  # Year-level case index (2024 = 1.0). SG 13,651 (2024) -> 3,990 (2025, 7-year low) -> 2026 wks 1-39 2,564;
+  # MY 122,423 -> 55,399 (-54.7%), 2026 YTD +20.7%; TH Jul-YTD 56,509 (2024) vs 35,359 (2025);
+  # VN 2026 ~2.5x 2025 [R: Disease seasonality - dengue (Singapore), (Malaysia), (Thailand, Vietnam, Myanmar)]
+  # [R: Demand shocks to include]. 2023 values and MM are [T].
+  year_index:
+    SG: {2023: 0.73, 2024: 1.00, 2025: 0.29, 2026: 0.25}
+    MY: {2023: 1.00, 2024: 1.00, 2025: 0.45, 2026: 0.54}
+    TH: {2023: 1.40, 2024: 1.00, 2025: 0.63, 2026: 0.70}
+    VN: {2023: 1.10, 2024: 1.00, 2025: 0.55, 2026: 1.35}
+    MM: {2023: 1.00, 2024: 1.00, 2025: 0.80, 2026: 0.85}
+
+respiratory:
+  # SG flu peaks Dec-Mar and May-Aug; TH Jun-Aug (rainy) + Dec-Feb; others mild
+  # [R: Disease seasonality - influenza/respiratory]. Amplitudes [T].
+  shape:
+    SG: [1.15, 1.10, 1.05, 0.85, 1.05, 1.15, 1.15, 1.05, 0.85, 0.80, 0.85, 1.05]
+    MY: [1.05, 1.05, 1.00, 0.95, 0.95, 1.00, 1.00, 1.00, 1.00, 0.95, 1.00, 1.05]
+    TH: [1.10, 1.05, 0.85, 0.80, 0.85, 1.10, 1.25, 1.25, 1.10, 0.90, 0.85, 0.95]
+    VN: [1.05, 1.00, 0.95, 0.95, 0.95, 1.05, 1.05, 1.05, 1.00, 1.00, 0.95, 1.00]
+    MM: [1.00, 1.00, 0.95, 0.95, 1.00, 1.05, 1.10, 1.05, 1.00, 0.95, 0.95, 1.00]
+  # COVID-style waves (+30-80% for 4-8 weeks): SG May 2025 LF.7/NB.1.8 wave sourced; the rest [T].
+  waves:
+    - {country: SG, months: ["2025-05", "2025-06"], mult: 1.6}
+    - {country: TH, months: ["2024-07"], mult: 1.4}
+    - {country: MY, months: ["2024-12"], mult: 1.3}
+
+# ---------------------------------------------------------------- Product B seasonality
+product_b:
+  # Research/academic consumables follow the academic year (dips Jun and Dec) [T].
+  academic_shape: [1.05, 1.05, 1.10, 1.00, 0.95, 0.85, 0.95, 1.10, 1.10, 1.05, 1.00, 0.80]
+  # Public buyers: modest use-it-or-lose-it flush in the last FY month, slow first FY month [T]
+  # (no source quantifies a flush, so it is stated as an assumption [R: Gaps]).
+  fy_end_flush: 1.20
+  fy_start_dip: 0.85
+
+# ---------------------------------------------------------------- Product C (instruments)
+product_c:
+  # Month weights by country before normalisation; public segments get the full weight, others `flush` share.
+  # SG/MM FY Apr-Mar -> Feb-Mar flush, April dip; MY/VN FY Jan-Dec -> Q4 peak, VN spills into Jan then
+  # Feb Tet trough; TH FY Oct-Sep -> Jul-Sep year-end + Oct-Dec contract-signing bump (19/22/22/24% phasing)
+  # [R: Fiscal year - Singapore/Malaysia/Thailand/Vietnam/Myanmar] [FM §5.6 #8].
+  flush_weights:
+    SG: [1.10, 1.50, 2.40, 0.50, 0.70, 0.90, 0.90, 0.90, 0.90, 0.90, 0.90, 0.90]
+    MM: [1.10, 1.50, 2.40, 0.50, 0.70, 0.90, 0.90, 0.90, 0.90, 0.90, 0.90, 0.90]
+    MY: [0.60, 0.60, 0.80, 0.85, 0.90, 0.90, 0.90, 0.90, 0.95, 1.30, 1.60, 2.40]
+    VN: [1.20, 0.40, 0.80, 0.85, 0.90, 0.90, 0.90, 0.90, 0.95, 1.30, 1.60, 2.30]
+    TH: [0.80, 0.70, 0.75, 0.60, 0.80, 0.90, 1.40, 1.70, 2.20, 1.20, 1.10, 1.00]
+  new_placement_share: 0.35   # share of instrument POs that are new placements (rest are replacements, ~10-yr life)
+                              # [R: Win rates, installed-base life & recurring share] [T]
+  pull_through_ratio: 0.25    # annual reagent (A) pull-through per S$ of a new analyser placement, from the next month
+                              # [R: Razor-and-blade evidence] [A3]. A cross-sell SIGNAL, not a forecast feature [DS10].
+  # Thailand FY2024 budget passed ~6 months late: public capex x0.5 Oct 2023-Mar 2024, catch-up Apr-Sep 2024
+  # [R: Budget-delay shocks - Thailand].
+  th_budget_delay: {cut_months: ["2023-10", "2023-11", "2023-12", "2024-01", "2024-02", "2024-03"], cut: 0.5,
+                    catchup_months: ["2024-04", "2024-05", "2024-06", "2024-07", "2024-08", "2024-09"], catchup: 1.5}
+
+# ---------------------------------------------------------------- holidays (day level; monthly totals follow)
+# Dates [R: Holiday effects - dates for the 2-year window (2025-2026)]; 2023-24 dates are public calendars.
+# Effect sizes are assumptions (no source quantifies B2B order dips) [R: Gaps]: holiday day weight,
+# a slow-down band after long breaks and a pre-holiday stocking bump of +10-30% [R: Holiday effects].
+calendar:
+  weekday_weight: 1.0
+  saturday_weight: 0.15
+  sunday_weight: 0.0
+  holiday_weight: 0.05
+  slow_weight: 0.6           # working days right after a long break run at 60% [T]
+  holidays:
+    # [country list, first day, last day, pre-stock bump multiplier, pre-stock working days, slow days after]
+    - {name: "Chinese New Year", countries: [SG, MY], days: [["2024-02-10", "2024-02-12"], ["2025-01-29", "2025-01-30"], ["2026-02-17", "2026-02-18"]], bump: 1.15, bump_days: 7, slow_after: 2}
+    - {name: "Tet", countries: [VN], days: [["2024-02-08", "2024-02-14"], ["2025-01-25", "2025-02-02"], ["2026-02-14", "2026-02-22"]], bump: 1.30, bump_days: 10, slow_after: 4}
+    - {name: "Songkran", countries: [TH], days: [["2024-04-12", "2024-04-16"], ["2025-04-12", "2025-04-16"], ["2026-04-11", "2026-04-15"]], bump: 1.10, bump_days: 5, slow_after: 1}
+    - {name: "Thingyan", countries: [MM], days: [["2024-04-13", "2024-04-22"], ["2025-04-13", "2025-04-17"], ["2026-04-11", "2026-04-19"]], bump: 1.15, bump_days: 5, slow_after: 2}
+    - {name: "Hari Raya Aidilfitri", countries: [MY], days: [["2024-04-10", "2024-04-11"], ["2025-03-31", "2025-04-01"], ["2026-03-20", "2026-03-22"]], bump: 1.10, bump_days: 5, slow_after: 3}
+    - {name: "Hari Raya Puasa", countries: [SG], days: [["2024-04-10", "2024-04-10"], ["2025-03-31", "2025-03-31"], ["2026-03-21", "2026-03-21"]], bump: 1.0, bump_days: 0, slow_after: 0}
+    - {name: "Deepavali", countries: [SG, MY], days: [["2023-11-12", "2023-11-13"], ["2024-10-31", "2024-10-31"], ["2025-10-20", "2025-10-20"]], bump: 1.0, bump_days: 0, slow_after: 0}
+    - {name: "Year-end", countries: [SG, MY, TH, VN, MM], days: [["2023-12-25", "2024-01-01"], ["2024-12-25", "2025-01-01"], ["2025-12-25", "2026-01-01"]], bump: 1.0, bump_days: 0, slow_after: 0}
+    - {name: "Labour Day", countries: [SG, MY, TH, VN, MM], days: [["2024-05-01", "2024-05-01"], ["2025-05-01", "2025-05-01"], ["2026-05-01", "2026-05-01"]], bump: 1.0, bump_days: 0, slow_after: 0}
+    - {name: "Reunification Day", countries: [VN], days: [["2024-04-30", "2024-04-30"], ["2025-04-30", "2025-04-30"], ["2026-04-30", "2026-04-30"]], bump: 1.0, bump_days: 0, slow_after: 0}
+    - {name: "National Day", countries: [SG], days: [["2024-08-09", "2024-08-09"], ["2025-08-09", "2025-08-09"], ["2026-08-10", "2026-08-10"]], bump: 1.0, bump_days: 0, slow_after: 0}
+    - {name: "Merdeka", countries: [MY], days: [["2024-08-31", "2024-08-31"], ["2025-08-31", "2025-09-01"], ["2026-08-31", "2026-08-31"]], bump: 1.0, bump_days: 0, slow_after: 0}
+    - {name: "National Day", countries: [VN], days: [["2024-09-02", "2024-09-03"], ["2025-09-01", "2025-09-02"], ["2026-09-01", "2026-09-02"]], bump: 1.0, bump_days: 0, slow_after: 0}
+
+# ---------------------------------------------------------------- Myanmar instability
+myanmar:
+  # M7.7 earthquake 28 Mar 2025: emergency spike in test kits and consumables Apr-May 2025, muted Thingyan
+  # [R: Demand shocks to include - Myanmar & other]. Feb 2024 disruption is [T].
+  shocks:
+    "2024-02": {A: 0.85, B: 0.85, C: 0.6}
+    "2025-04": {A: 1.25, B: 1.60, C: 1.0}
+    "2025-05": {A: 1.10, B: 1.30, C: 1.0}
+
+# ---------------------------------------------------------------- planted patterns (see PATTERNS.md)
+plants:
+  hero:
+    # One key account per country split across 2-3 records; merged it declines ~25-35% YoY [FM §5.6 #1] [DS lead prompt].
+    # rank = size rank of the golden customer in its country (MY = the #2 MY hospital).
+    # switch = first month on the new record; level = demand multiplier after the switch.
+    MY: {rank: 2, records: 3, switch: "2026-04", ramp_start: "2025-10", ramp_from: 0.78, ramp_to: 0.55, level: 0.40, prior_decline: 0.08}
+    SG: {rank: 4, records: 2, switch: "2026-02", ramp_start: "2025-10", ramp_from: 0.85, ramp_to: 0.65, level: 0.55, prior_decline: 0.05}
+    TH: {rank: 3, records: 2, switch: "2026-05", ramp_start: "2025-10", ramp_from: 0.85, ramp_to: 0.62, level: 0.52, prior_decline: 0.05}
+    VN: {rank: 3, records: 2, switch: "2026-01", ramp_start: "2025-10", ramp_from: 0.80, ramp_to: 0.65, level: 0.58, prior_decline: 0.05}
+    MM: {rank: 2, records: 2, switch: "2025-12", ramp_start: "2025-10", ramp_from: 0.85, ramp_to: 0.70, level: 0.60, prior_decline: 0.05}
+  misattribution:
+    # From Jan 2026 an SG-coded duplicate (SG staff, "regional billing") captures a MY and a VN hospital's
+    # SPD (Product A) POs. Target share of the affected country's 12M value: 3-8% [DS6] [FM §5.6 #2].
+    start: "2026-01"
+    record_created: {MY: "2026-01-07", VN: "2026-01-12"}
+    target_share: {MY: 0.045, VN: 0.040}
+    entities: [SPD]
+  miscategorisation:
+    # Duplicate item codes created under Product B for A test kits ("A volume recorded under B") [DS lead prompt].
+    # use_share = share of that SKU's lines (in the listed countries) booked to the wrong code after creation [T].
+    items:
+      - {true_item: "Influenza A/B Ag Rapid Test 25T", dup_name: "Influenza A/B Rapid Test Kit 25T", created: "2025-02-11", countries: [TH], use_share: 0.85}
+      - {true_item: "Chikungunya IgM Rapid Test 20T", dup_name: "Chikungunya IgM Test Strip 20T", created: "2025-03-04", countries: [TH], use_share: 0.85}
+      - {true_item: "Malaria Pf/Pan Ag Rapid Test 25T", dup_name: "Malaria Pf/Pan Rapid Cassette 25T", created: "2025-06-16", countries: [TH, MM], use_share: 0.80}
+      - {true_item: "Urine Reagent Strips 10-Parameter 100s", dup_name: "Urine Test Strips 10P 100s", created: "2025-01-20", countries: [TH, VN], use_share: 0.80}
+      - {true_item: "Typhoid IgM/IgG Rapid Test 25T", dup_name: "Typhoid IgG/IgM Cassette 25T", created: "2025-08-05", countries: [TH], use_share: 0.80}
+  my_contracts:
+    # MOH-linked MY tenders use 3-4 year reagent-rental / instrument-placement contracts; churn only at expiry
+    # [R: Reagent rental / instrument placement contracts & tender length - Malaysia]. Lose-rate [T].
+    wave1_expiry: ["2026-01", "2026-02", "2026-03"]   # cluster of expiries inside the window
+    wave1_count: 6
+    wave1_lost: 2            # 2 of the 6 switch distributor: Product A tapers 5 months then stops
+    taper_months: 5
+    wave2_expiry: ["2027-01", "2027-02", "2027-03"]   # "2 reagent-rental contracts expire in Q1 2027" [FM §5.5 MY]
+    wave2_count: 2
+  my_expanders: {count: 3, ramp_start: "2025-04", ramp_end: "2025-10", lift: 0.50}   # "growth sits in 3 hospitals" [FM §5.5 MY]
+  vn_xsell_gap: {count: 4}   # "4 hospitals buy A but never B" [FM §5.5 VN]
+  th_false_xsell: {created: "2019-06-12"}   # SPD record A-only + QTS record C-only; merged the real gap is B [FM §5.6 #3]
+
+# ---------------------------------------------------------------- duplicates (customer records)
+duplicates:
+  # ~6% of customer records are duplicates [A13] [DS6]. Hero, misattribution, false-cross-sell and
+  # romanisation plants count towards this. Generic duplicates fill the rest, per country.
+  target_rate: 0.06
+  generic_per_country: {SG: 2, MY: 3, TH: 4, VN: 3, MM: 2}
+  generic_no_transactions_share: 0.25   # dup created but never used for orders [T]
+  blank_tax_id_p: {SG: 0.35, MY: 0.40, TH: 0.55, VN: 0.55, MM: 0.60}
+  address_format_p: 0.5
+  # perturbation menu per country (one name perturbation drawn per duplicate, sometimes two) [DS5]
+  name_perturbations:
+    SG: [abbreviation, typo, word_reorder]
+    MY: [abbreviation, word_reorder, typo]
+    TH: [romanisation, typo, abbreviation, word_reorder]
+    VN: [romanisation, abbreviation, typo]
+    MM: [romanisation, typo, word_reorder]
+  second_perturbation_p: 0.3
+  # near-miss NON-duplicates (chains/sister sites with similar names) so precision is honest [DS5]
+  near_miss_pairs: {SG: 1, MY: 1, TH: 1, VN: 1, MM: 1}
+  matcher_split: {tune: [SG, MY], holdout: [TH, VN, MM]}   # [DS5]
+
+# ---------------------------------------------------------------- streams (A6)
+streams:
+  pr_share_of_po_lines: {A: 0.06, B: 0.05, C: 0.90}   # PO lines that came through a formal quote/PR [T]
+  pr_lead_days: [5, 35]                                 # PR created this many days before the PO [T]
+  pr_lost_ratio: {SG: 0.40, MY: 0.45, TH: 0.50, VN: 0.45, MM: 1.10}   # lost PRs per converted PR; MM conversion low [FM §5.5 MM]
+  mm_lost_ratio_growth: 0.35    # MM lost ratio rises 35%/yr -> conversion falling [T]
+  open_pr_months: 1.2           # open (unconverted, not lost) pipeline ~1.2 months of PR flow [T]
+  enquiries_per_month: {SG: 80, MY: 70, TH: 55, VN: 50, MM: 30}   # [T]
+  enquiry_product_split: {A: 0.55, B: 0.30, C: 0.15}
+  enquiry_trend_extra: {SG: 0.0, MY: 0.0, TH: 0.0, VN: 0.05, MM: 0.25}   # MM enquiries rising despite falling POs [FM §5.5 MM]
+  enquiry_to_pr_p: 0.5          # share of PRs preceded by a logged enquiry [T]
+  enquiry_channels: {email: 0.45, phone: 0.25, web: 0.15, rep: 0.15}
+  prospect_share: 0.2           # enquiries from non-customers [T]
+  followup_share_of_pos: 0.10   # [T]
+  followup_topics: {delivery: 0.55, invoice: 0.25, return: 0.07, credit_note: 0.05, other: 0.08}
+  # Stuck demand: PRs blocked by a pending MDM request. Seed total S$150-450k; pinned PR-5521/5527 [FM §5.6 #6] [plan pinned facts].
+  blocked_extra_count: 10
+  blocked_extra_sgd: [8000, 45000]
+
+pinned:
+  nuh: {card_code: "C-SG-00017", card_name: "National University Hospital", entity: SPD, country: SG,
+        lic_trad_num: "198500123K", street: "5 Lower Kent Ridge Road", zip_code: "119074", phone1: "+65 6779 5555",
+        email: "procurement@nuh.example", segment: "Public hospital", golden_id: "G-SG-0000"}
+  prs:
+    - {pr_id: "PR-5521", customer_name: "Sunway Medical Centre", country: MY, sgd: 48600, segment: "Private hospital", created_at: "2026-10-13T10:20:00+08:00"}
+    - {pr_id: "PR-5527", customer_name: "Penang General Hospital", country: MY, sgd: 21400, segment: "Public hospital", created_at: "2026-10-15T15:05:00+08:00"}
+  pr_item: {item_name: "Dengue IgG/IgM Combo 30T", product: A, entity: SPD, unit_price_sgd: 200.0, blocked_by: "REQ-1042"}
+  # the demo's new items must NOT already exist in the item master
+  reserved_item_names: ["Dengue IgG/IgM Combo 30T", "Dengue NS1 Ag Rapid Test 25T"]
+
+# ---------------------------------------------------------------- historic MDM requests (as-is process)
+mdm_history:
+  # Last 12 months only (Oct 2025 - Sep 2026) so ids REQ-0001..REQ-09xx never collide with the app's REQ-1001+.
+  months: ["2025-10", "2026-09"]
+  per_month: {customer: 30, extend: 5, item: 30, vendor: 10, costcentre: 5}   # ~80/month [A12]
+  bounce_p: 0.40              # >=1 bounce for missing info [A13]
+  second_bounce_p: 0.25       # of bounced requests [T]
+  reject_p: 0.04              # [T]
+  cancel_p: 0.03              # [T]
+  duplicate_p: 0.06           # new customer record duplicated an existing one [A13]
+  # Calendar-day components (lognormal median, sigma). Sequential hand-offs, as-is [A11] [FM §6.7]:
+  # targets median ~14 calendar days overall [A26], items ~16-18 (App C: Amy 18 days).
+  notice_days: [1.6, 0.5]     # waiting for MDM to notice the email
+  bounce_days: [3.5, 0.5]     # per bounce (requestor travel / missing QA-RA field)
+  step_days: [2.4, 0.55]      # per sequential approval step
+  mdm_days: [1.5, 0.5]        # MDM queue + manual keying
+  steps: {customer: 3, extend: 1, item: 3, vendor: 3, costcentre: 2}
+  extra_step_p: {customer: 0.2, item: 0.6, vendor: 0.3, extend: 0.3, costcentre: 0.0}   # FD (credit > S$50k), QA/RA (IVD), QA/RA (regulated vendor), finance (credit terms)
+  blocked_pr_p: 0.12          # created requests that had a PR waiting on them [T]
+  requestor_roles: {customer: [requestor, sales_manager], extend: [requestor, sales_manager, business_support], item: [requestor, bu_head], vendor: [requestor, procurement], costcentre: [financial_controller, bu_head]}
+
+# ---------------------------------------------------------------- item catalogue (items.csv)
+# ~120 SAP items: 50 A (IVD reagents/test kits), 40 B (lab consumables), 25 C (instruments) + 5 planted
+# miscategorised duplicates. List prices in S$ are illustrative [T] (order of magnitude only; no source).
+# w = relative order popularity within its group. group (A only) drives seasonality: dengue (dengue +
+# vector-borne), respiratory, routine. analyser = a C item that pulls through A reagents [A3].
+# Category IVD reagent / Medical device triggers the app's QA/RA rule (plan pinned facts).
+# The demo's NEW items ("Dengue NS1 Ag Rapid Test 25T", "Dengue IgG/IgM Combo 30T") are deliberately absent.
+items:
+  items_a:
+    - {name: "Dengue NS1 Ag Rapid Test 10T", price: 95, uom: kit, w: 3.0, group: dengue, category: IVD reagent}
+    - {name: "Dengue NS1 Ag ELISA 96T", price: 620, uom: kit, w: 1.2, group: dengue, category: IVD reagent}
+    - {name: "Dengue IgG/IgM Rapid Test 25T", price: 160, uom: kit, w: 2.5, group: dengue, category: IVD reagent}
+    - {name: "Dengue Duo NS1 + IgG/IgM Rapid Test 10T", price: 140, uom: kit, w: 2.5, group: dengue, category: IVD reagent}
+    - {name: "Dengue Virus RT-PCR Kit 48T", price: 980, uom: kit, w: 0.6, group: dengue, category: IVD reagent}
+    - {name: "Dengue IgM Capture ELISA 96T", price: 560, uom: kit, w: 0.6, group: dengue, category: IVD reagent}
+    - {name: "Chikungunya IgM Rapid Test 20T", price: 120, uom: kit, w: 0.8, group: dengue, category: IVD reagent}
+    - {name: "Zika/Dengue/Chikungunya Multiplex PCR 48T", price: 1450, uom: kit, w: 0.3, group: dengue, category: IVD reagent}
+    - {name: "Leptospira IgM Rapid Test 25T", price: 150, uom: kit, w: 0.6, group: dengue, category: IVD reagent}
+    - {name: "Influenza A/B Ag Rapid Test 25T", price: 210, uom: kit, w: 3.0, group: respiratory, category: IVD reagent}
+    - {name: "COVID-19/Influenza A/B Combo Ag Test 20T", price: 190, uom: kit, w: 3.0, group: respiratory, category: IVD reagent}
+    - {name: "SARS-CoV-2 RT-PCR Kit 96T", price: 1150, uom: kit, w: 0.8, group: respiratory, category: IVD reagent}
+    - {name: "RSV Ag Rapid Test 20T", price: 230, uom: kit, w: 1.0, group: respiratory, category: IVD reagent}
+    - {name: "Strep A Ag Rapid Test 25T", price: 135, uom: kit, w: 1.2, group: respiratory, category: IVD reagent}
+    - {name: "Respiratory Pathogen Multiplex PCR Panel 24T", price: 2200, uom: kit, w: 0.4, group: respiratory, category: IVD reagent}
+    - {name: "Mycoplasma pneumoniae IgM Rapid Test 20T", price: 175, uom: kit, w: 0.6, group: respiratory, category: IVD reagent}
+    - {name: "HbA1c Reagent Kit 200T", price: 380, uom: kit, w: 3.0, group: routine, category: IVD reagent}
+    - {name: "CRP Latex Reagent 2x50mL", price: 140, uom: kit, w: 3.0, group: routine, category: IVD reagent}
+    - {name: "hs-CRP Immunoturbidimetric Reagent 2x60mL", price: 260, uom: kit, w: 1.5, group: routine, category: IVD reagent}
+    - {name: "hs-Troponin I Cartridge 25T", price: 420, uom: kit, w: 2.0, group: routine, category: IVD reagent}
+    - {name: "NT-proBNP Cartridge 25T", price: 460, uom: kit, w: 1.2, group: routine, category: IVD reagent}
+    - {name: "D-Dimer Reagent 100T", price: 310, uom: kit, w: 1.3, group: routine, category: IVD reagent}
+    - {name: "Procalcitonin Rapid Test 20T", price: 330, uom: kit, w: 1.0, group: routine, category: IVD reagent}
+    - {name: "HIV 1/2 Ag/Ab Rapid Test 25T", price: 170, uom: kit, w: 1.5, group: routine, category: IVD reagent}
+    - {name: "HBsAg Rapid Test 40T", price: 95, uom: kit, w: 2.0, group: routine, category: IVD reagent}
+    - {name: "HCV Ab Rapid Test 40T", price: 115, uom: kit, w: 1.5, group: routine, category: IVD reagent}
+    - {name: "Malaria Pf/Pan Ag Rapid Test 25T", price: 125, uom: kit, w: 1.0, group: routine, category: IVD reagent}
+    - {name: "Syphilis TP Ab Rapid Test 25T", price: 105, uom: kit, w: 1.0, group: routine, category: IVD reagent}
+    - {name: "Typhoid IgM/IgG Rapid Test 25T", price: 115, uom: kit, w: 1.0, group: routine, category: IVD reagent}
+    - {name: "Glucose GOD-PAP Reagent 4x100mL", price: 85, uom: kit, w: 3.0, group: routine, category: IVD reagent}
+    - {name: "Total Cholesterol Reagent 4x100mL", price: 95, uom: kit, w: 2.0, group: routine, category: IVD reagent}
+    - {name: "Creatinine Jaffe Reagent 4x100mL", price: 90, uom: kit, w: 2.0, group: routine, category: IVD reagent}
+    - {name: "ALT/GPT Reagent 4x50mL", price: 110, uom: kit, w: 1.5, group: routine, category: IVD reagent}
+    - {name: "AST/GOT Reagent 4x50mL", price: 110, uom: kit, w: 1.5, group: routine, category: IVD reagent}
+    - {name: "Urea/BUN Reagent 4x100mL", price: 85, uom: kit, w: 1.3, group: routine, category: IVD reagent}
+    - {name: "Haematology 5-Part Diff Lyse Reagent 1L", price: 280, uom: kit, w: 2.5, group: routine, category: IVD reagent}
+    - {name: "Haematology Diluent 20L", price: 160, uom: kit, w: 2.5, group: routine, category: IVD reagent}
+    - {name: "Coagulation PT Reagent 10x4mL", price: 240, uom: kit, w: 1.2, group: routine, category: IVD reagent}
+    - {name: "APTT Reagent 10x4mL", price: 250, uom: kit, w: 1.0, group: routine, category: IVD reagent}
+    - {name: "Urine Reagent Strips 10-Parameter 100s", price: 45, uom: kit, w: 3.0, group: routine, category: IVD reagent}
+    - {name: "TB IGRA ELISA 96T", price: 1900, uom: kit, w: 0.3, group: routine, category: IVD reagent}
+    - {name: "Blood Grouping Reagent Anti-A/B/D Set", price: 75, uom: kit, w: 1.5, group: routine, category: IVD reagent}
+    - {name: "Vitamin D Total Immunoassay 100T", price: 720, uom: kit, w: 0.8, group: routine, category: IVD reagent}
+    - {name: "TSH Immunoassay Reagent 100T", price: 520, uom: kit, w: 1.0, group: routine, category: IVD reagent}
+    - {name: "Ferritin Immunoassay Reagent 100T", price: 480, uom: kit, w: 0.8, group: routine, category: IVD reagent}
+    - {name: "Chemistry Calibrator Multi-Analyte 5x3mL", price: 210, uom: kit, w: 1.0, group: routine, category: IVD reagent}
+    - {name: "Immunoassay Control Tri-Level 6x5mL", price: 260, uom: kit, w: 1.0, group: routine, category: IVD reagent}
+    - {name: "Hand-Foot-Mouth EV71 IgM Rapid Test 20T", price: 160, uom: kit, w: 0.5, group: routine, category: IVD reagent}
+    - {name: "Blood Gas Cartridge 100T", price: 780, uom: kit, w: 0.6, group: routine, category: IVD reagent}
+    - {name: "Electrolyte ISE Reagent Pack 800T", price: 520, uom: kit, w: 0.8, group: routine, category: IVD reagent}
+  items_b:
+    - {name: "Pipette Tips 10uL Rack 96s", price: 9.5, uom: box, w: 3.0, category: Lab consumable}
+    - {name: "Pipette Tips 200uL Rack 96s", price: 8.5, uom: box, w: 4.0, category: Lab consumable}
+    - {name: "Pipette Tips 1000uL Rack 96s", price: 9.0, uom: box, w: 4.0, category: Lab consumable}
+    - {name: "Filter Tips 200uL Sterile 960s", price: 85, uom: pack, w: 2.0, category: Lab consumable}
+    - {name: "Microcentrifuge Tubes 1.5mL 500s", price: 28, uom: pack, w: 3.0, category: Lab consumable}
+    - {name: "Centrifuge Tubes 15mL 500s", price: 95, uom: pack, w: 2.0, category: Lab consumable}
+    - {name: "Centrifuge Tubes 50mL 500s", price: 120, uom: pack, w: 2.0, category: Lab consumable}
+    - {name: "PCR Plates 96-Well Skirted 50s", price: 145, uom: pack, w: 1.2, category: Lab consumable}
+    - {name: "PCR 8-Strip Tubes 125s", price: 60, uom: pack, w: 1.0, category: Lab consumable}
+    - {name: "Cryovials 2mL Sterile 500s", price: 130, uom: pack, w: 1.0, category: Lab consumable}
+    - {name: "Serological Pipettes 10mL 200s", price: 75, uom: pack, w: 1.5, category: Lab consumable}
+    - {name: "Cell Culture Flask T75 100s", price: 210, uom: pack, w: 0.8, category: Lab consumable}
+    - {name: "Petri Dishes 90mm 500s", price: 110, uom: pack, w: 1.5, category: Lab consumable}
+    - {name: "Microscope Slides Frosted 72s", price: 12, uom: box, w: 2.0, category: Lab consumable}
+    - {name: "Cover Glass 22x22mm 1000s", price: 18, uom: box, w: 1.0, category: Lab consumable}
+    - {name: "Blood Collection Tube EDTA K2 4mL 100s", price: 28, uom: box, w: 4.0, category: Medical device}
+    - {name: "Blood Collection Tube SST 5mL 100s", price: 32, uom: box, w: 3.0, category: Medical device}
+    - {name: "Blood Collection Tube Sodium Citrate 2.7mL 100s", price: 30, uom: box, w: 1.5, category: Medical device}
+    - {name: "Safety Blood Collection Needle 21G 100s", price: 22, uom: box, w: 2.0, category: Medical device}
+    - {name: "Nitrile Examination Gloves M 100s", price: 7.5, uom: box, w: 5.0, category: Lab consumable}
+    - {name: "Nitrile Examination Gloves L 100s", price: 7.5, uom: box, w: 4.0, category: Lab consumable}
+    - {name: "Specimen Container 60mL Sterile 100s", price: 26, uom: pack, w: 2.0, category: Lab consumable}
+    - {name: "Flocked Nasopharyngeal Swab 100s", price: 55, uom: pack, w: 2.0, category: Medical device}
+    - {name: "Viral Transport Medium 3mL 50s", price: 75, uom: pack, w: 1.5, category: Lab consumable}
+    - {name: "Urine Collection Cup 100mL 200s", price: 30, uom: pack, w: 1.2, category: Lab consumable}
+    - {name: "Sharps Container 5L 20s", price: 65, uom: pack, w: 1.0, category: Lab consumable}
+    - {name: "Parafilm M 4in x 125ft", price: 70, uom: unit, w: 0.6, category: Lab consumable}
+    - {name: "Weighing Boats 100s", price: 15, uom: pack, w: 0.5, category: Lab consumable}
+    - {name: "Disposable Lab Coat 50s", price: 90, uom: pack, w: 0.8, category: Lab consumable}
+    - {name: "Surgical Face Mask 3-Ply 50s", price: 6.5, uom: box, w: 2.0, category: Medical device}
+    - {name: "70% Isopropyl Alcohol 4L", price: 22, uom: unit, w: 1.5, category: Lab consumable}
+    - {name: "Ethanol Absolute AR 2.5L", price: 48, uom: unit, w: 1.0, category: Lab consumable}
+    - {name: "PBS Buffer 10x 1L", price: 38, uom: unit, w: 1.0, category: Lab consumable}
+    - {name: "Gram Stain Kit 4x250mL", price: 85, uom: kit, w: 1.0, category: Lab consumable}
+    - {name: "Immersion Oil 100mL", price: 25, uom: unit, w: 0.6, category: Lab consumable}
+    - {name: "Blood Agar Plates 10s", price: 28, uom: pack, w: 1.5, category: Lab consumable}
+    - {name: "MacConkey Agar Powder 500g", price: 95, uom: unit, w: 0.8, category: Lab consumable}
+    - {name: "Nuclease-Free Water 500mL", price: 42, uom: unit, w: 0.8, category: Lab consumable}
+    - {name: "Biohazard Autoclave Bags 200s", price: 45, uom: pack, w: 1.0, category: Lab consumable}
+    - {name: "Laboratory Wipes 280s", price: 9, uom: box, w: 1.5, category: Lab consumable}
+  items_c:
+    - {name: "5-Part Haematology Analyser", price: 68000, uom: unit, w: 1.0, kind: clinical, analyser: true, category: Instrument}
+    - {name: "3-Part Haematology Analyser", price: 26000, uom: unit, w: 1.5, kind: clinical, analyser: true, category: Instrument}
+    - {name: "Benchtop Chemistry Analyser 200T/h", price: 52000, uom: unit, w: 1.2, kind: clinical, analyser: true, category: Instrument}
+    - {name: "Floor Chemistry Analyser 800T/h", price: 165000, uom: unit, w: 0.4, kind: clinical, analyser: true, category: Instrument}
+    - {name: "Chemiluminescence Immunoassay Analyser", price: 125000, uom: unit, w: 0.5, kind: clinical, analyser: true, category: Instrument}
+    - {name: "Real-Time PCR System 96-Well", price: 78000, uom: unit, w: 0.6, kind: both, analyser: true, category: Instrument}
+    - {name: "Automated Nucleic Acid Extractor 32", price: 42000, uom: unit, w: 0.5, kind: both, analyser: true, category: Instrument}
+    - {name: "Semi-Auto Coagulation Analyser", price: 18000, uom: unit, w: 1.0, kind: clinical, analyser: true, category: Instrument}
+    - {name: "Urine Chemistry Analyser", price: 15000, uom: unit, w: 1.0, kind: clinical, analyser: true, category: Instrument}
+    - {name: "Blood Gas Analyser", price: 36000, uom: unit, w: 0.6, kind: clinical, analyser: true, category: Instrument}
+    - {name: "POCT HbA1c Analyser", price: 6500, uom: unit, w: 1.5, kind: clinical, analyser: true, category: Instrument}
+    - {name: "Rapid Test Reader", price: 3800, uom: unit, w: 2.0, kind: clinical, analyser: true, category: Instrument}
+    - {name: "Electrolyte Analyser ISE", price: 12000, uom: unit, w: 0.8, kind: clinical, analyser: true, category: Instrument}
+    - {name: "ELISA Microplate Reader", price: 14000, uom: unit, w: 1.0, kind: both, analyser: true, category: Instrument}
+    - {name: "Microplate Washer", price: 9500, uom: unit, w: 0.8, kind: both, category: Instrument}
+    - {name: "Benchtop Centrifuge 6x50mL", price: 6800, uom: unit, w: 2.0, kind: lab, category: Instrument}
+    - {name: "Refrigerated Microcentrifuge", price: 9800, uom: unit, w: 1.2, kind: lab, category: Instrument}
+    - {name: "Biosafety Cabinet Class II A2 4ft", price: 16500, uom: unit, w: 1.2, kind: lab, category: Instrument}
+    - {name: "Biosafety Cabinet Class II A2 6ft", price: 21000, uom: unit, w: 0.8, kind: lab, category: Instrument}
+    - {name: "Binocular LED Microscope", price: 3200, uom: unit, w: 2.5, kind: lab, category: Instrument}
+    - {name: "Fluorescence Microscope", price: 38000, uom: unit, w: 0.4, kind: lab, category: Instrument}
+    - {name: "CO2 Incubator 170L", price: 14500, uom: unit, w: 0.8, kind: lab, category: Instrument}
+    - {name: "Laboratory Autoclave 50L", price: 17500, uom: unit, w: 0.8, kind: lab, category: Instrument}
+    - {name: "Ultra-Low Freezer -80C 500L", price: 26000, uom: unit, w: 0.6, kind: lab, category: Instrument}
+    - {name: "Laboratory Refrigerator 400L", price: 5200, uom: unit, w: 1.5, kind: lab, category: Instrument}
+
+# Which instruments each segment buys: weight multiplier per item kind [T].
+c_kind_weights:
+  Public hospital:   {clinical: 1.0, both: 0.6, lab: 0.4}
+  Private hospital:  {clinical: 1.0, both: 0.5, lab: 0.3}
+  Diagnostic lab:    {clinical: 1.0, both: 0.9, lab: 0.4}
+  Clinic:            {clinical: 1.0, both: 0.1, lab: 0.2}
+  Research/academic: {clinical: 0.15, both: 1.0, lab: 1.0}
+  Industry:          {clinical: 0.05, both: 0.6, lab: 1.0}

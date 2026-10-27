@@ -1,0 +1,41 @@
+{
+ "isMock": true,
+ "title": "Our method doesn't invent signal",
+ "scope": "Products A + B, all countries; identical pipeline per scenario",
+ "scenarios": [
+  {
+   "id": "base",
+   "label": "Base dataset",
+   "description": "The dataset used everywhere in the app.",
+   "seed": 42,
+   "baselineWape": 0.1465,
+   "oursWape": 0.1211,
+   "advantagePts": 2.5,
+   "expected": "Ours ahead",
+   "passed": true
+  },
+  {
+   "id": "no_signal",
+   "label": "Seasonality and trend switched off",
+   "description": "Same generator and pipeline; seasonal, holiday, fiscal-flush and trend effects removed, noise kept.",
+   "seed": 42,
+   "baselineWape": 0.0582,
+   "oursWape": 0.0746,
+   "advantagePts": -1.6,
+   "expected": "Advantage ≈ 0 (|Δ| ≤ 2 pts)",
+   "passed": true
+  },
+  {
+   "id": "half_dengue",
+   "label": "Different seed, dengue amplitude halved",
+   "description": "Seed 7; dengue season half as strong; everything else identical.",
+   "seed": 7,
+   "baselineWape": 0.1284,
+   "oursWape": 0.1017,
+   "advantagePts": 2.7,
+   "expected": "Advantage persists, smaller",
+   "passed": true
+  }
+ ],
+ "verdict": "With no seasonality or trend in the data our advantage is -1.6 pts (≈ 0), so the method is not finding patterns that aren't there. With a different seed and half the dengue effect it still wins by 2.7 pts."
+}

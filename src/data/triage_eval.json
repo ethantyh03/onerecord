@@ -1,0 +1,129 @@
+{
+ "isMock": false,
+ "status": "final",
+ "testSet": "60 hand-labelled messages (12 po, 12 pr, 12 enquiry, 12 followup, 12 mdm) in regional English (Singlish, Malaysian, Thai/Vietnamese/Myanmar English, terse, forwarded threads), written blind before the rules were read and never used to tune them. 33 are deliberately tricky (PO numbers inside follow-ups, enquiries with quantities, MDM asks inside orders). Accuracy on tricky ones: 0.364; on plain ones: 0.593.",
+ "testSetSize": 60,
+ "accuracy": 0.467,
+ "macroF1": 0.443,
+ "labels": [
+  "po",
+  "pr",
+  "enquiry",
+  "followup",
+  "mdm"
+ ],
+ "confusion": [
+  [
+   4,
+   4,
+   2,
+   2,
+   0
+  ],
+  [
+   1,
+   4,
+   7,
+   0,
+   0
+  ],
+  [
+   1,
+   0,
+   11,
+   0,
+   0
+  ],
+  [
+   3,
+   0,
+   2,
+   7,
+   0
+  ],
+  [
+   0,
+   0,
+   9,
+   1,
+   2
+  ]
+ ],
+ "perClass": [
+  {
+   "kind": "po",
+   "precision": 0.444,
+   "recall": 0.333,
+   "n": 12
+  },
+  {
+   "kind": "pr",
+   "precision": 0.5,
+   "recall": 0.333,
+   "n": 12
+  },
+  {
+   "kind": "enquiry",
+   "precision": 0.355,
+   "recall": 0.917,
+   "n": 12
+  },
+  {
+   "kind": "followup",
+   "precision": 0.7,
+   "recall": 0.583,
+   "n": 12
+  },
+  {
+   "kind": "mdm",
+   "precision": 1,
+   "recall": 0.167,
+   "n": 12
+  }
+ ],
+ "plain": "On 60 messages written without seeing the rules, the rules put 47 of every 100 in the right stream (36 of 100 on the 33 deliberately tricky ones). A person still confirms every routing.",
+ "errors": [
+  {
+   "id": "BT-012",
+   "subject": "Change of billing address",
+   "actual": "mdm",
+   "predicted": "enquiry",
+   "why": "Rules saw: No PO number, quantity, question or setup request found — filed as a general enquiry for review. Actually a MDM request: Bill-to change. Mentions invoices (follow-up vocabulary)."
+  },
+  {
+   "id": "BT-007",
+   "subject": "Tempahan stok - microscope slides",
+   "actual": "pr",
+   "predicted": "enquiry",
+   "why": "Rules saw: No PO number, quantity, question or setup request found — filed as a general enquiry for review. Actually a purchase request: Malay-English; 'LO' (Malaysian government local order = their PO) not yet issued."
+  },
+  {
+   "id": "BT-006",
+   "subject": "Order",
+   "actual": "po",
+   "predicted": "pr",
+   "why": "Rules saw: States quantity 20 kits; Mentions product (rapid test). Actually a PO: Generic subject; PO in body. Myanmar."
+  },
+  {
+   "id": "BT-005",
+   "subject": "Installation date for analyser",
+   "actual": "followup",
+   "predicted": "po",
+   "why": "Rules saw: Contains PO number PO 7781190; No quantity stated — check the attached order. Actually a follow-up: installation scheduling (post-delivery service) on an existing PO; question words."
+  },
+  {
+   "id": "BT-008",
+   "subject": "re: urine cups",
+   "actual": "po",
+   "predicted": "enquiry",
+   "why": "Rules saw: No PO number, quantity, question or setup request found — filed as a general enquiry for review. Actually a PO: no 'PO' keyword at all ('order no ... raised in Ariba'); Singlish 'ok can, go ahead' looks like a PR acceptance."
+  },
+  {
+   "id": "BT-010",
+   "subject": "Send PO No. 6910-0452 please confirm",
+   "actual": "po",
+   "predicted": "followup",
+   "why": "Rules saw: Refers to an existing order or billing (\"invoice\"). Actually a PO: mentions invoice (follow-up vocabulary) but is a new PO. Thai-English."
+  }
+ ]
+}

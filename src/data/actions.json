@@ -1,0 +1,116 @@
+{
+ "isMock": true,
+ "note": "S$ addressable is before conversion; see signals.json assumptions.",
+ "cards": [
+  {
+   "country": "SG",
+   "implication": "Product A is −2.7% YoY mainly because of a weaker dengue season, not lost customers; SG's raw total was also inflated by two records that belong to MY and VN.",
+   "signalSource": "matrix + dedup",
+   "kpi": "Product A fill rate during the Oct–Dec peak",
+   "actions": [
+    {
+     "ownerRole": "Supply planner (SPD)",
+     "action": "Hold dengue reagent safety stock at the ETS P90 for Oct–Dec 2026; watch the DENV-3 upside.",
+     "byWhen": "2026-11-15",
+     "sgdAddressable": null,
+     "kpi": "Stock-outs on dengue SKUs = 0"
+    },
+    {
+     "ownerRole": "MDM team",
+     "action": "Re-code the two SG billing records to their MY and VN golden IDs.",
+     "byWhen": "2026-11-06",
+     "sgdAddressable": null,
+     "kpi": "Misattributed value = S$0"
+    }
+   ]
+  },
+  {
+   "country": "MY",
+   "implication": "Growth sits in a few hospitals; a top-3 account (Bukit Damai) is down 35% once its three records are merged.",
+   "signalSource": "signals.dropOff + bridge",
+   "kpi": "Hero account 3-month value vs prior year",
+   "actions": [
+    {
+     "ownerRole": "BU Head (SPD)",
+     "action": "Call Bukit Damai Specialist Hospital this month; one account plan across SPD and QTS.",
+     "byWhen": "2026-11-20",
+     "sgdAddressable": 1053000,
+     "kpi": "Account back to flat YoY by Q1 2027"
+    },
+    {
+     "ownerRole": "Key account manager",
+     "action": "Renewal plan for the 2 reagent-rental contracts expiring in Q1 2027.",
+     "byWhen": "2026-12-31",
+     "sgdAddressable": 412000,
+     "kpi": "Both renewed before expiry"
+    }
+   ]
+  },
+  {
+   "country": "TH",
+   "implication": "Instrument (C) orders flush in Jul–Sep because the Thai fiscal year ends in September; one hospital's real gap is lab consumables.",
+   "signalSource": "matrix seasonality + signals.crossSell",
+   "kpi": "FY2027 tender pipeline S$ by end Q1",
+   "actions": [
+    {
+     "ownerRole": "Sales manager (QTS)",
+     "action": "Line up FY2027 tenders in Q1 (Oct–Dec) when new contracts are signed.",
+     "byWhen": "2026-12-31",
+     "sgdAddressable": null,
+     "kpi": "Tenders submitted vs last year"
+    },
+    {
+     "ownerRole": "Account manager (QTG)",
+     "action": "Offer Siam Lotus Hospital a consumables (B) bundle.",
+     "byWhen": "2026-11-30",
+     "sgdAddressable": 186000,
+     "kpi": "First B order placed"
+    }
+   ]
+  },
+  {
+   "country": "VN",
+   "implication": "Four hospitals buy reagents (A) but never consumables (B); VN growth was understated because one hospital's orders were coded to SG.",
+   "signalSource": "signals.crossSell + dedup",
+   "kpi": "B orders from the 4 named hospitals",
+   "actions": [
+    {
+     "ownerRole": "Account manager (QTG)",
+     "action": "B bundle offer to the 4 A-only hospitals; plan around the Tet dip in Feb.",
+     "byWhen": "2027-01-15",
+     "sgdAddressable": 382765,
+     "kpi": "2 of 4 placing B orders by Mar 2027"
+    },
+    {
+     "ownerRole": "Supply planner (SPD)",
+     "action": "Pre-position dengue reagents for the Aug–Nov peak (cases ~2.5× last year).",
+     "byWhen": "2026-11-01",
+     "sgdAddressable": null,
+     "kpi": "Fill rate ≥ 98%"
+    }
+   ]
+  },
+  {
+   "country": "MM",
+   "implication": "Enquiries are rising but PR → PO conversion is low (31% vs ~58% elsewhere).",
+   "signalSource": "streams",
+   "kpi": "PR → PO conversion",
+   "actions": [
+    {
+     "ownerRole": "Country lead (MM)",
+     "action": "Review quote turnaround time and pricing approvals for MM quotes.",
+     "byWhen": "2026-11-30",
+     "sgdAddressable": null,
+     "kpi": "Conversion ≥ 40% by Q1 2027"
+    },
+    {
+     "ownerRole": "Business support (MM)",
+     "action": "Merge the Yangon/Rangoon Lakeside records so the account isn't flagged lost.",
+     "byWhen": "2026-11-06",
+     "sgdAddressable": null,
+     "kpi": "0 false 'lost' flags"
+    }
+   ]
+  }
+ ]
+}

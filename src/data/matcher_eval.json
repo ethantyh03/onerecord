@@ -1,0 +1,162 @@
+{
+ "isMock": true,
+ "threshold": 0.85,
+ "tunedOn": [
+  "SG",
+  "MY"
+ ],
+ "heldOut": [
+  "TH",
+  "VN",
+  "MM"
+ ],
+ "method": "Blocking on country + phonetic first token; score = max(token-set, Jaro-Winkler) on the normalised name, + tax ID, postcode, phone/email domain. Threshold chosen to maximise F1 on SG+MY, then frozen.",
+ "heldOutMetrics": {
+  "precision": 0.89,
+  "recall": 0.86,
+  "f1": 0.875,
+  "tp": 31,
+  "fp": 4,
+  "fn": 5,
+  "pairsScored": 1240,
+  "truePairs": 36
+ },
+ "tuningMetrics": {
+  "precision": 0.92,
+  "recall": 0.88,
+  "f1": 0.9,
+  "tp": 44,
+  "fp": 4,
+  "fn": 6
+ },
+ "plain": {
+  "precision": "Of 100 duplicate warnings, 89 are real",
+  "recall": "Catches 86 of every 100 real duplicates"
+ },
+ "prCurve": [
+  {
+   "threshold": 0.7,
+   "precision": 0.71,
+   "recall": 0.97
+  },
+  {
+   "threshold": 0.75,
+   "precision": 0.79,
+   "recall": 0.95
+  },
+  {
+   "threshold": 0.8,
+   "precision": 0.86,
+   "recall": 0.92
+  },
+  {
+   "threshold": 0.83,
+   "precision": 0.89,
+   "recall": 0.9
+  },
+  {
+   "threshold": 0.85,
+   "precision": 0.91,
+   "recall": 0.87
+  },
+  {
+   "threshold": 0.88,
+   "precision": 0.94,
+   "recall": 0.8
+  },
+  {
+   "threshold": 0.9,
+   "precision": 0.96,
+   "recall": 0.72
+  },
+  {
+   "threshold": 0.95,
+   "precision": 0.99,
+   "recall": 0.51
+  }
+ ],
+ "perPerturbation": [
+  {
+   "type": "abbreviation",
+   "label": "Abbreviations (Hosp, Natl, Ctr)",
+   "n": 9,
+   "recall": 1.0
+  },
+  {
+   "type": "typo",
+   "label": "Typos",
+   "n": 7,
+   "recall": 0.86
+  },
+  {
+   "type": "word_reorder",
+   "label": "Word reorder",
+   "n": 6,
+   "recall": 0.83
+  },
+  {
+   "type": "romanisation",
+   "label": "Thai/Vietnamese romanisation variants",
+   "n": 6,
+   "recall": 0.67
+  },
+  {
+   "type": "blank_tax_id",
+   "label": "Blank tax ID",
+   "n": 5,
+   "recall": 0.8
+  },
+  {
+   "type": "address_format",
+   "label": "Different address format",
+   "n": 3,
+   "recall": 1.0
+  }
+ ],
+ "examples": [
+  {
+   "kind": "missed",
+   "a": {
+    "cardCode": "C-VN-00001",
+    "cardName": "Song Sen General Hospital",
+    "country": "VN"
+   },
+   "b": {
+    "cardCode": "C-VN-00049",
+    "cardName": "Bệnh viện Đa khoa Sông Sen",
+    "country": "VN"
+   },
+   "score": 0.62,
+   "why": "Vietnamese name vs English name share only 'Song Sen'; the normaliser doesn't translate 'Bệnh viện Đa khoa' to 'General Hospital'. Same phone saved the cluster in production via the second record."
+  },
+  {
+   "kind": "missed",
+   "a": {
+    "cardCode": "C-MM-00001",
+    "cardName": "Yangon Lakeside Hospital",
+    "country": "MM"
+   },
+   "b": {
+    "cardCode": "C-MM-00029",
+    "cardName": "Rangoon Lakeside Hosp",
+    "country": "MM"
+   },
+   "score": 0.81,
+   "why": "Old romanisation (Rangoon) of Yangon plus a blank tax ID; just under the 0.85 threshold."
+  },
+  {
+   "kind": "false_positive",
+   "a": {
+    "cardName": "Chao Phraya Riverside Hospital",
+    "country": "TH"
+   },
+   "b": {
+    "cardName": "Chao Phraya Riverside Clinic",
+    "country": "TH"
+   },
+   "score": 0.88,
+   "why": "Different legal entities (hospital and an unrelated clinic) on the same road with the same postcode; name tokens nearly identical."
+  }
+ ],
+ "duplicateRate": 0.0565
+}

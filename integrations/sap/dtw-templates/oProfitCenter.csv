@@ -1,0 +1,2 @@
+RecordKey,CenterCode,CenterName,InWhichDimension,Effectivefrom,EffectiveTo,GroupCode,CostCenterType,Active,U_Entity,U_Country,U_Owner,U_OneRecordRef
+RecordKey,PrcCode,PrcName,DimCode,ValidFrom,ValidTo,GrpCode,CCTypeCode,Active,U_Entity,U_Country,U_Owner,U_OneRecordRef

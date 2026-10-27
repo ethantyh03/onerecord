@@ -1,0 +1,222 @@
+{
+  "about": "SAP Business One Service Layer calls for OneRecord Phase 2 (automatic creation after MDM approval). OData v4 endpoints (/b1s/v2). Replace <b1-server> with the Service Layer host. All business data is fictional.",
+  "baseUrl": "https://<b1-server>:50000/b1s/v2",
+  "assumptions": [
+    "SAP Business One 10.0 FP 2405 or later, on Microsoft SQL Server or SAP HANA",
+    "One dedicated integration user; credentials held in Azure Key Vault, never in the flow",
+    "UDF U_OneRecordRef exists on OCRD, OITM and OPRC to carry the OneRecord request ID",
+    "Codes follow the OneRecord numbering convention and are assigned before the call"
+  ],
+  "requests": [
+    {
+      "name": "Login",
+      "method": "POST",
+      "path": "/Login",
+      "headers": { "Content-Type": "application/json" },
+      "body": {
+        "CompanyDB": "LIVES_PROD",
+        "UserName": "svc_onerecord",
+        "Password": "<from Azure Key Vault>"
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "odata.metadata": "https://<b1-server>:50000/b1s/v2/$metadata#B1Sessions/@Element",
+          "SessionId": "3c0f1a52-9e1d-11f0-8000-00505680a1b2",
+          "Version": "1000280",
+          "SessionTimeout": 30
+        },
+        "cookies": ["B1SESSION=3c0f1a52-9e1d-11f0-8000-00505680a1b2", "ROUTEID=.node1"]
+      },
+      "notes": "Every later call sends both cookies. The session expires after 30 minutes idle (configurable in b1s.conf), so log in per flow run and log out at the end."
+    },
+    {
+      "name": "Create item (REQ-1042)",
+      "method": "POST",
+      "path": "/Items",
+      "headers": {
+        "Content-Type": "application/json",
+        "Cookie": "B1SESSION=<SessionId>; ROUTEID=.node1"
+      },
+      "body": {
+        "ItemCode": "I-A-000813",
+        "ItemName": "Dengue IgG/IgM Combo 30T",
+        "ForeignName": "Dengue IgG/IgM Combo Rapid Test, 30 tests",
+        "ItemsGroupCode": 101,
+        "ItemType": "itItems",
+        "InventoryItem": "tYES",
+        "SalesItem": "tYES",
+        "PurchaseItem": "tYES",
+        "ManageBatchNumbers": "tYES",
+        "ManageSerialNumbers": "tNO",
+        "InventoryUOM": "BOX",
+        "PurchaseUnit": "CTN",
+        "SalesUnit": "BOX",
+        "PurchaseItemsPerUnit": 20,
+        "Mainsupplier": "V-MY-00045",
+        "SupplierCatalogNo": "DGC-30T",
+        "LeadTime": 21,
+        "MinOrderQuantity": 10,
+        "U_OneRecordRef": "REQ-1042"
+      },
+      "response": { "status": 201, "body": { "ItemCode": "I-A-000813", "ItemName": "Dengue IgG/IgM Combo 30T" } },
+      "notes": "Batch management is on because reagent lot and expiry traceability is required. ItemCode is the key; the smallest valid payload is ItemCode, ItemName and ItemType."
+    },
+    {
+      "name": "Create customer business partner",
+      "method": "POST",
+      "path": "/BusinessPartners",
+      "headers": {
+        "Content-Type": "application/json",
+        "Cookie": "B1SESSION=<SessionId>; ROUTEID=.node1"
+      },
+      "body": {
+        "CardCode": "C-SG-00123",
+        "CardName": "Harbourfront Specialist Clinic Pte Ltd",
+        "CardType": "cCustomer",
+        "GroupCode": 100,
+        "FederalTaxID": "201912345K",
+        "Currency": "SGD",
+        "Phone1": "+65 6221 4800",
+        "EmailAddress": "accounts@harbourfront-clinic.example",
+        "PayTermsGrpCode": 3,
+        "CreditLimit": 30000,
+        "U_OneRecordRef": "REQ-1051",
+        "BPAddresses": [
+          {
+            "AddressName": "BILL TO",
+            "AddressType": "bo_BillTo",
+            "Street": "1 Maritime Square #09-12",
+            "ZipCode": "099253",
+            "City": "Singapore",
+            "Country": "SG"
+          },
+          {
+            "AddressName": "SHIP TO",
+            "AddressType": "bo_ShipTo",
+            "Street": "1 Maritime Square #09-12",
+            "ZipCode": "099253",
+            "City": "Singapore",
+            "Country": "SG"
+          }
+        ],
+        "ContactEmployees": [
+          {
+            "Name": "Grace Tan",
+            "Position": "Practice Manager",
+            "Phone1": "+65 6221 4801",
+            "E_Mail": "grace.tan@harbourfront-clinic.example"
+          }
+        ]
+      },
+      "response": { "status": 201, "body": { "CardCode": "C-SG-00123", "CardType": "cCustomer" } },
+      "notes": "Payment terms and credit limit come from the Restricted list and are only ever read by the integration user. CardType values: cCustomer, cSupplier, cLid."
+    },
+    {
+      "name": "Create vendor with bank account",
+      "method": "POST",
+      "path": "/BusinessPartners",
+      "headers": {
+        "Content-Type": "application/json",
+        "Cookie": "B1SESSION=<SessionId>; ROUTEID=.node1"
+      },
+      "body": {
+        "CardCode": "V-MY-00045",
+        "CardName": "Meridian Bioscience Supplies Sdn Bhd",
+        "CardType": "cSupplier",
+        "GroupCode": 101,
+        "FederalTaxID": "202301018842",
+        "Currency": "MYR",
+        "Phone1": "+60 3 7955 2100",
+        "EmailAddress": "ar@meridianbio.example",
+        "PayTermsGrpCode": 4,
+        "U_OneRecordRef": "REQ-1047",
+        "BPAddresses": [
+          {
+            "AddressName": "BILL TO",
+            "AddressType": "bo_BillTo",
+            "Street": "Lot 12, Jalan Teknologi 3/5",
+            "ZipCode": "47810",
+            "City": "Petaling Jaya",
+            "State": "10",
+            "Country": "MY"
+          }
+        ],
+        "BPBankAccounts": [
+          {
+            "BankCode": "MBB",
+            "Country": "MY",
+            "AccountNo": "514012345678",
+            "AccountName": "Meridian Bioscience Supplies Sdn Bhd",
+            "BICSwiftCode": "MBBEMYKL"
+          }
+        ]
+      },
+      "response": { "status": 201, "body": { "CardCode": "V-MY-00045", "CardType": "cSupplier" } },
+      "notes": "BankCode must already exist in B1 (Banks table). The account number shown here is fictional."
+    },
+    {
+      "name": "Create cost centre (profit centre)",
+      "method": "POST",
+      "path": "/ProfitCenters",
+      "headers": {
+        "Content-Type": "application/json",
+        "Cookie": "B1SESSION=<SessionId>; ROUTEID=.node1"
+      },
+      "body": {
+        "CenterCode": "SG-0031",
+        "CenterName": "SPD Field Service SG",
+        "InWhichDimension": 3,
+        "EffectiveFrom": "2026-11-01",
+        "GroupCode": "SPD",
+        "Active": "tYES",
+        "U_OneRecordRef": "REQ-1049"
+      },
+      "response": { "status": 201, "body": { "CenterCode": "SG-0031" } },
+      "notes": "CenterCode is limited to 8 characters (OPRC.PrcCode) and CenterName to 30. The OneRecord display code CC-SG-0031 is posted as SG-0031; see README. Dimension design: 1 = Country, 2 = Business unit, 3 = Department."
+    },
+    {
+      "name": "Extend existing customer (add a ship-to address)",
+      "method": "PATCH",
+      "path": "/BusinessPartners('C-SG-00017')",
+      "headers": {
+        "Content-Type": "application/json",
+        "Cookie": "B1SESSION=<SessionId>; ROUTEID=.node1"
+      },
+      "body": {
+        "BPAddresses": [
+          {
+            "AddressName": "SHIP TO LAB B",
+            "AddressType": "bo_ShipTo",
+            "Street": "5 Lower Kent Ridge Road",
+            "ZipCode": "119074",
+            "City": "Singapore",
+            "Country": "SG"
+          }
+        ]
+      },
+      "response": { "status": 204 },
+      "notes": "PATCH merges collections by default: the new address is added and existing ones are kept. Used for the 'Extend existing record' request type."
+    },
+    {
+      "name": "Create business partner atomically with $batch",
+      "method": "POST",
+      "path": "/$batch",
+      "headers": {
+        "Content-Type": "multipart/mixed;boundary=batch_or1051",
+        "Cookie": "B1SESSION=<SessionId>; ROUTEID=.node1"
+      },
+      "body": "--batch_or1051\r\nContent-Type: multipart/mixed;boundary=changeset_or1051\r\n\r\n--changeset_or1051\r\nContent-Type: application/http\r\nContent-Transfer-Encoding: binary\r\nContent-ID: 1\r\n\r\nPOST /b1s/v2/BusinessPartners\r\nContent-Type: application/json\r\n\r\n{\"CardCode\":\"C-SG-00123\",\"CardName\":\"Harbourfront Specialist Clinic Pte Ltd\",\"CardType\":\"cCustomer\",\"Currency\":\"SGD\",\"U_OneRecordRef\":\"REQ-1051\"}\r\n\r\n--changeset_or1051\r\nContent-Type: application/http\r\nContent-Transfer-Encoding: binary\r\nContent-ID: 2\r\n\r\nPATCH /b1s/v2/BusinessPartners('C-SG-00123')\r\nContent-Type: application/json\r\n\r\n{\"BPAddresses\":[{\"AddressName\":\"BILL TO\",\"AddressType\":\"bo_BillTo\",\"Street\":\"1 Maritime Square #09-12\",\"ZipCode\":\"099253\",\"Country\":\"SG\"}]}\r\n\r\n--changeset_or1051--\r\n--batch_or1051--\r\n",
+      "response": { "status": 202 },
+      "notes": "All operations inside one changeset commit or roll back together, so a failed address never leaves a half-created partner."
+    },
+    {
+      "name": "Logout",
+      "method": "POST",
+      "path": "/Logout",
+      "headers": { "Cookie": "B1SESSION=<SessionId>; ROUTEID=.node1" },
+      "response": { "status": 204 },
+      "notes": "Always log out in the flow's Finally scope so integration sessions don't pile up."
+    }
+  ]
+}

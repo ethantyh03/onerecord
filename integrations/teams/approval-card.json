@@ -1,0 +1,180 @@
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.5",
+  "fallbackText": "${request.title}: approval needed from ${step.label}. Open ${detailsUrl} to respond.",
+  "speak": "${request.title} needs your approval.",
+  "msteams": { "width": "Full" },
+  "body": [
+    {
+      "type": "Container",
+      "style": "emphasis",
+      "bleed": true,
+      "items": [
+        {
+          "type": "ColumnSet",
+          "columns": [
+            {
+              "type": "Column",
+              "width": "stretch",
+              "verticalContentAlignment": "Center",
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "text": "OneRecord · Master data approval",
+                  "weight": "Bolder",
+                  "size": "Small",
+                  "color": "Accent",
+                  "wrap": true
+                }
+              ]
+            },
+            {
+              "type": "Column",
+              "width": "auto",
+              "verticalContentAlignment": "Center",
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "text": "${sla.label}",
+                  "size": "Small",
+                  "weight": "Bolder",
+                  "color": "${if(sla.overdue, 'Attention', 'Warning')}",
+                  "horizontalAlignment": "Right",
+                  "wrap": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "${request.title}",
+      "size": "Large",
+      "weight": "Bolder",
+      "wrap": true,
+      "spacing": "Medium"
+    },
+    {
+      "type": "TextBlock",
+      "text": "${request.id} · requested by ${requestor.name} · ${request.entity} · ${request.countryName}",
+      "isSubtle": true,
+      "size": "Small",
+      "wrap": true,
+      "spacing": "None"
+    },
+    {
+      "type": "FactSet",
+      "spacing": "Medium",
+      "facts": [
+        {
+          "$data": "${facts}",
+          "title": "${label}",
+          "value": "${value}"
+        }
+      ]
+    },
+    {
+      "type": "Container",
+      "style": "accent",
+      "spacing": "Medium",
+      "items": [
+        {
+          "type": "TextBlock",
+          "text": "Why you're seeing this: you are the **${step.label}** approver.",
+          "wrap": true,
+          "size": "Small"
+        },
+        {
+          "type": "TextBlock",
+          "$when": "${step.addedBecause != ''}",
+          "text": "Step added because ${step.addedBecause}.",
+          "wrap": true,
+          "size": "Small",
+          "isSubtle": true,
+          "spacing": "Small"
+        }
+      ]
+    },
+    {
+      "type": "Input.Text",
+      "id": "comment",
+      "label": "Comment (required to reject)",
+      "placeholder": "Add a note for the requestor and the audit trail",
+      "isMultiline": true,
+      "maxLength": 500
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.Execute",
+      "title": "Approve",
+      "verb": "approve",
+      "style": "positive",
+      "associatedInputs": "auto",
+      "data": {
+        "requestId": "${request.id}",
+        "stepId": "${step.id}",
+        "decision": "approved"
+      }
+    },
+    {
+      "type": "Action.Execute",
+      "title": "Reject",
+      "verb": "reject",
+      "style": "destructive",
+      "associatedInputs": "auto",
+      "data": {
+        "requestId": "${request.id}",
+        "stepId": "${step.id}",
+        "decision": "rejected"
+      }
+    },
+    {
+      "type": "Action.ShowCard",
+      "title": "Ask a question",
+      "card": {
+        "type": "AdaptiveCard",
+        "body": [
+          {
+            "type": "TextBlock",
+            "text": "Your question goes to ${requestor.name}. The SLA clock pauses until they answer, and the answer comes back to you.",
+            "wrap": true,
+            "size": "Small",
+            "isSubtle": true
+          },
+          {
+            "type": "Input.Text",
+            "id": "question",
+            "label": "Question",
+            "placeholder": "e.g. Please attach the HSA licence certificate",
+            "isMultiline": true,
+            "isRequired": true,
+            "errorMessage": "Type your question first.",
+            "maxLength": 500
+          }
+        ],
+        "actions": [
+          {
+            "type": "Action.Execute",
+            "title": "Send question",
+            "verb": "ask",
+            "associatedInputs": "auto",
+            "data": {
+              "requestId": "${request.id}",
+              "stepId": "${step.id}",
+              "decision": "question"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Action.OpenUrl",
+      "title": "View details",
+      "url": "${detailsUrl}"
+    }
+  ]
+}

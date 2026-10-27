@@ -1,0 +1,897 @@
+{
+ "testSet": "OneRecord inbox-triage blind test set v1",
+ "testSetSha256": "6283636c95d88c44dde547d2d666a22b5a0322a338ac4e16b1300ee041796d69",
+ "n": 60,
+ "accuracy": 0.467,
+ "accuracyHard": 0.364,
+ "accuracyEasy": 0.593,
+ "nHard": 33,
+ "nEasy": 27,
+ "macroF1": 0.443,
+ "perClass": [
+  {
+   "kind": "po",
+   "precision": 0.444,
+   "recall": 0.333,
+   "n": 12,
+   "f1": 0.381
+  },
+  {
+   "kind": "pr",
+   "precision": 0.5,
+   "recall": 0.333,
+   "n": 12,
+   "f1": 0.4
+  },
+  {
+   "kind": "enquiry",
+   "precision": 0.355,
+   "recall": 0.917,
+   "n": 12,
+   "f1": 0.512
+  },
+  {
+   "kind": "followup",
+   "precision": 0.7,
+   "recall": 0.583,
+   "n": 12,
+   "f1": 0.636
+  },
+  {
+   "kind": "mdm",
+   "precision": 1,
+   "recall": 0.167,
+   "n": 12,
+   "f1": 0.286
+  }
+ ],
+ "confusionPairs": {
+  "mdm>enquiry": 9,
+  "pr>enquiry": 7,
+  "po>pr": 4,
+  "followup>po": 3,
+  "po>enquiry": 2,
+  "po>followup": 2,
+  "followup>enquiry": 2,
+  "pr>po": 1,
+  "mdm>followup": 1,
+  "enquiry>po": 1
+ },
+ "unknownPredictions": [],
+ "predictions": [
+  {
+   "id": "BT-001",
+   "label": "followup",
+   "predicted": "followup",
+   "ok": true,
+   "hard": false,
+   "country": "SG",
+   "confidence": 0.75,
+   "reasons": [
+    "Contains PO number PO 88213",
+    "Refers to an existing order or billing (\"the order last\")"
+   ],
+   "subject": "where's my stuff"
+  },
+  {
+   "id": "BT-002",
+   "label": "po",
+   "predicted": "po",
+   "ok": true,
+   "hard": true,
+   "country": "SG",
+   "confidence": 0.95,
+   "reasons": [
+    "Contains PO number PO 7781203",
+    "States quantity 2 units"
+   ],
+   "subject": "FW: Approved - PO 7781203"
+  },
+  {
+   "id": "BT-003",
+   "label": "enquiry",
+   "predicted": "enquiry",
+   "ok": true,
+   "hard": false,
+   "country": "MY",
+   "confidence": 0.8,
+   "reasons": [
+    "Asks a question (\"malaria RDT stock?\")",
+    "No quantity or PO number"
+   ],
+   "subject": "malaria RDT stock?"
+  },
+  {
+   "id": "BT-004",
+   "label": "enquiry",
+   "predicted": "enquiry",
+   "ok": true,
+   "hard": false,
+   "country": "MY",
+   "confidence": 0.8,
+   "reasons": [
+    "Asks a question (\"dengue NS1 rapid test - available?\")",
+    "Asks about available",
+    "No quantity or PO number"
+   ],
+   "subject": "dengue NS1 rapid test - available?"
+  },
+  {
+   "id": "BT-005",
+   "label": "followup",
+   "predicted": "po",
+   "ok": false,
+   "hard": true,
+   "country": "SG",
+   "confidence": 0.75,
+   "reasons": [
+    "Contains PO number PO 7781190",
+    "No quantity stated — check the attached order"
+   ],
+   "subject": "Installation date for analyser"
+  },
+  {
+   "id": "BT-006",
+   "label": "po",
+   "predicted": "pr",
+   "ok": false,
+   "hard": false,
+   "country": "MM",
+   "confidence": 0.6,
+   "reasons": [
+    "States quantity 20 kits",
+    "Mentions product (rapid test)",
+    "No PO number — treated as purchase intent"
+   ],
+   "subject": "Order"
+  },
+  {
+   "id": "BT-007",
+   "label": "pr",
+   "predicted": "enquiry",
+   "ok": false,
+   "hard": true,
+   "country": "MY",
+   "confidence": 0.4,
+   "reasons": [
+    "No PO number, quantity, question or setup request found — filed as a general enquiry for review"
+   ],
+   "subject": "Tempahan stok - microscope slides"
+  },
+  {
+   "id": "BT-008",
+   "label": "po",
+   "predicted": "enquiry",
+   "ok": false,
+   "hard": true,
+   "country": "SG",
+   "confidence": 0.4,
+   "reasons": [
+    "No PO number, quantity, question or setup request found — filed as a general enquiry for review"
+   ],
+   "subject": "re: urine cups"
+  },
+  {
+   "id": "BT-009",
+   "label": "po",
+   "predicted": "po",
+   "ok": true,
+   "hard": false,
+   "country": "SG",
+   "confidence": 0.75,
+   "reasons": [
+    "Contains PO number PO#88213",
+    "No quantity stated — check the attached order"
+   ],
+   "subject": "PO#88213"
+  },
+  {
+   "id": "BT-010",
+   "label": "po",
+   "predicted": "followup",
+   "ok": false,
+   "hard": true,
+   "country": "TH",
+   "confidence": 0.7,
+   "reasons": [
+    "Refers to an existing order or billing (\"invoice\")"
+   ],
+   "subject": "Send PO No. 6910-0452 please confirm"
+  },
+  {
+   "id": "BT-011",
+   "label": "pr",
+   "predicted": "po",
+   "ok": false,
+   "hard": true,
+   "country": "SG",
+   "confidence": 0.95,
+   "reasons": [
+    "Contains PO number PO 55871",
+    "States quantity 25 boxes"
+   ],
+   "subject": "Re: PO 55871 delivered - repeat order"
+  },
+  {
+   "id": "BT-012",
+   "label": "mdm",
+   "predicted": "enquiry",
+   "ok": false,
+   "hard": false,
+   "country": "MY",
+   "confidence": 0.4,
+   "reasons": [
+    "No PO number, quantity, question or setup request found — filed as a general enquiry for review"
+   ],
+   "subject": "Change of billing address"
+  },
+  {
+   "id": "BT-013",
+   "label": "enquiry",
+   "predicted": "enquiry",
+   "ok": true,
+   "hard": false,
+   "country": "MM",
+   "confidence": 0.8,
+   "reasons": [
+    "Asks a question (\"Can you please provide catalogue and price in USD and deliv…\")",
+    "Asks about price",
+    "No quantity or PO number"
+   ],
+   "subject": "Inquiry for blood bank reagents"
+  },
+  {
+   "id": "BT-014",
+   "label": "pr",
+   "predicted": "enquiry",
+   "ok": false,
+   "hard": true,
+   "country": "SG",
+   "confidence": 0.65,
+   "reasons": [
+    "Asks a question (\"Can we proceed with 50 kits?\")",
+    "States quantity 50 kits"
+   ],
+   "subject": "Can we proceed with 50 kits?"
+  },
+  {
+   "id": "BT-015",
+   "label": "pr",
+   "predicted": "pr",
+   "ok": true,
+   "hard": false,
+   "country": "MY",
+   "confidence": 0.9,
+   "reasons": [
+    "Accepts a quote or states intent to order (\"go ahead with\")",
+    "States quantity 1 unit",
+    "No PO number yet — pipeline, not demand"
+   ],
+   "subject": "RE: Quote QTS-26-118 Haematology analyser"
+  },
+  {
+   "id": "BT-016",
+   "label": "mdm",
+   "predicted": "enquiry",
+   "ok": false,
+   "hard": false,
+   "country": "SG",
+   "confidence": 0.4,
+   "reasons": [
+    "No PO number, quantity, question or setup request found — filed as a general enquiry for review"
+   ],
+   "subject": "pls add new ship to"
+  },
+  {
+   "id": "BT-017",
+   "label": "enquiry",
+   "predicted": "enquiry",
+   "ok": true,
+   "hard": false,
+   "country": "VN",
+   "confidence": 0.8,
+   "reasons": [
+    "Asks a question (\"Do you have distributor in Vietnam?\")",
+    "Asks about price",
+    "No quantity or PO number"
+   ],
+   "subject": "Hỏi giá / price inquiry micropipette"
+  },
+  {
+   "id": "BT-018",
+   "label": "po",
+   "predicted": "pr",
+   "ok": false,
+   "hard": false,
+   "country": "VN",
+   "confidence": 0.6,
+   "reasons": [
+    "States quantity 5 box",
+    "Mentions product (Pipette tips)",
+    "No PO number — treated as purchase intent"
+   ],
+   "subject": "Đơn đặt hàng / Purchase order #BM-2610-031"
+  },
+  {
+   "id": "BT-019",
+   "label": "po",
+   "predicted": "pr",
+   "ok": false,
+   "hard": false,
+   "country": "TH",
+   "confidence": 0.6,
+   "reasons": [
+    "States quantity 24 box",
+    "Mentions product (reagent)",
+    "No PO number — treated as purchase intent"
+   ],
+   "subject": "PO from Siriraj - Glucose reagent"
+  },
+  {
+   "id": "BT-020",
+   "label": "pr",
+   "predicted": "enquiry",
+   "ok": false,
+   "hard": true,
+   "country": "MY",
+   "confidence": 0.4,
+   "reasons": [
+    "No PO number, quantity, question or setup request found — filed as a general enquiry for review"
+   ],
+   "subject": "FW: Budget approved for ELISA reader"
+  },
+  {
+   "id": "BT-021",
+   "label": "enquiry",
+   "predicted": "enquiry",
+   "ok": true,
+   "hard": true,
+   "country": "SG",
+   "confidence": 0.65,
+   "reasons": [
+    "Asks a question (\"Price for 500 boxes gloves?\")",
+    "States quantity 500 boxes"
+   ],
+   "subject": "Price for 500 boxes gloves?"
+  },
+  {
+   "id": "BT-022",
+   "label": "pr",
+   "predicted": "enquiry",
+   "ok": false,
+   "hard": false,
+   "country": "VN",
+   "confidence": 0.4,
+   "reasons": [
+    "No PO number, quantity, question or setup request found — filed as a general enquiry for review"
+   ],
+   "subject": "Confirm order 3 box tips"
+  },
+  {
+   "id": "BT-023",
+   "label": "enquiry",
+   "predicted": "enquiry",
+   "ok": true,
+   "hard": false,
+   "country": "TH",
+   "confidence": 0.8,
+   "reasons": [
+    "Asks a question (\"I want to know price of HbA1c reagent and do you have demo…\")",
+    "Asks about price",
+    "No quantity or PO number"
+   ],
+   "subject": "Ask price HbA1c"
+  },
+  {
+   "id": "BT-024",
+   "label": "mdm",
+   "predicted": "enquiry",
+   "ok": false,
+   "hard": false,
+   "country": "VN",
+   "confidence": 0.4,
+   "reasons": [
+    "No PO number, quantity, question or setup request found — filed as a general enquiry for review"
+   ],
+   "subject": "Đề nghị cập nhật thông tin / Update customer info"
+  },
+  {
+   "id": "BT-025",
+   "label": "pr",
+   "predicted": "enquiry",
+   "ok": false,
+   "hard": true,
+   "country": "SG",
+   "confidence": 0.65,
+   "reasons": [
+    "Asks about pricing"
+   ],
+   "subject": "Reagents for new project - pls reserve"
+  },
+  {
+   "id": "BT-026",
+   "label": "po",
+   "predicted": "enquiry",
+   "ok": false,
+   "hard": true,
+   "country": "SG",
+   "confidence": 0.65,
+   "reasons": [
+    "Asks a question (\"Can deliver by next Thurs?\")",
+    "States quantity 12 kits"
+   ],
+   "subject": "Order for the HbA1c reagent"
+  },
+  {
+   "id": "BT-027",
+   "label": "po",
+   "predicted": "po",
+   "ok": true,
+   "hard": true,
+   "country": "MY",
+   "confidence": 0.97,
+   "reasons": [
+    "Contains PO number PO 260117",
+    "States quantity 30 boxes"
+   ],
+   "subject": "PO 260117 + pls use new delivery address"
+  },
+  {
+   "id": "BT-028",
+   "label": "mdm",
+   "predicted": "enquiry",
+   "ok": false,
+   "hard": false,
+   "country": "SG",
+   "confidence": 0.8,
+   "reasons": [
+    "Asks a question (\"What other forms do you need?\")",
+    "No quantity or PO number"
+   ],
+   "subject": "New account opening - Sunrise Medical Clinic"
+  },
+  {
+   "id": "BT-029",
+   "label": "pr",
+   "predicted": "pr",
+   "ok": true,
+   "hard": true,
+   "country": "MM",
+   "confidence": 0.85,
+   "reasons": [
+    "Accepts a quote or states intent to order (\"would like to purchase\")",
+    "States quantity 100 tests",
+    "No PO number yet — pipeline, not demand"
+   ],
+   "subject": "Order request - Mandalay General"
+  },
+  {
+   "id": "BT-030",
+   "label": "mdm",
+   "predicted": "enquiry",
+   "ok": false,
+   "hard": true,
+   "country": "MY",
+   "confidence": 0.4,
+   "reasons": [
+    "No PO number, quantity, question or setup request found — filed as a general enquiry for review"
+   ],
+   "subject": "RE: PO coming - but please fix our account first"
+  },
+  {
+   "id": "BT-031",
+   "label": "mdm",
+   "predicted": "mdm",
+   "ok": true,
+   "hard": false,
+   "country": "VN",
+   "confidence": 0.85,
+   "reasons": [
+    "Requests master-data setup (\"Vendor registration\")"
+   ],
+   "subject": "Vendor registration - Vinmec"
+  },
+  {
+   "id": "BT-032",
+   "label": "enquiry",
+   "predicted": "enquiry",
+   "ok": true,
+   "hard": true,
+   "country": "MY",
+   "confidence": 0.8,
+   "reasons": [
+    "Asks a question (\"Do you supply ultra-low temperature freezers?\")",
+    "Asks about lead time",
+    "No quantity or PO number"
+   ],
+   "subject": "FW: Looking for -80 freezer"
+  },
+  {
+   "id": "BT-033",
+   "label": "followup",
+   "predicted": "followup",
+   "ok": true,
+   "hard": false,
+   "country": "SG",
+   "confidence": 0.9,
+   "reasons": [
+    "Contains PO number PO 4500177102",
+    "Refers to an existing order or delivery (\"ETA\")"
+   ],
+   "subject": "PO 4500177102 - ETA?"
+  },
+  {
+   "id": "BT-034",
+   "label": "pr",
+   "predicted": "enquiry",
+   "ok": false,
+   "hard": false,
+   "country": "TH",
+   "confidence": 0.4,
+   "reasons": [
+    "No PO number, quantity, question or setup request found — filed as a general enquiry for review"
+   ],
+   "subject": "Confirm 2 unit"
+  },
+  {
+   "id": "BT-035",
+   "label": "enquiry",
+   "predicted": "enquiry",
+   "ok": true,
+   "hard": false,
+   "country": "SG",
+   "confidence": 0.8,
+   "reasons": [
+    "Asks a question (\"Could you share the spec sheet and IFU for your point-of-ca…\")",
+    "Asks about spec",
+    "No quantity or PO number"
+   ],
+   "subject": "Spec sheet for CRP analyser"
+  },
+  {
+   "id": "BT-036",
+   "label": "mdm",
+   "predicted": "followup",
+   "ok": false,
+   "hard": true,
+   "country": "TH",
+   "confidence": 0.7,
+   "reasons": [
+    "Refers to an existing order or billing (\"invoice\")"
+   ],
+   "subject": "Update tax ID on our account"
+  },
+  {
+   "id": "BT-037",
+   "label": "followup",
+   "predicted": "enquiry",
+   "ok": false,
+   "hard": true,
+   "country": "SG",
+   "confidence": 0.8,
+   "reasons": [
+    "Asks a question (\"Is there a new date?\")",
+    "No quantity or PO number"
+   ],
+   "subject": "Backorder status - pipette tips"
+  },
+  {
+   "id": "BT-038",
+   "label": "followup",
+   "predicted": "followup",
+   "ok": true,
+   "hard": true,
+   "country": "MY",
+   "confidence": 0.85,
+   "reasons": [
+    "Refers to an existing order or delivery (\"not received\")"
+   ],
+   "subject": "FW: FW: Delivery - Penang General"
+  },
+  {
+   "id": "BT-039",
+   "label": "followup",
+   "predicted": "followup",
+   "ok": true,
+   "hard": false,
+   "country": "VN",
+   "confidence": 0.7,
+   "reasons": [
+    "Refers to an existing order or billing (\"invoice\")"
+   ],
+   "subject": "Hoá đơn VAT for PO BM-2609-017"
+  },
+  {
+   "id": "BT-040",
+   "label": "mdm",
+   "predicted": "enquiry",
+   "ok": false,
+   "hard": false,
+   "country": "SG",
+   "confidence": 0.4,
+   "reasons": [
+    "No PO number, quantity, question or setup request found — filed as a general enquiry for review"
+   ],
+   "subject": "Add delivery address - new satellite lab"
+  },
+  {
+   "id": "BT-041",
+   "label": "mdm",
+   "predicted": "enquiry",
+   "ok": false,
+   "hard": true,
+   "country": "MY",
+   "confidence": 0.8,
+   "reasons": [
+    "Asks a question (\"Also buy from QTG - same account?\")",
+    "No quantity or PO number"
+   ],
+   "subject": "Also buy from QTG - same account?"
+  },
+  {
+   "id": "BT-042",
+   "label": "mdm",
+   "predicted": "mdm",
+   "ok": true,
+   "hard": true,
+   "country": "SG",
+   "confidence": 0.85,
+   "reasons": [
+    "Requests master-data setup (\"create item\")"
+   ],
+   "subject": "New SKU from Jan 2027 - please create item"
+  },
+  {
+   "id": "BT-043",
+   "label": "followup",
+   "predicted": "followup",
+   "ok": true,
+   "hard": true,
+   "country": "MY",
+   "confidence": 0.75,
+   "reasons": [
+    "Contains PO number PO-2026",
+    "Refers to an existing order or billing (\"Invoice\")"
+   ],
+   "subject": "Invoice INV-SPD-26-04412 wrong unit price"
+  },
+  {
+   "id": "BT-044",
+   "label": "pr",
+   "predicted": "pr",
+   "ok": true,
+   "hard": true,
+   "country": "TH",
+   "confidence": 0.9,
+   "reasons": [
+    "Accepts a quote or states intent to order (\"want to order\")",
+    "States quantity 15 box",
+    "No PO number yet — pipeline, not demand"
+   ],
+   "subject": "We want to order"
+  },
+  {
+   "id": "BT-045",
+   "label": "enquiry",
+   "predicted": "po",
+   "ok": false,
+   "hard": true,
+   "country": "SG",
+   "confidence": 0.75,
+   "reasons": [
+    "Contains PO number PO 4500188812",
+    "No quantity stated — check the attached order"
+   ],
+   "subject": "Product range question"
+  },
+  {
+   "id": "BT-046",
+   "label": "po",
+   "predicted": "po",
+   "ok": true,
+   "hard": false,
+   "country": "SG",
+   "confidence": 0.97,
+   "reasons": [
+    "Contains PO number PO 4500183321",
+    "States quantity 40 boxes"
+   ],
+   "subject": "PO 4500183321"
+  },
+  {
+   "id": "BT-047",
+   "label": "pr",
+   "predicted": "pr",
+   "ok": true,
+   "hard": false,
+   "country": "SG",
+   "confidence": 0.85,
+   "reasons": [
+    "Accepts a quote or states intent to order (\"go ahead with\")",
+    "States quantity 40 boxes",
+    "No PO number yet — pipeline, not demand"
+   ],
+   "subject": "go ahead"
+  },
+  {
+   "id": "BT-048",
+   "label": "po",
+   "predicted": "pr",
+   "ok": false,
+   "hard": true,
+   "country": "SG",
+   "confidence": 0.85,
+   "reasons": [
+    "Accepts a quote or states intent to order (\"Quotation Q-26-4471 - accepted\")",
+    "States quantity 6 cartons",
+    "No PO number yet — pipeline, not demand"
+   ],
+   "subject": "RE: Quotation Q-26-4471 - accepted"
+  },
+  {
+   "id": "BT-049",
+   "label": "enquiry",
+   "predicted": "enquiry",
+   "ok": true,
+   "hard": true,
+   "country": "SG",
+   "confidence": 0.8,
+   "reasons": [
+    "Asks a question (\"Hi, is your Troponin I rapid test registered with HSA?\")",
+    "No quantity or PO number"
+   ],
+   "subject": "HSA registration for troponin test"
+  },
+  {
+   "id": "BT-050",
+   "label": "enquiry",
+   "predicted": "enquiry",
+   "ok": true,
+   "hard": true,
+   "country": "SG",
+   "confidence": 0.65,
+   "reasons": [
+    "Asks a question (\"Hi can quote me for 10 box serological pipette 25ml and 10…\")",
+    "States quantity 10 box"
+   ],
+   "subject": "Quotation pls"
+  },
+  {
+   "id": "BT-051",
+   "label": "mdm",
+   "predicted": "enquiry",
+   "ok": false,
+   "hard": true,
+   "country": "TH",
+   "confidence": 0.4,
+   "reasons": [
+    "No PO number, quantity, question or setup request found — filed as a general enquiry for review"
+   ],
+   "subject": "Setup before our first order"
+  },
+  {
+   "id": "BT-052",
+   "label": "pr",
+   "predicted": "enquiry",
+   "ok": false,
+   "hard": true,
+   "country": "SG",
+   "confidence": 0.65,
+   "reasons": [
+    "Asks a question (\"Can reserve stock first?\")",
+    "States quantity 20 box"
+   ],
+   "subject": "need 20 box dengue combo"
+  },
+  {
+   "id": "BT-053",
+   "label": "followup",
+   "predicted": "po",
+   "ok": false,
+   "hard": true,
+   "country": "MY",
+   "confidence": 0.95,
+   "reasons": [
+    "Contains PO number PO 260117",
+    "States quantity 30 boxes"
+   ],
+   "subject": "PO 260117 - can increase qty?"
+  },
+  {
+   "id": "BT-054",
+   "label": "mdm",
+   "predicted": "enquiry",
+   "ok": false,
+   "hard": false,
+   "country": "MY",
+   "confidence": 0.4,
+   "reasons": [
+    "No PO number, quantity, question or setup request found — filed as a general enquiry for review"
+   ],
+   "subject": "Company name change notice"
+  },
+  {
+   "id": "BT-055",
+   "label": "po",
+   "predicted": "followup",
+   "ok": false,
+   "hard": true,
+   "country": "MY",
+   "confidence": 0.9,
+   "reasons": [
+    "Contains PO number PO-2026",
+    "Refers to an existing order or delivery (\"delivery date\")"
+   ],
+   "subject": "PURCHASE ORDER - KPJ DAMANSARA"
+  },
+  {
+   "id": "BT-056",
+   "label": "followup",
+   "predicted": "po",
+   "ok": false,
+   "hard": true,
+   "country": "SG",
+   "confidence": 0.95,
+   "reasons": [
+    "Contains PO number PO 2026",
+    "States quantity 40 boxes"
+   ],
+   "subject": "RE: PO 2026/TTSH/1190 - short delivered"
+  },
+  {
+   "id": "BT-057",
+   "label": "followup",
+   "predicted": "followup",
+   "ok": true,
+   "hard": false,
+   "country": "MM",
+   "confidence": 0.7,
+   "reasons": [
+    "Refers to an existing order or billing (\"invoice\")"
+   ],
+   "subject": "Payment made - please confirm"
+  },
+  {
+   "id": "BT-058",
+   "label": "followup",
+   "predicted": "enquiry",
+   "ok": false,
+   "hard": true,
+   "country": "SG",
+   "confidence": 0.4,
+   "reasons": [
+    "No PO number, quantity, question or setup request found — filed as a general enquiry for review"
+   ],
+   "subject": "COA required for delivered lot"
+  },
+  {
+   "id": "BT-059",
+   "label": "enquiry",
+   "predicted": "enquiry",
+   "ok": true,
+   "hard": true,
+   "country": "TH",
+   "confidence": 0.8,
+   "reasons": [
+    "Asks a question (\"Do you have an equivalent?\")",
+    "Asks about price",
+    "No quantity or PO number"
+   ],
+   "subject": "Alternative to our current blood agar"
+  },
+  {
+   "id": "BT-060",
+   "label": "followup",
+   "predicted": "followup",
+   "ok": true,
+   "hard": false,
+   "country": "TH",
+   "confidence": 0.9,
+   "reasons": [
+    "Contains PO number PO 6909",
+    "Refers to an existing order or delivery (\"delivery date\")"
+   ],
+   "subject": "Not receive goods yet"
+  }
+ ]
+}

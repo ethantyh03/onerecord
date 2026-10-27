@@ -1,0 +1,2 @@
+ParentKey,LineNum,AddressName,AddressName2,AddressName3,AddressType,Street,StreetNo,Block,BuildingFloorRoom,City,ZipCode,County,State,Country,FederalTaxID
+CardCode,LineNum,Address,Address2,Address3,AdresType,Street,StreetNo,Block,Building,City,ZipCode,County,State,Country,LicTradNum
