@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { toast } from "sonner";
 import {
   AlarmClock,
   ArrowUpRight,
@@ -17,6 +16,7 @@ import {
   XCircle,
 } from "lucide-react";
 import { useSandbox } from "@/lib/store";
+import { useApprovalActions } from "@/components/approvals/use-approval-actions";
 import type { AppNotification, ApprovalStep, MdmRequest } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { MS_FONT, MsAvatar, TEAMS, findPerson, formatAgo, usePeople, useSimNow } from "./shared";
@@ -71,10 +71,7 @@ export function TeamsPanel({ personId, variant = "desktop", limit, className }: 
   const owner = findPerson(people, ownerId);
   const notifications = useSandbox((s) => s.notifications);
   const requests = useSandbox((s) => s.requests);
-  const approveStep = useSandbox((s) => s.approveStep);
-  const rejectStep = useSandbox((s) => s.rejectStep);
-  const askQuestion = useSandbox((s) => s.askQuestion);
-  const answerQuestion = useSandbox((s) => s.answerQuestion);
+  const actions = useApprovalActions();
   const markNotificationRead = useSandbox((s) => s.markNotificationRead);
   const now = useSimNow();
   const [filter, setFilter] = useState<"all" | "unread">("all");
@@ -244,19 +241,19 @@ export function TeamsPanel({ personId, variant = "desktop", limit, className }: 
                       step={c.step}
                       compact={mobile}
                       onApprove={(comment) => {
-                        approveStep(c.request.id, c.step.id, comment);
-                        markNotificationRead(n.id);
-                        toast.success(`Approved · ${c.request.id}`, { description: c.step.label });
+                        const ok = actions.approve(c.request, c.step, comment);
+                        if (ok) markNotificationRead(n.id);
+                        return ok;
                       }}
                       onReject={(comment) => {
-                        rejectStep(c.request.id, c.step.id, comment);
-                        markNotificationRead(n.id);
-                        toast(`Rejected · ${c.request.id}`, { description: "The requestor has been told why." });
+                        const ok = actions.reject(c.request, c.step, comment);
+                        if (ok) markNotificationRead(n.id);
+                        return ok;
                       }}
                       onAsk={(text) => {
-                        askQuestion(c.request.id, c.step.id, text);
-                        markNotificationRead(n.id);
-                        toast(`Question sent · ${c.request.id}`, { description: "The SLA clock is paused until they answer." });
+                        const ok = actions.ask(c.request, c.step, text);
+                        if (ok) markNotificationRead(n.id);
+                        return ok;
                       }}
                     />
                   ) : (
@@ -265,9 +262,7 @@ export function TeamsPanel({ personId, variant = "desktop", limit, className }: 
                       step={c.step}
                       compact={mobile}
                       onAnswer={(answer) => {
-                        answerQuestion(c.request.id, c.step.id, answer);
-                        markNotificationRead(n.id);
-                        toast.success(`Answer sent · ${c.request.id}`, { description: "The approval resumes with the same approver." });
+                        if (actions.answer(c.request, c.step, answer)) markNotificationRead(n.id);
                       }}
                     />
                   )
@@ -341,7 +336,7 @@ function FeedItem({
             </div>
           ) : n.requestId ? (
             <Link
-              href={`/requests/${encodeURIComponent(n.requestId)}`}
+              href={`/requests/view?id=${encodeURIComponent(n.requestId)}`}
               className="mt-1.5 inline-flex items-center gap-1 text-[12px] font-semibold hover:underline"
               style={{ color: TEAMS.purple }}
             >

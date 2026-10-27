@@ -13,10 +13,15 @@ import { PEOPLE } from "@/config/people";
  * E_Mail 100, Phone1 20, ItemName 100, PrcCode 8, PrcName 30, Currency 3, CardCode 15).
  */
 
-export const REGULATED_CATEGORIES = ["IVD reagent", "Medical device"] as const;
+/** Categories that need a regulatory licence + certificate and a QA/RA review. */
+export const REGULATED_CATEGORIES = ["IVD reagent", "Lab consumable – IVD medical device", "Medical device"] as const;
+
+/** Amy's live demo item category (App C): a lab consumable that is regulated as an IVD medical device. */
+export const IVD_CONSUMABLE_CATEGORY = "Lab consumable – IVD medical device";
 
 export const ITEM_CATEGORIES = [
   "IVD reagent",
+  "Lab consumable – IVD medical device",
   "Medical device",
   "Lab consumable",
   "Instrument",
@@ -74,7 +79,7 @@ const customerFields: FieldDef[] = [
     label: "Selling entity",
     type: "entity",
     required: true,
-    sapField: "U_Entity",
+    sapField: "U_Entities",
     section: "Company",
     helpText: "The Lives Group business unit that will invoice this customer.",
   },
@@ -355,7 +360,7 @@ const itemFields: FieldDef[] = [
     options: [...ITEM_CATEGORIES],
     sapField: "U_Category",
     section: "Product",
-    helpText: "IVD reagents and medical devices need a regulatory licence and a QA/RA review.",
+    helpText: "IVD reagents, IVD-regulated lab consumables and medical devices need a regulatory licence, its certificate and a QA/RA review.",
   },
   {
     key: "productGroup",
@@ -386,6 +391,15 @@ const itemFields: FieldDef[] = [
     sapField: "U_RegLicenceNo",
     section: "Product",
     helpText: "HSA (SG) / MDA (MY) / Thai FDA licence no.",
+  },
+  {
+    key: "regCertificate",
+    label: "Registration certificate (PDF)",
+    type: "file",
+    required: false,
+    requiredIf: { field: "category", op: "in", value: [...REGULATED_CATEGORIES] },
+    section: "Product",
+    helpText: "The product registration certificate QA/RA will check against the licence number.",
   },
   {
     key: "uom",
@@ -523,7 +537,7 @@ const extendFields: FieldDef[] = [
     label: "Extend to entity",
     type: "entity",
     required: true,
-    sapField: "U_Entity",
+    sapField: "U_Entities",
     section: "Extension",
   },
   {
@@ -545,6 +559,30 @@ const extendFields: FieldDef[] = [
     sapField: "U_CreditChange",
     section: "Extension",
     helpText: "Yes adds a Finance review.",
+  },
+  {
+    key: "paymentTerms",
+    label: "New payment terms",
+    type: "select",
+    required: false,
+    requiredIf: { field: "changesCreditTerms", op: "equals", value: "Yes" },
+    showIf: { field: "changesCreditTerms", op: "equals", value: "Yes" },
+    options: [...PAYMENT_TERMS],
+    sensitive: true,
+    sapField: "PayTermsGrpCode",
+    section: "Extension",
+    helpText: "Applies to the whole business partner record once Finance approves.",
+  },
+  {
+    key: "creditLimit",
+    label: "New credit limit (SGD)",
+    type: "number",
+    required: false,
+    requiredIf: { field: "changesCreditTerms", op: "equals", value: "Yes" },
+    showIf: { field: "changesCreditTerms", op: "equals", value: "Yes" },
+    sensitive: true,
+    sapField: "CreditLimit",
+    section: "Extension",
   },
   {
     key: "reason",

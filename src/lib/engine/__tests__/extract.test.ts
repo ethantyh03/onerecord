@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { extractFieldsRules, redactSensitive } from "../extract";
 import { AMY_EMAIL, COSTCENTRE, CUSTOMER, EXTEND, ITEM, VENDOR } from "./fixtures";
+import { DEFAULT_DOMAINS } from "@/config/default-config";
+const DEFAULT_ITEM_FIELDS = DEFAULT_DOMAINS.find((d) => d.id === "item")!.fields;
 
 describe("redactSensitive", () => {
   it("removes bank account numbers", () => {
@@ -157,5 +159,27 @@ describe("extractFieldsRules — other domains", () => {
     const r = extractFieldsRules("Category: Something odd\nUoM: CRATE", ITEM);
     expect(r.values.category).toBeUndefined();
     expect(r.values.uom).toBeUndefined();
+  });
+});
+
+describe("extractFieldsRules — Amy's K2EDTA tube (IVD-regulated lab consumable)", () => {
+  const ITEM_LIVE = { ...ITEM, fields: DEFAULT_ITEM_FIELDS };
+  it("maps K2EDTA / blood collection tube text to the IVD consumable category and product group B", () => {
+    const r = extractFieldsRules(
+      "Hi MDM, please set up a new item code. Item: K2EDTA Blood Collection Tube 4 mL, 100/pk. Manufacturer: Greiner Bio-One (AT). For SG + MY hospitals, three PRs already waiting.",
+      ITEM_LIVE,
+    );
+    expect(r.values.category).toBe("Lab consumable – IVD medical device");
+    expect(r.values.productGroup).toBe("B");
+    expect(r.missing).toContain("regLicenceNo");
+  });
+
+  it("plain EDTA / blood collection tube wording maps the same way", () => {
+    expect(extractFieldsRules("We need EDTA vacuum tubes for a clinic tender.", ITEM_LIVE).values.category).toBe(
+      "Lab consumable – IVD medical device",
+    );
+    expect(extractFieldsRules("New blood collection tube, 3 mL, sodium citrate.", ITEM_LIVE).values.category).toBe(
+      "Lab consumable – IVD medical device",
+    );
   });
 });

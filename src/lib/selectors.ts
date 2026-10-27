@@ -22,16 +22,21 @@ import type {
 import { COUNTRIES } from "@/lib/types";
 import { SYSTEM_ACTOR_ID, SYSTEM_PERSON } from "@/config/people";
 import { knownSapCodes } from "@/lib/seed";
-import { useSandbox, type SandboxState } from "@/lib/store";
+import { dtwOptionsFor, simNowMs, useSandbox, type SandboxState } from "@/lib/store";
 import { addBusinessDays, businessDaysBetween, stepElapsedBusinessDays } from "@/lib/engine/sla";
 import { assignSapCode } from "@/lib/engine/codes";
 import { buildDtwFiles } from "@/lib/engine/dtw";
+import { isFinalStatus, segregationCheck } from "@/lib/engine/routing";
 
 /** Any object carrying the sandbox data (the store state, or a test fixture). */
 export type SandboxView = Pick<
   SandboxState,
   "personaId" | "clockOffsetMs" | "config" | "requests" | "prs" | "audit" | "notifications" | "sapRecords" | "reservedCodes"
->;
+> &
+  Partial<Pick<SandboxState, "simBaseMs" | "seededAtRealMs" | "lastUnblock">>;
+
+/** The sim-clock fields of a state; simBaseMs / seededAtRealMs are optional so plain fixtures fall back to real time. */
+export type ClockView = Pick<SandboxView, "clockOffsetMs"> & Partial<Pick<SandboxState, "simBaseMs" | "seededAtRealMs">>;
 
 const DAY_MS = 86_400_000;
 const IN_FLIGHT: ReadonlySet<RequestStatus> = new Set<RequestStatus>(["in_approval", "needs_info", "mdm_review"]);
@@ -41,9 +46,12 @@ const ALL_STATUSES: RequestStatus[] = ["draft", "in_approval", "needs_info", "re
 // Basics
 // =============================================================================================
 
-/** Simulated "now" for this state (real time + fast-forward offset). */
-export function selectNow(s: Pick<SandboxView, "clockOffsetMs">): string {
-  return new Date(Date.now() + (Number.isFinite(s.clockOffsetMs) ? s.clockOffsetMs : 0)).toISOString();
+/**
+ * Simulated "now" for this state: simBaseMs (09:00 SGT Wed 28 Oct 2026 at seed) + real time since seeding + fast-forward.
+ * Without simBaseMs / seededAtRealMs (test fixtures) it is real time + offset.
+ */
+export function selectNow(s: ClockView): string {
+  return new Date(simNowMs(s)).toISOString();
 }
 
 /** Person by id. "system" resolves to the OneRecord automation actor used on reminders and escalations. */
@@ -117,8 +125,8 @@ export interface StuckDemand {
   prs: PurchaseRequest[];
 }
 
-/** Purchase requests blocked by MDM setup (status "blocked"); days waiting are whole calendar days. */
-export function selectStuckDemand(s: Pick<SandboxView, "prs" | "clockOffsetMs">): StuckDemand {
+/** Purchase requests blocked by MDM setup: every PR with status "blocked", linked to a request or not. Days waiting are whole calendar days. */
+export function selectStuckDemand(s: Pick<SandboxView, "prs"> & ClockView): StuckDemand {
   const now = Date.parse(selectNow(s));
   const byCountry = Object.fromEntries(COUNTRIES.map((c) => [c.code, { sgd: 0, count: 0, maxDaysWaiting: 0 }])) as StuckDemand["byCountry"];
   const prs = s.prs.filter((p) => p.status === "blocked").sort((a, b) => b.sgd - a.sgd);
@@ -148,7 +156,7 @@ export interface PipelineStats {
   byStatus: Record<RequestStatus, number>;
 }
 
-export function selectPipelineStats(s: Pick<SandboxView, "requests" | "config" | "clockOffsetMs">): PipelineStats {
+export function selectPipelineStats(s: Pick<SandboxView, "requests" | "config"> & ClockView): PipelineStats {
   const now = selectNow(s);
   const byStatus = Object.fromEntries(ALL_STATUSES.map((k) => [k, 0])) as Record<RequestStatus, number>;
   let inFlight = 0;
@@ -229,7 +237,35 @@ export function selectDtwPreview(s: SandboxView, requestId: string): DtwFile[] {
   const domain = req ? domainById(s, req.domainId) : undefined;
   const code = selectProposedSapCode(s, requestId);
   if (!req || !domain || !code) return [];
-  return buildDtwFiles(req, domain, code);
+  return buildDtwFiles(req, domain, code, dtwOptionsFor(s, req, domain, code));
+}
+
+/**
+ * Segregation of duties (final model P0-08) plus step state: can `personId` approve / reject / ask on this step?
+ * Pass stepId "create_in_sap" to ask whether they may mark the record created in SAP B1.
+ * Blocked: the requestor and the requestor's delegate on their own request; whoever approved a finance step on
+ * the MDM final check / SAP creation; steps that are not active. It does not require personId to be the assignee
+ * (use selectWaitingOn for "is this mine?").
+ */
+export function canActOnStep(
+  s: Pick<SandboxView, "requests" | "config">,
+  requestId: string,
+  stepId: string,
+  personId: string,
+): { ok: boolean; reason?: string } {
+  const req = requestById(s, requestId);
+  if (!req) return { ok: false, reason: "Request not found" };
+  if (stepId === "create_in_sap") {
+    if (req.status === "created") return { ok: false, reason: `${req.id} is already in SAP B1` };
+    if (req.status !== "mdm_review") return { ok: false, reason: `${req.id} isn't ready for SAP B1 yet` };
+    return segregationCheck(req, "create_in_sap", personId, s.config.people);
+  }
+  const step = req.steps.find((x) => x.id === stepId);
+  if (!step) return { ok: false, reason: "Step not found" };
+  if (!IN_FLIGHT.has(req.status)) return { ok: false, reason: `${req.id} is ${req.status.replace("_", " ")}` };
+  if (isFinalStatus(step.status)) return { ok: false, reason: "This step has already been decided" };
+  if (step.status === "waiting") return { ok: false, reason: "This step isn't active yet" };
+  return segregationCheck(req, step, personId, s.config.people);
 }
 
 // =============================================================================================
@@ -243,14 +279,28 @@ export function useCurrentPerson(): Person {
 
 /** Simulated now; updates on fast-forward and every `intervalMs` of real time. */
 export function useNow(intervalMs = 30_000): string {
-  const offset = useSandbox((s) => s.clockOffsetMs);
+  const clockOffsetMs = useSandbox((s) => s.clockOffsetMs);
+  const simBaseMs = useSandbox((s) => s.simBaseMs);
+  const seededAtRealMs = useSandbox((s) => s.seededAtRealMs);
   const [tick, setTick] = useState(0);
   useEffect(() => {
     const t = setInterval(() => setTick((x) => x + 1), Math.max(1_000, intervalMs));
     return () => clearInterval(t);
   }, [intervalMs]);
-  // eslint-disable-next-line react-hooks/exhaustive-deps -- tick forces a fresh Date.now()
-  return useMemo(() => selectNow({ clockOffsetMs: offset }), [offset, tick]);
+  return useMemo(
+    () => selectNow({ clockOffsetMs, simBaseMs, seededAtRealMs }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- tick forces a fresh Date.now()
+    [clockOffsetMs, simBaseMs, seededAtRealMs, tick],
+  );
+}
+
+/** canActOnStep for the current persona (or personId), memoised. */
+export function useCanActOnStep(requestId: string, stepId: string, personId?: string): { ok: boolean; reason?: string } {
+  const requests = useSandbox((s) => s.requests);
+  const config = useSandbox((s) => s.config);
+  const me = useSandbox((s) => s.personaId);
+  const id = personId ?? me;
+  return useMemo(() => canActOnStep({ requests, config }, requestId, stepId, id), [requests, config, requestId, stepId, id]);
 }
 
 export function useWaitingOn(personId?: string): { request: MdmRequest; step: ApprovalStep }[] {
@@ -263,7 +313,9 @@ export function useWaitingOn(personId?: string): { request: MdmRequest; step: Ap
 export function useStuckDemand(): StuckDemand {
   const prs = useSandbox((s) => s.prs);
   const clockOffsetMs = useSandbox((s) => s.clockOffsetMs);
-  return useMemo(() => selectStuckDemand({ prs, clockOffsetMs }), [prs, clockOffsetMs]);
+  const simBaseMs = useSandbox((s) => s.simBaseMs);
+  const seededAtRealMs = useSandbox((s) => s.seededAtRealMs);
+  return useMemo(() => selectStuckDemand({ prs, clockOffsetMs, simBaseMs, seededAtRealMs }), [prs, clockOffsetMs, simBaseMs, seededAtRealMs]);
 }
 
 export function useMyRequests(personId?: string): MdmRequest[] {
@@ -277,7 +329,12 @@ export function usePipelineStats(): PipelineStats {
   const requests = useSandbox((s) => s.requests);
   const config = useSandbox((s) => s.config);
   const clockOffsetMs = useSandbox((s) => s.clockOffsetMs);
-  return useMemo(() => selectPipelineStats({ requests, config, clockOffsetMs }), [requests, config, clockOffsetMs]);
+  const simBaseMs = useSandbox((s) => s.simBaseMs);
+  const seededAtRealMs = useSandbox((s) => s.seededAtRealMs);
+  return useMemo(
+    () => selectPipelineStats({ requests, config, clockOffsetMs, simBaseMs, seededAtRealMs }),
+    [requests, config, clockOffsetMs, simBaseMs, seededAtRealMs],
+  );
 }
 
 export function useUnreadCounts(personId?: string): { teams: number; outlook: number } {

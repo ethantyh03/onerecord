@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildDtwFiles, dtwToCsv, toServiceLayerPayload } from "../dtw";
+import { buildDtwFiles, dtwImportMode, dtwToCsv, toServiceLayerPayload } from "../dtw";
 import { COSTCENTRE, CUSTOMER, EXTEND, ITEM, VENDOR } from "./fixtures";
 import type { DomainConfig, MdmRequest } from "@/lib/types";
 
@@ -108,7 +108,7 @@ describe("buildDtwFiles — business partners", () => {
     expect(bank.dbHeaders[bank.headers.indexOf("AccountNo")]).toBe("Account");
   });
 
-  it("extend ⇒ BPAddresses only, keyed on the existing code", () => {
+  it("extend (A28) ⇒ oBusinessPartners UPDATE row keyed on the existing code + ship-to row", () => {
     const ext = req("extend", {
       existingCode: "C-SG-00017",
       existingName: "National University Hospital",
@@ -117,12 +117,39 @@ describe("buildDtwFiles — business partners", () => {
       changesCreditTerms: "No",
       reason: "QTG starts supplying lab consumables",
     });
-    const files = buildDtwFiles(ext, EXTEND, "C-SG-00017");
-    expect(files.map((f) => f.fileName)).toEqual(["BPAddresses.csv"]);
-    expect(cell(files[0], "ParentKey")).toBe("C-SG-00017");
-    expect(cell(files[0], "AddressType")).toBe("bo_ShipTo");
-    expect(cell(files[0], "ZipCode")).toBe("119228");
-    expect(cell(files[0], "AddressName")).toMatch(/QTG/);
+    const files = buildDtwFiles(ext, EXTEND, "C-SG-00017", { existingEntities: ["SPD"] });
+    expect(files.map((f) => f.fileName)).toEqual(["oBusinessPartners.csv", "BPAddresses.csv"]);
+    expect(dtwImportMode(EXTEND)).toBe("update");
+    expect(cell(files[0], "CardCode")).toBe("C-SG-00017");
+    expect(cell(files[0], "U_Entities")).toBe("SPD, QTG");
+    expect(files[0].headers).not.toContain("CreditLimit");
+    expect(files[0].headers).not.toContain("CardName");
+    expect(cell(files[1], "ParentKey")).toBe("C-SG-00017");
+    expect(cell(files[1], "AddressType")).toBe("bo_ShipTo");
+    expect(cell(files[1], "ZipCode")).toBe("119228");
+    expect(cell(files[1], "AddressName")).toMatch(/QTG/);
+  });
+
+  it("extend with changed credit terms carries PayTermsGrpCode + CreditLimit; no ship-to ⇒ no BPAddresses file", () => {
+    const ext = req("extend", {
+      existingCode: "C-SG-00017",
+      existingName: "National University Hospital",
+      extendToEntity: "MLS",
+      changesCreditTerms: "Yes",
+      paymentTerms: "Net 60",
+      creditLimit: 80000,
+      reason: "MLS starts selling molecular kits to NUH",
+    });
+    const files = buildDtwFiles(ext, EXTEND, "C-SG-00017", { existingEntities: ["SPD", "QTG"] });
+    expect(files.map((f) => f.fileName)).toEqual(["oBusinessPartners.csv"]);
+    expect(cell(files[0], "U_Entities")).toBe("SPD, QTG, MLS");
+    expect(cell(files[0], "CreditLimit")).toBe("80000");
+    expect(cell(files[0], "PayTermsGrpCode")).not.toBe("");
+    const p = toServiceLayerPayload(ext, EXTEND, "C-SG-00017", { existingEntities: ["SPD", "QTG"] });
+    expect(p).toMatchObject({ method: "PATCH", path: "/b1s/v2/BusinessPartners('C-SG-00017')" });
+    expect(p.body).toMatchObject({ U_Entities: "SPD, QTG, MLS", CreditLimit: 80000 });
+    expect(p.body.CardCode).toBeUndefined();
+    expect(p.body.BPAddresses).toBeUndefined();
   });
 });
 

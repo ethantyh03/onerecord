@@ -226,7 +226,7 @@ function RequestLink({ reqId }: { reqId?: string }) {
   return (
     <SapField label="OneRecord request (U_OneRecordRef)" linked={Boolean(reqId)}>
       {reqId ? (
-        <Link href={`/requests/${encodeURIComponent(reqId)}`} className="font-mono text-[11px] text-[#1d5fa8] underline-offset-2 hover:underline">
+        <Link href={`/requests/view?id=${encodeURIComponent(reqId)}`} className="font-mono text-[11px] text-[#1d5fa8] underline-offset-2 hover:underline">
           {reqId}
         </Link>
       ) : undefined}

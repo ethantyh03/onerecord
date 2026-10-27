@@ -60,7 +60,7 @@ describe("buildRoute", () => {
     const qa = steps.find((s) => s.role === "qa_ra");
     expect(qa).toBeDefined();
     expect(qa!.assigneeId).toBe("ploy");
-    expect(qa!.addedBecause).toBe("Category = IVD reagent → regulatory review required");
+    expect(qa!.addedBecause).toBe("Category = IVD reagent → regulatory (QA/RA) review required");
     expect(steps.every((s) => s.status === "waiting" && s.pausedMs === 0)).toBe(true);
   });
 
@@ -102,7 +102,7 @@ describe("buildRoute", () => {
 
   it("vendor supplying regulated products adds QA/RA; extend with credit change adds Finance", () => {
     const v = buildRoute({ domain: VENDOR, bu: SPD, data: { suppliesRegulated: "Yes" }, people: PEOPLE });
-    expect(v.find((s) => s.role === "qa_ra")?.addedBecause).toBe("Supplies regulated = Yes → regulatory review required");
+    expect(v.find((s) => s.role === "qa_ra")?.addedBecause).toBe("Supplies regulated = Yes → regulatory (QA/RA) review required");
     const e = buildRoute({ domain: EXTEND, bu: SPD, data: { changesCreditTerms: "Yes" }, people: PEOPLE });
     expect(e.map((s) => s.role)).toEqual(["business_support", "finance", "mdm"]);
   });

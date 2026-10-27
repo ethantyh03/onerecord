@@ -34,6 +34,11 @@ from common import (COUNTRIES, PRODUCTS, REPO, TZ, add_months, load_params, mont
 HOSP = ("Public hospital", "Private hospital")
 INF = 10 ** 9
 
+def strip_diacritics(s: str) -> str:
+    s = s.replace("Đ", "D").replace("đ", "d")
+    return "".join(ch for ch in unicodedata.normalize("NFD", s) if unicodedata.category(ch) != "Mn")
+
+
 # ====================================================================== fictional name pools
 # Place-like stems and brand words. Real hospital names are avoided on purpose (see PATTERNS.md).
 SG_PLACES = ["Keppel", "Marina", "Tanjong Rhu", "Telok Ayer", "Serangoon", "Pasir Panjang", "Tampines", "Bedok",
@@ -45,40 +50,50 @@ SG_SUFFIX = ["Vale", "Park", "Crest", "Hill", "Grove", "Bay", "Point", "Vista", 
 SG_BRANDS = ["Lumen", "Crescent", "Harbourline", "Meridian", "Straits", "Orchid", "Banyan", "Tembusu", "Angsana",
              "Merlion", "Halcyon", "Vireo", "Arcadia", "Helix", "Kingfisher", "Sapphire", "Silverlake", "Cendana",
              "Pandan", "Senja", "Bayfront", "Lighthouse", "Equator", "Monsoon", "Coral", "Jadeleaf", "Tidewater",
-             "Starfruit", "Kopitiam Bio", "Saffron", "Tanglin Bio", "Palmyra", "Nutmeg", "Cinnamon", "Ember",
+             "Starfruit", "Kopitiam", "Saffron", "Tanglin Labs", "Palmyra", "Nutmeg", "Cinnamon", "Ember",
              "Northstar", "Bluewater", "Evergreen", "Sunbird", "Hornbill"]
 MY_PREFIX = ["Bukit", "Taman", "Kota", "Bandar", "Sungai", "Seri", "Desa", "Lembah", "Tanjung", "Kuala", "Padang",
              "Ulu", "Permatang"]
 MY_SUFFIX = ["Permai", "Indah", "Mutiara", "Hijau", "Cahaya", "Kenanga", "Bayu", "Kencana", "Mawar", "Melati",
              "Cempaka", "Aman", "Bestari", "Murni", "Harmoni", "Delima", "Intan", "Seroja", "Teratai", "Kenari",
-             "Gemilang", "Nilam", "Suria", "Lestari"]
+             "Gemilang", "Nilam", "Suria", "Lestari", "Sejahtera", "Makmur", "Bahagia", "Mulia", "Perdana",
+             "Baiduri", "Zamrud", "Nirwana", "Impian", "Idaman", "Puteri", "Mahkota", "Sutera", "Cemerlang",
+             "Anggerik", "Perkasa", "Dahlia", "Orkid", "Selasih", "Kesuma", "Tropika", "Wangi"]
 MY_BRANDS = ["Kenari", "Rimba", "Wira", "Andalas", "Merbau", "Jati", "Nusantara", "Puncak", "Halia", "Serai",
              "Meranti", "Kasturi", "Tualang", "Bunga Raya", "Kemboja", "Belian", "Keruing", "Sena", "Cengal",
              "Damar", "Rotan", "Pelangi", "Kirana", "Embun", "Tiara"]
 TH_FIRST = ["Sri", "Nakhon", "Rattana", "Chai", "Kasem", "Thep", "Wiset", "Phon", "Sap", "Rung", "Siri", "Charoen",
             "Saeng", "Bua", "Prasert", "Sombat", "Thawi", "Chok", "Pracha", "Lanna", "Isan", "Andaman", "Kanchana",
-            "Suphan", "Sakon", "Udon", "Khun", "Mongkhon"]
+            "Suphan", "Sakon", "Udon", "Khun", "Mongkhon", "Anan", "Boon", "Chanthra", "Duang", "Kaew", "Mani",
+            "Narin", "Pradit", "Thanya", "Uthai", "Wanna", "Yupha", "Ruen", "Phisit", "Nopphon", "Sirin", "Ploen",
+            "Rawi", "Somjit", "Thip"]
 TH_SECOND = ["Wattana", "Suk", "Thong", "Charoen", "Phatthana", "Mongkhon", "Prasit", "Phon", "Rattana", "Arun",
-             "Luang", "Thep", "Chaloem", "Mitr", "Sawang", "Phaet"]
-TH_BRANDS = ["Chaiyo", "Thai Sabai", "Lotus Bio", "Naga", "Kinnaree", "Mekong Bio", "Sukhothai Bio", "Lanna Bio",
-             "Isan Bio", "Bodhi", "Benjarong", "Mali", "Champa", "Kraisorn", "Phaya", "Ratchaphruek", "Siam Helix",
-             "Golden Teak", "Saeng Bio", "Chalerm Bio", "Orchid Siam", "Tuk Tuk Bio"]
+             "Luang", "Thep", "Chaloem", "Mitr", "Sawang", "Phaet", "Wet", "Kit", "Sombun", "Phithak", "Udom",
+             "Thani", "Ngam", "Satit", "Phiban", "Raksa", "Sanit", "Kamon", "Thada", "Nimit", "Prida", "Sakun",
+             "Phakdi", "Witthaya", "Chuen", "Pracharak", "Khemmarat", "Sukkasem", "Thammarak", "Rungrot"]
+TH_BRANDS = ["Chaiyo", "Thai Sabai", "Lotus Siam", "Naga", "Kinnaree", "Mekong Delta", "Sukhothai", "Lanna Gene",
+             "Isan Health", "Bodhi", "Benjarong", "Mali", "Champa", "Kraisorn", "Phaya", "Ratchaphruek", "Siam Helix",
+             "Golden Teak", "Saeng Thai", "Chalerm Labs", "Orchid Siam", "Tuk Tuk Bio"]
 VN_FIRST = ["An", "Bình", "Phú", "Hòa", "Thiện", "Phúc", "Minh", "Hưng", "Bảo", "Gia", "Thanh", "Hải", "Ngọc",
             "Trường", "Đông", "Tân", "Vĩnh", "Kim", "Nam", "Quang", "Hoàng", "Đức", "Phước", "Thái", "Khánh",
-            "Tường", "Thuận", "Thịnh", "Trúc", "Lộc"]
+            "Tường", "Thuận", "Thịnh", "Trúc", "Lộc", "Cẩm", "Diệu", "Gia Lâm", "Hiếu", "Kiến", "Lạc", "Mộc",
+            "Nhật", "Phương", "Sáng", "Thiên", "Tuệ", "Vạn", "Xuân", "Yên"]
 VN_SECOND = ["Khang", "Phát", "Lộc", "Tâm", "Thịnh", "Hòa", "Vân", "Đăng", "Lan", "Sơn", "Hải", "Ngân", "Phong",
-             "Minh", "Long", "Thành", "Phúc", "Thọ", "Lâm", "Nguyên"]
-VN_AVOID = {"Phú Thọ", "Vĩnh Đức", "Bảo Sơn", "An Phước", "Tâm Đức", "Hồng Ngọc", "Thái Hòa", "Đức Phúc", "Gia An",
+             "Minh", "Long", "Thành", "Phúc", "Thọ", "Lâm", "Nguyên", "Hưng", "Quý", "Tín", "Nghĩa", "Hiền",
+             "Bảo", "Châu", "Dương", "Định", "Hạnh", "Khôi", "Linh", "Mai", "Nhân", "Quân", "Sang", "Trí", "Tú",
+             "Uyên", "Việt"]
+VN_AVOID = {"Hưng Hưng", "Bảo Bảo", "Phú Thọ", "Vĩnh Đức", "Bảo Sơn", "An Phước", "Tâm Đức", "Hồng Ngọc", "Thái Hòa", "Đức Phúc", "Gia An",
             "Bình An", "Hòa Hòa", "An Khang", "Minh Long", "Hưng Thịnh", "Phúc Lâm", "Hoàng Long", "Thanh Nhàn",
             "Tân Phú", "Bình Phước", "Phú Hòa", "Thịnh Phát"}
 VN_BRANDS = ["Sen Vàng", "Việt Tín", "Sao Mai", "Ánh Dương", "Trường Thịnh", "Tân Á", "Đại Việt", "Lạc Việt",
-             "An Bình", "Hưng Phát", "Kim Long", "Bách Việt", "Nam Việt", "Hồng Hà", "Phương Nam Bio", "Mekong Bio",
+             "An Bình", "Hưng Phát", "Kim Long", "Bách Việt", "Nam Việt", "Hồng Hà", "Phương Nam", "Mê Kông",
              "Cửu Long", "Bạch Đằng"]
 MM_FIRST = ["Shwe", "Yadanar", "Ngwe", "Sein", "Myint", "Thazin", "Kyal", "Hninn", "Mya", "Moe", "Pyi", "Lin",
             "Thit", "Ywar", "Padamyar", "Sabe", "Pan", "Nan", "Kan", "Wun", "Zay", "Nwe", "Hla", "Phyo"]
 MM_SECOND = ["Mingalar", "Myay", "Taung", "Pann", "Mo", "Padauk", "Sin", "Thida", "Lin", "Kaung", "Win", "Yaung",
-             "Zin", "Sar", "Kyar", "Thu", "Nyo", "Taw", "Thar", "Yadanar"]
-MM_BRANDS = ["Golden Lotus", "Shwe Bio", "Padauk", "Thazin", "Ayar", "Sein", "Ngwe", "Mya", "Zay", "Hla", "Phyo",
+             "Zin", "Sar", "Kyar", "Thu", "Nyo", "Taw", "Thar", "Yadanar", "Aye", "Htet", "Khaing", "Maung", "Oo",
+             "Pyae", "Soe", "Thet", "Wai", "Yee", "Zaw", "Hlaing", "Khin"]
+MM_BRANDS = ["Golden Lotus", "Shwe Labs", "Padauk", "Thazin", "Ayar", "Sein", "Ngwe", "Mya", "Zay", "Hla", "Phyo",
              "Thant", "Nwe", "Moe", "Lotus Myanmar", "Ruby"]
 
 TEMPLATES = {
@@ -143,7 +158,7 @@ ROMAN = {
            "Saeng": "Sang", "Rung": "Roong", "Arun": "Aroon", "Sap": "Sub", "Luang": "Lueang", "Chok": "Chock",
            "Phaet": "Paet", "Kanchana": "Karnjana", "Chao": "Jao", "Lanna": "Lana", "Isan": "Esan", "Sakon": "Sakol",
            "Udon": "Udorn", "Khun": "Kun", "Mitr": "Mit", "Sawang": "Savang", "Siri": "Sirri", "Bua": "Boa",
-           "Pracha": "Bracha", "Suphan": "Suphun", "Rim": "Rimm"},
+           "Pracha": "Bracha", "Suphan": "Suphun"},
     "MM": {"Myittar": "Myitta", "Mingalar": "Mingala", "Yadanar": "Yadana", "Thukha": "Thuka", "Yeik": "Yeit",
            "Taung": "Daung", "Pann": "Pan", "Kyal": "Kyel", "Hninn": "Hnin", "Shwe": "Shway", "Myay": "Mye",
            "Thazin": "Tharzin", "Thida": "Thidar", "Lin": "Linn", "Zin": "Zinn", "Kaung": "Gaung", "Win": "Winn",
@@ -160,16 +175,15 @@ GENERIC_TOKENS = {"hospital", "general", "medical", "centre", "center", "clinic"
                   "halal", "gloves", "tropical", "pharmaceutical", "biology", "bệnh", "viện", "đa", "khoa", "quốc",
                   "tế", "phòng", "khám", "trung", "tâm", "xét", "nghiệm", "công", "ty", "tnhh", "cp", "dược",
                   "sinh", "học", "nghiên", "cứu"}
+GENERIC_ASCII = {strip_diacritics(t) for t in GENERIC_TOKENS} | {
+    "benh", "vien", "da", "khoa", "quoc", "te", "phong", "kham", "trung", "xet", "nghiem", "cong", "ty", "duoc",
+    "sinh", "hoc", "nghien", "cuu", "rong", "phayaban", "hosp", "gen", "med", "ctr", "spec", "inst", "res", "intl",
+    "diag", "labs", "comm", "path", "pte", "bhd", "sdn", "s", "b", "north", "east", "west", "south", "central"}
 NEW_ITEM_NAMES = ["HbA1c Point-of-Care Cartridge 10T", "Dengue NS1 Ag ELISA 192T", "Leptospira IgM ELISA 96T",
                   "Melioidosis Ab Rapid Test 20T", "Scrub Typhus IgM Rapid 25T", "Mpox PCR Kit 48T"]
 PROSPECT_STEMS = {"SG": ["Rivervale", "Fernvale", "Canberra", "Tengah"], "MY": ["Bayan Lepas", "Batu Maung", "Nibong Tebal"],
                   "TH": ["Bang Na", "Lat Krabang", "Hua Hin"], "VN": ["Thủ Đức", "Long Biên", "Biên Hòa"],
                   "MM": ["Hlaing Thar", "Dagon Seikkan", "Bago"]}
-
-
-def strip_diacritics(s: str) -> str:
-    s = s.replace("Đ", "D").replace("đ", "d")
-    return "".join(ch for ch in unicodedata.normalize("NFD", s) if unicodedata.category(ch) != "Mn")
 
 
 def slug(s: str) -> str:
@@ -207,7 +221,13 @@ class Generator:
         self.signal = bool(sc["signal"])
         self.dengue_scale = float(sc["dengue_scale"])
         self.seed = seed
-        self.rng = np.random.default_rng(seed)
+        # independent random streams, so re-tuning one component never reshuffles another:
+        # structure (customers, records, names), A/B demand, C demand, streams (PRs, enquiries, MDM history)
+        ss = np.random.SeedSequence(seed).spawn(4)
+        self.rng = np.random.default_rng(ss[0])
+        self.rng_ab = np.random.default_rng(ss[1])
+        self.rng_c = np.random.default_rng(ss[2])
+        self.rng_s = np.random.default_rng(ss[3])
         tp = P["time"]
         self.months = month_range(tp["history_start"], tp["history_end"])
         self.T = len(self.months)
@@ -273,9 +293,9 @@ class Generator:
                 lst.append((ords[sel], w / w.sum()))
             self.day_choice[c] = lst
 
-    def pick_days(self, c: str, t: int, n: int) -> np.ndarray:
+    def pick_days(self, c: str, t: int, n: int, rng=None) -> np.ndarray:
         o, p = self.day_choice[c][t]
-        return self.rng.choice(o, size=n, p=p)
+        return (rng or self.rng).choice(o, size=n, p=p)
 
     # ------------------------------------------------------------------ monthly factors
     def build_factors(self):
@@ -453,17 +473,39 @@ class Generator:
                     V[:, j] *= mixT[p] * tot / s
             for k, i in enumerate(idx):
                 rows[i]["base"] = {p: float(V[k, j]) for j, p in enumerate(PRODUCTS)}
-        # hero rank fix: the planted hero must sit at its configured rank among the country's hospitals
+        # hero sizing: the planted hero sits at its configured rank among ALL customers of its country, with a
+        # margin over the next one so that, after the planted decline, it is still a top account
+        tot = lambda i: sum(rows[i]["base"].values())  # noqa: E731
+
+        def scale(i, f):
+            for p in PRODUCTS:
+                rows[i]["base"][p] *= f
+
+        for c, share in P["plants"]["misattribution"]["size_share"].items():
+            i = self.mis_primary[c]
+            scale(i, share * P["countries"][c]["value_sgd"] / tot(i))
         for c, h in P["plants"]["hero"].items():
-            hs = sorted([i for i, r in enumerate(rows) if r["country"] == c and r["segment"] in HOSP],
-                        key=lambda i: -sum(rows[i]["base"].values()))
-            hi = next(i for i in hs if rows[i]["hero"])
-            target = hs[h["rank"] - 1]
-            if target != hi:
-                tv, hv = sum(rows[target]["base"].values()), sum(rows[hi]["base"].values())
-                for p in PRODUCTS:
-                    rows[hi]["base"][p] *= tv / hv
-                    rows[target]["base"][p] *= hv / tv
+            if not h.get("margin"):
+                continue  # key account at its natural rank; no forced sizing
+            idx = [i for i, r in enumerate(rows) if r["country"] == c]
+            hi = next(i for i in idx if rows[i]["hero"])
+            above = sorted([i for i in idx if rows[i].get("hero_above") == c], key=lambda i: -tot(i))
+            below = sorted([i for i in idx if i != hi and i not in above], key=lambda i: -tot(i))
+            target = tot(below[0]) * h["margin"]
+            scale(hi, target / tot(hi))
+            for k, i in enumerate(above):
+                need = target * (1.12 + 0.1 * (len(above) - 1 - k))
+                if tot(i) < need:
+                    scale(i, need / tot(i))
+        # keep each country's product totals on target: one uniform factor per country x product
+        for c in COUNTRIES:
+            idx = [i for i, r in enumerate(rows) if r["country"] == c]
+            for p in PRODUCTS:
+                cur = sum(rows[i]["base"][p] for i in idx)
+                if cur > 0:
+                    f = mixT[p] * P["countries"][c]["value_sgd"] / cur
+                    for i in idx:
+                        rows[i]["base"][p] *= f
         # golden IDs by size within country
         for c in COUNTRIES:
             idx = sorted([i for i, r in enumerate(rows) if r["country"] == c],
@@ -483,17 +525,28 @@ class Generator:
                     and (not need_A or rows[i]["buys"]["A"])]
 
         for c, h in P["plants"]["hero"].items():
-            i = hospitals(c)[h["rank"] - 1] if h["rank"] - 1 < len(hospitals(c)) else hospitals(c)[0]
+            hs_all = hospitals(c)
+            i = hs_all[h["rank"] - 1] if h["rank"] - 1 < len(hs_all) else hs_all[0]
+            for j in hs_all[: h["rank"] - 1]:
+                rows[j]["hero_above"] = c
+                taken.add(j)
             r = rows[i]
             r["hero"] = c
             r["plant"].append(f"hero_{c.lower()}")
-            r["buys"].update(A=True, B=True)
+            r["buys"].update(A=True, B=True, C=False)
             if c == "MY":
-                r["buys"]["C"] = False
                 r["segment"] = "Private hospital"
             r["tier"] = "L"
             r["idio"] = 0.0
             taken.add(i)
+        # misattribution primary hospital (sized in build_customers so the moved share lands in 3-8%)
+        self.mis_primary = {}
+        for c in P["plants"]["misattribution"]["target_share"]:
+            i = hospitals(c, 1, 12, need_A=True)[0]
+            rows[i]["mis_primary"] = c
+            rows[i]["buys"].update(A=True, B=True)
+            taken.add(i)
+            self.mis_primary[c] = i
         # TH false cross-sell gap: A (SPD record) + C (QTS record), never B
         i = hospitals("TH", 4, 14)[0]
         rows[i]["buys"].update(A=True, B=False, C=True)
@@ -510,7 +563,7 @@ class Generator:
             rows[i]["plant"].append("xsell_gap_vn")
             taken.add(i)
         # MY expanders: growth sits in 3 hospitals
-        for i in hospitals("MY", 3, 16, need_A=True)[: P["plants"]["my_expanders"]["count"]]:
+        for i in hospitals("MY", 8, 30, need_A=True)[: P["plants"]["my_expanders"]["count"]]:
             rows[i]["expander"] = True
             rows[i]["plant"].append("expander_my")
             taken.add(i)
@@ -535,7 +588,7 @@ class Generator:
             if r["country"] == "MY" and r["segment"] in HOSP and not r["contract_end"]:
                 r["contract_end"] = add_months("2026-04", int(rng.integers(0, 42)))
         # misattribution candidates (chosen after demand is generated, by share of country value)
-        self.mis_cands = {c: [i for i in hospitals(c, 3, 25, need_A=True) if i not in taken]
+        self.mis_cands = {c: [self.mis_primary[c]] + [i for i in hospitals(c, 2, 12, need_A=True) if i not in taken]
                           for c in P["plants"]["misattribution"]["target_share"]}
         reserved = taken | {i for v in self.mis_cands.values() for i in v}
         # near-miss NON-duplicates (sister sites with near-identical names)
@@ -636,9 +689,10 @@ class Generator:
         return L
 
     def build_demand(self):
-        P, rng, T = self.P, self.rng, self.T
+        P, T = self.P, self.T
+        rng = self.rng_ab
+        rc = self.rng_c
         cd = P["customer_dynamics"]
-        lv = cd["line_value_sgd"]
         p_join = cd["lines_per_po_p"]
         it = self.items
         prices = it["unit_price_sgd"].to_numpy()
@@ -647,12 +701,13 @@ class Generator:
         self.po_counter = 0
         self.uplift_log = []
 
-        def add_lines(i, c, entity, prod, t, item_idx, units, sgd):
+        def add_lines(i, c, entity, prod, t, item_idx, units, sgd, r=None):
+            r = r or rng
             n = len(item_idx)
-            n_po = 1 + int(rng.binomial(n - 1, 1 - p_join)) if n > 1 else 1
-            po_of = np.concatenate([np.arange(n_po), rng.integers(0, n_po, n - n_po)])
-            days = self.pick_days(c, t, n_po)
-            u = rng.random(n_po)
+            n_po = 1 + int(r.binomial(n - 1, 1 - p_join)) if n > 1 else 1
+            po_of = np.concatenate([np.arange(n_po), r.integers(0, n_po, n - n_po)])
+            days = self.pick_days(c, t, n_po, r)
+            u = r.random(n_po)
             cols["gi"].extend([i] * n)
             cols["entity"].extend([entity] * n)
             cols["product"].extend([prod] * n)
@@ -665,6 +720,9 @@ class Generator:
             self.po_counter += n_po
 
         for i, r in enumerate(self.cust):
+            # per-customer random streams: changing one account's parameters never reshuffles another's draws
+            rng = np.random.default_rng([self.seed, 1, i])
+            rc = np.random.default_rng([self.seed, 2, i])
             c, seg, tier = r["country"], r["segment"], r["tier"]
             td = P["size_tiers"][tier]
             k_shape = 1.0 / td["noise_cv"] ** 2
@@ -678,18 +736,18 @@ class Generator:
             if r["base"]["C"] > 0:
                 w = self.c_weights(seg)
                 exp_price = float((prices[self.c_items] * w).sum())
-                lam0 = r["base"]["C"] / exp_price / 12
+                lam0 = r["base"]["C"] / (exp_price * npf) / 12
                 s = self.seasC(c, seg) * self.trend[c]["C"] * growth * L["C"] * self.shock[c]["C"]
-                ns = rng.poisson(lam0 * s)
+                ns = rc.poisson(lam0 * s)
                 for t in np.nonzero(ns)[0]:
                     k = int(ns[t])
-                    items = self.c_items[rng.choice(len(self.c_items), size=k, p=w)]
-                    units = np.where((prices[items] < 15000) & (rng.random(k) < 0.3), 2, 1)
+                    items = self.c_items[rc.choice(len(self.c_items), size=k, p=w)]
+                    units = np.where((prices[items] < 15000) & (rc.random(k) < 0.3), 2, 1)
                     sgd = np.round(units * prices[items] * npf, 2)
                     for j in range(k):
-                        add_lines(i, c, "QTS", "C", int(t), items[j:j + 1], units[j:j + 1], sgd[j:j + 1])
+                        add_lines(i, c, "QTS", "C", int(t), items[j:j + 1], units[j:j + 1], sgd[j:j + 1], rc)
                         if (self.signal and it.at[items[j], "analyser"] and r["buys"]["A"]
-                                and rng.random() < pc["new_placement_share"] and t + 1 < T):
+                                and rc.random() < pc["new_placement_share"] and t + 1 < T):
                             add = float(sgd[j]) * pc["pull_through_ratio"] / 12
                             U[t + 1:] += add
                             self.uplift_log.append((i, int(t), float(sgd[j])))
@@ -702,40 +760,58 @@ class Generator:
                     seas = self.seasA[c]
                 else:
                     seas = self.seasB(c, seg)
-                E = (r["base"][p] / 12 * self.trend[c][p] * growth * L[p] * seas * self.shock[c][p]
-                     * self.macro[c])
+                lvl = r["base"][p] / 12 * self.trend[c][p] * growth
                 if p == "A":
-                    E = E + U * seas * (L["A"] > 0)
+                    lvl = lvl + U  # installed-base pull-through (a cross-sell signal, never a forecast feature)
+                E = lvl * L[p] * seas * self.shock[c][p] * self.macro[c]
                 V = E * rng.gamma(k_shape, 1 / k_shape, T)
-                backlog = 0.0
                 ent = P["product_entity"][p]
+                # stable basket: each customer buys a fixed set of SKUs in fixed proportions; each SKU is
+                # re-ordered when the accumulated need passes its reorder value (per-item backlog)
+                bk = cd["basket_size"][p][tier]
+                if p == "A":
+                    items, gw, grp = [], [], []
+                    for g, gname in enumerate(("dengue", "respiratory", "routine")):
+                        gi_, gpw = self.grp_items[gname]
+                        k = min(len(gi_), int(rng.integers(bk[gname][0], bk[gname][1] + 1)))
+                        pick = rng.choice(len(gi_), size=k, replace=False, p=gpw)
+                        w = rng.dirichlet(np.full(k, 2.0)) * gpw[pick]
+                        items += gi_[pick].tolist()
+                        gw += (w / w.sum()).tolist()
+                        grp += [g] * k
+                    items, gw, grp = np.array(items), np.array(gw), np.array(grp)
+                    alloc = V[:, None] * self.compA[c][:, grp] * gw[None, :]
+                else:
+                    bi, bw = self.b_items
+                    k = min(len(bi), int(rng.integers(bk[0], bk[1] + 1)))
+                    pick = rng.choice(len(bi), size=k, replace=False, p=bw)
+                    w = rng.dirichlet(np.full(k, 2.0)) * bw[pick]
+                    items, gw = bi[pick], w / w.sum()
+                    alloc = V[:, None] * gw[None, :]
+                net = prices[items] * npf
+                base_ro = cd["reorder_value_sgd"][p] * rng.uniform(0.6, 1.4, len(items))
+                reorder = np.maximum(net, base_ro)
+                bl = rng.uniform(0, 1, len(items)) * reorder  # start mid-cycle
                 for t in range(T):
-                    if V[t] <= 0 and backlog <= 0:
-                        continue
-                    backlog += V[t]
                     if L[p][t] == 0:
-                        backlog = 0.0
+                        bl[:] = 0
                         continue
-                    n = int(rng.poisson(backlog / lv[p]))
-                    if n == 0:
+                    bl += alloc[t]
+                    o = bl >= reorder
+                    if not o.any():
                         continue
-                    vals = backlog * rng.dirichlet(np.full(n, 1.5))
-                    backlog = 0.0
-                    if p == "A":
-                        grp = rng.choice(3, size=n, p=self.compA[c][t])
-                        items = np.empty(n, int)
-                        for g, gname in enumerate(("dengue", "respiratory", "routine")):
-                            m = grp == g
-                            if m.any():
-                                gi_, gw = self.grp_items[gname]
-                                items[m] = gi_[rng.choice(len(gi_), size=int(m.sum()), p=gw)]
-                    else:
-                        bi, bw = self.b_items
-                        items = bi[rng.choice(len(bi), size=n, p=bw)]
-                    net = prices[items] * npf
-                    units = np.maximum(1, np.round(vals / net)).astype(int)
-                    sgd = np.round(units * net, 2)
-                    add_lines(i, c, ent, p, t, items, units, sgd)
+                    units = np.floor(bl[o] / net[o]).astype(int)
+                    keep = units > 0
+                    if not keep.any():
+                        continue
+                    idx = np.nonzero(o)[0][keep]
+                    units = units[keep]
+                    sgd = np.round(units * net[idx], 2)
+                    bl[idx] -= units * net[idx]
+                    # order sizes vary: redraw the next reorder point, so reorders are not strictly periodic
+                    j = cd["reorder_jitter"]
+                    reorder[idx] = np.maximum(net[idx], base_ro[idx] * rng.uniform(1 - j, 1 + j, len(idx)))
+                    add_lines(i, c, ent, p, t, items[idx], units, sgd)
         L = pd.DataFrame(cols)
         L["country"] = [self.cust[g]["country"] for g in L["gi"]]
         L["month"] = [month_of(o) for o in L["date"]]
@@ -869,29 +945,29 @@ class Generator:
         ctot = L_cur.groupby("country")["sgd"].sum()
         self.mis = {}
         for c, target in mp["target_share"].items():
-            best = None
-            for i in self.mis_cands[c]:
-                m = (L["gi"] == i) & (L["date"] >= start) & L["month"].isin(cur)
-                v_spd = L.loc[m & L["entity"].isin(mp["entities"]), "sgd"].sum()
-                share = v_spd / ctot[c]
-                if share >= target and (best is None or share < best[1]):
-                    best = (i, share, list(mp["entities"]))
-            if best is None:
-                i = max(self.mis_cands[c], key=lambda i: L.loc[(L["gi"] == i) & (L["date"] >= start)
-                                                               & L["month"].isin(cur), "sgd"].sum())
-                m = (L["gi"] == i) & (L["date"] >= start) & L["month"].isin(cur)
-                best = (i, L.loc[m, "sgd"].sum() / ctot[c], ["SPD", "QTG", "QTS"])
-            i, share, ents = best
-            q = min(1.0, target / share) if share > 0 else 1.0
-            r = self.cust[i]
-            r["plant"].append(f"misattribution_{c.lower()}")
             created = date.fromisoformat(mp["record_created"][c]).toordinal()
-            pert = "abbreviation;blank_tax_id" if c == "MY" else "romanisation;blank_tax_id"
-            rid = self.new_record(i, "SPD", "SG", created, False, pert, role="misattributed_sg",
-                                  force_blank_tax=True)
-            m = (L["gi"] == i) & (L["date"] >= created) & L["entity"].isin(ents) & (L["u"] < q)
-            L.loc[m, "rid"] = rid
-            self.mis[c] = dict(gi=i, rid=rid, q=q)
+            need = target
+            for n_h, i in enumerate(self.mis_cands[c][:2]):
+                m_all = (L["gi"] == i) & (L["date"] >= created)
+                m_cur = m_all & L["month"].isin(cur)
+                ents = list(mp["entities"])
+                share = L.loc[m_cur & L["entity"].isin(ents), "sgd"].sum() / ctot[c]
+                if share < need:
+                    ents = ["SPD", "QTG"]
+                    share = L.loc[m_cur & L["entity"].isin(ents), "sgd"].sum() / ctot[c]
+                q = min(1.0, need / share) if share > 0 else 1.0
+                r = self.cust[i]
+                tag = f"misattribution_{c.lower()}" + ("" if n_h == 0 else "_2")
+                r["plant"].append(tag)
+                pert = "abbreviation;blank_tax_id" if c == "MY" else "romanisation;blank_tax_id"
+                rid = self.new_record(i, "SPD", "SG", created + 3 * n_h, False, pert, role="misattributed_sg",
+                                      force_blank_tax=True)
+                m = m_all & L["entity"].isin(ents) & (L["u"] < q)
+                L.loc[m, "rid"] = rid
+                self.mis.setdefault(c, []).append(dict(gi=i, rid=rid, q=q, entities=ents))
+                need -= share * q
+                if need <= 0.002:
+                    break
 
     def plant_miscategorisation(self):
         P, L, it = self.P, self.lines, self.items
@@ -906,8 +982,11 @@ class Generator:
 
     # ------------------------------------------------------------------ names, addresses, ids
     def build_names(self):
+        """Fictional names. A similarity guard stops accidental near-duplicates between different customers,
+        so the only look-alike non-duplicates are the planted near-miss pairs."""
+        from rapidfuzz import fuzz
+        from rapidfuzz.distance import JaroWinkler
         P, rng = self.P, self.rng
-        used: set[str] = set()
         pools = {
             "SG": ([f"{a} {b}" for a in SG_PLACES for b in SG_SUFFIX], SG_BRANDS),
             "MY": ([f"{a} {b}" for a in MY_PREFIX for b in MY_SUFFIX], MY_BRANDS),
@@ -916,28 +995,40 @@ class Generator:
                    VN_BRANDS),
             "MM": ([f"{a} {b}" for a in MM_FIRST for b in MM_SECOND if a != b], MM_BRANDS),
         }
-        stems_left, brands_left, used_first = {}, {}, defaultdict(set)
+        stems_left, brands_left = {}, {}
         for c, (st, br) in pools.items():
-            st = list(st)
+            st, br = list(st), list(br)
             rng.shuffle(st)
-            br = list(br)
             rng.shuffle(br)
             stems_left[c], brands_left[c] = st, br
+        used_names: set[str] = set()
+        used_norm = defaultdict(list)
+        used_tok = defaultdict(lambda: defaultdict(int))
 
-        def take_stem(c):
-            # one stem per first word, so no accidental near-duplicates
-            while stems_left[c]:
-                s = stems_left[c].pop()
-                fw = s.split()[0]
-                if fw not in used_first[c]:
-                    used_first[c].add(fw)
-                    return s
-            raise RuntimeError(f"stem pool exhausted for {c}")
+        def norm(s):
+            s = strip_diacritics(s).lower()
+            s = re.sub(r"[^a-z0-9 ]", " ", s)
+            s = re.sub(r"(pte ltd|sdn bhd|co ltd|jsc|tnhh|cong ty|cp)", " ", s)
+            return " ".join(s.split())
 
-        def take_brand(c):
-            if brands_left[c]:
-                return brands_left[c].pop()
-            return take_stem(c)
+        def ok(name, c):
+            n = norm(name)
+            dn = {t for t in n.split() if t not in GENERIC_ASCII}
+            for m in used_norm[c]:
+                dm = {t for t in m.split() if t not in GENERIC_ASCII}
+                if dn == dm or fuzz.token_set_ratio(n, m) >= 95:
+                    return False
+                if dn & dm and (fuzz.token_set_ratio(n, m) >= 80 or fuzz.ratio(n, m) >= 80
+                                or JaroWinkler.normalized_similarity(n, m) >= 0.90):
+                    return False
+            return True
+
+        def register(name, c):
+            used_names.add(name)
+            used_norm[c].append(norm(name))
+            for t in norm(name).split():
+                if t not in GENERIC_TOKENS:
+                    used_tok[c][t] += 1
 
         plant_names = {
             "hero_my": ("Bukit Damai", "{s} Specialist Hospital"),
@@ -950,9 +1041,6 @@ class Generator:
             "misattribution_my": ("Taman Seri", None),
             "misattribution_vn": ("Sông Sen", None),
         }
-        reserved_first = {"Bukit", "Taman", "Chao", "Hồng", "Thukha", "Sri", "Aung", "Sông", "Tanjong"}
-        for c in COUNTRIES:
-            used_first[c] |= reserved_first
         near_stems = {"SG": "Lavender Bay", "MY": "Seri Mutiara", "TH": "Siam Riverside", "VN": "Bình An",
                       "MM": "Thiri Mingalar"}
         near_suffix = {"SG": ("(Bedok)", "(Jurong East)"), "MY": ("Ipoh", "Klang"), "TH": ("Chiang Mai", "Phuket"),
@@ -961,57 +1049,78 @@ class Generator:
         for a, b in self.near_miss:
             nm_members[a] = (b, 0)
             nm_members[b] = (a, 1)
+        # pass 1: planted and near-miss names (fixed)
         for i, r in enumerate(self.cust):
             c, seg = r["country"], r["segment"]
-            tpls = TEMPLATES[c][seg]
             key = next((k for k in r["plant"] if k in plant_names), None)
             if key:
                 stem, tpl = plant_names[key]
                 if tpl is None:
-                    tpl = (TEMPLATES[c][seg][0] if c != "VN" else
-                           ("general_hospital" if seg == "Public hospital" else "intl_hospital"))
-                    if c == "MY" and seg == "Private hospital":
-                        tpl = "{s} Medical Centre"
-                if c == "VN" and "{" in tpl:
-                    tpl = "general_hospital"
-                is_brand = False
+                    if c == "VN":
+                        tpl = "general_hospital" if seg == "Public hospital" else "intl_hospital"
+                    elif c == "MY":
+                        tpl = "Hospital {s}" if seg == "Public hospital" else "{s} Medical Centre"
+                    else:
+                        tpl = TEMPLATES[c][seg][0]
             elif i in nm_members:
                 stem = near_stems[c]
                 k = nm_members[i][1]
-                if c in ("VN",):
+                if c == "VN":
                     tpl = ["general_hospital", "polyclinic"][k]
                 elif c == "MM":
                     tpl = ["{s} Hospital", "{s} Clinic"][k]
+                elif c == "TH":
+                    tpl = "{s} Hospital " + near_suffix[c][k]
                 else:
                     tpl = {"Private hospital": "{s} Medical Centre", "Clinic": "{s} Family Clinic",
-                           "Diagnostic lab": "{s} Pathology Lab"}.get(seg, "{s} Medical Centre")
-                    if c == "TH":
-                        tpl = "{s} Hospital"
-                    tpl = tpl + " " + near_suffix[c][k]
-                is_brand = False
+                           "Diagnostic lab": "{s} Pathology Lab"}.get(seg, "{s} Medical Centre") + " " + near_suffix[c][k]
             else:
-                tpl = str(rng.choice(tpls))
-                if c == "VN":
-                    is_brand = VN_KINDS[tpl][3]
-                else:
-                    is_brand = "{b}" in tpl
-                stem = take_brand(c) if is_brand else take_stem(c)
-                tpl = tpl.replace("{b}", "{s}")
+                continue
             r["stem"], r["tpl"] = stem, tpl
+            r["vn_lang"] = "vi" if c == "VN" else ""
+            r["name"] = self.render(r)
+            register(r["name"], c)
+        # pass 2: everyone else
+        for i, r in enumerate(self.cust):
+            if r.get("name"):
+                continue
+            c, seg = r["country"], r["segment"]
             r["vn_lang"] = ("vi" if rng.random() < 0.7 else "en") if c == "VN" else ""
-            name = self.render(r)
-            k = 2
-            while name in used:
-                r["stem"] = f"{stem} {['North', 'East', 'West', 'South', 'Central'][k % 5]}"
-                name = self.render(r)
-                k += 1
-            used.add(name)
-            r["name"] = name
+            tpls = list(TEMPLATES[c][seg])
+            rng.shuffle(tpls)
+            done = False
+            for tpl in tpls:
+                is_brand = VN_KINDS[tpl][3] if c == "VN" else "{b}" in tpl
+                pool = brands_left[c] if is_brand else stems_left[c]
+                for k in range(len(pool) - 1, -1, -1):
+                    r["stem"], r["tpl"] = pool[k], tpl.replace("{b}", "{s}")
+                    name = self.render(r)
+                    if name not in used_names and ok(name, c):
+                        pool.pop(k)
+                        done = True
+                        break
+                if done:
+                    break
+            if not done:  # pools exhausted: fall back to a stem with a district qualifier
+                for k in range(len(stems_left[c]) - 1, -1, -1):
+                    for q in ("North", "East", "West", "South", "Central"):
+                        r["stem"], r["tpl"] = f"{stems_left[c][k]} {q}", tpls[0].replace("{b}", "{s}")
+                        name = self.render(r)
+                        if name not in used_names and ok(name, c):
+                            done = True
+                            break
+                    if done:
+                        stems_left[c].pop(k)
+                        break
+            if not done:
+                raise RuntimeError(f"could not name a {seg} in {c}")
+            r["name"] = self.render(r)
+            register(r["name"], c)
         # guard the pinned NUH demo: no SG name may contain national/university tokens
         for r in self.cust:
             if r["country"] == "SG":
                 low = r["name"].lower()
-                assert not re.search(r"\b(national|natl|university|univ|nuh)\b", low), r["name"]
+                assert not re.search(r"(national|natl|university|univ|nuh)", low), r["name"]
 
     def render(self, r: dict, lang: str | None = None) -> str:
         c = r["country"]
@@ -1034,7 +1143,7 @@ class Generator:
         out = name
         hits = [(a, b) for a, b in ABBREV if a in out and a != b]
         if not hits:
-            return out + " (HQ)"
+            return out
         k = min(len(hits), 1 + int(self.rng.random() < 0.6))
         for a, b in hits[:k]:
             out = out.replace(a, b, 1)
@@ -1103,7 +1212,8 @@ class Generator:
 
     def perturb(self, r: dict, perts: str) -> str:
         name = r["name"]
-        for p in perts.split(";"):
+        order = ["romanisation", "word_reorder", "abbreviation", "typo"]
+        for p in sorted(perts.split(";"), key=lambda x: order.index(x) if x in order else 9):
             f = getattr(self, f"p_{p}", None)
             if f is not None:
                 name = f(name, r)
@@ -1175,6 +1285,8 @@ class Generator:
                 self.cust[b]["tax"] = self.cust[a]["tax"]
         for rec in self.records:
             r = self.cust[rec["gi"]]
+            if rec.get("fixed"):
+                continue
             if rec["canonical"]:
                 rec.update(card_name=r["name"], lic_trad_num=r["tax"], street=r["addr"]["street"],
                            zip_code=r["addr"]["zip"], phone1=r["addr"]["phone"], email=r["email"])
@@ -1213,7 +1325,7 @@ class Generator:
         self.nuh_rid = self.new_record(gi, "SPD", "SG", 0, True, "", name=nuh["card_name"],
                                        lic_trad_num=nuh["lic_trad_num"], street=nuh["street"],
                                        zip_code=nuh["zip_code"], phone1=nuh["phone1"], email=nuh["email"],
-                                       has_transactions=False, pinned_code=nuh["card_code"])
+                                       has_transactions=False, pinned_code=nuh["card_code"], fixed=True)
         self.pr_cust = {}
         nmy = sum(1 for r in self.cust if r["country"] == "MY" and r.get("golden_id"))
         for k, pr in enumerate(P["pinned"]["prs"]):
@@ -1230,7 +1342,7 @@ class Generator:
             rid = self.new_record(gi, "SPD", "MY", created, True, "", name=pr["customer_name"],
                                   lic_trad_num=self.tax_id("MY"), street=a["street"], zip_code=a["zip"],
                                   phone1=a["phone"], email=f"procurement@{slug(pr['customer_name'])}.example",
-                                  has_transactions=False)
+                                  has_transactions=False, fixed=True)
             self.pr_cust[pr["pr_id"]] = (gi, rid)
 
     def assign_codes(self):
@@ -1445,12 +1557,20 @@ class Generator:
         prs["customer_name"] = None
         prs["pr_id"] = ""
         prs = pd.concat([prs, blk], ignore_index=True).sort_values(["created", "minutes"]).reset_index(drop=True)
-        # ids: chronological, with the pinned PR-5521 / PR-5527 landing in sequence
+        # ids: chronological, with the pinned PR-5521 / PR-5527 landing in sequence. PR ids have 4 digits, so
+        # if the history holds more than ~5,400 PRs before the pinned ones, thin converted/lost PRs uniformly.
         pinned_ids = {p["pr_id"] for p in P["pinned"]["prs"]}
+        cap = int(sp["max_prs_before_pinned"])
+        pin_o = min(date.fromisoformat(p["created_at"][:10]).toordinal() for p in P["pinned"]["prs"])
+        before = prs.index[(prs["created"] < pin_o) & prs["status"].isin(["converted", "lost"])]
+        n_before = int((prs["created"] < pin_o).sum())
+        if n_before > cap:
+            drop = rng.choice(before, size=n_before - cap, replace=False)
+            prs = prs.drop(drop).reset_index(drop=True)
         is_pin = prs["pr_id"].isin(pinned_ids)
         first_pin_pos = int(np.nonzero(is_pin.to_numpy())[0].min())
         start = 5521 - int((~is_pin.to_numpy()[:first_pin_pos]).sum())
-        assert start >= 1, "too many PRs for 4-digit ids; lower pr_share_of_po_lines"
+        assert start >= 1, "too many PRs for 4-digit ids"
         nxt, ids = start, []
         for v in prs["pr_id"]:
             if v:
@@ -1685,8 +1805,12 @@ class Generator:
                                      mdm_days=round(mdm * scale, 2) if ok else None,
                                      approval_steps=steps, sap_code=sap, was_duplicate=was_dup,
                                      blocked_pr_ids=blocked))
-        h = pd.DataFrame(rows).sort_values(["o", "smin"]).reset_index(drop=True)
-        assert len(h) < 1000, "MDM history ids would collide with the app's REQ-1001+"
+        h = pd.DataFrame(rows)
+        if len(h) > 990:  # ids must stay below the app's REQ-1001+ (drop surplus unlinked requests)
+            keep = {r["card_code"] for r in linked}
+            unl = h.index[~h["sap_code"].isin(keep)]
+            h = h.drop(rng.choice(unl, size=len(h) - 990, replace=False))
+        h = h.sort_values(["o", "smin"]).reset_index(drop=True)
         h.insert(0, "request_id", [f"REQ-{k + 1:04d}" for k in range(len(h))])
         h.insert(5, "submitted_at", [ts(o, m) for o, m in zip(h["o"], h["smin"])])
         h = h.drop(columns=["o", "smin"])
@@ -1714,6 +1838,7 @@ class Generator:
         self.make_pos()
         self.make_customers_tables()
         self.make_dup_truth()
+        self.rng = self.rng_s  # streams draw from their own generator
         self.make_prs()
         self.make_enquiries()
         self.make_followups()
@@ -1783,6 +1908,160 @@ class Generator:
         self.stats = S
         return S
 
+    # ------------------------------------------------------------------ planted-pattern assertions
+    SCHEMA_COLS = {
+        "customers_records": ["card_code", "card_name", "entity", "recorded_country", "lic_trad_num", "street",
+                              "zip_code", "phone1", "email", "segment", "created_at", "has_transactions",
+                              "golden_id", "true_country", "perturbation"],
+        "golden_customers": ["golden_id", "canonical_name", "country", "segment", "size_tier", "first_po_month",
+                             "churn_month", "installed_c", "planted"],
+        "items": ["item_code", "item_name", "recorded_product", "true_product", "category", "true_category",
+                  "entity", "unit_price_sgd", "uom"],
+        "pos": ["po_id", "line_no", "date", "month", "record_card_code", "golden_id", "true_country",
+                "recorded_country", "entity", "item_code", "true_product", "recorded_product", "units", "sgd"],
+        "prs": ["pr_id", "created_at", "customer_name", "record_card_code", "golden_id", "country", "entity",
+                "item_code", "item_name", "product", "units", "sgd", "status", "blocked_by_request_id",
+                "converted_po_id"],
+        "enquiries": ["enquiry_id", "received_at", "golden_id", "customer_name", "country", "product", "channel",
+                      "converted_pr_id"],
+        "followups": ["followup_id", "received_at", "po_id", "golden_id", "country", "topic"],
+        "mdm_requests_hist": ["request_id", "domain", "entity", "country", "requestor_role", "submitted_at",
+                              "created_in_sap_at", "status", "bounces", "cycle_days", "sap_code", "was_duplicate",
+                              "blocked_pr_ids"],
+        "dup_truth": ["card_code_a", "card_code_b", "golden_id", "country_a", "country_b", "perturbation", "split"],
+    }
+
+    def check_plants(self) -> list[dict]:
+        """Data-level assertions from final model §5.6 (forecast and matcher assertions are checked by the
+        backtest and matcher scripts, on models; listed here as 'deferred')."""
+        P, pos, cr, S = self.P, self.pos, self.cr, self.stats
+        cur, pri = set(self.win["current"]), set(self.win["prior"])
+        res = []
+
+        def chk(name, value, target, ok, scenario_only=None):
+            if scenario_only and self.scenario not in scenario_only:
+                return
+            res.append(dict(name=name, value=value, target=target, ok=bool(ok)))
+
+        sig = ("base", "halfdengue")
+        tables = {"customers_records": self.cr, "golden_customers": self.gold, "items": self.make_items_table(),
+                  "pos": self.pos, "prs": self.prs, "enquiries": self.enq, "followups": self.fup,
+                  "mdm_requests_hist": self.hist, "dup_truth": self.dup}
+        missing = {t: [c for c in cols if c not in tables[t].columns] for t, cols in self.SCHEMA_COLS.items()}
+        chk("SCHEMA.md columns present", {t: m for t, m in missing.items() if m} or "all", "all",
+            not any(missing.values()))
+        # 1. hero MY
+        h = next(r for r in self.cust if r.get("hero") == "MY")
+        recs = cr[cr["golden_id"] == h["golden_id"]]
+        months = {cc: pos.loc[pos["record_card_code"] == cc, "month"] for cc in recs["card_code"]}
+        roles = {self.code_of[r["rid"]]: r.get("role") for r in self.records if r["gi"] == self.cust.index(h)}
+        lost = [cc for cc, rl in roles.items() if rl == "hero_lost"][0]
+        new = [cc for cc, rl in roles.items() if rl == "hero_new"][0]
+        flat = [cc for cc, rl in roles.items() if rl == "hero_flat"][0]
+        ents = sorted(recs["entity"])
+        chk("hero MY: 3 records = 2 SPD + 1 QTS", ents, ["QTS", "SPD", "SPD"], ents == ["QTS", "SPD", "SPD"])
+        chk("hero MY: record 1 has no PO after Mar 2026", months[lost].max(), "<= 2026-03",
+            months[lost].max() <= "2026-03")
+        chk("hero MY: record 2 first PO in Apr 2026", months[new].min(), "2026-04", months[new].min() == "2026-04",
+            sig)
+        fv = pos[pos["record_card_code"] == flat]
+        fy = fv.loc[fv["month"].isin(cur), "sgd"].sum() / max(fv.loc[fv["month"].isin(pri), "sgd"].sum(), 1) - 1
+        chk("hero MY: record 3 flat (|YoY| <= 15%)", round(fy, 3), "[-0.15, 0.15]", abs(fy) <= 0.15)
+        hy = S["heroes"]["MY"]
+        chk("hero MY: merged YoY in [-40%, -30%]", hy["yoy"], "[-0.40, -0.30]", -0.40 <= hy["yoy"] <= -0.30, sig)
+        chk("hero MY: merged top-3 MY account (12M)", hy["rank_12m"], "<= 3", hy["rank_12m"] <= 3, sig)
+        for c, hh in S["heroes"].items():
+            if c != "MY":
+                chk(f"hero {c}: merged YoY in [-40%, -22%]", hh["yoy"], "[-0.40, -0.22]",
+                    -0.40 <= hh["yoy"] <= -0.22, sig)
+        # 2. misattribution
+        for c, v in S["misattribution_share_12m"].items():
+            if c in P["plants"]["misattribution"]["target_share"]:
+                chk(f"misattribution {c}: 3-8% of 12M value", v, "[0.03, 0.08]", 0.03 <= v <= 0.08)
+        first_mis = pos.loc[pos["true_country"] != pos["recorded_country"], "month"].min()
+        chk("misattribution starts Jan 2026", first_mis, "2026-01", first_mis == "2026-01")
+        tot_raw = pos.groupby("recorded_country")["sgd"].sum().sum()
+        chk("raw and de-duplicated group totals identical", round(tot_raw - pos["sgd"].sum(), 2), 0.0,
+            abs(tot_raw - pos["sgd"].sum()) < 0.01)
+        # 3. false cross-sell TH
+        x = next(r for r in self.cust if "false_crosssell_th" in r["plant"])
+        xp = pos[pos["golden_id"] == x["golden_id"]]
+        by_rec = xp.groupby("record_card_code")["true_product"].apply(lambda s: "".join(sorted(set(s))))
+        chk("false cross-sell TH: records look A-only + C-only, merged gap is B",
+            sorted(by_rec.tolist()), ["A", "C"], sorted(by_rec.tolist()) == ["A", "C"])
+        # 5. duplicates
+        chk("duplicate rate ~6% of customer records", S["duplicate_rate"], "[0.05, 0.07]",
+            0.05 <= S["duplicate_rate"] <= 0.07)
+        # 6. stuck demand + pinned PRs
+        chk("stuck demand S$150-450k", S["stuck_demand_sgd"], "[150000, 450000]",
+            150000 <= S["stuck_demand_sgd"] <= 450000)
+        pp = self.prs.set_index("pr_id")
+        ok = all(pp.at[p["pr_id"], "sgd"] == p["sgd"] and pp.at[p["pr_id"], "customer_name"] == p["customer_name"]
+                 and pp.at[p["pr_id"], "status"] == "blocked"
+                 and pp.at[p["pr_id"], "blocked_by_request_id"] == P["pinned"]["pr_item"]["blocked_by"]
+                 and pp.at[p["pr_id"], "item_name"] == P["pinned"]["pr_item"]["item_name"]
+                 for p in P["pinned"]["prs"])
+        chk("pinned PR-5521 / PR-5527 exact (blocked by REQ-1042)", ok, True, ok)
+        demo_items = set(P["pinned"]["reserved_item_names"]) & set(self.items["item_name"])
+        chk("demo new items absent from item master", sorted(demo_items), [], not demo_items)
+        # 7. value mix
+        chk("value mix A ~3x C (12M)", S["A_to_C"], "[2.5, 3.6]", 2.5 <= S["A_to_C"] <= 3.6, sig)
+        # 8. realism
+        sg_d = pos[(pos["true_country"] == "SG") & pos["item_code"].isin(
+            self.items.loc[self.items["item_group"] == "dengue", "item_code"])]
+        s24 = sg_d.loc[sg_d["month"].between("2024-05", "2024-10"), "units"].sum()
+        s25 = sg_d.loc[sg_d["month"].between("2025-05", "2025-10"), "units"].sum()
+        chk("dengue: SG May-Oct 2024 test units well above 2025", round(s25 / s24 - 1, 3), "<= -0.20",
+            s25 / s24 - 1 <= -0.20, sig)
+        sgm = sg_d.groupby(sg_d["month"].str[5:7])["units"].sum()
+        peak = sgm.idxmax()
+        chk("dengue: SG peak month inside May-Oct", peak, "05..10", "05" <= peak <= "10", sig)
+
+        def mon_units(c, m):
+            return pos.loc[(pos["true_country"] == c) & (pos["month"] == m) & pos["true_product"].isin(["A", "B"]),
+                           "units"].sum()
+
+        for c, m, a, b, lab in [("VN", "2026-02", "2026-01", "2026-03", "Tet"),
+                                ("TH", "2026-04", "2026-03", "2026-05", "Songkran"),
+                                ("MM", "2026-04", "2026-03", "2026-05", "Thingyan"),
+                                ("SG", "2026-02", "2026-01", "2026-03", "CNY")]:
+            v, ref = mon_units(c, m), (mon_units(c, a) + mon_units(c, b)) / 2
+            chk(f"holiday dip: {c} {lab} month below neighbours", round(v / ref - 1, 3), "< 0", v < ref, sig)
+        cdf = pos[pos["true_product"] == "C"].copy()
+        cdf["m"] = cdf["month"].str[5:7]
+        for c, fy_end in [("SG", "03"), ("MM", "03"), ("MY", "12"), ("VN", "12"), ("TH", "09")]:
+            byq = cdf[cdf["true_country"] == c].groupby("m")["sgd"].sum()
+            e = int(fy_end)
+            q = [f"{(e - k - 1) % 12 + 1:02d}" for k in range(3)]
+            share = byq.reindex(q).fillna(0).sum() / byq.sum()
+            chk(f"fiscal flush: {c} instruments, FY-end quarter share > 25%", round(share, 3), "> 0.25",
+                share > 0.25, sig)
+        churn = [r for r in self.cust if r.get("contract_lost")]
+        okc = all(pos[(pos["golden_id"] == r["golden_id"]) & (pos["true_product"] == "A")
+                      & (pos["month"] >= r["contract_end"])].empty for r in churn)
+        chk("MY reagent-rental churn at contract expiry (A stops)", [r["golden_id"] for r in churn], "2 hospitals",
+            okc and len(churn) == P["plants"]["my_contracts"]["wave1_lost"], sig)
+        # 9. NUH
+        nuh = P["pinned"]["nuh"]
+        row = cr[cr["card_code"] == nuh["card_code"]]
+        exact = (len(row) == 1 and row.iloc[0]["card_name"] == nuh["card_name"]
+                 and row.iloc[0]["lic_trad_num"] == nuh["lic_trad_num"] and row.iloc[0]["street"] == nuh["street"]
+                 and row.iloc[0]["zip_code"] == nuh["zip_code"] and row.iloc[0]["phone1"] == nuh["phone1"]
+                 and row.iloc[0]["entity"] == nuh["entity"] and not bool(row.iloc[0]["has_transactions"]))
+        chk("NUH C-SG-00017 master record exact, 0 transactions", exact and (pos["record_card_code"] == nuh["card_code"]).sum() == 0,
+            True, exact and (pos["record_card_code"] == nuh["card_code"]).sum() == 0)
+        thieves = cr[(cr["recorded_country"] == "SG") & (cr["card_code"] != nuh["card_code"])
+                     & cr["card_name"].str.contains(r"(?i)\b(?:national|natl|university|univ)\b")]
+        chk("no other SG record can steal the 'Natl Univ Hosp' match", len(thieves), 0, len(thieves) == 0)
+        chk("MDM history ids stay below the app REQ-1001+", len(self.hist), "< 1000", len(self.hist) < 1000)
+        for name in ("forecast: ETS beats rolling-12 on A in >=3/5 and B in >=2/5",
+                     "stress (a) |advantage| <= 2 pts; (b) advantage persists",
+                     "matcher held-out P and R in [0.80, 0.97]"):
+            res.append(dict(name=name, value="deferred", target="checked on models by the backtest/matcher scripts",
+                            ok=None))
+        self.checks = res
+        return res
+
     def plants_json(self) -> dict:
         P, S = self.P, self.stats
         pos, cr = self.pos, self.cr
@@ -1805,16 +2084,20 @@ class Generator:
         out["hero"] = {c: dict(S["heroes"][c], switch=P["plants"]["hero"][c]["switch"],
                                records=recs(S["heroes"][c]["golden_id"])) for c in S["heroes"]}
         out["misattribution"] = {}
-        for c, m in self.mis.items():
-            g = self.cust[m["gi"]]
-            moved = pos[(pos["golden_id"] == g["golden_id"]) & (pos["recorded_country"] != pos["true_country"])
-                        & pos["month"].isin(cur)]["sgd"].sum()
-            out["misattribution"][c] = dict(golden_id=g["golden_id"], name=g["name"],
-                                            sg_record=self.code_of[m["rid"]], true_record=self.code_of[g["canon_rid"]],
-                                            start=P["plants"]["misattribution"]["start"],
-                                            sgd_moved_12m=round(float(moved)),
+        for c, lst in self.mis.items():
+            hosp = []
+            ctot = pos[(pos["true_country"] == c) & pos["month"].isin(cur)]["sgd"].sum()
+            for m in lst:
+                g = self.cust[m["gi"]]
+                moved = pos[(pos["golden_id"] == g["golden_id"]) & (pos["recorded_country"] != pos["true_country"])
+                            & pos["month"].isin(cur)]["sgd"].sum()
+                hosp.append(dict(golden_id=g["golden_id"], name=g["name"], sg_record=self.code_of[m["rid"]],
+                                 true_record=self.code_of[g["canon_rid"]], entities_moved=m["entities"],
+                                 share_of_lines_moved=round(m["q"], 3), sgd_moved_12m=round(float(moved)),
+                                 share_of_country_12m=round(float(moved / ctot), 4), records=recs(g["golden_id"])))
+            out["misattribution"][c] = dict(start=P["plants"]["misattribution"]["start"],
                                             share_of_country_12m=S["misattribution_share_12m"][c],
-                                            routed_share_of_spd_lines=round(m["q"], 3), records=recs(g["golden_id"]))
+                                            named_example=hosp[0], hospitals=hosp)
         mc = []
         it = self.items
         for m in P["plants"]["miscategorisation"]["items"]:
@@ -1869,7 +2152,7 @@ class Generator:
                     "dengue_scale": self.dengue_scale, "generator": "analytics/generate.py",
                     "params": "analytics/params.yaml", "history": [self.months[0], self.months[-1]],
                     "window": [self.win["current"][0], self.win["current"][-1]],
-                    "summary": self.stats}, out_dir / "manifest.json")
+                    "summary": self.stats, "assertions": getattr(self, "checks", [])}, out_dir / "manifest.json")
 
 
 def print_summary(S: dict, scenario: str, seed: int, secs: float):
@@ -1918,8 +2201,17 @@ def main(argv=None):
     g = Generator(P, a.scenario, seed)
     g.run()
     S = g.summarize()
+    checks = g.check_plants()
     g.write(out)
     print_summary(S, a.scenario, seed, time.time() - t0)
+    n_fail = 0
+    print("Planted-pattern assertions (final model §5.6):")
+    for ck in checks:
+        flag = "defer" if ck["ok"] is None else ("PASS " if ck["ok"] else "FAIL ")
+        n_fail += ck["ok"] is False
+        print(f"  [{flag}] {ck['name']}: {ck['value']} (target {ck['target']})")
+    if n_fail:
+        print(f"WARNING: {n_fail} assertion(s) failed")
     print(f"Wrote {out.relative_to(REPO) if out.is_relative_to(REPO) else out}")
     return g
 

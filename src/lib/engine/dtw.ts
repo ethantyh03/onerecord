@@ -315,9 +315,46 @@ function bpAddressRows(ctx: Ctx): Row[] {
   return ctx.isVendor ? [base(0, "Pay to", "bo_BillTo")] : [base(0, "Bill to", "bo_BillTo"), base(1, "Ship to", "bo_ShipTo")];
 }
 
+/** Options for buildDtwFiles / toServiceLayerPayload. */
+export interface DtwOptions {
+  /** Extension only: entities the existing BP record already carries in U_Entities. */
+  existingEntities?: string[];
+}
+
+/** DTW import mode for a request type: an extension updates the existing business partner (assumption A28). */
+export function dtwImportMode(domain: Pick<DomainConfig, "id">): "add" | "update" {
+  return domain.id === "extend" ? "update" : "add";
+}
+
+function creditChange(ctx: Ctx): boolean {
+  return /^y/i.test(text(ctx.data.changesCreditTerms));
+}
+
+/**
+ * Extension = UPDATE of the shared BP record, keyed by CardCode: entity appended to U_Entities, plus the
+ * Finance-approved payment terms / credit limit when changesCreditTerms = Yes.
+ */
+function extendHeaderRow(ctx: Ctx, opts?: DtwOptions): Row {
+  const entities = [...(opts?.existingEntities ?? [])].map((e) => e.trim()).filter(Boolean);
+  const add = text(pick(ctx, "extendToEntity"));
+  if (add && !entities.includes(add)) entities.push(add);
+  const row: Row = [
+    ["CardCode", ctx.code],
+    ["RecordKey", ctx.code],
+    ["U_Entities", entities.join(", ")],
+  ];
+  if (creditChange(ctx)) {
+    row.push(["PayTermsGrpCode", paymentTermsCode(pick(ctx, "paymentTerms"))]);
+    row.push(["CreditLimit", num(pick(ctx, "creditLimit"))]);
+  }
+  row.push(["U_OneRecordRef", ctx.req.id]);
+  return row;
+}
+
 function extendAddressRows(ctx: Ctx): Row[] {
-  const raw = text(pick(ctx, "newShipToAddress", "address", "street"));
-  const a = raw ? parseAddress(raw, ctx.req.country) : { street: "", city: "", zipCode: "", country: ctx.req.country };
+  const raw = text(pick(ctx, "newShipToAddress"));
+  if (!raw) return [];
+  const a = parseAddress(raw, ctx.req.country);
   const entity = text(pick(ctx, "extendToEntity"));
   return [
     [
@@ -483,9 +520,11 @@ function genericRow(ctx: Ctx): Row {
 /**
  * DTW import files for an approved request.
  * Business partner: oBusinessPartners + BPAddresses (+ BPBankAccounts for vendors, or customers with bank details).
- * Item: oItems (+ Items_Prices when prices are given). Cost centre: oProfitCenter. Extension: BPAddresses only.
+ * Item: oItems (+ Items_Prices when prices are given). Cost centre: oProfitCenter.
+ * Extension (A28): an oBusinessPartners UPDATE row keyed by CardCode (U_Entities, plus PayTermsGrpCode / CreditLimit when
+ * credit terms change) and a BPAddresses row when a new ship-to is given. Import it with dtwImportMode() = "update".
  */
-export function buildDtwFiles(req: MdmRequest, domain: DomainConfig, sapCode: string): DtwFile[] {
+export function buildDtwFiles(req: MdmRequest, domain: DomainConfig, sapCode: string, opts?: DtwOptions): DtwFile[] {
   const ctx = ctxOf(req, domain, sapCode);
   switch (ctx.kind) {
     case "bp": {
@@ -500,8 +539,10 @@ export function buildDtwFiles(req: MdmRequest, domain: DomainConfig, sapCode: st
       return files;
     }
     case "extend": {
+      const files = [toFile("oBusinessPartners.csv", "oBusinessPartners", [extendHeaderRow(ctx, opts)])];
       const rows = extendAddressRows(ctx);
-      return [toFile("BPAddresses.csv", "BPAddresses", rows, extraCells(ctx, "BPAddresses", false, rows[0]))];
+      if (rows.length) files.push(toFile("BPAddresses.csv", "BPAddresses", rows));
+      return files;
     }
     case "item": {
       const row = itemRow(ctx);
@@ -546,6 +587,7 @@ export function toServiceLayerPayload(
   req: MdmRequest,
   domain: DomainConfig,
   sapCode: string,
+  opts?: DtwOptions,
 ): { method: "POST" | "PATCH"; path: string; body: Record<string, unknown> } {
   const ctx = ctxOf(req, domain, sapCode);
   switch (ctx.kind) {
@@ -561,11 +603,10 @@ export function toServiceLayerPayload(
     }
     case "extend": {
       const code = sapCode.replace(/'/g, "''");
-      return {
-        method: "PATCH",
-        path: `/b1s/v2/BusinessPartners('${code}')`,
-        body: { BPAddresses: extendAddressRows(ctx).map(toBody) },
-      };
+      const body = toBody(extendHeaderRow(ctx, opts).filter(([k]) => k !== "CardCode"));
+      const addresses = extendAddressRows(ctx).map(toBody);
+      if (addresses.length) body.BPAddresses = addresses;
+      return { method: "PATCH", path: `/b1s/v2/BusinessPartners('${code}')`, body };
     }
     case "item": {
       const row = itemRow(ctx);

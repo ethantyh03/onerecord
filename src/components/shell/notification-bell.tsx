@@ -52,7 +52,7 @@ export function NotificationBell() {
     const store = useSandbox.getState();
     if (!n.read) store.markNotificationRead(n.id);
     setOpen(false);
-    if (n.requestId) router.push(`/requests/${encodeURIComponent(n.requestId)}`);
+    if (n.requestId) router.push(`/requests/view?id=${encodeURIComponent(n.requestId)}`);
   }
 
   function markAllRead() {

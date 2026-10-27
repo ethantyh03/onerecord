@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useId, useMemo, useState } from "react";
+import { useId, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import {
   ArrowUpRight,
@@ -9,30 +9,35 @@ import {
   ClipboardCheck,
   Clock3,
   Info,
+  Lock,
   MessageCircleQuestion,
   PauseCircle,
+  PhoneCall,
   UserRoundCog,
   XCircle,
 } from "lucide-react";
-import { MaskedValue } from "@/components/common";
+import { formatSgtDateTime } from "@/components/common/format";
+import { CALLBACK_LABEL, needsCallbackCheck } from "@/components/approvals/use-approval-actions";
 import { useSandbox } from "@/lib/store";
 import type { ApprovalStep, MdmRequest } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { MS_FONT, MsAvatar, TEAMS, findPerson, formatAgo, formatSgd, usePeople, useSimNow } from "./shared";
 import { buildKeyFacts, countryName, formatFactValue, teamsSla, type TeamsSlaTone } from "./teams-helpers";
 
+/** What a sensitive field shows on any card or message: never the value, for anyone (final model decision 4). */
+export const CARD_MASK_TEXT = "•••• · view in OneRecord (Finance only)";
+
 export interface TeamsApprovalCardProps {
   request: MdmRequest;
   step: ApprovalStep;
-  onApprove: (comment?: string) => void;
-  onReject: (comment: string) => void;
-  onAsk: (text: string) => void;
+  /** Return false to keep the comment (e.g. the action was blocked). */
+  onApprove: (comment?: string) => boolean | void;
+  onReject: (comment: string) => boolean | void;
+  onAsk: (text: string) => boolean | void;
   /** Tighter layout for feeds and the phone frame: 3 facts, smaller paddings. */
   compact?: boolean;
   className?: string;
 }
-
-type Mode = "approve" | "reject" | "ask" | null;
 
 const SLA_TONE: Record<TeamsSlaTone, string> = {
   ok: "bg-[#e8ebfa] text-[#444791]",
@@ -42,9 +47,14 @@ const SLA_TONE: Record<TeamsSlaTone, string> = {
   done: "bg-[#f0f0f0] text-[#424242]",
 };
 
+const INPUT_CLS =
+  "w-full resize-none rounded-[4px] border border-[#d1d1d1] border-b-[#616161] bg-white px-2.5 py-1.5 text-[13px] text-[#242424] outline-none placeholder:text-[#8a8886] focus:border-b-2 focus:border-b-[#5b5fc7]";
+
 /**
  * Microsoft Teams "Approvals" Adaptive Card look-alike. The production card is
- * integrations/teams/approval-card.json; this renders the same content in-app.
+ * integrations/teams/approval-card.json; this renders the same content in-app:
+ * fact set, an always-visible comment box (required to reject), Approve / Reject,
+ * and "Ask a question" as a show-card. Sensitive values never appear on the card.
  */
 export function TeamsApprovalCard({
   request,
@@ -59,15 +69,22 @@ export function TeamsApprovalCard({
   const sla = useSandbox((s) => s.config.sla);
   const domain = useSandbox((s) => s.config.domains.find((d) => d.id === request.domainId));
   const prs = useSandbox((s) => s.prs);
+  const viewerId = useSandbox((s) => s.personaId);
   const now = useSimNow();
-  const [mode, setMode] = useState<Mode>(null);
-  const [text, setText] = useState("");
-  const textId = useId();
+  const [comment, setComment] = useState("");
+  const [commentError, setCommentError] = useState(false);
+  const [asking, setAsking] = useState(false);
+  const [question, setQuestion] = useState("");
+  const [calledBack, setCalledBack] = useState(false);
+  const commentId = useId();
+  const questionId = useId();
+  const callbackId = useId();
+  const commentRef = useRef<HTMLTextAreaElement>(null);
 
   const requestor = findPerson(people, request.requestorId);
   const assignee = findPerson(people, step.assigneeId);
   const original = findPerson(people, step.originalAssigneeId);
-  const viewerId = useSandbox((s) => s.personaId);
+  const viewer = findPerson(people, viewerId);
   const status = teamsSla(step, sla, now);
   const facts = useMemo(
     () => buildKeyFacts(request, domain, { limit: compact ? 3 : 6, role: step.role }),
@@ -75,32 +92,53 @@ export function TeamsApprovalCard({
   );
   const blocked = useMemo(() => {
     const ids = new Set(request.blockedPrIds ?? []);
-    const list = prs.filter((p) => ids.has(p.id) && p.status === "blocked");
+    const list = prs.filter((p) => (ids.has(p.id) || p.blockedByRequestId === request.id) && p.status === "blocked");
     return { count: list.length, sgd: list.reduce((sum, p) => sum + p.sgd, 0) };
-  }, [prs, request.blockedPrIds]);
+  }, [prs, request.blockedPrIds, request.id]);
 
   const actionable = step.status === "pending";
+  const callbackRequired = actionable && needsCallbackCheck(request, step);
   const requestorName = requestor?.name ?? "the requestor";
-  const trimmed = text.trim();
-
-  function open(next: Mode) {
-    setMode((cur) => (cur === next ? null : next));
-    setText("");
-  }
-
-  function confirm() {
-    if (mode === "approve") onApprove(trimmed || undefined);
-    else if (mode === "reject" && trimmed) onReject(trimmed);
-    else if (mode === "ask" && trimmed) onAsk(trimmed);
-    else return;
-    setMode(null);
-    setText("");
-  }
-
   const pad = compact ? "px-3" : "px-4";
+
+  function approve() {
+    if (callbackRequired && !calledBack) return;
+    const note = comment.trim();
+    const verified = callbackRequired
+      ? `${CALLBACK_LABEL} · verified by ${viewer?.name ?? "the approver"}, ${formatSgtDateTime(now)} SGT.`
+      : "";
+    const full = [verified, note].filter(Boolean).join(" ");
+    const ok = onApprove(full || undefined);
+    if (ok !== false) {
+      setComment("");
+      setCalledBack(false);
+    }
+  }
+
+  function reject() {
+    const note = comment.trim();
+    if (!note) {
+      setCommentError(true);
+      commentRef.current?.focus();
+      return;
+    }
+    const ok = onReject(note);
+    if (ok !== false) setComment("");
+  }
+
+  function sendQuestion() {
+    const q = question.trim();
+    if (!q) return;
+    const ok = onAsk(q);
+    if (ok !== false) {
+      setQuestion("");
+      setAsking(false);
+    }
+  }
 
   return (
     <article
+      data-testid="teams-card"
       aria-label={`Approval request: ${request.title}`}
       className={cn(
         "overflow-hidden rounded-[6px] border border-[#e0e0e0] bg-white text-[#242424]",
@@ -130,7 +168,7 @@ export function TeamsApprovalCard({
       <div className={cn(pad, compact ? "pb-3" : "pb-4")}>
         <div className="flex items-start gap-3">
           <div className="min-w-0 flex-1">
-            <h3 className={cn("leading-snug font-semibold", compact ? "text-[14px]" : "text-[16px]")}>{request.title}</h3>
+            <h3 className={cn("leading-snug font-semibold", compact ? "text-[14px]" : "text-[17px]")}>{request.title}</h3>
             <p className="mt-1 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[12px] text-[#616161]">
               <MsAvatar person={requestor} size={18} />
               <span>
@@ -146,6 +184,7 @@ export function TeamsApprovalCard({
           </div>
           {status.tone !== "done" ? (
             <span
+              data-testid="teams-sla"
               className={cn(
                 "inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-semibold whitespace-nowrap",
                 SLA_TONE[status.tone],
@@ -176,7 +215,7 @@ export function TeamsApprovalCard({
           </p>
         ) : null}
 
-        {/* Key facts (Adaptive Card FactSet) */}
+        {/* Key facts (Adaptive Card FactSet). Sensitive values are never on the card. */}
         {facts.length > 0 || blocked.count > 0 ? (
           <dl
             className={cn(
@@ -189,7 +228,10 @@ export function TeamsApprovalCard({
                 <dt className="font-semibold text-[#424242]">{f.label}</dt>
                 <dd className="min-w-0 break-words text-[#242424]">
                   {f.sensitive ? (
-                    <MaskedValue value={f.value} requestId={request.id} fieldKey={f.key} />
+                    <span data-testid="teams-masked" className="inline-flex items-center gap-1 text-[#616161]">
+                      <Lock className="size-3 shrink-0" aria-hidden="true" />
+                      <span>{CARD_MASK_TEXT}</span>
+                    </span>
                   ) : (
                     formatFactValue(f.value)
                   )}
@@ -240,69 +282,108 @@ export function TeamsApprovalCard({
         {/* Actions */}
         {actionable ? (
           <>
-            <div className="mt-3.5 flex flex-wrap gap-2">
-              <TeamsButton primary pressed={mode === "approve"} onClick={() => open("approve")}>
+            {callbackRequired ? (
+              <div className="mt-3 rounded-[4px] border border-[#f2c661] bg-[#fffaeb] px-2.5 py-2 text-[12px] text-[#5c4300]">
+                <p className="flex items-center gap-1.5 font-semibold">
+                  <PhoneCall className="size-3.5 shrink-0" aria-hidden="true" />
+                  Bank details on a new supplier: call back before you approve
+                </p>
+                <label htmlFor={callbackId} className="mt-1.5 flex cursor-pointer items-start gap-2">
+                  <input
+                    id={callbackId}
+                    type="checkbox"
+                    data-testid="teams-callback"
+                    checked={calledBack}
+                    onChange={(e) => setCalledBack(e.target.checked)}
+                    className="mt-0.5 size-4 shrink-0 accent-[#5b5fc7]"
+                  />
+                  <span>{CALLBACK_LABEL}. Your name and the time go into the audit trail.</span>
+                </label>
+              </div>
+            ) : null}
+
+            <div className="mt-3">
+              <label htmlFor={commentId} className="mb-1 block text-[12px] font-semibold text-[#424242]">
+                Comment <span className="font-normal text-[#616161]">(required to reject)</span>
+              </label>
+              <textarea
+                id={commentId}
+                ref={commentRef}
+                data-testid="teams-comment"
+                rows={compact ? 1 : 2}
+                value={comment}
+                maxLength={500}
+                aria-invalid={commentError || undefined}
+                onChange={(e) => {
+                  setComment(e.target.value);
+                  if (commentError) setCommentError(false);
+                }}
+                placeholder="Add a note for the requestor and the audit trail"
+                className={cn(INPUT_CLS, commentError && "border-[#c4314b] border-b-[#c4314b]")}
+              />
+              {commentError ? (
+                <p role="alert" className="mt-1 text-[11px] font-semibold text-[#b10e1c]">
+                  Add a reason so {requestorName} knows what to fix.
+                </p>
+              ) : null}
+            </div>
+
+            <div className="mt-3 flex flex-wrap gap-2">
+              <TeamsButton
+                primary
+                data-testid="teams-approve"
+                onClick={approve}
+                disabled={callbackRequired && !calledBack}
+                title={callbackRequired && !calledBack ? "Tick the call-back check first" : undefined}
+              >
                 Approve
               </TeamsButton>
-              <TeamsButton pressed={mode === "reject"} onClick={() => open("reject")}>
+              <TeamsButton data-testid="teams-reject" onClick={reject}>
                 Reject
               </TeamsButton>
-              <TeamsButton pressed={mode === "ask"} onClick={() => open("ask")}>
+              <TeamsButton data-testid="teams-ask" pressed={asking} onClick={() => setAsking((v) => !v)} aria-expanded={asking}>
                 Ask a question
               </TeamsButton>
             </div>
+
             <AnimatePresence initial={false}>
-              {mode ? (
+              {asking ? (
                 <motion.div
-                  key={mode}
+                  key="ask"
                   initial={{ height: 0, opacity: 0 }}
                   animate={{ height: "auto", opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
                   transition={{ duration: 0.18, ease: "easeOut" }}
                   className="overflow-hidden"
                 >
-                  <div className="pt-3">
-                    <label htmlFor={textId} className="mb-1 block text-[12px] font-semibold text-[#424242]">
-                      {mode === "approve"
-                        ? "Comment (optional)"
-                        : mode === "reject"
-                          ? "Reason for rejecting (required)"
-                          : `Question for ${requestorName}`}
+                  <div className="mt-3 rounded-[4px] border border-[#e0e0e0] bg-[#fafafa] p-2.5">
+                    <p className="mb-2 text-[11px] text-[#616161]">
+                      Your question goes to {requestorName}. The SLA clock pauses until they answer, and the answer comes back
+                      to you.
+                    </p>
+                    <label htmlFor={questionId} className="mb-1 block text-[12px] font-semibold text-[#424242]">
+                      Question
                     </label>
                     <textarea
-                      id={textId}
+                      id={questionId}
+                      data-testid="teams-ask-text"
                       autoFocus
-                      rows={compact ? 2 : 3}
-                      value={text}
+                      rows={2}
+                      value={question}
                       maxLength={500}
-                      onChange={(e) => setText(e.target.value)}
+                      onChange={(e) => setQuestion(e.target.value)}
                       onKeyDown={(e) => {
-                        if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) confirm();
-                        if (e.key === "Escape") open(null);
+                        if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) sendQuestion();
+                        if (e.key === "Escape") setAsking(false);
                       }}
-                      placeholder={
-                        mode === "approve"
-                          ? "Add a note for the audit trail"
-                          : mode === "reject"
-                            ? "Tell the requestor what to fix"
-                            : "e.g. Please attach the HSA licence certificate"
-                      }
-                      className="w-full resize-none rounded-[4px] border border-[#d1d1d1] border-b-[#616161] bg-white px-2.5 py-1.5 text-[13px] text-[#242424] outline-none placeholder:text-[#8a8886] focus:border-b-2 focus:border-b-[#5b5fc7]"
+                      placeholder="e.g. Please attach the HSA licence certificate"
+                      className={INPUT_CLS}
                     />
-                    {mode === "ask" ? (
-                      <p className="mt-1 text-[11px] text-[#616161]">
-                        The SLA clock pauses until {requestorName} answers, and the answer comes back to you.
-                      </p>
-                    ) : null}
                     <div className="mt-2 flex gap-2">
-                      <TeamsButton
-                        primary
-                        onClick={confirm}
-                        disabled={mode !== "approve" && trimmed.length === 0}
-                      >
-                        {mode === "approve" ? "Confirm approval" : mode === "reject" ? "Confirm rejection" : "Send question"}
+                      <TeamsButton primary data-testid="teams-ask-send" onClick={sendQuestion} disabled={question.trim().length === 0}>
+                        Send question
                       </TeamsButton>
-                      <TeamsButton onClick={() => open(null)}>Cancel</TeamsButton>
+                      <TeamsButton onClick={() => setAsking(false)}>Cancel</TeamsButton>
                     </div>
                   </div>
                 </motion.div>
@@ -313,16 +394,19 @@ export function TeamsApprovalCard({
           <OutcomeBanner step={step} assigneeName={assignee?.name ?? "Approver"} requestorName={requestorName} now={now} />
         )}
 
-        <div className="mt-3 flex items-center border-t border-[#ebebeb] pt-2.5">
+        <div className="mt-3 flex items-center gap-2 border-t border-[#ebebeb] pt-2.5">
           <Link
-            href={`/requests/${encodeURIComponent(request.id)}`}
+            href={`/requests/view?id=${encodeURIComponent(request.id)}`}
+            data-testid="teams-open-details"
             className="inline-flex items-center gap-1 text-[12px] font-semibold hover:underline"
             style={{ color: TEAMS.purple }}
           >
-            View details
+            Open details
             <ArrowUpRight className="size-3.5" aria-hidden="true" />
           </Link>
-          <span className="ml-auto text-[11px] text-[#8a8886]">Stage {step.stageIndex + 1} · {step.stageLabel}</span>
+          <span className="ml-auto truncate text-[11px] text-[#8a8886]">
+            Stage {step.stageIndex + 1} · {step.stageLabel}
+          </span>
         </div>
       </div>
     </article>

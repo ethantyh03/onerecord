@@ -35,6 +35,7 @@ import {
   applyExtension,
   approvalNotifications,
   buildSeed,
+  entitiesOf,
   knownSapCodes,
   maskedSnapshot,
   nextRequestNumber,
@@ -51,13 +52,54 @@ import { slaTick } from "@/lib/engine/sla";
 import { appendAudit } from "@/lib/engine/audit";
 import { assignSapCode } from "@/lib/engine/codes";
 import { buildDtwFiles } from "@/lib/engine/dtw";
+import { normalizeName, tokenSetRatio } from "@/lib/engine/dedupe";
+import { segregationCheck } from "@/lib/engine/routing";
 
 // =============================================================================================
 // Types
 // =============================================================================================
 
 export const STORAGE_KEY = "onerecord-sandbox-v1";
-export const STORAGE_VERSION = 1;
+/** Bump whenever the persisted shape or the seed changes: every visitor is then reseeded. */
+export const SANDBOX_VERSION = 2;
+
+function hashToInt(s: string): number {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (Math.imul(31, h) + s.charCodeAt(i)) | 0;
+  return Math.abs(h) % 1_000_000;
+}
+
+const BUILD_ID = (typeof process !== "undefined" && process.env?.NEXT_PUBLIC_BUILD_ID) || "";
+/** zustand persist version: SANDBOX_VERSION, combined with NEXT_PUBLIC_BUILD_ID when set (each deploy reseeds). */
+export const STORAGE_VERSION = BUILD_ID ? SANDBOX_VERSION * 1_000_000 + hashToInt(BUILD_ID) : SANDBOX_VERSION;
+
+/** The simulated clock starts here at seed: Wed 28 Oct 2026 09:00 SGT. */
+export const SIM_BASE_ISO = "2026-10-28T01:00:00.000Z";
+export const SIM_BASE_MS = Date.parse(SIM_BASE_ISO);
+
+/** First id for requests raised in the demo; seeded ids stay below it. */
+export const FIRST_ADHOC_REQUEST_NUMBER = 1100;
+
+/** Set by markCreatedInSap when it releases blocked PRs (Regional Pulse animates before -> after). */
+export interface LastUnblock {
+  beforeSgd: number;
+  afterSgd: number;
+  /** simulated ISO time of the release */
+  at: string;
+  requestId: string;
+}
+
+/** Simulated now in ms: simBaseMs + real time elapsed since seeding + fast-forward offset. */
+export function simNowMs(
+  s: { simBaseMs?: number; seededAtRealMs?: number; clockOffsetMs?: number },
+  realNowMs: number = Date.now(),
+): number {
+  const offset = typeof s.clockOffsetMs === "number" && Number.isFinite(s.clockOffsetMs) ? s.clockOffsetMs : 0;
+  if (typeof s.simBaseMs !== "number" || typeof s.seededAtRealMs !== "number" || !Number.isFinite(s.simBaseMs) || !Number.isFinite(s.seededAtRealMs)) {
+    return realNowMs + offset;
+  }
+  return s.simBaseMs + (realNowMs - s.seededAtRealMs) + offset;
+}
 
 /** Persisted sandbox data. */
 export interface SandboxData extends SeedData {
@@ -69,11 +111,26 @@ export interface SandboxData extends SeedData {
   idCounter: number;
   /** SAP codes reserved by a generated DTW file, keyed by request id, until the record is created. */
   reservedCodes: Record<string, string>;
+  /** Simulated clock origin (ms): 09:00 SGT Wed 28 Oct 2026 at seed. */
+  simBaseMs: number;
+  /** Real Date.now() when the sandbox was seeded. */
+  seededAtRealMs: number;
+  /** Last release of stuck demand by markCreatedInSap (null until one happens). */
+  lastUnblock: LastUnblock | null;
 }
 
 export interface ActionResult {
   ok: boolean;
+  /** Why nothing happened. */
+  reason?: string;
+  /** Same text as reason (kept for older callers). */
   error?: string;
+}
+
+export interface CreateInSapResult {
+  ok: boolean;
+  reason?: string;
+  record?: SapRecord;
 }
 
 export interface SandboxActions {
@@ -87,7 +144,10 @@ export interface SandboxActions {
   setDuplicateDecision(id: string, d: DuplicateDecision | undefined): void;
   /** Validate → route → activate → notify. */
   submitRequest(id: string): { ok: boolean; errors: Record<string, string> };
-  /** No-op (ok: false) when the step is not pending/question, e.g. a double click or a stale tab. */
+  /**
+   * No-op (ok: false + reason) when the step is not pending/question (double click, stale tab) or when segregation of
+   * duties blocks the current persona (requestor / requestor's delegate; finance approver on the MDM step).
+   */
   approveStep(requestId: string, stepId: string, comment?: string): ActionResult;
   rejectStep(requestId: string, stepId: string, comment: string): ActionResult;
   /** Pauses the step's SLA clock and sends the question to the requestor. */
@@ -101,8 +161,12 @@ export interface SandboxActions {
   logSensitiveReveal(requestId: string, fieldKey: string): void;
   /** DTW files for a request at MDM review (or already created). First call reserves the SAP code and is audited. */
   generateDtw(requestId: string): DtwFile[];
-  /** Creates the SAP B1 record, releases blocked PRs and notifies the requestor. Throws if not at MDM review. */
-  markCreatedInSap(requestId: string): SapRecord;
+  /**
+   * Creates the SAP B1 record (or, for "extend", updates the existing BP and keeps its code), releases blocked PRs,
+   * records lastUnblock and notifies the requestor. Never throws: { ok: false, reason } when not at MDM review or
+   * when the current persona approved the request's finance step. Already created -> { ok: true, record }.
+   */
+  markCreatedInSap(requestId: string): CreateInSapResult;
   markNotificationRead(id: string): void;
   /** Marks the current persona's notifications read (optionally one channel). */
   markAllNotificationsRead(channel?: AppNotification["channel"]): void;
@@ -110,7 +174,7 @@ export interface SandboxActions {
   cancelRequest(id: string, reason?: string): ActionResult;
   /** Saves a new config version; in-flight requests keep the route they started with. */
   updateConfig(next: AppConfig, summary: string): void;
-  /** Fresh seed, real time, Amy as persona. */
+  /** Fresh seed, sim clock back to 09:00 SGT Wed 28 Oct 2026, Amy as persona. */
   resetSandbox(): void;
 }
 
@@ -129,26 +193,50 @@ const COUNTRY_SET: ReadonlySet<string> = new Set(COUNTRIES.map((c) => c.code));
 
 const isBlank = (v: FieldValue | undefined) => v === null || v === undefined || String(v).trim() === "";
 
-function simulatedNow(offsetMs: number): string {
-  return new Date(Date.now() + (Number.isFinite(offsetMs) ? offsetMs : 0)).toISOString();
-}
-
-/** Fresh sandbox data for a visitor, relative to real time. */
-export function freshSandboxData(nowIso: string = new Date().toISOString()): SandboxData {
+/**
+ * Fresh sandbox data for a visitor. The seed is built relative to the simulated base time
+ * (default 09:00 SGT Wed 28 Oct 2026) and the clock then runs at real speed from realNowMs.
+ */
+export function freshSandboxData(simBaseIso: string = SIM_BASE_ISO, realNowMs: number = Date.now()): SandboxData {
   const config = cloneDefaultConfig();
-  // Go-live is ~13 weeks before today so the configuration history lines up with the seeded requests.
-  const goLive = new Date(Date.parse(nowIso) - 92 * DAY_MS).toISOString().slice(0, 10) + "T01:00:00.000Z";
+  // Go-live is ~13 weeks before the sim start so the configuration history lines up with the seeded requests.
+  const goLive = new Date(Date.parse(simBaseIso) - 92 * DAY_MS).toISOString().slice(0, 10) + "T01:00:00.000Z";
   config.history = config.history.map((h, i) => (i === 0 ? { ...h, at: goLive } : h));
-  const seed = buildSeed(nowIso, config);
+  const seed = buildSeed(simBaseIso, config);
   return {
     personaId: "amy",
     clockOffsetMs: 0,
     config,
     ...seed,
-    idCounter: nextRequestNumber(seed.requests),
+    idCounter: Math.max(FIRST_ADHOC_REQUEST_NUMBER, nextRequestNumber(seed.requests)),
     reservedCodes: {},
+    simBaseMs: Date.parse(simBaseIso),
+    seededAtRealMs: realNowMs,
+    lastUnblock: null,
   };
 }
+
+/** A fresh seeded snapshot (data only, no actions), e.g. as the base for a demo scene. */
+export function getSeedSnapshot(): SandboxData {
+  return freshSandboxData();
+}
+
+/** Same record name: normalised equality, or token-set ratio >= 0.9 when both names have >= 3 words. */
+export function namesMatch(a: string, b: string): boolean {
+  const na = normalizeName(a ?? "");
+  const nb = normalizeName(b ?? "");
+  if (!na || !nb) return false;
+  if (na === nb) return true;
+  const words = (x: string) => x.split(/\s+/).filter(Boolean).length;
+  if (Math.min(words(na), words(nb)) < 3) return false;
+  return tokenSetRatio(na, nb) >= 0.9;
+}
+
+function blockedSgd(prs: PurchaseRequest[]): number {
+  return prs.reduce((a, p) => (p.status === "blocked" ? a + p.sgd : a), 0);
+}
+
+const sgdText = (n: number) => `S$${Math.round(n).toLocaleString("en-SG")}`;
 
 function withAudit(chain: AuditEvent[], drafts: AuditDraft[]): AuditEvent[] {
   let next = chain;
@@ -206,6 +294,21 @@ function deriveCountry(data: Record<string, FieldValue>, fallback: CountryCode):
   return fallback;
 }
 
+function fail(reason: string): ActionResult {
+  return { ok: false, reason, error: reason };
+}
+
+/** Extra context buildDtwFiles needs: for an extension, the entities the existing BP record already has. */
+export function dtwOptionsFor(
+  s: Pick<SandboxData, "sapRecords">,
+  req: MdmRequest,
+  domain: DomainConfig,
+  code: string,
+): { existingEntities?: string[] } | undefined {
+  if (domain.id !== "extend") return undefined;
+  return { existingEntities: entitiesOf(s.sapRecords.find((r) => r.code === code)) };
+}
+
 /** Replace one request in the list. */
 function replaceRequest(list: MdmRequest[], next: MdmRequest): MdmRequest[] {
   return list.map((r) => (r.id === next.id ? next : r));
@@ -226,6 +329,9 @@ const PERSISTED_KEYS = [
   "sapRecords",
   "idCounter",
   "reservedCodes",
+  "simBaseMs",
+  "seededAtRealMs",
+  "lastUnblock",
 ] as const satisfies readonly (keyof SandboxData)[];
 
 function partialize(s: SandboxState): SandboxData {
@@ -243,6 +349,8 @@ export function isValidSandboxData(v: unknown): v is SandboxData {
   if (typeof v.personaId !== "string") return false;
   if (typeof v.clockOffsetMs !== "number" || !Number.isFinite(v.clockOffsetMs)) return false;
   if (typeof v.idCounter !== "number" || !Number.isFinite(v.idCounter)) return false;
+  if (typeof v.simBaseMs !== "number" || !Number.isFinite(v.simBaseMs)) return false;
+  if (typeof v.seededAtRealMs !== "number" || !Number.isFinite(v.seededAtRealMs)) return false;
   const c = v.config;
   if (!isObj(c) || typeof c.version !== "number" || !isObj(c.sla)) return false;
   for (const k of ["domains", "businessUnits", "people", "history"]) if (!Array.isArray(c[k])) return false;
@@ -346,14 +454,17 @@ const INITIAL_DATA: SandboxData = {
   audit: [],
   notifications: [],
   sapRecords: [],
-  idCounter: 1001,
+  idCounter: FIRST_ADHOC_REQUEST_NUMBER,
   reservedCodes: {},
+  simBaseMs: SIM_BASE_MS,
+  seededAtRealMs: 0,
+  lastUnblock: null,
 };
 
 export const useSandbox = create<SandboxState>()(
   persist(
     (set, get) => {
-      const now = () => simulatedNow(get().clockOffsetMs);
+      const now = () => new Date(simNowMs(get())).toISOString();
       const actor = () => get().personaId;
       const findReq = (id: string) => get().requests.find((r) => r.id === id);
       const domainOf = (id: string) => get().config.domains.find((d) => d.id === id);
@@ -479,8 +590,35 @@ export const useSandbox = create<SandboxState>()(
 
           const at = now();
           const bu = s.config.businessUnits.find((b) => b.id === req.entity);
-          const routed = activateNext(buildRoute({ domain, bu, data: req.data, people: s.config.people }), at);
+          // Segregation of duties: a step that would land on the requestor (or their delegate) goes to their manager, else MDM.
+          const requestor = s.config.people.find((p) => p.id === req.requestorId);
+          const conflicted = new Set([req.requestorId, ...(requestor?.delegateId ? [requestor.delegateId] : [])]);
+          const sodFallback =
+            [requestor?.managerId, ...s.config.people.filter((p) => p.roles.includes("mdm")).map((p) => p.id)].find(
+              (pid) => !!pid && !conflicted.has(pid) && s.config.people.some((p) => p.id === pid),
+            ) ?? "";
+          const sodMoves: { label: string; from: string; to: string }[] = [];
+          const built = buildRoute({ domain, bu, data: req.data, people: s.config.people }).map((st) => {
+            if (!conflicted.has(st.assigneeId) || !sodFallback) return st;
+            sodMoves.push({ label: st.label, from: st.assigneeId, to: sodFallback });
+            return { ...st, assigneeId: sodFallback, originalAssigneeId: st.originalAssigneeId ?? st.assigneeId };
+          });
+          const routed = activateNext(built, at);
           const expectedBy = expectedCompletion(routed, at, s.config.sla);
+          // Auto-link: blocked purchase requests nobody has claimed yet, waiting on this item / customer name.
+          const linkKey =
+            domain.sapObject === "oItems"
+              ? { prField: "itemName" as const, value: String(req.data.itemName ?? "") }
+              : domain.sapObject === "oBusinessPartners" && domain.codePrefix !== "V" && domain.id !== "extend"
+                ? { prField: "customerName" as const, value: String(req.data.customerName ?? "") }
+                : null;
+          const linked = linkKey
+            ? s.prs.filter((p) => p.status === "blocked" && !p.blockedByRequestId && namesMatch(p[linkKey.prField], linkKey.value))
+            : [];
+          const linkedIds = new Set(linked.map((p) => p.id));
+          const linkedSgd = linked.reduce((a, p) => a + p.sgd, 0);
+          const prs = linked.length ? s.prs.map((p) => (linkedIds.has(p.id) ? { ...p, blockedByRequestId: id } : p)) : s.prs;
+
           const next: MdmRequest = {
             ...req,
             title: requestTitle(domain, req.data),
@@ -489,6 +627,7 @@ export const useSandbox = create<SandboxState>()(
             steps: routed,
             expectedBy,
             configVersion: s.config.version,
+            blockedPrIds: [...new Set([...req.blockedPrIds, ...linked.map((p) => p.id)])],
           };
 
           const drafts: AuditDraft[] = [];
@@ -514,7 +653,26 @@ export const useSandbox = create<SandboxState>()(
             detail: `Submitted · ${routed.length} approval steps${approvers.length ? ` (${approvers.join(", ")} + MDM)` : ""} · expected by ${expectedBy.slice(0, 10)}`,
             after: maskedSnapshot(domain, req.data),
           });
+          for (const m of sodMoves) {
+            drafts.push({
+              requestId: id,
+              at,
+              actorId: SYSTEM_ACTOR_ID,
+              action: "sod_reassigned",
+              detail: `${m.label}: ${personName(s.config, m.from)} can't approve ${personName(s.config, req.requestorId)}'s own request (segregation of duties) → routed to ${personName(s.config, m.to)}`,
+            });
+          }
+          if (linked.length) {
+            drafts.push({
+              requestId: id,
+              at,
+              actorId: SYSTEM_ACTOR_ID,
+              action: "linked_waiting_orders",
+              detail: `Linked ${linked.length} waiting order${linked.length === 1 ? "" : "s"} (${sgdText(linkedSgd)}): ${linked.map((p) => `${p.id} ${p.customerName}`).join(", ")} · released automatically when this is created in SAP B1`,
+            });
+          }
           for (const st of routed) {
+            if (sodMoves.some((m) => m.label === st.label && m.to === st.assigneeId)) continue;
             if (st.originalAssigneeId && st.originalAssigneeId !== st.assigneeId) {
               drafts.push({
                 requestId: id,
@@ -538,13 +696,14 @@ export const useSandbox = create<SandboxState>()(
               channel: "outlook",
               kind: "info",
               title: `We've received ${id}`,
-              body: `${next.title} is with ${joinList(approvers) || "MDM"}. Expected in SAP B1 by ${expectedBy.slice(0, 10)}. Track it any time under My requests.`,
+              body: `${next.title} is with ${joinList(approvers) || "MDM"}. Expected in SAP B1 by ${expectedBy.slice(0, 10)}.${linked.length ? ` ${linked.length} waiting order${linked.length === 1 ? "" : "s"} (${sgdText(linkedSgd)}) ${linked.length === 1 ? "is" : "are"} linked and will be released the moment it's created.` : ""} Track it any time under My requests.`,
               requestId: id,
             }),
           );
 
           set({
             requests: replaceRequest(s.requests, next),
+            prs,
             audit: withAudit(s.audit, drafts),
             notifications: [...notes, ...s.notifications],
           });
@@ -554,12 +713,15 @@ export const useSandbox = create<SandboxState>()(
         approveStep(requestId, stepId, comment) {
           const s = get();
           const req = findReq(requestId);
-          if (!req) return { ok: false, error: "Request not found" };
-          if (!OPEN_STATUSES.has(req.status)) return { ok: false, error: `${req.id} is ${req.status.replace("_", " ")}` };
+          if (!req) return fail("Request not found");
+          if (!OPEN_STATUSES.has(req.status)) return fail(`${req.id} is ${req.status.replace("_", " ")}`);
           const step = req.steps.find((x) => x.id === stepId);
+          if (!step) return fail("This step has already been decided");
+          const sod = segregationCheck(req, step, actor(), s.config.people);
+          if (!sod.ok) return fail(sod.reason!);
           const at = now();
           const { steps, outcome } = applyDecision(req.steps, stepId, "approved", at, comment);
-          if (outcome === "noop" || !step) return { ok: false, error: "This step has already been decided" };
+          if (outcome === "noop") return fail("This step has already been decided");
 
           const next: MdmRequest = { ...req, steps, status: outcome === "completed" ? "mdm_review" : openStatus(steps) };
           const who = actor();
@@ -631,13 +793,16 @@ export const useSandbox = create<SandboxState>()(
         rejectStep(requestId, stepId, comment) {
           const s = get();
           const req = findReq(requestId);
-          if (!req) return { ok: false, error: "Request not found" };
-          if (!OPEN_STATUSES.has(req.status)) return { ok: false, error: `${req.id} is ${req.status.replace("_", " ")}` };
-          if (isBlank(comment ?? null)) return { ok: false, error: "Give the requestor a reason for rejecting" };
+          if (!req) return fail("Request not found");
+          if (!OPEN_STATUSES.has(req.status)) return fail(`${req.id} is ${req.status.replace("_", " ")}`);
+          if (isBlank(comment ?? null)) return fail("Give the requestor a reason for rejecting");
           const step = req.steps.find((x) => x.id === stepId);
+          if (!step) return fail("This step has already been decided");
+          const sod = segregationCheck(req, step, actor(), s.config.people);
+          if (!sod.ok) return fail(sod.reason!);
           const at = now();
           const { steps, outcome } = applyDecision(req.steps, stepId, "rejected", at, comment);
-          if (outcome === "noop" || !step) return { ok: false, error: "This step has already been decided" };
+          if (outcome === "noop") return fail("This step has already been decided");
 
           const reason = comment.trim();
           const next: MdmRequest = { ...req, steps, status: "rejected", closedAt: at };
@@ -687,11 +852,11 @@ export const useSandbox = create<SandboxState>()(
         askQuestion(requestId, stepId, text) {
           const s = get();
           const req = findReq(requestId);
-          if (!req) return { ok: false, error: "Request not found" };
-          if (!OPEN_STATUSES.has(req.status)) return { ok: false, error: `${req.id} is ${req.status.replace("_", " ")}` };
-          if (isBlank(text ?? null)) return { ok: false, error: "Type your question" };
+          if (!req) return fail("Request not found");
+          if (!OPEN_STATUSES.has(req.status)) return fail(`${req.id} is ${req.status.replace("_", " ")}`);
+          if (isBlank(text ?? null)) return fail("Type your question");
           const step = req.steps.find((x) => x.id === stepId);
-          if (!step || step.status !== "pending") return { ok: false, error: "Questions can only be asked on a pending step" };
+          if (!step || step.status !== "pending") return fail("Questions can only be asked on a pending step");
           const at = now();
           const question = text.trim();
           const steps = req.steps.map((x) =>
@@ -725,10 +890,10 @@ export const useSandbox = create<SandboxState>()(
         answerQuestion(requestId, stepId, answer) {
           const s = get();
           const req = findReq(requestId);
-          if (!req) return { ok: false, error: "Request not found" };
-          if (isBlank(answer ?? null)) return { ok: false, error: "Type your answer" };
+          if (!req) return fail("Request not found");
+          if (isBlank(answer ?? null)) return fail("Type your answer");
           const step = req.steps.find((x) => x.id === stepId);
-          if (!step || step.status !== "question") return { ok: false, error: "There is no open question on this step" };
+          if (!step || step.status !== "question") return fail("There is no open question on this step");
           const at = now();
           const reply = answer.trim();
           const paused = step.pausedAt ? Math.max(0, Date.parse(at) - Date.parse(step.pausedAt)) : 0;
@@ -779,7 +944,7 @@ export const useSandbox = create<SandboxState>()(
           const s = get();
           const h = Number.isFinite(hours) ? Math.max(0, hours) : 0;
           const clockOffsetMs = s.clockOffsetMs + h * HOUR_MS;
-          const at = simulatedNow(clockOffsetMs);
+          const at = new Date(simNowMs({ ...s, clockOffsetMs })).toISOString();
           const { sla, people } = s.config;
           const drafts: AuditDraft[] = [];
           const notes: AppNotification[] = [];
@@ -963,7 +1128,7 @@ export const useSandbox = create<SandboxState>()(
           const domain = domainOf(req.domainId);
           if (!domain) return [];
           const code = req.sapCode ?? s.reservedCodes[req.id] ?? assignSapCode(domain, req, knownSapCodes(s, req.id));
-          const files = buildDtwFiles(req, domain, code);
+          const files = buildDtwFiles(req, domain, code, dtwOptionsFor(s, req, domain, code));
           if (req.status === "mdm_review" && (!req.dtwGeneratedAt || !s.reservedCodes[req.id])) {
             const at = now();
             set({
@@ -986,19 +1151,21 @@ export const useSandbox = create<SandboxState>()(
         markCreatedInSap(requestId) {
           const s = get();
           const req = findReq(requestId);
-          if (!req) throw new Error(`Request ${requestId} not found`);
+          if (!req) return { ok: false, reason: `Request ${requestId} not found` };
           const domain = domainOf(req.domainId);
-          if (!domain) throw new Error(`${requestId} uses a request type that no longer exists`);
+          if (!domain) return { ok: false, reason: `${requestId} uses a request type that no longer exists` };
           if (req.status === "created" && req.sapCode) {
             const existing = s.sapRecords.find((r) => r.code === req.sapCode);
-            if (existing) return existing;
+            if (existing) return { ok: true, record: existing };
           }
           if (req.status !== "mdm_review") {
-            throw new Error(`${requestId} is not ready for SAP B1 (status: ${req.status.replace("_", " ")})`);
+            return { ok: false, reason: `${requestId} is not ready for SAP B1 (status: ${req.status.replace("_", " ")})` };
           }
+          const who = actor();
+          const sod = segregationCheck(req, "create_in_sap", who, s.config.people);
+          if (!sod.ok) return { ok: false, reason: sod.reason };
 
           const at = now();
-          const who = actor();
           const code = s.reservedCodes[req.id] ?? assignSapCode(domain, req, knownSapCodes(s, req.id));
           const drafts: AuditDraft[] = [];
 
@@ -1014,9 +1181,16 @@ export const useSandbox = create<SandboxState>()(
           let record: SapRecord;
           let sapRecords: SapRecord[];
           const idx = domain.id === "extend" ? s.sapRecords.findIndex((r) => r.code === code) : -1;
+          let extendChange = "";
           if (idx >= 0) {
-            record = applyExtension(s.sapRecords[idx], req.data, req.id);
+            const before = s.sapRecords[idx];
+            record = applyExtension(before, req.data, req.id);
             sapRecords = s.sapRecords.map((r, i) => (i === idx ? record : r));
+            const parts = [`U_Entities ${entitiesOf(before).join(", ") || "—"} → ${entitiesOf(record).join(", ")}`];
+            if (record.fields.PayTermsGrpCode !== before.fields.PayTermsGrpCode) parts.push("payment terms updated");
+            if (record.fields.CreditLimit !== before.fields.CreditLimit) parts.push("credit limit updated");
+            if (record.fields.U_ShipToAddress !== before.fields.U_ShipToAddress) parts.push("ship-to address added");
+            extendChange = parts.join("; ");
           } else {
             record = {
               code,
@@ -1040,6 +1214,9 @@ export const useSandbox = create<SandboxState>()(
             return open;
           });
           const releasedSgd = released.reduce((a, p) => a + p.sgd, 0);
+          const lastUnblock: LastUnblock | null = released.length
+            ? { beforeSgd: blockedSgd(s.prs), afterSgd: blockedSgd(prs), at, requestId: req.id }
+            : s.lastUnblock;
 
           const { [req.id]: _reserved, ...reservedCodes } = s.reservedCodes;
           void _reserved;
@@ -1053,7 +1230,7 @@ export const useSandbox = create<SandboxState>()(
             action: "created_in_sap",
             detail:
               (domain.id === "extend"
-                ? `${code} extended to ${String(req.data.extendToEntity ?? req.entity)} in SAP B1`
+                ? `${code} updated in SAP B1 (same code, DTW update): extended to ${String(req.data.extendToEntity ?? req.entity)}${extendChange ? ` · ${extendChange}` : ""}`
                 : `${code} created in SAP B1 via DTW import`) +
               (released.length
                 ? ` · ${released.length} purchase request${released.length === 1 ? "" : "s"} released (S$${releasedSgd.toLocaleString("en-SG")})`
@@ -1085,10 +1262,11 @@ export const useSandbox = create<SandboxState>()(
             sapRecords,
             prs,
             reservedCodes,
+            lastUnblock,
             audit: withAudit(s.audit, drafts),
             notifications: [...notes, ...s.notifications],
           });
-          return record;
+          return { ok: true, record };
         },
 
         markNotificationRead(id) {
@@ -1107,9 +1285,9 @@ export const useSandbox = create<SandboxState>()(
         cancelRequest(id, reason) {
           const s = get();
           const req = findReq(id);
-          if (!req) return { ok: false, error: "Request not found" };
+          if (!req) return fail("Request not found");
           if (req.status !== "draft" && !OPEN_STATUSES.has(req.status)) {
-            return { ok: false, error: `${req.id} is already ${req.status.replace("_", " ")}` };
+            return fail(`${req.id} is already ${req.status.replace("_", " ")}`);
           }
           const at = now();
           const steps = req.steps.map((st) => (isFinalStatus(st.status) ? st : { ...st, status: "skipped" as const }));
@@ -1196,16 +1374,22 @@ export const useSandbox = create<SandboxState>()(
         return freshSandboxData();
       },
       merge: (persisted, current) => {
-        if (isValidSandboxData(persisted)) {
-          const data = persisted;
-          const personaOk = data.config.people.some((p) => p.id === data.personaId);
-          return {
-            ...current,
-            ...data,
-            reservedCodes: isObj(data.reservedCodes) ? (data.reservedCodes as Record<string, string>) : {},
-            personaId: personaOk ? data.personaId : data.config.people[0].id,
-            hydrated: true,
-          };
+        try {
+          if (isValidSandboxData(persisted)) {
+            const data = persisted;
+            const personaOk = data.config.people.some((p) => p.id === data.personaId);
+            const lu = (data as Partial<SandboxData>).lastUnblock;
+            return {
+              ...current,
+              ...data,
+              reservedCodes: isObj(data.reservedCodes) ? (data.reservedCodes as Record<string, string>) : {},
+              lastUnblock: isObj(lu) && typeof lu.beforeSgd === "number" && typeof lu.afterSgd === "number" ? lu : null,
+              personaId: personaOk ? data.personaId : data.config.people[0].id,
+              hydrated: true,
+            };
+          }
+        } catch {
+          /* unreadable payload: reseed below */
         }
         pendingPersist = true;
         return { ...current, ...freshSandboxData(), hydrated: true };
@@ -1238,4 +1422,17 @@ const serverSnapshot = () => false;
  */
 export function useHasHydrated(): boolean {
   return useSyncExternalStore(subscribeHydration, hydratedSnapshot, serverSnapshot);
+}
+
+const DATA_KEYS: ReadonlySet<string> = new Set<string>(PERSISTED_KEYS);
+
+/**
+ * Merge a partial sandbox (e.g. a demo scene built from getSeedSnapshot()) into the store and persist it.
+ * Only data keys are applied (actions are ignored); the store is marked hydrated.
+ */
+export function loadState(partial: Partial<SandboxState>): void {
+  const patch: Record<string, unknown> = {};
+  for (const [k, v] of Object.entries(partial ?? {})) if (DATA_KEYS.has(k) && v !== undefined) patch[k] = v;
+  pendingPersist = false;
+  useSandbox.setState({ ...(patch as Partial<SandboxState>), hydrated: true });
 }

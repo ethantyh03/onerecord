@@ -1,0 +1,155 @@
+"use client";
+
+import { useMemo } from "react";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { ArrowLeft, FileSearch, ShieldCheck } from "lucide-react";
+import { useHasHydrated, useSandbox } from "@/lib/store";
+import { buById, buLabel, domainById, requestById } from "@/lib/selectors";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import { EmptyState, PageHeader, PersonChip, SapCode, StatusBadge, formatSgtDateTime, formatSgtDay } from "@/components/common";
+import { AuditTimeline } from "@/components/audit/AuditTimeline";
+import { BlockedOrdersCard } from "./blocked-orders-card";
+import { DeliveryTracker } from "./delivery-tracker";
+import { DemoControls } from "./demo-controls";
+import { DuplicateDecisionCard, RequestDataCard } from "./request-data-card";
+import { countryName, demandFor, linkedDemandByRequest } from "./tracker-utils";
+
+export function RequestDetailSkeleton() {
+  return (
+    <div className="mx-auto w-full max-w-[1320px] space-y-5" aria-busy="true" aria-label="Loading request">
+      <Skeleton className="h-9 w-[28rem] max-w-full" />
+      <Skeleton className="h-20 w-full rounded-xl" />
+      <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_22rem]">
+        <Skeleton className="h-[560px] rounded-xl" />
+        <Skeleton className="h-72 rounded-xl" />
+      </div>
+    </div>
+  );
+}
+
+function Fact({ label, children, className }: { label: string; children: React.ReactNode; className?: string }) {
+  return (
+    <div className={cn("min-w-0 space-y-1 px-4 py-3", className)}>
+      <dt className="text-xs text-muted-foreground">{label}</dt>
+      <dd className="min-w-0 text-sm font-medium text-foreground">{children}</dd>
+    </div>
+  );
+}
+
+export function RequestDetail() {
+  const params = useSearchParams();
+  const id = (params.get("id") ?? "").trim().toUpperCase();
+  const hydrated = useHasHydrated();
+  const requests = useSandbox((s) => s.requests);
+  const prs = useSandbox((s) => s.prs);
+  const config = useSandbox((s) => s.config);
+
+  const req = useMemo(() => (id ? requestById({ requests }, id) : undefined), [requests, id]);
+  const demandMap = useMemo(() => linkedDemandByRequest(requests, prs), [requests, prs]);
+
+  if (!hydrated) return <RequestDetailSkeleton />;
+
+  if (!req) {
+    return (
+      <div className="mx-auto w-full max-w-[1320px]">
+        <PageHeader title="Request not found" subtitle={id ? `There is no request ${id} in this sandbox.` : "No request id was given."} />
+        <EmptyState
+          icon={FileSearch}
+          title={id ? `${id} isn't in this sandbox` : "Pick a request to track"}
+          description="Requests live in this browser's demo sandbox. A reset or another browser starts from the seeded set."
+          action={
+            <Link href="/requests" className={buttonVariants({ variant: "default" })}>
+              See all requests
+            </Link>
+          }
+        />
+      </div>
+    );
+  }
+
+  const domain = domainById({ config }, req.domainId);
+  const bu = buById({ config }, req.entity);
+  const demand = demandFor(demandMap, req.id);
+  const created = req.status === "created";
+
+  return (
+    <div className="mx-auto w-full max-w-[1320px] pb-6" data-testid="request-detail" data-request-id={req.id}>
+      <Link
+        href="/requests"
+        className="mb-3 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+        data-testid="request-back"
+      >
+        <ArrowLeft aria-hidden className="size-4" />
+        All requests
+      </Link>
+      <PageHeader
+        title={req.title}
+        meta={
+          <>
+            <SapCode code={req.id} />
+            <StatusBadge status={req.status} />
+          </>
+        }
+        actions={
+          req.status === "mdm_review" ? (
+            <Link href={`/mdm?id=${encodeURIComponent(req.id)}`} className={buttonVariants({ variant: "outline" })} data-testid="request-open-mdm">
+              <ShieldCheck aria-hidden />
+              Open in MDM console
+            </Link>
+          ) : created && req.sapCode ? (
+            <Link href={`/sap?code=${encodeURIComponent(req.sapCode)}`} className={buttonVariants({ variant: "outline" })}>
+              View {req.sapCode} in SAP B1 (simulated)
+            </Link>
+          ) : null
+        }
+        className="mb-5"
+      />
+
+      <dl className="mb-5 grid grid-cols-2 divide-border overflow-hidden rounded-xl border bg-card shadow-raised md:grid-cols-5 md:divide-x">
+        <Fact label="Requestor" className="col-span-2 md:col-span-1">
+          <PersonChip personId={req.requestorId} showTitle />
+        </Fact>
+        <Fact label="Request type">{domain?.label ?? req.domainId}</Fact>
+        <Fact label="Entity · country">
+          <span className="block truncate">
+            {buLabel({ config }, req.entity)} · {countryName(req.country)}
+          </span>
+          {!bu ? <span className="mt-0.5 block text-xs font-normal text-warn-ink">BU not configured yet — ask MDM to add it</span> : null}
+        </Fact>
+        <Fact label="Created">
+          <span className="num">{formatSgtDateTime(req.createdAt)}</span>
+        </Fact>
+        <Fact label={created ? "Live in SAP B1" : "Expected live"}>
+          {created && req.sapCreatedAt ? (
+            <span className="num text-ok-ink">{formatSgtDay(req.sapCreatedAt)}</span>
+          ) : req.expectedBy && req.status !== "rejected" && req.status !== "cancelled" ? (
+            <span className="num text-[1.0625rem] font-semibold text-primary" data-testid="request-expected">
+              {formatSgtDay(req.expectedBy)}
+            </span>
+          ) : (
+            <span className="text-muted-foreground">—</span>
+          )}
+        </Fact>
+      </dl>
+
+      <div className="grid items-start gap-5 xl:grid-cols-[minmax(0,1fr)_22rem]">
+        <div className="min-w-0 space-y-5">
+          <DeliveryTracker request={req} domain={domain} demand={demand} />
+        </div>
+        <aside className="min-w-0 space-y-5">
+          <BlockedOrdersCard request={req} />
+          <DuplicateDecisionCard request={req} domain={domain} />
+          <DemoControls request={req} />
+        </aside>
+      </div>
+
+      <div className="mt-5 space-y-5">
+        <RequestDataCard request={req} domain={domain} />
+        <AuditTimeline requestId={req.id} />
+      </div>
+    </div>
+  );
+}

@@ -5,7 +5,7 @@
  * - 30 completed requests over the past ~90 days (REQ-1001…1030), median ≈ 3–4 business days to SAP B1
  * - 14 recent requests (REQ-1031…1044) across every domain, country and status, including the pinned
  *   demo requests REQ-1038 (customer pending Wei Jie) and REQ-1042 (item at MDM review)
- * - 12 purchase requests blocked by MDM setup (≈ S$310k across all five countries) and 20 open/converted PRs
+ * - 15 purchase requests blocked by MDM setup (≈ S$346k across all five countries; 3 K2EDTA PRs not yet linked) and 20 open/converted PRs
  * - SAP B1 records (pre-OneRecord masters plus everything created through OneRecord)
  * - a verifiable hash-chained audit trail and Teams / Outlook notifications
  *
@@ -140,17 +140,30 @@ export function sapFieldsFor(
   return f;
 }
 
-/** Fold an "extend" request into the existing SAP record (new entity, optional ship-to). */
+/** Entities a business partner record is shared with (U_Entities, comma-separated; legacy U_Entity read too). */
+export function entitiesOf(rec: Pick<SapRecord, "fields"> | undefined): string[] {
+  if (!rec) return [];
+  return String(rec.fields.U_Entities ?? rec.fields.U_Entity ?? "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+}
+
+/**
+ * Fold an "extend" request into the existing SAP record (assumption A28): one BP record is shared by all entities,
+ * so an extension UPDATES it — adds the entity to U_Entities, applies Finance-approved payment terms / credit limit
+ * when changesCreditTerms = Yes, and records a new ship-to when one is given. The CardCode never changes.
+ */
 export function applyExtension(rec: SapRecord, data: Record<string, FieldValue>, requestId: string): SapRecord {
   const fields = { ...rec.fields };
-  const entities = new Set(
-    String(fields.U_Entity ?? "")
-      .split(",")
-      .map((s) => s.trim())
-      .filter(Boolean),
-  );
+  const entities = new Set(entitiesOf(rec));
   if (!isBlank(data.extendToEntity)) entities.add(String(data.extendToEntity).trim());
-  fields.U_Entity = [...entities].join(", ");
+  fields.U_Entities = [...entities].join(", ");
+  delete fields.U_Entity;
+  if (String(data.changesCreditTerms ?? "").trim().toLowerCase() === "yes") {
+    if (!isBlank(data.paymentTerms)) fields.PayTermsGrpCode = String(data.paymentTerms).trim();
+    if (!isBlank(data.creditLimit)) fields.CreditLimit = String(data.creditLimit).trim();
+  }
   if (!isBlank(data.newShipToAddress)) {
     fields.ShipToDefault = `SHIP-${String(data.extendToEntity ?? "").trim() || "NEW"}`;
     fields.U_ShipToAddress = String(data.newShipToAddress).trim();
@@ -424,7 +437,7 @@ function baselineSapRecords(): SapRecord[] {
       "BPAddresses.City": c.city,
       "BPAddresses.ZipCode": c.zip,
       "BPAddresses.Country": c.country,
-      U_Entity: c.entity,
+      U_Entities: c.entity,
     },
   }));
   recs.push(
@@ -1412,6 +1425,9 @@ interface PrSpec {
   missing?: "customer" | "item";
 }
 
+/** Amy's live demo item name; the seeded PRs above wait on it and auto-link when her request is submitted. */
+export const K2EDTA_ITEM = "K2EDTA Blood Collection Tube 4 mL, 100/pk";
+
 const RECENT_PRS: PrSpec[] = [
   { id: "PR-5493", ago: 9.0, customer: "Harbourfront Specialist Clinic", country: "SG", entity: "SPD", product: "A", item: "Troponin I Rapid Test 20T", units: 60, sgd: 5760, status: "open" },
   { id: "PR-5496", ago: 7.5, customer: "Klinik Seri Ampang", country: "MY", entity: "SPD", product: "A", item: "Malaria Pf/Pan Ag Rapid Test 25T", units: 300, sgd: 11400, status: "open" },
@@ -1434,6 +1450,11 @@ const RECENT_PRS: PrSpec[] = [
   { id: "PR-5529", ago: 1.5, customer: "Bangkok Metro Lab", country: "TH", entity: "SPD", product: "A", item: "HbA1c Reagent Kit 100T", units: 80, sgd: 11200, status: "open" },
   { id: "PR-5531", ago: 0.8, customer: "Sunway Medical Centre", country: "MY", entity: "QTS", product: "C", item: "Coagulation Analyser CG-90", units: 1, sgd: 26500, status: "blocked", blockedBy: "REQ-1043", missing: "customer" },
   { id: "PR-5533", ago: 0.6, customer: "Yangon Asia Royal Clinic", country: "MM", entity: "QTG", product: "B", item: "Microcentrifuge Tubes 1.5 mL (500s)", units: 140, sgd: 9800, status: "blocked", blockedBy: "REQ-1044", missing: "customer" },
+  // Amy's live demo item (App C): orders already waiting for an item code that doesn't exist yet. No MDM request
+  // covers them, so they are blocked with no blockedByRequestId until her request is submitted (auto-link).
+  { id: "PR-5534", ago: 4.2, customer: "Sunway Medical Centre", country: "MY", entity: "SPD", product: "B", item: K2EDTA_ITEM, units: 120, sgd: 14400, status: "blocked", missing: "item" },
+  { id: "PR-5536", ago: 2.7, customer: "Mount Faber Specialist Clinic", country: "SG", entity: "SPD", product: "B", item: K2EDTA_ITEM, units: 80, sgd: 9600, status: "blocked", missing: "item" },
+  { id: "PR-5538", ago: 1.2, customer: "Thomson Road Diagnostic Lab", country: "SG", entity: "SPD", product: "B", item: K2EDTA_ITEM, units: 100, sgd: 12000, status: "blocked", missing: "item" },
   { id: "PR-5535", ago: 0.4, customer: "Hue Central Diagnostics", country: "VN", entity: "SPD", product: "A", item: "Malaria Pf/Pan Ag Rapid Test 25T", units: 200, sgd: 7600, status: "open" },
 ];
 
@@ -1460,7 +1481,7 @@ function buildPrs(ctx: Ctx, historical: MdmRequest[], recent: MdmRequest[], sapR
         r.fields.CardType === "cCustomer" &&
         r.code !== "C-SG-00017" &&
         existedBy(r, asOf) &&
-        (r.fields.U_Entity ?? "").split(",").map((s) => s.trim()).includes(entity) &&
+        (r.fields.U_Entities ?? r.fields.U_Entity ?? "").split(",").map((s) => s.trim()).includes(entity) &&
         (!country || r.fields["BPAddresses.Country"] === country),
     );
   const itemsByEntity = (entity: string, asOf: string) =>

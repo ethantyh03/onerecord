@@ -118,7 +118,7 @@ export function TeamsQuestionCard({ request, step, onAnswer, compact = false, cl
 
         <div className="mt-3 border-t border-[#ebebeb] pt-2.5">
           <Link
-            href={`/requests/${encodeURIComponent(request.id)}`}
+            href={`/requests/view?id=${encodeURIComponent(request.id)}`}
             className="inline-flex items-center gap-1 text-[12px] font-semibold hover:underline"
             style={{ color: TEAMS.purple }}
           >

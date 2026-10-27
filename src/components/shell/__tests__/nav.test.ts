@@ -3,7 +3,7 @@ import { NAV_ITEMS, activeNavHref } from "../nav-items";
 import { FOOTER_TEXT } from "../copy";
 
 describe("shell navigation", () => {
-  it("lists the ten screens in the agreed order", () => {
+  it("lists the screens in the agreed order", () => {
     expect(NAV_ITEMS.map((i) => i.href)).toEqual([
       "/",
       "/requests/new",
@@ -14,6 +14,9 @@ describe("shell navigation", () => {
       "/pulse",
       "/triage",
       "/impact",
+      "/architecture",
+      "/scope",
+      "/assumptions",
       "/admin",
     ]);
   });

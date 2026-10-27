@@ -9,6 +9,9 @@ import { useSandbox } from "@/lib/store";
  */
 export function useSimNow(tickMs = 20_000): string {
   const offset = useSandbox((s) => s.clockOffsetMs);
+  // Reset and scene loads re-pin the clock base without touching the offset.
+  const base = useSandbox((s) => s.simBaseMs);
+  const seededAt = useSandbox((s) => s.seededAtRealMs);
   const [now, setNow] = useState(() => useSandbox.getState().nowIso());
 
   useEffect(() => {
@@ -16,7 +19,7 @@ export function useSimNow(tickMs = 20_000): string {
     update();
     const id = window.setInterval(update, tickMs);
     return () => window.clearInterval(id);
-  }, [offset, tickMs]);
+  }, [offset, base, seededAt, tickMs]);
 
   return now;
 }

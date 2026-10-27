@@ -9,7 +9,7 @@ import { assignSapCode } from "@/lib/engine/codes";
 import { knownSapCodes } from "@/lib/seed";
 import { toServiceLayerPayload } from "@/lib/engine/dtw";
 import { canSeeSensitive, maskValue } from "@/lib/engine/masking";
-import { useSandbox } from "@/lib/store";
+import { dtwOptionsFor, useSandbox } from "@/lib/store";
 import type { FieldValue } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { isSensitiveColumn } from "../_lib/dtw-sim";
@@ -104,7 +104,7 @@ export function ServiceLayerView({
         selected.sapCode ??
         reservedCodes[selected.id] ??
         assignSapCode(domain, selected, knownSapCodes({ sapRecords, requests, reservedCodes }, selected.id));
-      const payload = toServiceLayerPayload(selected, domain, code);
+      const payload = toServiceLayerPayload(selected, domain, code, dtwOptionsFor({ sapRecords }, selected, domain, code));
       const sensitive = new Set<string>(domain.fields.filter((f) => f.sensitive && f.sapField).map((f) => f.sapField as string));
       const body = privileged ? payload.body : (maskPayload(payload.body, sensitive) as Record<string, unknown>);
       const codeState = selected.sapCode ? "created" : reservedCodes[selected.id] ? "reserved" : "provisional";

@@ -49,17 +49,17 @@ scenarios:
 #   SG/MY steady, TH mixed (A up, B down) [R: IVD market size ... growth 4-7%/yr] [T].
 # fy_start_month: [R: Fiscal year - Singapore/Malaysia/Thailand/Vietnam/Myanmar]
 countries:
-  SG: {name: Singapore, value_sgd: 17000000, n_golden: 72, fy_start_month: 4,  trend: {A: 0.030, B: 0.030, C: 0.020}, macro_sd: 0.025, price_factor: 1.00}
-  MY: {name: Malaysia,  value_sgd: 14500000, n_golden: 88, fy_start_month: 1,  trend: {A: 0.050, B: 0.035, C: 0.020}, macro_sd: 0.030, price_factor: 0.95}
-  TH: {name: Thailand,  value_sgd: 9800000,  n_golden: 82, fy_start_month: 10, trend: {A: 0.035, B: -0.030, C: 0.000}, macro_sd: 0.035, price_factor: 0.93}
-  VN: {name: Vietnam,   value_sgd: 8000000,  n_golden: 74, fy_start_month: 1,  trend: {A: 0.150, B: 0.120, C: 0.060}, macro_sd: 0.035, price_factor: 0.92}
-  MM: {name: Myanmar,   value_sgd: 3800000,  n_golden: 44, fy_start_month: 4,  trend: {A: -0.070, B: -0.060, C: -0.150}, macro_sd: 0.060, price_factor: 0.95}
+  SG: {name: Singapore, value_sgd: 17000000, n_golden: 72, fy_start_month: 4,  trend: {A: 0.030, B: 0.070, C: 0.040}, macro_sd: 0.015, price_factor: 1.00}
+  MY: {name: Malaysia,  value_sgd: 14500000, n_golden: 88, fy_start_month: 1,  trend: {A: 0.085, B: 0.080, C: 0.040}, macro_sd: 0.020, price_factor: 0.95}
+  TH: {name: Thailand,  value_sgd: 9800000,  n_golden: 82, fy_start_month: 10, trend: {A: 0.070, B: 0.040, C: 0.020}, macro_sd: 0.020, price_factor: 0.93}
+  VN: {name: Vietnam,   value_sgd: 8000000,  n_golden: 74, fy_start_month: 1,  trend: {A: 0.150, B: 0.150, C: 0.060}, macro_sd: 0.025, price_factor: 0.92}
+  MM: {name: Myanmar,   value_sgd: 3800000,  n_golden: 44, fy_start_month: 4,  trend: {A: -0.070, B: -0.070, C: -0.100}, macro_sd: 0.045, price_factor: 0.95}
 
 # ---------------------------------------------------------------- value mix
 # Reagents ~3x instruments by value: Sysmex FY3/2026 reagents 61.6% / instruments 20.6%
 # [R: Razor-and-blade evidence - reagent vs instrument revenue mix] [FM §5.6 #7].
-# We keep A:C = 3.0 and give the remainder to B (consumables).
-product_mix_target: {A: 0.585, B: 0.22, C: 0.195}
+# A:C = 3.3 at the reference month; lumpy instrument POs make the realised 12M ratio ~2.7-3.3. Remainder is B.
+product_mix_target: {A: 0.595, B: 0.225, C: 0.18}
 
 # Entities [A2]: SPD sells A, QTG sells B, QTS sells C.
 product_entity: {A: SPD, B: QTG, C: QTS}
@@ -82,9 +82,9 @@ size_tiers:
   # relative size (lognormal median, sd) before country scaling; tier mix per segment is in segments.tier_p [T].
   # discount = negotiated discount off list price (bigger accounts get more) [T].
   # noise_cv = month-to-month demand noise of one customer (gamma CV); big accounts order more regularly [T].
-  L: {median: 12.0, sd: 0.35, discount: 0.12, noise_cv: 0.16}
-  M: {median: 3.0,  sd: 0.40, discount: 0.07, noise_cv: 0.24}
-  S: {median: 0.6,  sd: 0.55, discount: 0.02, noise_cv: 0.34}
+  L: {median: 12.0, sd: 0.35, discount: 0.12, noise_cv: 0.06}
+  M: {median: 3.0,  sd: 0.40, discount: 0.07, noise_cv: 0.11}
+  S: {median: 0.6,  sd: 0.55, discount: 0.02, noise_cv: 0.20}
 
 customer_dynamics:
   idio_growth_sd: 0.06        # customer-level annual growth noise -> expanding/declining customers for the bridge [T]
@@ -92,7 +92,16 @@ customer_dynamics:
   new_customer_ramp: [0.4, 0.7, 1.0]   # first three months of a new account [T]
   churn_share: 0.05           # generic gradual churners outside the MY contract plant [T]
   churn_taper_months: 4       # gradual drop-off before the last PO (drop-off signal) [T]
-  line_value_sgd: {A: 3200, B: 1600}   # average PO-line value; sets lines per month (keeps pos.csv small) [T]
+  # Each customer has a stable basket of SKUs (a lab runs the same assays every month) and re-orders a SKU
+  # when its accumulated need passes the reorder value: realistic lumpiness, stable units-per-S$ [T].
+  reorder_value_sgd: {A: 1800, B: 900}
+  reorder_jitter: 0.5          # each reorder point is redrawn +-50% after an order (order sizes vary) [T]
+  basket_size:
+    A:
+      L: {dengue: [2, 4], respiratory: [2, 4], routine: [8, 14]}
+      M: {dengue: [1, 3], respiratory: [1, 3], routine: [4, 9]}
+      S: {dengue: [1, 2], respiratory: [1, 2], routine: [2, 5]}
+    B: {L: [10, 18], M: [5, 10], S: [3, 6]}
   lines_per_po_p: 0.35        # extra lines join the same PO with this probability [T]
   record_created_before_first_po_days: [10, 45]   # new-customer record is set up 10-45 days before the first PO [T]
 
@@ -100,12 +109,12 @@ customer_dynamics:
 product_a_groups:
   # Share of A value by disease group. Dengue group = dengue NS1 / IgG-IgM / duo / PCR + chikungunya.
   # Respiratory group = influenza / COVID / RSV / strep. Remainder = routine chemistry, cardiac, infectious serology [T].
-  dengue_share: {SG: 0.20, MY: 0.20, TH: 0.22, VN: 0.24, MM: 0.20}
+  dengue_share: {SG: 0.22, MY: 0.22, TH: 0.26, VN: 0.28, MM: 0.22}
   respiratory_share: {SG: 0.15, MY: 0.12, TH: 0.14, VN: 0.12, MM: 0.10}
 
 dengue:
   # Demand for dengue tests = floor (fever screening regardless of cases) + case-driven part.
-  floor: 0.40                 # [T]
+  floor: 0.55                 # tests keep running for fever screening whatever the case count [T]
   # Monthly shape (Jan..Dec, normalised to mean 1):
   #   SG May-Oct peak [R: Disease seasonality - dengue (Singapore)]; MY flat with mild Nov-Mar uplift
   #   [R: dengue (Malaysia)]; TH Jun-Sep, VN Jul-Nov, MM Jun-Aug [R: dengue (Thailand, Vietnam, Myanmar)].
@@ -130,24 +139,24 @@ respiratory:
   # SG flu peaks Dec-Mar and May-Aug; TH Jun-Aug (rainy) + Dec-Feb; others mild
   # [R: Disease seasonality - influenza/respiratory]. Amplitudes [T].
   shape:
-    SG: [1.15, 1.10, 1.05, 0.85, 1.05, 1.15, 1.15, 1.05, 0.85, 0.80, 0.85, 1.05]
+    SG: [1.20, 1.15, 1.05, 0.80, 1.05, 1.25, 1.25, 1.10, 0.80, 0.75, 0.80, 1.05]
     MY: [1.05, 1.05, 1.00, 0.95, 0.95, 1.00, 1.00, 1.00, 1.00, 0.95, 1.00, 1.05]
-    TH: [1.10, 1.05, 0.85, 0.80, 0.85, 1.10, 1.25, 1.25, 1.10, 0.90, 0.85, 0.95]
+    TH: [1.15, 1.05, 0.80, 0.75, 0.85, 1.15, 1.35, 1.35, 1.10, 0.85, 0.80, 0.95]
     VN: [1.05, 1.00, 0.95, 0.95, 0.95, 1.05, 1.05, 1.05, 1.00, 1.00, 0.95, 1.00]
     MM: [1.00, 1.00, 0.95, 0.95, 1.00, 1.05, 1.10, 1.05, 1.00, 0.95, 0.95, 1.00]
   # COVID-style waves (+30-80% for 4-8 weeks): SG May 2025 LF.7/NB.1.8 wave sourced; the rest [T].
   waves:
-    - {country: SG, months: ["2025-05", "2025-06"], mult: 1.6}
-    - {country: TH, months: ["2024-07"], mult: 1.4}
-    - {country: MY, months: ["2024-12"], mult: 1.3}
+    - {country: SG, months: ["2025-05", "2025-06"], mult: 1.30}
+    - {country: TH, months: ["2024-07"], mult: 1.2}
+    - {country: MY, months: ["2024-12"], mult: 1.2}
 
 # ---------------------------------------------------------------- Product B seasonality
 product_b:
   # Research/academic consumables follow the academic year (dips Jun and Dec) [T].
-  academic_shape: [1.05, 1.05, 1.10, 1.00, 0.95, 0.85, 0.95, 1.10, 1.10, 1.05, 1.00, 0.80]
+  academic_shape: [1.05, 1.10, 1.15, 1.00, 0.90, 0.75, 0.90, 1.15, 1.20, 1.10, 1.00, 0.70]
   # Public buyers: modest use-it-or-lose-it flush in the last FY month, slow first FY month [T]
   # (no source quantifies a flush, so it is stated as an assumption [R: Gaps]).
-  fy_end_flush: 1.20
+  fy_end_flush: 1.30
   fy_start_dip: 0.85
 
 # ---------------------------------------------------------------- Product C (instruments)
@@ -158,7 +167,7 @@ product_c:
   # [R: Fiscal year - Singapore/Malaysia/Thailand/Vietnam/Myanmar] [FM §5.6 #8].
   flush_weights:
     SG: [1.10, 1.50, 2.40, 0.50, 0.70, 0.90, 0.90, 0.90, 0.90, 0.90, 0.90, 0.90]
-    MM: [1.10, 1.50, 2.40, 0.50, 0.70, 0.90, 0.90, 0.90, 0.90, 0.90, 0.90, 0.90]
+    MM: [1.20, 1.70, 2.80, 0.40, 0.60, 0.85, 0.85, 0.85, 0.85, 0.85, 0.85, 0.85]   # MM: "instrument peak in Jan-Mar"
     MY: [0.60, 0.60, 0.80, 0.85, 0.90, 0.90, 0.90, 0.90, 0.95, 1.30, 1.60, 2.40]
     VN: [1.20, 0.40, 0.80, 0.85, 0.90, 0.90, 0.90, 0.90, 0.95, 1.30, 1.60, 2.30]
     TH: [0.80, 0.70, 0.75, 0.60, 0.80, 0.90, 1.40, 1.70, 2.20, 1.20, 1.10, 1.00]
@@ -203,8 +212,8 @@ myanmar:
   # [R: Demand shocks to include - Myanmar & other]. Feb 2024 disruption is [T].
   shocks:
     "2024-02": {A: 0.85, B: 0.85, C: 0.6}
-    "2025-04": {A: 1.25, B: 1.60, C: 1.0}
-    "2025-05": {A: 1.10, B: 1.30, C: 1.0}
+    "2025-04": {A: 1.12, B: 1.22, C: 1.0}
+    "2025-05": {A: 1.05, B: 1.10, C: 1.0}
 
 # ---------------------------------------------------------------- planted patterns (see PATTERNS.md)
 plants:
@@ -212,27 +221,30 @@ plants:
     # One key account per country split across 2-3 records; merged it declines ~25-35% YoY [FM §5.6 #1] [DS lead prompt].
     # rank = size rank of the golden customer in its country (MY = the #2 MY hospital).
     # switch = first month on the new record; level = demand multiplier after the switch.
-    MY: {rank: 2, records: 3, switch: "2026-04", ramp_start: "2025-10", ramp_from: 0.78, ramp_to: 0.55, level: 0.40, prior_decline: 0.08}
-    SG: {rank: 4, records: 2, switch: "2026-02", ramp_start: "2025-10", ramp_from: 0.85, ramp_to: 0.65, level: 0.55, prior_decline: 0.05}
-    TH: {rank: 3, records: 2, switch: "2026-05", ramp_start: "2025-10", ramp_from: 0.85, ramp_to: 0.62, level: 0.52, prior_decline: 0.05}
-    VN: {rank: 3, records: 2, switch: "2026-01", ramp_start: "2025-10", ramp_from: 0.80, ramp_to: 0.65, level: 0.58, prior_decline: 0.05}
-    MM: {rank: 2, records: 2, switch: "2025-12", ramp_start: "2025-10", ramp_from: 0.85, ramp_to: 0.70, level: 0.60, prior_decline: 0.05}
+    # margin = hero base value / next-largest customer, so it stays a top account after the decline (MY only;
+    # null = the key account keeps its natural size at that rank) [T].
+    MY: {rank: 2, margin: 2.00, records: 3, switch: "2026-04", ramp_start: "2025-10", ramp_from: 0.66, ramp_to: 0.62, level: 0.36, prior_decline: 0.04}
+    SG: {rank: 6, margin: null, records: 2, switch: "2026-02", ramp_start: "2025-10", ramp_from: 0.80, ramp_to: 0.78, level: 0.64, prior_decline: 0.03}
+    TH: {rank: 6, margin: null, records: 2, switch: "2026-05", ramp_start: "2025-10", ramp_from: 0.76, ramp_to: 0.74, level: 0.56, prior_decline: 0.03}
+    VN: {rank: 6, margin: null, records: 2, switch: "2026-01", ramp_start: "2025-10", ramp_from: 0.72, ramp_to: 0.70, level: 0.54, prior_decline: 0.03}
+    MM: {rank: 4, margin: null, records: 2, switch: "2025-12", ramp_start: "2025-10", ramp_from: 0.84, ramp_to: 0.82, level: 0.72, prior_decline: 0.03}
   misattribution:
     # From Jan 2026 an SG-coded duplicate (SG staff, "regional billing") captures a MY and a VN hospital's
     # SPD (Product A) POs. Target share of the affected country's 12M value: 3-8% [DS6] [FM §5.6 #2].
     start: "2026-01"
     record_created: {MY: "2026-01-07", VN: "2026-01-12"}
     target_share: {MY: 0.045, VN: 0.040}
+    size_share: {MY: 0.065, VN: 0.065}   # the affected hospital is ~6.5% of its country (a top-5 account) [T]
     entities: [SPD]
   miscategorisation:
     # Duplicate item codes created under Product B for A test kits ("A volume recorded under B") [DS lead prompt].
     # use_share = share of that SKU's lines (in the listed countries) booked to the wrong code after creation [T].
     items:
-      - {true_item: "Influenza A/B Ag Rapid Test 25T", dup_name: "Influenza A/B Rapid Test Kit 25T", created: "2025-02-11", countries: [TH], use_share: 0.85}
-      - {true_item: "Chikungunya IgM Rapid Test 20T", dup_name: "Chikungunya IgM Test Strip 20T", created: "2025-03-04", countries: [TH], use_share: 0.85}
-      - {true_item: "Malaria Pf/Pan Ag Rapid Test 25T", dup_name: "Malaria Pf/Pan Rapid Cassette 25T", created: "2025-06-16", countries: [TH, MM], use_share: 0.80}
-      - {true_item: "Urine Reagent Strips 10-Parameter 100s", dup_name: "Urine Test Strips 10P 100s", created: "2025-01-20", countries: [TH, VN], use_share: 0.80}
-      - {true_item: "Typhoid IgM/IgG Rapid Test 25T", dup_name: "Typhoid IgG/IgM Cassette 25T", created: "2025-08-05", countries: [TH], use_share: 0.80}
+      - {true_item: "Influenza A/B Ag Rapid Test 25T", dup_name: "Influenza A/B Rapid Test Kit 25T", created: "2025-02-11", countries: [TH], use_share: 0.45}
+      - {true_item: "Chikungunya IgM Rapid Test 20T", dup_name: "Chikungunya IgM Test Strip 20T", created: "2025-03-04", countries: [TH], use_share: 0.45}
+      - {true_item: "Malaria Pf/Pan Ag Rapid Test 25T", dup_name: "Malaria Pf/Pan Rapid Cassette 25T", created: "2025-06-16", countries: [TH, MM], use_share: 0.45}
+      - {true_item: "Urine Reagent Strips 10-Parameter 100s", dup_name: "Urine Test Strips 10P 100s", created: "2025-01-20", countries: [TH, VN], use_share: 0.35}
+      - {true_item: "Typhoid IgM/IgG Rapid Test 25T", dup_name: "Typhoid IgG/IgM Cassette 25T", created: "2025-08-05", countries: [TH], use_share: 0.45}
   my_contracts:
     # MOH-linked MY tenders use 3-4 year reagent-rental / instrument-placement contracts; churn only at expiry
     # [R: Reagent rental / instrument placement contracts & tender length - Malaysia]. Lose-rate [T].
@@ -269,7 +281,7 @@ duplicates:
 
 # ---------------------------------------------------------------- streams (A6)
 streams:
-  pr_share_of_po_lines: {A: 0.06, B: 0.05, C: 0.90}   # PO lines that came through a formal quote/PR [T]
+  pr_share_of_po_lines: {A: 0.035, B: 0.03, C: 0.85}   # PO lines that came through a formal quote/PR [T]
   pr_lead_days: [5, 35]                                 # PR created this many days before the PO [T]
   pr_lost_ratio: {SG: 0.40, MY: 0.45, TH: 0.50, VN: 0.45, MM: 1.10}   # lost PRs per converted PR; MM conversion low [FM §5.5 MM]
   mm_lost_ratio_growth: 0.35    # MM lost ratio rises 35%/yr -> conversion falling [T]
@@ -283,6 +295,7 @@ streams:
   followup_share_of_pos: 0.10   # [T]
   followup_topics: {delivery: 0.55, invoice: 0.25, return: 0.07, credit_note: 0.05, other: 0.08}
   # Stuck demand: PRs blocked by a pending MDM request. Seed total S$150-450k; pinned PR-5521/5527 [FM §5.6 #6] [plan pinned facts].
+  max_prs_before_pinned: 5400  # PR ids are 4 digits and PR-5521/5527 are pinned: thin uniformly above this [plan pinned facts]
   blocked_extra_count: 10
   blocked_extra_sgd: [8000, 45000]
 
@@ -314,7 +327,7 @@ mdm_history:
   step_days: [2.4, 0.55]      # per sequential approval step
   mdm_days: [1.5, 0.5]        # MDM queue + manual keying
   steps: {customer: 3, extend: 1, item: 3, vendor: 3, costcentre: 2}
-  extra_step_p: {customer: 0.2, item: 0.6, vendor: 0.3, extend: 0.3, costcentre: 0.0}   # FD (credit > S$50k), QA/RA (IVD), QA/RA (regulated vendor), finance (credit terms)
+  extra_step_p: {customer: 0.2, item: 0.85, vendor: 0.3, extend: 0.3, costcentre: 0.0}   # FD (credit > S$50k), QA/RA (IVD), QA/RA (regulated vendor), finance (credit terms)
   blocked_pr_p: 0.12          # created requests that had a PR waiting on them [T]
   requestor_roles: {customer: [requestor, sales_manager], extend: [requestor, sales_manager, business_support], item: [requestor, bu_head], vendor: [requestor, procurement], costcentre: [financial_controller, bu_head]}
 

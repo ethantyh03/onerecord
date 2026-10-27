@@ -28,8 +28,12 @@ Deadline: **12:00 SGT Wed 28 Oct 2026**. The user is asleep until ~07:30 and has
 | 00:55 | shadcn is the Base UI variant (no asChild; use render prop). Kept, because agents adapt. next.config: eslint.ignoreDuringBuilds |
 | 00:56 | Both brief form links (S7 + S9) redirect to the SAME Google Form; it needs sign-in (401 when fetched anonymously) |
 
+| 01:28 | Wave 1 DONE + committed (8522d90): tsc 0, vitest 192/192, build green. Cost-centre SAP key fixed to 8 chars (CC-SG-0031 → SG-0031 inside SAP). Marcus's BU = NEW_BU_TEMPLATE "MLS — Meridian Life Sciences" |
+| 01:29 | Wave 2 launched (wf_59d75aac-07d) from scratchpad/wave2.js: lead patch, then intake/approvals/tracker/mdm/pulse-core/pulse-analytics/admin/story/scenes, then integrate + golden-path e2e |
+| 01:29 | Usage pacing: builders at effort=high; heavy Wave 3/4 after the 5:20 AM usage reset; cron resume at 05:27 + hourly heartbeat at :43 |
+
 ## Waves
-- [ ] Wave 1: foundation (engine, store, shell, mocks) + integration
+- [x] Wave 1: foundation (engine, store, shell, mocks) + integration
 - [ ] W1-E: Python data + DS → src/data JSON
 - [ ] Wave 2: features (intake, approvals, tracker + MDM, admin, pulse, triage + impact)
 - [ ] Wave 3: integrate + e2e demo path + visual review loop

@@ -1,6 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { usePathname } from "next/navigation";
 import { useHasHydrated } from "@/lib/store";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { FooterStrip } from "./footer-strip";
@@ -15,7 +16,10 @@ import { TopBar } from "./top-bar";
  */
 export function AppShell({ children }: { children: ReactNode }) {
   const hydrated = useHasHydrated();
+  const pathname = usePathname();
 
+  // Pitch frames are full-screen and read no sandbox state: never flash the shell skeleton.
+  if (pathname?.startsWith("/pitch")) return <>{children}</>;
   if (!hydrated) return <ShellSkeleton />;
 
   return (

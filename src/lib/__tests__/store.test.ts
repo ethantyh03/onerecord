@@ -20,7 +20,10 @@ const storage = vi.hoisted(() => {
 });
 
 import { STORAGE_KEY, STORAGE_VERSION, freshSandboxData, isValidSandboxData, useSandbox } from "@/lib/store";
-import { buildSeed } from "@/lib/seed";
+import { K2EDTA_ITEM, buildSeed } from "@/lib/seed";
+import { SIM_BASE_ISO, getSeedSnapshot, loadState } from "@/lib/store";
+import { canActOnStep } from "@/lib/selectors";
+import { NEW_BU_TEMPLATE } from "@/config/default-config";
 import {
   hoursForBusinessDays,
   selectMyRequests,
@@ -117,15 +120,21 @@ describe("seed scenario", () => {
     expect(seed.requests.map((r) => r.id)).toContain("REQ-1001");
   });
 
-  it("has 12 blocked PRs ≈ S$310k across all five countries, plus 20 open/converted", () => {
+  it("has 15 blocked PRs ≈ S$346k across all five countries (3 K2EDTA PRs unlinked), plus 20 open/converted", () => {
     const blocked = seed.prs.filter((p) => p.status === "blocked");
-    expect(blocked).toHaveLength(12);
+    expect(blocked).toHaveLength(15);
     const total = blocked.reduce((a, p) => a + p.sgd, 0);
-    expect(total).toBeGreaterThan(290_000);
-    expect(total).toBeLessThan(330_000);
+    expect(total).toBe(345_800);
+    expect(total).toBeGreaterThan(150_000);
+    expect(total).toBeLessThan(450_000);
     expect(new Set(blocked.map((p) => p.country)).size).toBe(5);
     expect(seed.prs.filter((p) => p.status !== "blocked")).toHaveLength(20);
-    for (const p of blocked) {
+    const unlinked = blocked.filter((p) => !p.blockedByRequestId);
+    expect(unlinked.map((p) => p.itemName)).toEqual([K2EDTA_ITEM, K2EDTA_ITEM, K2EDTA_ITEM]);
+    const k2 = unlinked.reduce((a, p) => a + p.sgd, 0);
+    expect(k2).toBeGreaterThanOrEqual(25_000);
+    expect(k2).toBeLessThanOrEqual(60_000);
+    for (const p of blocked.filter((x) => x.blockedByRequestId)) {
       const blocker = seed.requests.find((r) => r.id === p.blockedByRequestId);
       expect(blocker?.blockedPrIds).toContain(p.id);
     }
@@ -187,7 +196,7 @@ describe("store", () => {
     expect(S().hydrated).toBe(true);
     expect(S().requests.length).toBe(44);
     expect(S().personaId).toBe("amy");
-    expect(S().idCounter).toBe(1045);
+    expect(S().idCounter).toBe(1100);
     const raw = storage.get(STORAGE_KEY);
     expect(raw).toBeTruthy();
     expect(JSON.parse(raw!).version).toBe(STORAGE_VERSION);
@@ -208,14 +217,14 @@ describe("store", () => {
       storage: "Refrigerated (2–8 °C)",
       countries: "SG, MY",
     });
-    expect(id).toBe("REQ-1045");
+    expect(id).toBe("REQ-1100");
     expect(req(id).data.entity).toBe("SPD");
 
     // regLicenceNo is required for IVD reagents.
     const first = S().submitRequest(id);
     expect(first.ok).toBe(false);
     expect(first.errors.regLicenceNo).toBeTruthy();
-    S().updateDraft(id, { regLicenceNo: "DE0509888" });
+    S().updateDraft(id, { regLicenceNo: "DE0509888", regCertificate: "HSA-registration-DE0509888.pdf" });
 
     // Link a blocked PR to this request, as intake would when a PR is waiting on the item.
     useSandbox.setState((s) => ({
@@ -249,7 +258,7 @@ describe("store", () => {
     S().generateDtw(id); // idempotent
     expect(S().audit.length).toBe(auditLen);
 
-    const rec = S().markCreatedInSap(id);
+    const rec = S().markCreatedInSap(id).record!;
     expect(rec.code).toBe("I-A-000813");
     expect(rec.fields.ItemCode).toBe("I-A-000813");
     expect(rec.fields.ItemName).toBe("Dengue NS1 Ag Rapid Test 25T");
@@ -266,7 +275,7 @@ describe("store", () => {
 
     // Creating twice returns the same record without side effects.
     const len = S().audit.length;
-    expect(S().markCreatedInSap(id).code).toBe("I-A-000813");
+    expect(S().markCreatedInSap(id).record?.code).toBe("I-A-000813");
     expect(S().audit.length).toBe(len);
     expect(verifyChain(S().audit).ok).toBe(true);
   });
@@ -282,7 +291,7 @@ describe("store", () => {
     expect(req("REQ-1038").status).toBe("mdm_review");
 
     S().setPersona("priya");
-    const rec = S().markCreatedInSap("REQ-1038");
+    const rec = S().markCreatedInSap("REQ-1038").record!;
     expect(rec.code).toBe("C-TH-00065");
     expect(rec.fields).toMatchObject({ CardCode: "C-TH-00065", CardName: "Bangkok Riverside Hospital", FederalTaxID: "0107561000234" });
     const prs = S().prs.filter((p) => ["PR-5512", "PR-5513"].includes(p.id));
@@ -295,13 +304,13 @@ describe("store", () => {
 
   it("REQ-1042: creating Amy's dengue item notifies her about Sunway and Penang", () => {
     S().setPersona("priya");
-    const rec = S().markCreatedInSap("REQ-1042");
+    const rec = S().markCreatedInSap("REQ-1042").record!;
     expect(rec.code).toBe("I-A-000813");
     const note = S().notifications.find((n) => n.toId === "amy" && n.requestId === "REQ-1042" && n.channel === "teams" && n.kind === "created");
     expect(note?.body).toBe(
       "Your item I-A-000813 is live in SAP B1 — Sunway Medical Centre's PR-5521 and Penang General Hospital's PR-5527 can now be converted.",
     );
-    expect(selectStuckDemand(S()).totalSgd).toBe(309_800 - 70_000);
+    expect(selectStuckDemand(S()).totalSgd).toBe(345_800 - 70_000);
   });
 
   it("double approve is a no-op: one audit event", () => {
@@ -398,7 +407,7 @@ describe("store", () => {
     expect(selectMyRequests(S(), "amy").map((r) => r.id)).toEqual(expect.arrayContaining(["REQ-1032", "REQ-1036", "REQ-1042"]));
     expect(selectWaitingOn(S(), "priya").map((w) => w.request.id).sort()).toEqual(["REQ-1035", "REQ-1042"]);
     const stuck = selectStuckDemand(S());
-    expect(stuck.totalSgd).toBe(309_800);
+    expect(stuck.totalSgd).toBe(345_800);
     expect(Object.keys(stuck.byCountry).sort()).toEqual(["MM", "MY", "SG", "TH", "VN"]);
     expect(stuck.byCountry.MY.maxDaysWaiting).toBeGreaterThanOrEqual(1);
   });
@@ -481,5 +490,164 @@ describe("persistence", () => {
     expect(S().audit.length).toBe(auditLen);
     expect(stepByRole("REQ-1038", "finance").status).toBe("approved");
     expect(verifyChain(S().audit).ok).toBe(true);
+  });
+});
+
+describe("lead patch: sim clock, auto-link, segregation of duties, extend, lastUnblock", () => {
+  beforeEach(() => {
+    S().resetSandbox();
+  });
+
+  it("sim clock starts at 09:00 SGT Wed 28 Oct 2026 and seeds relative to it", () => {
+    const s = S();
+    expect(s.simBaseMs).toBe(Date.parse(SIM_BASE_ISO));
+    expect(Math.abs(Date.parse(s.nowIso()) - Date.parse(SIM_BASE_ISO))).toBeLessThan(60_000);
+    expect(Math.abs(Date.parse(selectNow(s)) - Date.parse(SIM_BASE_ISO))).toBeLessThan(60_000);
+    for (const r of s.requests) expect(Date.parse(r.createdAt)).toBeLessThanOrEqual(Date.parse(SIM_BASE_ISO));
+    s.fastForward(24);
+    expect(Math.abs(Date.parse(S().nowIso()) - (Date.parse(SIM_BASE_ISO) + 24 * 3_600_000))).toBeLessThan(60_000);
+    S().resetSandbox();
+    expect(S().clockOffsetMs).toBe(0);
+    expect(Math.abs(Date.parse(S().nowIso()) - Date.parse(SIM_BASE_ISO))).toBeLessThan(60_000);
+  });
+
+  it("ad-hoc request ids start at REQ-1100", () => {
+    expect(S().requests.every((r) => Number(r.id.slice(4)) < 1100)).toBe(true);
+    expect(S().createDraft("customer")).toBe("REQ-1100");
+    expect(S().createDraft("item")).toBe("REQ-1101");
+  });
+
+  it("Amy's K2EDTA item: QA/RA auto-added, waiting orders auto-linked, created item releases them", () => {
+    S().setPersona("amy");
+    const id = S().createDraft("item", {
+      itemName: "K2EDTA Blood Collection Tube 4 mL, 100/pk",
+      category: "Lab consumable – IVD medical device",
+      productGroup: "B",
+      manufacturer: "Greiner Bio-One",
+      uom: "PCK",
+      packSize: 100,
+      costPrice: 18,
+      salesPrice: 30,
+      storage: "Ambient (15–30 °C)",
+      countries: "SG, MY",
+    });
+    const first = S().submitRequest(id);
+    expect(first.ok).toBe(false);
+    expect(first.errors.regLicenceNo).toBeTruthy();
+    expect(first.errors.regCertificate).toBeTruthy();
+    S().updateDraft(id, { regLicenceNo: "DE0512345", regCertificate: "K2EDTA-HSA-certificate.pdf" });
+    const before = selectStuckDemand(S()).totalSgd;
+    expect(S().submitRequest(id).ok).toBe(true);
+    expect(selectStuckDemand(S()).totalSgd).toBe(before); // linking doesn't change stuck demand
+    const r = req(id);
+    expect(r.steps.find((s) => s.role === "qa_ra")?.addedBecause).toBe(
+      "Category = Lab consumable – IVD medical device → regulatory (QA/RA) review required",
+    );
+    const linked = S().prs.filter((p) => p.blockedByRequestId === id);
+    expect(linked.map((p) => p.customerName).sort()).toEqual(["Mount Faber Specialist Clinic", "Sunway Medical Centre", "Thomson Road Diagnostic Lab"]);
+    expect(r.blockedPrIds.sort()).toEqual(linked.map((p) => p.id).sort());
+    const ev = S().audit.find((e) => e.requestId === id && e.action === "linked_waiting_orders");
+    expect(ev?.detail).toMatch(/Linked 3 waiting orders \(S\$36,000\)/);
+
+    approveAll(id);
+    S().setPersona("priya");
+    const res = S().markCreatedInSap(id);
+    expect(res.ok).toBe(true);
+    expect(res.record?.code).toMatch(/^I-B-\d{6}$/);
+    expect(S().prs.filter((p) => linked.some((l) => l.id === p.id)).every((p) => p.status === "open" && p.itemCode === res.record?.code)).toBe(true);
+    expect(S().lastUnblock).toMatchObject({ requestId: id, beforeSgd: before, afterSgd: before - 36_000 });
+  });
+
+  it("segregation of duties: requestor / finance approver are blocked, nothing changes", () => {
+    // REQ-1038 is Amy's? use whoever raised it.
+    const r = req("REQ-1038");
+    const fin = stepByRole("REQ-1038", "finance");
+    expect(canActOnStep(S(), "REQ-1038", fin.id, r.requestorId)).toMatchObject({ ok: false });
+    expect(canActOnStep(S(), "REQ-1038", fin.id, "weijie")).toEqual({ ok: true });
+    S().setPersona(r.requestorId);
+    const len = S().audit.length;
+    const blocked = S().approveStep("REQ-1038", fin.id);
+    expect(blocked.ok).toBe(false);
+    expect(blocked.reason).toMatch(/Segregation of duties/);
+    expect(S().rejectStep("REQ-1038", fin.id, "no").ok).toBe(false);
+    expect(S().audit.length).toBe(len);
+    expect(stepByRole("REQ-1038", "finance").status).toBe("pending");
+
+    // Wei Jie approves finance, Rachel the FD step → Wei Jie can't create it in SAP B1, Priya can.
+    S().setPersona("weijie");
+    expect(S().approveStep("REQ-1038", fin.id).ok).toBe(true);
+    S().setPersona("rachel");
+    expect(S().approveStep("REQ-1038", stepByRole("REQ-1038", "finance_director").id).ok).toBe(true);
+    expect(canActOnStep(S(), "REQ-1038", "create_in_sap", "weijie").ok).toBe(false);
+    expect(canActOnStep(S(), "REQ-1038", stepByRole("REQ-1038", "mdm").id, "weijie").ok).toBe(false);
+    S().setPersona("weijie");
+    const no = S().markCreatedInSap("REQ-1038");
+    expect(no.ok).toBe(false);
+    expect(no.reason).toMatch(/Segregation of duties/);
+    expect(req("REQ-1038").status).toBe("mdm_review");
+    S().setPersona("priya");
+    expect(S().markCreatedInSap("REQ-1038").ok).toBe(true);
+  });
+
+  it("markCreatedInSap never throws: not ready → ok false", () => {
+    S().setPersona("priya");
+    expect(S().markCreatedInSap("REQ-1038")).toMatchObject({ ok: false });
+    expect(S().markCreatedInSap("REQ-9999")).toMatchObject({ ok: false });
+  });
+
+  it("Marcus extends NUH (C-SG-00017) to MLS with new credit terms: Finance routed, same code, U_Entities updated", () => {
+    S().setPersona("priya");
+    S().updateConfig({ ...S().config, businessUnits: [...S().config.businessUnits, NEW_BU_TEMPLATE] }, "Add MLS");
+    S().setPersona("marcus");
+    const id = S().createDraft("extend", {
+      existingCode: "C-SG-00017",
+      existingName: "National University Hospital",
+      extendToEntity: "MLS",
+      changesCreditTerms: "Yes",
+      paymentTerms: "Net 60",
+      creditLimit: 40000,
+      reason: "MLS starts supplying molecular kits to NUH",
+    });
+    expect(S().submitRequest(id).ok).toBe(true);
+    const r = req(id);
+    expect(r.steps.find((s) => s.role === "finance")?.assigneeId).toBe("weijie");
+    expect(r.steps.find((s) => s.role === "business_support")?.assigneeId).toBe("siti");
+    expect(r.steps.some((s) => s.stageId === "mls-regulatory")).toBe(true);
+    const before = S().sapRecords.find((x) => x.code === "C-SG-00017")!;
+    approveAll(id);
+    S().setPersona("priya");
+    const files = S().generateDtw(id);
+    expect(files[0].fileName).toBe("oBusinessPartners.csv");
+    expect(files[0].rows[0][files[0].headers.indexOf("U_Entities")]).toContain("MLS");
+    const res = S().markCreatedInSap(id);
+    expect(res.ok).toBe(true);
+    expect(res.record?.code).toBe("C-SG-00017");
+    expect(S().sapRecords.filter((x) => x.code === "C-SG-00017")).toHaveLength(1);
+    expect(res.record?.fields.U_Entities.split(", ")).toEqual([...before.fields.U_Entities.split(", "), "MLS"]);
+    expect(res.record?.fields.CreditLimit).toBe("40000");
+    expect(req(id).sapCode).toBe("C-SG-00017");
+  });
+
+  it("an entity with no BU config still routes (shared roles)", () => {
+    S().setPersona("marcus");
+    const id = S().createDraft("extend", {
+      existingCode: "C-SG-00017",
+      existingName: "National University Hospital",
+      extendToEntity: "MLS",
+      changesCreditTerms: "No",
+      reason: "MLS starts supplying molecular kits to NUH",
+    });
+    expect(S().submitRequest(id).ok).toBe(true);
+    expect(req(id).steps.every((s) => s.assigneeId && s.assigneeId !== "marcus")).toBe(true);
+  });
+
+  it("loadState merges and persists; getSeedSnapshot is a fresh seed", () => {
+    const snap = getSeedSnapshot();
+    expect(snap.requests.length).toBe(44);
+    loadState({ ...snap, personaId: "priya", clockOffsetMs: 3_600_000 });
+    expect(S().personaId).toBe("priya");
+    expect(S().clockOffsetMs).toBe(3_600_000);
+    expect(typeof S().approveStep).toBe("function");
+    expect(JSON.parse(storage.get(STORAGE_KEY)!).state.personaId).toBe("priya");
   });
 });

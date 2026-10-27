@@ -158,16 +158,18 @@ export function DtwWizard({
   function runImport() {
     if (!selected || !files || !sim?.ok) return;
     setImportPhase("running");
-    setImportLines(["Connecting to company database LIVES_SANDBOX", `Import mode: Add new objects · ${files.length} file(s)`]);
+    setImportLines(["Connecting to company database LIVES_SANDBOX", `Import mode: ${selected.domainId === "extend" ? "Update existing objects" : "Add new objects"} · ${files.length} file(s)`]);
     later(() => {
       try {
-        const created = markCreatedInSap(selected.id);
+        const result = markCreatedInSap(selected.id);
+        if (!result.ok || !result.record) throw new Error(result.reason ?? "SAP B1 rejected the import");
+        const created = result.record;
         setRecord(created);
         const lines = [
           ...files.map((f) => `Reading ${f.fileName}`),
           // One approved request is one master record: DTW counts parent objects, not child rows.
           `Object 1 of 1 imported successfully. Key: ${created.code}`,
-          "Import finished: 1 object(s) added, 0 failed",
+          selected.domainId === "extend" ? "Import finished: 1 object(s) updated, 0 failed" : "Import finished: 1 object(s) added, 0 failed",
         ];
         lines.forEach((line, i) => later(() => setImportLines((cur) => [...cur, line]), 160 * (i + 1)));
         later(() => {

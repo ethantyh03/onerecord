@@ -9,6 +9,9 @@ import {
   SlidersHorizontal,
   Stamp,
   Activity,
+  BookOpenCheck,
+  ListChecks,
+  Network,
   type LucideIcon,
 } from "lucide-react";
 
@@ -55,6 +58,14 @@ export const NAV_GROUPS: NavGroup[] = [
       { href: "/pulse", label: "Regional Pulse", icon: Activity, hint: "Products A/B/C across five countries" },
       { href: "/triage", label: "Inbox triage", icon: Inbox, hint: "Sort the shared mailbox" },
       { href: "/impact", label: "Impact", icon: ChartNoAxesCombined, hint: "Business case and payback" },
+    ],
+  },
+  {
+    label: "The case",
+    items: [
+      { href: "/architecture", label: "Architecture", icon: Network, hint: "How it lands in SAP B1" },
+      { href: "/scope", label: "Scope & roadmap", icon: ListChecks, hint: "What v1 does and does not do" },
+      { href: "/assumptions", label: "Assumptions", icon: BookOpenCheck, hint: "Every number's source, A1–A28" },
     ],
   },
   {

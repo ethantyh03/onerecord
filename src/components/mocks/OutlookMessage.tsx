@@ -2,15 +2,15 @@
 
 import Link from "next/link";
 import { useEffect, useId, useMemo, useState } from "react";
-import { toast } from "sonner";
-import { ArrowUpRight, CheckCircle2, ClipboardCheck, Info, Paperclip, XCircle } from "lucide-react";
-import { MaskedValue } from "@/components/common";
+import { ArrowUpRight, CheckCircle2, ClipboardCheck, Info, Lock, Paperclip, PhoneCall, XCircle } from "lucide-react";
+import { needsCallbackCheck, useApprovalActions } from "@/components/approvals/use-approval-actions";
 import { formatSgtDateTime } from "@/components/common/format";
 import { useSandbox } from "@/lib/store";
 import type { AppNotification } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { MS_FONT, findPerson, firstName, formatAgo, usePeople, useSimNow } from "./shared";
 import { buildKeyFacts, countryName, formatFactValue } from "./teams-helpers";
+import { CARD_MASK_TEXT } from "./TeamsApprovalCard";
 
 export const OUTLOOK_SENDER = { name: "OneRecord Approvals", email: "approvals@livesgroup.example" } as const;
 
@@ -32,7 +32,7 @@ export function OutlookMessage({ notification: n, markReadOnView = true, classNa
   const now = useSimNow();
   const request = useSandbox((s) => (n.requestId ? s.requests.find((r) => r.id === n.requestId) : undefined));
   const domain = useSandbox((s) => (request ? s.config.domains.find((d) => d.id === request.domainId) : undefined));
-  const approveStep = useSandbox((s) => s.approveStep);
+  const actions = useApprovalActions();
   const markNotificationRead = useSandbox((s) => s.markNotificationRead);
   const [confirming, setConfirming] = useState(false);
   const [comment, setComment] = useState("");
@@ -46,7 +46,10 @@ export function OutlookMessage({ notification: n, markReadOnView = true, classNa
   const step = request && n.stepId ? request.steps.find((s) => s.id === n.stepId) : undefined;
   const requestor = findPerson(people, request?.requestorId);
   const isApprover = Boolean(step && (step.assigneeId === n.toId || step.originalAssigneeId === n.toId));
-  const canApprove = isApprover && step?.status === "pending" && step.assigneeId === n.toId;
+  const pendingForRecipient = isApprover && step?.status === "pending" && step.assigneeId === n.toId;
+  /** Vendor bank details need the call-back tick, which lives on the Teams card and in OneRecord, not in email. */
+  const callbackRequired = Boolean(request && step && pendingForRecipient && needsCallbackCheck(request, step));
+  const canApprove = pendingForRecipient && !callbackRequired;
   const facts = useMemo(
     () => (request ? buildKeyFacts(request, domain, { limit: 4, role: step?.role }) : []),
     [request, domain, step?.role],
@@ -54,10 +57,9 @@ export function OutlookMessage({ notification: n, markReadOnView = true, classNa
 
   function approve() {
     if (!request || !step) return;
-    approveStep(request.id, step.id, comment.trim() || undefined);
+    const ok = actions.approve(request, step, comment.trim() || undefined);
     setConfirming(false);
-    setComment("");
-    toast.success(`Approved from Outlook · ${request.id}`, { description: step.label });
+    if (ok) setComment("");
   }
 
   return (
@@ -70,7 +72,7 @@ export function OutlookMessage({ notification: n, markReadOnView = true, classNa
         <h2 className="text-[18px] leading-snug font-semibold">{n.title}</h2>
         <div className="mt-1.5 flex flex-wrap gap-1.5">
           <span className="rounded-[3px] bg-[#e8ebfa] px-1.5 py-px text-[11px] font-semibold text-[#444791]">OneRecord</span>
-          {canApprove ? (
+          {pendingForRecipient ? (
             <span className="rounded-[3px] bg-[#fff4ce] px-1.5 py-px text-[11px] font-semibold text-[#835b00]">Action required</span>
           ) : null}
         </div>
@@ -109,7 +111,7 @@ export function OutlookMessage({ notification: n, markReadOnView = true, classNa
           >
             <div className="flex items-center gap-2 border-b border-[#ebebeb] bg-[#fafafa] px-4 py-2">
               <ClipboardCheck className="size-4" style={{ color: OUTLOOK.blue }} aria-hidden="true" />
-              <span className="text-[12px] font-semibold">OneRecord · {canApprove ? "Approval needed" : "Request update"}</span>
+              <span className="text-[12px] font-semibold">OneRecord · {pendingForRecipient ? "Approval needed" : "Request update"}</span>
               <span className="ml-auto text-[11px] text-[#616161] tabular-nums">{request.id}</span>
             </div>
             <div className="px-4 py-3">
@@ -126,7 +128,10 @@ export function OutlookMessage({ notification: n, markReadOnView = true, classNa
                       <dt className="text-[#616161]">{f.label}</dt>
                       <dd className="min-w-0 break-words">
                         {f.sensitive ? (
-                          <MaskedValue value={f.value} requestId={request.id} fieldKey={f.key} />
+                          <span className="inline-flex items-center gap-1 text-[#616161]">
+                            <Lock className="size-3 shrink-0" aria-hidden="true" />
+                            {CARD_MASK_TEXT}
+                          </span>
                         ) : (
                           formatFactValue(f.value)
                         )}
@@ -186,20 +191,20 @@ export function OutlookMessage({ notification: n, markReadOnView = true, classNa
                 {canApprove ? (
                   confirming ? (
                     <>
-                      <OutlookButton primary onClick={approve}>
+                      <OutlookButton primary data-testid="outlook-approve-submit" onClick={approve}>
                         Submit approval
                       </OutlookButton>
                       <OutlookButton onClick={() => setConfirming(false)}>Cancel</OutlookButton>
                     </>
                   ) : (
-                    <OutlookButton primary onClick={() => setConfirming(true)}>
+                    <OutlookButton primary data-testid="outlook-approve" onClick={() => setConfirming(true)}>
                       Approve
                     </OutlookButton>
                   )
                 ) : null}
                 {!confirming ? (
                   <Link
-                    href={`/requests/${encodeURIComponent(request.id)}`}
+                    href={`/requests/view?id=${encodeURIComponent(request.id)}`}
                     className="inline-flex h-8 items-center gap-1 rounded-[4px] border border-[#d1d1d1] bg-white px-3 text-[13px] font-semibold text-[#242424] transition-colors hover:bg-[#f5f5f5]"
                   >
                     Open in OneRecord
@@ -207,6 +212,13 @@ export function OutlookMessage({ notification: n, markReadOnView = true, classNa
                   </Link>
                 ) : null}
               </div>
+              {callbackRequired ? (
+                <p className="mt-3 flex items-start gap-1.5 rounded-[4px] border border-[#f2c661] bg-[#fffaeb] px-2.5 py-1.5 text-[12px] text-[#5c4300]">
+                  <PhoneCall className="mt-0.5 size-3.5 shrink-0" aria-hidden="true" />
+                  New supplier bank details: approve from Teams or OneRecord, where you confirm the call-back to an independently
+                  sourced number. Email approval is switched off for this step.
+                </p>
+              ) : null}
               {canApprove ? (
                 <p className="mt-2 text-[11px] text-[#616161]">
                   To reject or ask a question, open the request. Both need a written reason.

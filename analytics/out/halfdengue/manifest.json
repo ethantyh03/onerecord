@@ -1,0 +1,443 @@
+{
+ "scenario": "halfdengue",
+ "seed": 7,
+ "signal": true,
+ "dengue_scale": 0.5,
+ "generator": "analytics/generate.py",
+ "params": "analytics/params.yaml",
+ "history": [
+  "2023-10",
+  "2026-09"
+ ],
+ "window": [
+  "2025-10",
+  "2026-09"
+ ],
+ "summary": {
+  "value_12m_dedup": {
+   "SG": {
+    "A": 9997320,
+    "B": 3443411,
+    "C": 3421830
+   },
+   "MY": {
+    "A": 9209742,
+    "B": 3267065,
+    "C": 2369671
+   },
+   "TH": {
+    "A": 5829207,
+    "B": 2100323,
+    "C": 1855120
+   },
+   "VN": {
+    "A": 5312825,
+    "B": 1994471,
+    "C": 548745
+   },
+   "MM": {
+    "A": 2146706,
+    "B": 662014,
+    "C": 441887
+   }
+  },
+  "yoy_dedup": {
+   "SG": {
+    "A": -0.0191,
+    "B": -0.0392,
+    "C": 0.1178
+   },
+   "MY": {
+    "A": 0.059,
+    "B": 0.105,
+    "C": -0.1823
+   },
+   "TH": {
+    "A": 0.1125,
+    "B": 0.0331,
+    "C": 0.0662
+   },
+   "VN": {
+    "A": 0.1578,
+    "B": 0.1181,
+    "C": -0.6192
+   },
+   "MM": {
+    "A": -0.0362,
+    "B": -0.0999,
+    "C": -0.3419
+   }
+  },
+  "country_12m_dedup": {
+   "SG": 16862561,
+   "MY": 14846478,
+   "TH": 9784650,
+   "VN": 7856042,
+   "MM": 3250607
+  },
+  "country_yoy_dedup": {
+   "SG": 0.0015,
+   "MY": 0.0203,
+   "TH": 0.0857,
+   "VN": 0.0054,
+   "MM": -0.1056
+  },
+  "group_12m": 52600338,
+  "group_yoy": 0.0145,
+  "country_12m_raw": {
+   "SG": 17871698,
+   "MY": 14156280,
+   "TH": 9784650,
+   "VN": 7537104,
+   "MM": 3250607
+  },
+  "raw_minus_dedup_pct": {
+   "SG": 0.0598,
+   "MY": -0.0465,
+   "TH": 0.0,
+   "VN": -0.0406,
+   "MM": 0.0
+  },
+  "product_12m_dedup": {
+   "A": 32495801,
+   "B": 11467284,
+   "C": 8637253
+  },
+  "A_to_C": 3.76,
+  "misattribution_share_12m": {
+   "SG": 0.0,
+   "MY": 0.0465,
+   "TH": 0.0,
+   "VN": 0.0406,
+   "MM": 0.0
+  },
+  "misattribution_sgd_12m": 1009137,
+  "miscategorised_sgd_12m": 459113,
+  "miscategorised_share_of_A_12m": 0.0141,
+  "miscategorised_share_of_A_by_country": {
+   "SG": 0.0,
+   "MY": 0.0,
+   "TH": 0.06,
+   "VN": 0.0199,
+   "MM": 0.0018
+  },
+  "customer_records": 388,
+  "golden_customers": 363,
+  "duplicate_records": 25,
+  "duplicate_rate": 0.0644,
+  "dup_pairs": {
+   "tune": 11,
+   "holdout": 15
+  },
+  "items": 120,
+  "rows": {
+   "pos_lines": 54487,
+   "pos": 40798,
+   "prs": 4487,
+   "enquiries": 10991,
+   "followups": 4004,
+   "mdm_requests_hist": 920
+  },
+  "heroes": {
+   "SG": {
+    "golden_id": "G-SG-0014",
+    "name": "Tanjong Rhu Crest Medical Centre",
+    "yoy": -0.3246,
+    "rank_12m": 21,
+    "sgd_12m": 201594
+   },
+   "MY": {
+    "golden_id": "G-MY-0002",
+    "name": "Bukit Damai Specialist Hospital",
+    "yoy": -0.3334,
+    "rank_12m": 2,
+    "sgd_12m": 1012440
+   },
+   "TH": {
+    "golden_id": "G-TH-0008",
+    "name": "Chao Phraya Rim Hospital",
+    "yoy": -0.3006,
+    "rank_12m": 11,
+    "sgd_12m": 317151
+   },
+   "VN": {
+    "golden_id": "G-VN-0011",
+    "name": "Bệnh viện Đa khoa Hồng Lạc",
+    "yoy": -0.3799,
+    "rank_12m": 16,
+    "sgd_12m": 143785
+   },
+   "MM": {
+    "golden_id": "G-MM-0005",
+    "name": "Thukha Yeik Specialist Hospital",
+    "yoy": -0.3214,
+    "rank_12m": 6,
+    "sgd_12m": 177756
+   }
+  },
+  "stuck_demand_sgd": 294625,
+  "stuck_demand_prs": 12,
+  "mdm_median_cycle_days": 14.1,
+  "mdm_median_cycle_days_by_domain": {
+   "costcentre": 12.0,
+   "customer": 13.9,
+   "extend": 8.9,
+   "item": 16.7,
+   "vendor": 14.1
+  },
+  "mdm_bounce_rate": 0.402
+ },
+ "assertions": [
+  {
+   "name": "SCHEMA.md columns present",
+   "value": "all",
+   "target": "all",
+   "ok": true
+  },
+  {
+   "name": "hero MY: 3 records = 2 SPD + 1 QTS",
+   "value": [
+    "QTS",
+    "SPD",
+    "SPD"
+   ],
+   "target": [
+    "QTS",
+    "SPD",
+    "SPD"
+   ],
+   "ok": true
+  },
+  {
+   "name": "hero MY: record 1 has no PO after Mar 2026",
+   "value": "2026-03",
+   "target": "<= 2026-03",
+   "ok": true
+  },
+  {
+   "name": "hero MY: record 2 first PO in Apr 2026",
+   "value": "2026-04",
+   "target": "2026-04",
+   "ok": true
+  },
+  {
+   "name": "hero MY: record 3 flat (|YoY| <= 15%)",
+   "value": 0.117,
+   "target": "[-0.15, 0.15]",
+   "ok": true
+  },
+  {
+   "name": "hero MY: merged YoY in [-40%, -30%]",
+   "value": -0.3334,
+   "target": "[-0.40, -0.30]",
+   "ok": true
+  },
+  {
+   "name": "hero MY: merged top-3 MY account (12M)",
+   "value": 2,
+   "target": "<= 3",
+   "ok": true
+  },
+  {
+   "name": "hero SG: merged YoY in [-40%, -22%]",
+   "value": -0.3246,
+   "target": "[-0.40, -0.22]",
+   "ok": true
+  },
+  {
+   "name": "hero TH: merged YoY in [-40%, -22%]",
+   "value": -0.3006,
+   "target": "[-0.40, -0.22]",
+   "ok": true
+  },
+  {
+   "name": "hero VN: merged YoY in [-40%, -22%]",
+   "value": -0.3799,
+   "target": "[-0.40, -0.22]",
+   "ok": true
+  },
+  {
+   "name": "hero MM: merged YoY in [-40%, -22%]",
+   "value": -0.3214,
+   "target": "[-0.40, -0.22]",
+   "ok": true
+  },
+  {
+   "name": "misattribution MY: 3-8% of 12M value",
+   "value": 0.0465,
+   "target": "[0.03, 0.08]",
+   "ok": true
+  },
+  {
+   "name": "misattribution VN: 3-8% of 12M value",
+   "value": 0.0406,
+   "target": "[0.03, 0.08]",
+   "ok": true
+  },
+  {
+   "name": "misattribution starts Jan 2026",
+   "value": "2026-01",
+   "target": "2026-01",
+   "ok": true
+  },
+  {
+   "name": "raw and de-duplicated group totals identical",
+   "value": -0.0,
+   "target": 0.0,
+   "ok": true
+  },
+  {
+   "name": "false cross-sell TH: records look A-only + C-only, merged gap is B",
+   "value": [
+    "A",
+    "C"
+   ],
+   "target": [
+    "A",
+    "C"
+   ],
+   "ok": true
+  },
+  {
+   "name": "duplicate rate ~6% of customer records",
+   "value": 0.0644,
+   "target": "[0.05, 0.07]",
+   "ok": true
+  },
+  {
+   "name": "stuck demand S$150-450k",
+   "value": 294625,
+   "target": "[150000, 450000]",
+   "ok": true
+  },
+  {
+   "name": "pinned PR-5521 / PR-5527 exact (blocked by REQ-1042)",
+   "value": true,
+   "target": true,
+   "ok": true
+  },
+  {
+   "name": "demo new items absent from item master",
+   "value": [],
+   "target": [],
+   "ok": true
+  },
+  {
+   "name": "value mix A ~3x C (12M)",
+   "value": 3.76,
+   "target": "[2.5, 3.6]",
+   "ok": false
+  },
+  {
+   "name": "dengue: SG May-Oct 2024 test units well above 2025",
+   "value": -0.249,
+   "target": "<= -0.20",
+   "ok": true
+  },
+  {
+   "name": "dengue: SG peak month inside May-Oct",
+   "value": "07",
+   "target": "05..10",
+   "ok": true
+  },
+  {
+   "name": "holiday dip: VN Tet month below neighbours",
+   "value": -0.116,
+   "target": "< 0",
+   "ok": true
+  },
+  {
+   "name": "holiday dip: TH Songkran month below neighbours",
+   "value": -0.153,
+   "target": "< 0",
+   "ok": true
+  },
+  {
+   "name": "holiday dip: MM Thingyan month below neighbours",
+   "value": -0.344,
+   "target": "< 0",
+   "ok": true
+  },
+  {
+   "name": "holiday dip: SG CNY month below neighbours",
+   "value": -0.205,
+   "target": "< 0",
+   "ok": true
+  },
+  {
+   "name": "fiscal flush: SG instruments, FY-end quarter share > 25%",
+   "value": 0.387,
+   "target": "> 0.25",
+   "ok": true
+  },
+  {
+   "name": "fiscal flush: MM instruments, FY-end quarter share > 25%",
+   "value": 0.496,
+   "target": "> 0.25",
+   "ok": true
+  },
+  {
+   "name": "fiscal flush: MY instruments, FY-end quarter share > 25%",
+   "value": 0.352,
+   "target": "> 0.25",
+   "ok": true
+  },
+  {
+   "name": "fiscal flush: VN instruments, FY-end quarter share > 25%",
+   "value": 0.4,
+   "target": "> 0.25",
+   "ok": true
+  },
+  {
+   "name": "fiscal flush: TH instruments, FY-end quarter share > 25%",
+   "value": 0.432,
+   "target": "> 0.25",
+   "ok": true
+  },
+  {
+   "name": "MY reagent-rental churn at contract expiry (A stops)",
+   "value": [
+    "G-MY-0039",
+    "G-MY-0042"
+   ],
+   "target": "2 hospitals",
+   "ok": true
+  },
+  {
+   "name": "NUH C-SG-00017 master record exact, 0 transactions",
+   "value": true,
+   "target": true,
+   "ok": true
+  },
+  {
+   "name": "no other SG record can steal the 'Natl Univ Hosp' match",
+   "value": 0,
+   "target": 0,
+   "ok": true
+  },
+  {
+   "name": "MDM history ids stay below the app REQ-1001+",
+   "value": 920,
+   "target": "< 1000",
+   "ok": true
+  },
+  {
+   "name": "forecast: ETS beats rolling-12 on A in >=3/5 and B in >=2/5",
+   "value": "deferred",
+   "target": "checked on models by the backtest/matcher scripts",
+   "ok": null
+  },
+  {
+   "name": "stress (a) |advantage| <= 2 pts; (b) advantage persists",
+   "value": "deferred",
+   "target": "checked on models by the backtest/matcher scripts",
+   "ok": null
+  },
+  {
+   "name": "matcher held-out P and R in [0.80, 0.97]",
+   "value": "deferred",
+   "target": "checked on models by the backtest/matcher scripts",
+   "ok": null
+  }
+ ]
+}

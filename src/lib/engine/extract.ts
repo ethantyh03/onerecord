@@ -342,7 +342,12 @@ function orgAfter(trigger: string, text: string, confidence: number): Found | un
   return capture(re, text, confidence, cutName);
 }
 
+const IVD_CONSUMABLE = "Lab consumable – IVD medical device";
+
 function categoryFromText(text: string): string | undefined {
+  // Blood collection tubes (K2EDTA etc.) are lab consumables regulated as IVD medical devices.
+  if (/\bK\s?[23]\s?EDTA\b|\bEDTA\b|\bblood\s+collection\s+tubes?\b|\bvacu(?:um|tainer)\s+tubes?\b/i.test(text)) return IVD_CONSUMABLE;
+  if (/\bconsumables?\b/i.test(text) && /\bIVD\b|\bmedical\s+devices?\b/i.test(text)) return IVD_CONSUMABLE;
   if (/\bIVD\b|\breagents?\b|\brapid\s+tests?\b|\btest\s+kits?\b|\bassays?\b|\bantigen\b|\bantibody\b/i.test(text)) return "IVD reagent";
   if (/\bmedical\s+devices?\b/i.test(text)) return "Medical device";
   if (/\banaly[sz]ers?\b|\binstruments?\b|\bcentrifuges?\b|\bmicroscopes?\b|\bequipment\b/i.test(text)) return "Instrument";
@@ -353,6 +358,7 @@ function categoryFromText(text: string): string | undefined {
 function productGroupFor(category: string | undefined): string | undefined {
   if (!category) return undefined;
   const c = category.toLowerCase();
+  if (/consumable/.test(c)) return "B";
   if (/ivd|reagent|test kit/.test(c)) return "A";
   if (/consumable/.test(c)) return "B";
   if (/instrument|equipment|device/.test(c)) return "C";

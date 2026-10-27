@@ -4,6 +4,7 @@ import type {
   Condition,
   DomainConfig,
   FieldValue,
+  MdmRequest,
   Person,
   RoleId,
   SlaConfig,
@@ -33,7 +34,7 @@ export const ROLE_LABELS: Record<RoleId, string> = {
 
 /** Why a conditional step is needed, phrased as the outcome after the arrow in addedBecause. */
 const ROLE_REASONS: Partial<Record<RoleId, string>> = {
-  qa_ra: "regulatory review required",
+  qa_ra: "regulatory (QA/RA) review required",
   finance: "Finance review required",
   finance_director: "Finance Director approval required",
   financial_controller: "Financial Controller approval required",
@@ -314,4 +315,50 @@ export function expectedCompletion(steps: ApprovalStep[], startIso: string, sla:
   let units = 0;
   for (const list of byStage.values()) units += list[0].stageMode === "parallel" ? 1 : list.length;
   return addBusinessDays(startIso, units * sla.stepBusinessDays);
+}
+
+// ---------------------------------------------------------------------------------------------
+// Segregation of duties (final model P0-08)
+
+/** Roles whose approval counts as "the finance step" for segregation of duties. */
+export const FINANCE_ROLES: readonly RoleId[] = ["finance", "finance_director", "financial_controller"];
+
+export interface SodResult {
+  ok: boolean;
+  reason?: string;
+}
+
+/**
+ * Can `personId` decide `step` on `req` (or, with step = "create_in_sap", mark the record created in SAP B1)?
+ * Rules: the requestor and the requestor's out-of-office delegate never approve their own request; whoever
+ * approved a finance step cannot do the MDM final check / SAP creation. Step status is not checked here.
+ */
+export function segregationCheck(
+  req: Pick<MdmRequest, "id" | "requestorId" | "steps">,
+  step: Pick<ApprovalStep, "stageId" | "role"> | "create_in_sap",
+  personId: string,
+  people: Pick<Person, "id" | "name" | "delegateId">[],
+): SodResult {
+  const nameOf = (id: string) => people.find((p) => p.id === id)?.name ?? id;
+  if (personId === req.requestorId) {
+    return { ok: false, reason: `Segregation of duties: you raised ${req.id}, so someone else must approve it.` };
+  }
+  const requestor = people.find((p) => p.id === req.requestorId);
+  if (requestor?.delegateId && requestor.delegateId === personId) {
+    return {
+      ok: false,
+      reason: `Segregation of duties: you are ${nameOf(req.requestorId)}'s delegate, so you can't approve ${nameOf(req.requestorId)}'s own request ${req.id}.`,
+    };
+  }
+  const isMdm = step === "create_in_sap" || step.stageId === MDM_STAGE_ID || step.role === "mdm";
+  if (isMdm) {
+    const fin = req.steps.find((s) => FINANCE_ROLES.includes(s.role) && s.status === "approved" && s.assigneeId === personId);
+    if (fin) {
+      return {
+        ok: false,
+        reason: `Segregation of duties: you approved “${fin.label}” on ${req.id}, so a different person must ${step === "create_in_sap" ? "create the record in SAP B1" : "do the MDM final check"}.`,
+      };
+    }
+  }
+  return { ok: true };
 }
