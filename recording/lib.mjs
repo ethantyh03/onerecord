@@ -12,7 +12,7 @@ export const FFBIN =
   "C:/Users/ethan/AppData/Local/Microsoft/WinGet/Packages/Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe/ffmpeg-9.0.2-full_build/bin";
 export const FFMPEG = `${FFBIN}/ffmpeg.exe`;
 export const FFPROBE = `${FFBIN}/ffprobe.exe`;
-export const OUT = path.join(ROOT, "deliverables", "video");
+export const OUT = process.env.REC_OUT ? path.resolve(process.env.REC_OUT) : path.join(ROOT, "deliverables", "video");
 export const VIEWPORT = { width: 1536, height: 864 };
 export const DSF = 1.25;
 export const FPS = 30;
@@ -255,7 +255,7 @@ export class Rec {
     if (!this.recording || this.paused) return;
     const t = this.vt();
     const c = this.chunks.find((k) => t >= k.start && t < k.showUntil);
-    const text = c ? c.text : "";
+    const text = process.env.NO_CAPTIONS ? "" : (c ? c.text : "");
     if (text === (this.shownCaption || "")) return;
     this.shownCaption = text;
     this.page.evaluate((s) => { window.__recCaption?.(s); return !!window.__recCaption && !!document.getElementById("__rec_cap"); }, text).then((ok) => process.env.DEBUG_CAP && console.log("cap", this.vt().toFixed(2), ok, text.slice(0, 30))).catch((e) => process.env.DEBUG_CAP && console.log("caperr", e.message));

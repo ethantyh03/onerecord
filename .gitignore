@@ -60,3 +60,4 @@ __pycache__/
 
 .vercel
 .env*
+/deliverables/video-nocap/
