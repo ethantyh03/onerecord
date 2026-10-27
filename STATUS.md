@@ -35,9 +35,22 @@ Deadline: **12:00 SGT Wed 28 Oct 2026**. The user is asleep until ~07:30 and has
 | 02:11 | Wave 2 DONE + committed (fe37345): tsc 0, vitest 238, build 21 static pages, Playwright golden path 24/24. Expected live date for Amy = Tue 3 Nov (engine: 2+2 business days); use that in the VO |
 | 02:20 | Wave 2b launched (wf_ba318939-d24): MLS molecular pre-check → item requests only (extend goes Business Support + Finance → MDM); triage rules improved on an independent dev set (blind test was 47%) |
 
+| 02:28 | Wave 2b DONE + committed (0f24f0b): MLS pre-check for items only; triage blind 47% → 92% (rules built on an independent dev set) |
+| 03:02 | DS DONE + committed (bf0f8f2). Headlines: S$53.4M +4.0% YoY; forecast off 11 → 9 per 100 (A+B, illustrative; gain seasonal); Bukit Damai MY #2 −32% once merged; matcher held-out P 0.929 / R 0.867; payback 5.9 mo; stress test passes (no-signal −0.6 pts) |
+| 03:06 | Real-data build green; golden path 24/24. Server on :3100 (background). Wave 3 review/fix launched (wf_c60c0da1-e11) |
+
+| ~03:10 | USAGE LIMIT REACHED. Wave 3 (wf_c60c0da1-e11) stopped during review, before any fixer ran. The :3100 server also exited |
+
+## RESUME AT 05:27 (after the usage reset)
+1. cd C:/Users/ethan/dev/onerecord && git status (should be clean apart from reviewer screenshots in test-results/)
+2. npm run build && start `npx next start -p 3100` in the background; curl until 200
+3. Relaunch Wave 3: Workflow scriptPath scratchpad/wave3.js, resumeFromRunId wf_c60c0da1-e11, same args (baseUrl http://localhost:3100, round 1, notes = DS caveats in the 03:06 entry; see the Wave 3 launch in the transcript)
+4. Commit; then Wave 4 (scratchpad/wave4.js): video + TTS + slides + presenter guide
+5. Prepare the morning checklist (below)
+
 ## Waves
 - [x] Wave 1: foundation (engine, store, shell, mocks) + integration
-- [ ] W1-E: Python data + DS → src/data JSON
+- [x] W1-E: Python data + DS → src/data JSON
 - [x] Wave 2: features (intake, approvals, tracker + MDM, admin, pulse, triage + impact)
 - [ ] Wave 3: integrate + e2e demo path + visual review loop
 - [ ] Wave 4: README, recording, voiceover script, 2 slides, secrets scan, deploy
