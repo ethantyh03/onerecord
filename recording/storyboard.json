@@ -1,6 +1,6 @@
 {
   "title": "OneRecord demo — voice-over storyboard",
-  "source": "final model §7.1 (docs/superpowers/specs/2026-10-28-final-model.md) with the 28 Oct fact fixes; numbers from src/data/summary.json, impact.json, meta.json",
+  "source": "final model §7.1 (team design notes, 28 Oct 2026) with the 28 Oct fact fixes; numbers from src/data/summary.json, impact.json, meta.json",
   "note": "Synthetic, illustrative data. The real company is never named. SAP Business One is described as document-centric, never as unable to approve master data.",
   "tts": {
     "engine": "edge-tts",

@@ -656,7 +656,7 @@ def build_impact(scenario: str = "base") -> dict:
         "isMock": False,
         "generatedAt": dt.datetime.now(dt.timezone(dt.timedelta(hours=8))).isoformat(timespec="seconds"),
         "generator": "analytics/business_case.py",
-        "spec": "final model §6 (docs/superpowers/specs/2026-10-28-final-model.md)",
+        "spec": "final model §6 (team design notes, 28 Oct 2026)",
         "synthetic": True,
         "conventions": ("Every number is {value, unit, formula, source, display}. value null = not finite (e.g. never pays "
                         "back). Hard, soft and opportunity are separate columns: payback counts hard hours only."),

@@ -3,7 +3,7 @@
 # Source tags used in the comments:
 #   [R: <section>]  research log  docs/research/2026-10-23-business-case-facts.md, section "<section>"
 #   [A<n>]          assumption register, design doc §4 (A1–A18) and final model §6.1 (A19–A26)
-#   [FM §x]         final model docs/superpowers/specs/2026-10-28-final-model.md
+#   [FM §x]         final model team design notes, 28 Oct 2026
 #   [DS<n>]         DS-judge binding decision n (lead's prompt, 28 Oct 00:50)
 #   [T]             team assumption: illustrative, no source; listed so a judge can challenge it
 #

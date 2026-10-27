@@ -246,7 +246,7 @@ These are real artefacts in `integrations/` that the lean team can start from:
 
 ## Credits
 
-Built for the SMU Data Science & Analytics case competition 2026, with Claude Code as a pair programmer.
+Built by Team CTFudders for the SMU Data Science & Analytics case competition 2026.
 
 The case company, people and data are fictional; any resemblance to real organisations is coincidental.
 
