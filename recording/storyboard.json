@@ -17,8 +17,16 @@
       "voSeconds": 8.52,
       "voFile": "deliverables/video/vo/hook.mp3",
       "words": 26,
-      "slotStart": 0.0,
-      "slotEnd": 12.0
+      "slotStart": 0,
+      "slotEnd": 11.02,
+      "captions": [
+        "Amy needed one new item code.",
+        "It took 18 days, a bounced request and three approvers one at a time, and her sales order still failed."
+      ],
+      "title": "Hook",
+      "read": "Amy needed **one** new item code. // It took **eighteen days**, / a **bounced** request / and three approvers **one at a time**, / and her sales order **still failed**.",
+      "note": "*(Slow and flat, then let \"still failed\" land. Leave about two seconds of silence while the counter finishes.)*",
+      "voStart": 0.6
     },
     {
       "id": "frame",
@@ -28,8 +36,12 @@
       "voSeconds": 10.78,
       "voFile": "deliverables/video/vo/frame.mp3",
       "words": 25,
-      "slotStart": 12.0,
-      "slotEnd": 24.0
+      "slotStart": 10.77,
+      "slotEnd": 22.65,
+      "title": "Frame",
+      "read": "At Lives Group, / master data is created **by email**. // Records arrive **incomplete** or **duplicated**, / so the regional numbers **can't be trusted**. // OneRecord fixes **both ends**.",
+      "note": "",
+      "voStart": 11.07
     },
     {
       "id": "amy",
@@ -39,8 +51,18 @@
       "voSeconds": 25.73,
       "voFile": "deliverables/video/vo/amy.mp3",
       "words": 66,
-      "slotStart": 24.0,
-      "slotEnd": 50.5
+      "slotStart": 22.53,
+      "slotEnd": 49.46,
+      "captions": [
+        "Amy's item is a blood collection tube: a lab consumable regulated as an IVD, an in-vitro diagnostic device.",
+        "She pastes her old email, and the form fills itself.",
+        "As an IVD, it needs a licence number, and Quality joins the route automatically: the step she missed last time.",
+        "Before submitting, she sees her approvers, all in parallel, and her go-live date: Tuesday 3 November."
+      ],
+      "title": "Clean in: Amy",
+      "read": "Amy's item is a **blood collection tube**: / a lab consumable regulated as an **IVD**, / an **in-vitro diagnostic** device. // She pastes her **old email**, / and the form **fills itself**. // As an IVD, / it **needs a licence number**, / and **Quality** joins the route **automatically**: / the step she **missed** last time. // Before submitting, / she sees her approvers, / all **in parallel**, / and her go-live date: / **Tuesday, the third of November**.",
+      "note": "",
+      "voStart": 22.83
     },
     {
       "id": "marcus",
@@ -50,30 +72,42 @@
       "voSeconds": 15.74,
       "voFile": "deliverables/video/vo/marcus.mp3",
       "words": 44,
-      "slotStart": 50.5,
-      "slotEnd": 67.0
+      "slotStart": 49.21,
+      "slotEnd": 65.95,
+      "title": "Clean in: Marcus",
+      "read": "Marcus is from a **new** business unit, / Meridian Life Sciences. // He types a hospital **in shorthand**, / and OneRecord finds it **already on file**. // So he **extends** that record to his entity, / instead of creating a **duplicate**. // Business Support and **Finance** check it, / then MDM.",
+      "note": "",
+      "voStart": 49.51
     },
     {
       "id": "weijie",
       "targetSeconds": 18,
-      "vo": "Wei Jie in Finance approves on a Teams card, where he already works. Credit terms never travel in the message. Only Finance can open them, inside OneRecord. Reminders go out before anything stalls, and every decision is logged.",
+      "vo": "Wei Jie in Finance approves on a Teams card, where he already works. Credit terms never travel in the message. Only Finance and MDM can open them, inside OneRecord. Reminders go out before anything stalls, and every decision is logged.",
       "screen": "weijie-teams: Teams card with \"Credit terms: •••• · view in OneRecord (Finance only)\" → open details (values visible to Wei Jie) → 2 s persona flip to Amy (••••) → Approve → tracker step turns green; chip \"Reminder after 1 business day\".",
-      "voSeconds": 14.06,
+      "voSeconds": 15.07,
       "voFile": "deliverables/video/vo/weijie.mp3",
-      "words": 38,
-      "slotStart": 67.0,
-      "slotEnd": 82.0
+      "words": 40,
+      "slotStart": 65.7,
+      "slotEnd": 81.87,
+      "title": "Clean in: Wei Jie",
+      "read": "Wei Jie in Finance approves on a **Teams card**, / where he **already works**. // Credit terms **never travel** in the message. / Only **Finance and MDM** can open them, / inside OneRecord. // **Reminders** go out before anything stalls, / and **every decision** is logged.",
+      "note": "",
+      "voStart": 66
     },
     {
       "id": "sap",
       "targetSeconds": 30,
-      "vo": "SAP Business One is document-centric: its approvals are built for documents like sales orders, not master data. So approvals live in Microsoft 365, and SAP stays the system of record. Priya clicks Generate SAP B1 import, and gets a Data Transfer Workbench file: the import format SAP already reads, with SAP's own field names. Sending it automatically, through SAP's Service Layer, is phase two. Today, she loads the file and marks the item created.",
+      "vo": "SAP Business One's built-in approvals are document-centric, designed around documents like sales orders. So approvals for master data live in Microsoft 365, and SAP stays the system of record. Priya clicks Generate SAP B1 import, and gets a Data Transfer Workbench file: the import format SAP already reads, with SAP's own field names. Sending it automatically, through SAP's Service Layer, is phase two. Today, she loads the file and marks the item created.",
       "screen": "4 s /architecture swimlane (path highlighted) → priya-sap: \"Generate SAP B1 import\" → DTW preview with SAP field names and the two header rows highlighted → Service Layer tab \"Phase 2 · not sent\" → \"Mark created in SAP B1\".",
-      "voSeconds": 31.42,
+      "voSeconds": 31.58,
       "voFile": "deliverables/video/vo/sap.mp3",
-      "words": 74,
-      "slotStart": 82.0,
-      "slotEnd": 114.5
+      "words": 73,
+      "slotStart": 81.62,
+      "slotEnd": 114.1,
+      "title": "Lands in SAP B1",
+      "read": "SAP Business One's **built-in approvals** are **document-centric**, / designed around **documents** like sales orders. // So approvals for master data live in **Microsoft 365**, / and SAP stays the **system of record**. // Priya clicks **Generate SAP B1 import**, / and gets a **Data Transfer Workbench** file: / the import format SAP **already reads**, / with SAP's **own field names**. // Sending it **automatically**, / through SAP's Service Layer, / is **phase two**. // Today, / she loads the file / and marks the item **created**.",
+      "note": "",
+      "voStart": 81.92
     },
     {
       "id": "bridge",
@@ -83,30 +117,61 @@
       "voSeconds": 8.52,
       "voFile": "deliverables/video/vo/bridge.mp3",
       "words": 25,
-      "slotStart": 114.5,
-      "slotEnd": 125.0
+      "slotStart": 113.85,
+      "slotEnd": 123.87,
+      "captions": [
+        "Amy is told the moment it's live.",
+        "And stuck demand drops by S$36,000: three customer orders that were waiting on that one record."
+      ],
+      "title": "Bridge",
+      "read": "Amy is told **the moment** it's live. // And stuck demand drops by **thirty-six thousand dollars**: / **three** customer orders / that were waiting on **that one record**.",
+      "note": "*(Hold while the counter finishes.)*",
+      "voStart": 114.15
     },
     {
       "id": "pulse",
       "targetSeconds": 30,
-      "vo": "Now, money out, on synthetic data. Regional Pulse compares the twelve months to September 2026 with the year before, on de-duplicated customers. Orders are fifty-three point four million dollars, up four percent. Merge the duplicates, and Bukit Damai, Malaysia's number-two account, is really down thirty-two percent. And for Products A and B, our seasonal forecast is off by nine units per hundred ordered, not eleven.",
-      "screen": "Pulse header (window \"Oct 2025 – Sep 2026 vs the same 12 months a year earlier\" + formula, hold 2 s) → tile \"S$53.4M · +4.0%\" → matrix → merge toggle → Bukit Damai Specialist Hospital (MY #2) \"−32%\" → forecast replay \"11 → 9 per 100 ordered (A + B)\". \"Synthetic, illustrative\" badge visible throughout.",
-      "voSeconds": 26.57,
+      "vo": "Now, money out, on synthetic data. Regional Pulse compares the twelve months to September 2026 with the year before, on de-duplicated customers. Orders are fifty-three point four million dollars, up four percent. Merge the duplicates, and Bukit Damai, Malaysia's number-two account, is really down thirty-two percent. Each country card names an owner, an action and the dollars at stake. On this illustrative data, today's forecasting method is off by eleven units per hundred ordered; ours, by nine.",
+      "screen": "Pulse header (window \"Oct 2025 – Sep 2026 vs the same 12 months a year earlier\" + formula, hold 2 s) → tile \"S$53.4M · +4.0%\" → matrix → merge toggle → Bukit Damai Specialist Hospital (MY #2) \"−32%\" → forecast replay on SG × A with the panel note \"Across Products A and B … 11 … 9 units per 100 ordered\". \"Synthetic, illustrative\" badge visible throughout.",
+      "voSeconds": 31.73,
       "voFile": "deliverables/video/vo/pulse.mp3",
-      "words": 65,
-      "slotStart": 125.0,
-      "slotEnd": 152.5
+      "words": 77,
+      "slotStart": 123.62,
+      "slotEnd": 156.45,
+      "captions": [
+        "Now, money out, on synthetic data.",
+        "Regional Pulse compares the 12 months to September 2026 with the year before, on de-duplicated customers.",
+        "Orders are S$53.4 million, up 4%.",
+        "Merge the duplicates, and Bukit Damai, Malaysia's #2 account, is really down 32%.",
+        "Each country card names an owner, an action and the dollars at stake.",
+        "On this illustrative data, today's forecasting method is off by 11 units per 100 ordered; ours, by 9."
+      ],
+      "title": "Money out: Regional Pulse",
+      "read": "Now, / **money out**, / on **synthetic** data. // Regional Pulse compares the **twelve months** to September 2026 / with **the year before**, / on **de-duplicated** customers. // Orders are **fifty-three point four million** dollars, / **up four percent**. // Merge the duplicates, / and Bukit Damai, / Malaysia's **number-two** account, / is really **down thirty-two percent**. // Each country card names an **owner**, / an **action** / and the **dollars at stake**. // On this **illustrative** data, / today's forecasting method is off by **eleven** units per hundred ordered; / ours, / by **nine**.",
+      "note": "",
+      "voStart": 123.92
     },
     {
       "id": "close",
       "targetSeconds": 13,
       "vo": "Median setup drops from fourteen days to four business days or less. About seventeen hundred and fifty hours a year come back, paying back in about six months. No new licences for the workflow in phase one. One hospital. One record.",
       "screen": "/pitch/close: tiles \"Median 14 days → ≤ 4 business days\" · \"≈1,750 hours a year back · payback ≈ 6 months\" · \"No new licences for the workflow in phase 1\" + \"One hospital. One record.\" + YouTube / GitHub / live URLs.",
-      "voSeconds": 15.0,
+      "voSeconds": 15,
       "voFile": "deliverables/video/vo/close.mp3",
       "words": 41,
-      "slotStart": 152.5,
-      "slotEnd": 169.5
+      "slotStart": 156.2,
+      "slotEnd": 173.5,
+      "captions": [
+        "Median setup drops from 14 days to ≤ 4 business days.",
+        "About 1,750 hours a year come back, paying back in about 6 months.",
+        "No new licences for the workflow in phase 1.",
+        "One hospital.",
+        "One record."
+      ],
+      "title": "Close",
+      "read": "Median setup drops from **fourteen days** / to **four business days** or less. // About **seventeen hundred and fifty hours** a year come back, / paying back in about **six months**. // **No new licences** for the workflow / in phase one. // **One hospital.** / **One record.**",
+      "note": "*(Slow down on the last line and leave about two seconds of silence before the end card cuts.)*",
+      "voStart": 156.5
     }
   ],
   "voTotalSeconds": 156.34,

@@ -64,7 +64,7 @@ test.describe("golden path", () => {
   test("(c) Wei Jie: approves the extension on the Teams card", async ({ page }) => {
     await loadScene(page, "weijie-teams", /\/approvals/);
 
-    const item = page.locator('[data-testid^="waiting-item-REQ-1100"]');
+    const item = page.locator('[data-testid^="waiting-item-REQ-1101"]');
     await expect(item).toBeVisible();
     await item.click();
 
@@ -75,8 +75,8 @@ test.describe("golden path", () => {
     await expect(page.locator("[data-sonner-toast]").filter({ hasText: /Approved/ })).toBeVisible();
 
     // Finance is done; MLS's molecular pre-check is for product requests only, so the extension goes straight to MDM.
-    await expect(page.locator('[data-testid^="waiting-item-REQ-1100"]')).toHaveCount(0);
-    await page.goto("/requests/view?id=REQ-1100");
+    await expect(page.locator('[data-testid^="waiting-item-REQ-1101"]')).toHaveCount(0);
+    await page.goto("/requests/view?id=REQ-1101");
     await expect(page.getByTestId("tracker-timeline")).toBeVisible();
     await expect(page.locator('[data-testid^="tracker-step-"][data-testid*="ext-fin"]').first()).toHaveAttribute(
       "data-status",

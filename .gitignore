@@ -49,3 +49,11 @@ next-env.d.ts
 __pycache__/
 *.pyc
 .venv/
+
+# side-by-side builds (NEXT_DIST_DIR)
+/.next-*/
+
+# large video artefacts (the final video goes to YouTube; keep scripts + captions only)
+/deliverables/video/*
+!/deliverables/video/voiceover-script.md
+!/deliverables/video/OneRecord-demo.srt

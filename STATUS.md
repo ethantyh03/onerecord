@@ -45,6 +45,11 @@ Deadline: **12:00 SGT Wed 28 Oct 2026**. The user is asleep until ~07:30 and has
 | 05:36 | Wave 3 DONE + committed (6fe3b31): tsc 0, vitest 288, build green, golden 24/24 |
 | 05:38 | Hygiene launched (wf_6db13b79-ced): rename real hospital/chain names at the source, regenerate, verify numbers, wording fixes; then Wave 4 (video, slides, guide) |
 
+| 05:55 | Hygiene DONE + committed (ab854ee): real names → fictional at the source; numbers identical; triage 0.917 unchanged; tsc/vitest 288/build/e2e 24 green |
+| 05:56 | Wave 4 launched (wf_8214c72c-10c): video (CDP capture + TTS + captions), 2-slide summary PDF, presenter guide, then review + polish. Vercel CLI 65 installed; trying `vercel deploy --temporary` (no login) to validate the Linux build |
+
+| 06:00 | `vercel deploy --temporary` is not available without login (it started a device-login flow, now expired). In the morning: run `vercel login` (device flow), the user approves the link, then `vercel --prod` |
+
 ## Waves
 - [x] Wave 1: foundation (engine, store, shell, mocks) + integration
 - [x] W1-E: Python data + DS → src/data JSON

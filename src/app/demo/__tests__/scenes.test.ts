@@ -55,9 +55,15 @@ describe("demo scenes", () => {
   });
 
   it("weijie-teams: extension pending on Wei Jie at Finance after Siti approved", async () => {
-    expect(await loadScene("weijie-teams")).toBe("/approvals?id=REQ-1100");
-    const r = s().requests.find((x) => x.id === "REQ-1100")!;
+    expect(await loadScene("weijie-teams")).toBe("/approvals?id=REQ-1101");
+    // Amy's K2EDTA item (submitted at 09:14) keeps REQ-1100, as in amy-intake and priya-sap.
+    const amy = s().requests.find((x) => x.id === "REQ-1100")!;
+    expect(amy.data.itemName).toBe(K2EDTA_ITEM);
+    expect(amy.requestorId).toBe("amy");
+    expect(amy.steps.some((x) => x.role === "finance")).toBe(false);
+    const r = s().requests.find((x) => x.id === "REQ-1101")!;
     expect(r.domainId).toBe("extend");
+    expect(r.requestorId).toBe("marcus");
     expect(r.entity).toBe("MLS");
     const bs = r.steps.find((x) => x.role === "business_support")!;
     expect(bs.status).toBe("approved");
@@ -110,6 +116,15 @@ describe("demo scenes", () => {
     const a = JSON.stringify({ r: s().requests, audit: s().audit });
     await new Promise((r) => setTimeout(r, 25));
     await loadScene("priya-sap");
+    const b = JSON.stringify({ r: s().requests, audit: s().audit });
+    expect(b).toBe(a);
+  });
+
+  it("weijie-teams replays byte-identically, audit hashes included", async () => {
+    await loadScene("weijie-teams");
+    const a = JSON.stringify({ r: s().requests, audit: s().audit });
+    await new Promise((r) => setTimeout(r, 25));
+    await loadScene("weijie-teams");
     const b = JSON.stringify({ r: s().requests, audit: s().audit });
     expect(b).toBe(a);
   });

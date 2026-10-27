@@ -2,8 +2,9 @@
  * Demo scene loader (final model P0-19, storyboard §7.1).
  *
  * Every scene starts from resetSandbox() and then replays scripted store actions, so the same
- * scene always produces the same state (request ids start at REQ-1100 after a reset). Simulated
- * times are pinned per action, so timelines read like a real morning instead of "everything at 09:00".
+ * scene always produces the same state (request ids start at REQ-1100 after a reset, and Amy's K2EDTA
+ * item is REQ-1100 in every scene that submits it). Simulated times are pinned per action, so
+ * timelines read like a real morning instead of "everything at 09:00".
  *
  * Call loadScene() from a click handler only: it mutates the store (never from useEffect on mount).
  */
@@ -158,7 +159,7 @@ export const SCENES: Scene[] = [
     voiceoverHint:
       "Approvals arrive in Teams, where approvers already work, with reminders before anything goes stale. Credit terms and bank details never travel in the message. Only Finance and the MDM team can see them, and every view and decision is logged. Marcus always knows where his request stands.",
     checklist: [
-      "REQ-1100 (National University Hospital → MLS) is preselected; check the Teams card title before you start. Credit terms show “•••• · view in OneRecord”.",
+      "REQ-1101 (National University Hospital → MLS) is preselected; check the Teams card title before you start. Credit terms show “•••• · view in OneRecord”.",
       "Open the details: the values are visible to Wei Jie (Finance).",
       "2-second flip: switch persona to Amy (values masked), then back to Wei Jie.",
       "Click Approve. The tracker step turns green; the chip reads “Reminder after 1 business day”.",
@@ -331,6 +332,11 @@ export async function loadScene(id: SceneId): Promise<string> {
       case "weijie-teams": {
         clockAt(-25);
         addMlsBusinessUnit();
+        // Amy's K2EDTA item goes in first (09:14, as in priya-sap), so it is REQ-1100 in every scene and
+        // Marcus's extension is REQ-1101. Her route has no Finance step, so Wei Jie's queue is unchanged.
+        clockAt(14);
+        as("amy");
+        submit(store().createDraft("item", AMY_K2EDTA_ITEM));
         clockAt(22); // Marcus submits at 09:22
         as("marcus");
         const reqId = store().createDraft("extend", MARCUS_EXTEND);

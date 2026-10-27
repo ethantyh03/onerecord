@@ -1,0 +1,20 @@
+export default async ({ page, shot, dump, loadScene }) => {
+  await loadScene("amy-intake");
+  await page.getByTestId("paste-example-amy").click();
+  await page.getByTestId("paste-apply").click();
+  await page.waitForTimeout(2500);
+  await page.mouse.wheel(0, 450); await page.waitForTimeout(800);
+  await page.getByTestId("field-regLicenceNo").pressSequentially("HSA-DE-0012345", {delay: 50});
+  await page.getByTestId("field-regCertificate-sample").click();
+  const storage = page.getByTestId("field-storage");
+  const v = await storage.locator("option").nth(2).getAttribute("value");
+  await storage.selectOption(v);
+  await page.waitForTimeout(800);
+  await shot("amy4");
+  await dump("submit"); await dump("expected"); await dump("linked");
+  await page.getByTestId("submit-request").click();
+  await page.waitForTimeout(2000);
+  await shot("amy5");
+  await dump("success");
+  console.log(page.url());
+};
