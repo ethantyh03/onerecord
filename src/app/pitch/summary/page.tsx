@@ -58,7 +58,7 @@ const blocked = impact.opportunity.blockedDuringWindow;
 const pilot = impact.adoption.pilot;
 
 /** Team name for the slide footers (final model §7.4). The student fills this in; export-summary.mjs warns while it is empty. */
-const TEAM_NAME = "";
+const TEAM_NAME = "CTFudders";
 const teamLine = TEAM_NAME.trim() ? `${TEAM_NAME.trim()} · SMU DSA 2026` : "SMU DSA 2026";
 
 const youtubeReady = !!LINKS.youtube && !/REPLACE_ME/i.test(LINKS.youtube);

@@ -57,3 +57,6 @@ __pycache__/
 /deliverables/video/*
 !/deliverables/video/voiceover-script.md
 !/deliverables/video/OneRecord-demo.srt
+
+.vercel
+.env*

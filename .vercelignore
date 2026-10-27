@@ -1,0 +1,15 @@
+node_modules
+.next
+.next-*
+test-results
+playwright-report
+deliverables/video
+analytics/out
+recording/out
+recording/tmp
+**/__pycache__
+*.mp4
+*.webm
+.env
+.env*
+.vercel

@@ -3,7 +3,9 @@ import { defineConfig, devices } from "@playwright/test";
 /**
  * Golden-path e2e for the OneRecord prototype.
  * Run after `npm run build`: `npx playwright test e2e/golden.spec.ts --reporter=line`.
+ * Against the live site: `E2E_BASE_URL=https://onerecord-lives-dsa26.vercel.app npx playwright test e2e/golden.spec.ts`.
  */
+const REMOTE = process.env.E2E_BASE_URL;
 export default defineConfig({
   testDir: "./e2e",
   timeout: 60_000,
@@ -14,7 +16,7 @@ export default defineConfig({
   reporter: "line",
   outputDir: "test-results/e2e",
   use: {
-    baseURL: "http://localhost:3100",
+    baseURL: REMOTE ?? "http://localhost:3100",
     viewport: { width: 1440, height: 900 },
     timezoneId: "Asia/Singapore",
     locale: "en-SG",
@@ -22,10 +24,12 @@ export default defineConfig({
     screenshot: "only-on-failure",
   },
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 900 } } }],
-  webServer: {
-    command: "npx next start -p 3100",
-    url: "http://localhost:3100",
-    reuseExistingServer: true,
-    timeout: 120_000,
-  },
+  webServer: REMOTE
+    ? undefined
+    : {
+        command: "npx next start -p 3100",
+        url: "http://localhost:3100",
+        reuseExistingServer: true,
+        timeout: 120_000,
+      },
 });
