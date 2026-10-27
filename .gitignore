@@ -39,3 +39,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local secrets / artifacts
+.env*.local
+.env
+/test-results/
+/playwright-report/
+/recordings/raw/
+__pycache__/
+*.pyc
+.venv/
