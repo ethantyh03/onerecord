@@ -43,13 +43,13 @@ const NODES: JourneyNode[] = [
     id: "request",
     title: "Request",
     surface: "Power Apps form",
-    text: () => "Paste an old email and AI fills the form, asking only for what's missing.",
+    text: () => "Paste an old email and the form fills itself, asking only for what's missing.",
     href: "/requests/new",
     screen: "New request",
     personId: "amy",
     icon: ClipboardPen,
     narration: () =>
-      "The requestor pastes an old email. The form fills itself, and because the item is an IVD reagent it asks for the HSA licence and adds a QA/RA review.",
+      "The requestor pastes an old email. The form fills itself, and because the item is a diagnostic test kit (an IVD medical device) it asks for the Malaysian regulator's (MDA) licence number and adds a Quality and Regulatory (QA/RA) review.",
   },
   {
     id: "checks",
@@ -90,15 +90,15 @@ const NODES: JourneyNode[] = [
   {
     id: "sap",
     title: "SAP B1",
-    surface: "DTW import now",
-    text: () => "A ready-made Data Transfer Workbench file replaces keying by hand.",
+    surface: "Import file today",
+    text: () => "A ready-made SAP import file (Data Transfer Workbench) replaces keying by hand.",
     href: "/sap",
     screen: "SAP B1",
     personId: "priya",
     icon: Database,
-    phase2: "Service Layer API",
+    phase2: "posts straight into SAP",
     narration: () =>
-      "The record goes into SAP Business One through a Data Transfer Workbench import, and the requestor hears the moment it is live. A direct Service Layer connection follows in Phase 2.",
+      "The record goes into SAP Business One through a ready-made import file (SAP's Data Transfer Workbench), and the requestor hears the moment it is live. In Phase 2 the record posts itself straight into SAP.",
   },
   {
     id: "pulse",
@@ -259,12 +259,33 @@ export function ProcessDiagram() {
           if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setHovering(false);
         }}
       >
+        {/* The storyboard's "Clean in │ Money out" split: steps 1–5 clean the record, step 6 is the payoff. */}
+        <div data-testid="home-split" className="mb-1 hidden grid-cols-6 xl:grid">
+          <div className="col-span-5 px-3">
+            <p className="text-center text-[0.8125rem] font-semibold tracking-[0.06em] text-primary uppercase">
+              Clean in
+              <span className="ml-2 font-medium tracking-normal text-muted-foreground normal-case">
+                one complete, checked record per customer, vendor and item
+              </span>
+            </p>
+            <span aria-hidden className="mt-1.5 block h-2 rounded-t-md border-x-2 border-t-2 border-primary/35" />
+          </div>
+          <div className="col-span-1 px-3">
+            <p className="text-center text-[0.8125rem] font-semibold tracking-[0.06em] text-ok-ink uppercase">
+              Money out
+            </p>
+            <span aria-hidden className="mt-1.5 block h-2 rounded-t-md border-x-2 border-t-2 border-ok/45" />
+          </div>
+        </div>
         <ol className="grid grid-cols-1 gap-y-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 xl:gap-y-0">
           {NODES.map((node, i) => {
             const state: MarkerState = i < active ? "passed" : i === active ? "active" : "upcoming";
             const t = token(i);
             return (
-              <li key={node.id} className="relative">
+              <li
+                key={node.id}
+                className={cn("relative", i === last && "xl:border-l-2 xl:border-dashed xl:border-ok/40 xl:pl-1")}
+              >
                 {i < last ? (
                   <span
                     aria-hidden

@@ -135,7 +135,7 @@ export const ASSUMPTION_GROUPS: AssumptionGroup[] = [
         id: "A8",
         title: "Growth measure",
         value:
-          "Growth = PO volume (Oct 2025 – Sep 2026) ÷ PO volume (Oct 2024 – Sep 2025) − 1, per country × product, on merged customers (golden IDs). Momentum compares the latest quarter with the same quarter a year earlier.",
+          "Growth = PO value (Oct 2025–Sep 2026) ÷ PO value (Oct 2024–Sep 2025) − 1, per country × product, on de-duplicated customers (golden IDs). PO value in SGD for cross-product totals; PO units within a product. Confirmed POs only. Momentum = PO value (Jul–Sep 2026) ÷ PO value (Jul–Sep 2025) − 1.",
         basis:
           "12-month year-on-year. Comparing half-years would measure dengue season, fiscal-year flushes and CNY/Tet rather than growth (originally Apr–Sep vs Oct–Mar).",
         tags: ["amended"],
@@ -162,7 +162,7 @@ export const ASSUMPTION_GROUPS: AssumptionGroup[] = [
         id: "A10",
         title: "Service levels",
         value:
-          "2 business days per approval step in the approver's local time zone. Reminder after 1 business day; escalation to the delegate or manager after 3. Asking the requestor a question pauses the step's clock.",
+          "2 business days per approval step in the approver's local time zone (production configuration; the prototype runs on SGT). Reminder after 1 business day; escalation to the delegate or manager after 3. Asking the requestor a question pauses the step's clock.",
         basis: "Team proposal, sized so the median request finishes within the 4-business-day target.",
         tags: ["policy"],
         usedIn: "Tracker, fast-forward, Teams reminders",
@@ -171,7 +171,7 @@ export const ASSUMPTION_GROUPS: AssumptionGroup[] = [
         id: "A11",
         title: "Cycle time, today vs target",
         value:
-          "Median 14 days → ≤ 4 business days. Amy's item took 18 days (App C, worst case).",
+          "Median 14 days → ≤ 4 business days. Amy's item took 18 days (case brief, Appendix C).",
         basis:
           "18 days is App C. The 14-day median sits between S4's \"2–3 weeks\" and App C (see A26). The 2/5/9/2-day split is our breakdown of App C (illustrative).",
         tags: ["illustrative"],
@@ -334,7 +334,7 @@ export const ASSUMPTION_GROUPS: AssumptionGroup[] = [
       {
         id: "A26",
         title: "Baseline median cycle time",
-        value: "14 calendar days (Amy's worst case: 18).",
+        value: "14 calendar days (Amy's case in the case brief, Appendix C: 18).",
         basis: "Between S4's \"2–3 weeks\" for a request needing five approvals and App C's 18 days.",
         tags: ["illustrative"],
         usedIn: "Impact page, pitch close",

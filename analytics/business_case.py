@@ -324,7 +324,7 @@ def cost_section(i: dict) -> dict:
     one, run = phase1_one_off(i), phase1_run(i)
     p2, lic, maint = phase2_one_off(i), licences_sgd(i), phase2_one_off(i) * i["phase2MaintenanceRate"]
     return {
-        "title": "Cost (phase 1 needs no new licences: standard connectors, SharePoint, Teams Approvals, SAP import files)",
+        "title": "Cost (phase 1 needs no new licences for the workflow: standard connectors, SharePoint, Teams Approvals, SAP import files)",
         "phase1": {
             "label": "Phase 1 (pilot → rollout)",
             "oneOff": num(one, "SGD", "S$24,000 + S$9,750 + S$2,400 + S$3,750", "A22", "S$39,900", 0),
@@ -568,14 +568,14 @@ ALTERNATIVES = [
     ("Status quo + better email template + shared tracker", "~S$0", "partly", "no", "no", "yes", "no",
      "Doesn't fix noticing or chasing", False),
     ("SAP B1 approval procedures", "S$0", "no", "no", "na", "na", "no",
-     "Not possible: B1 approval templates cover documents only", False),
+     "Built-in approvals are document-centric: no structured intake, no duplicate check, no Teams routing and no parallel SLA for master-data requests", False),
     ("Teams Approvals templates only", "~S$0", "partly", "no", "yes", "yes", "no",
      "A good zero-build first step; no duplicate check, no SAP-ready output", False),
     ("Forms / Power Apps + SharePoint + Power Automate only", "~S$30k", "yes", "partly", "yes", "yes", "no",
      "Fixes the workflow (exact-match duplicates only), but the regional numbers stay dirty", False),
     ("Buy an MDM suite / B1 add-on", "High (enterprise pricing; not verified) + IT", "yes", "yes", "yes", "partly", "partly",
      "Over-sized for ~80 requests a month", False),
-    ("OneRecord (M365 workflow + small DS layer + DTW)", "~S$40k, no new licences", "yes", "yes", "yes", "yes", "yes",
+    ("OneRecord (M365 workflow + small DS layer + DTW)", "~S$40k, no new licences for the workflow", "yes", "yes", "yes", "yes", "yes",
      "Chosen: fuzzy + tax-ID duplicate check, parallel approvals with SLA, stuck demand, de-duplicated forecast", True),
 ]
 
@@ -671,7 +671,7 @@ def build_impact(scenario: str = "base") -> dict:
             "netSgdPerYear": num(round(base["net"]), "SGD", "gross − run", "this file, hardBenefit.rows[80]", f"S${base['net']:,.0f}"),
             "threeYearNetSgd": num(round(base["net3"]), "SGD", "3 × net − one-off", "this file", fmt_sgd(base["net3"])),
             "newLicences": "none in phase 1",
-            "sentence": (f"Phase 1 costs about S${base['one'] / 1000:.1f}k with no new licences and releases ~{base['hpy']:,.0f} hours "
+            "sentence": (f"Phase 1 costs about S${base['one'] / 1000:.1f}k with no new licences for the workflow and releases ~{base['hpy']:,.0f} hours "
                          f"a year (≈{base['fte']:.2f} FTE), paying back in about {base['pb']:.1f} months at 80 requests a month."),
         },
         "inputs": inputs_table(i),

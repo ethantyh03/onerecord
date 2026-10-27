@@ -1,6 +1,7 @@
 "use client";
 
-import { Download, FileSpreadsheet, Lock } from "lucide-react";
+import { useState } from "react";
+import { ArrowRight, Download, FileSpreadsheet, Lock } from "lucide-react";
 import { toast } from "sonner";
 import type { DtwFile } from "@/lib/types";
 import { dtwToCsv } from "@/lib/engine/dtw";
@@ -55,6 +56,9 @@ function DtwGrid({
   const gutter = "sticky left-0 z-10 w-10 min-w-10 border-r bg-muted px-2 text-center text-[0.6875rem] font-medium text-muted-foreground";
   const cell = "border-r border-b px-2.5 py-1.5 whitespace-nowrap";
   const masked = (h: string) => !canSee && sensitive.has(h);
+  // Wide templates (OITM has 20+ columns) scroll sideways: fade the right edge until the user reaches the end.
+  const wide = file.headers.length > 6;
+  const [atEnd, setAtEnd] = useState(false);
 
   return (
     <div className="overflow-hidden rounded-lg border">
@@ -65,6 +69,12 @@ function DtwGrid({
           <span className="text-xs text-muted-foreground">
             {file.headers.length} columns · {file.rows.length} data row{file.rows.length === 1 ? "" : "s"}
           </span>
+          {wide ? (
+            <span className="inline-flex items-center gap-1 rounded-full border bg-card px-2 py-px text-[0.6875rem] font-medium text-secondary-foreground">
+              Scroll for all {file.headers.length} columns
+              <ArrowRight aria-hidden className="size-3" />
+            </span>
+          ) : null}
         </div>
         <Button
           variant="outline"
@@ -76,7 +86,18 @@ function DtwGrid({
           Download CSV
         </Button>
       </div>
-      <div className="overflow-x-auto">
+      <div className="relative">
+      <div
+        className="overflow-x-auto"
+        onScroll={
+          wide
+            ? (e) => {
+                const el = e.currentTarget;
+                setAtEnd(el.scrollLeft + el.clientWidth >= el.scrollWidth - 4);
+              }
+            : undefined
+        }
+      >
         <table className="border-separate border-spacing-0 font-mono text-[0.75rem]">
           <thead>
             <tr>
@@ -130,6 +151,16 @@ function DtwGrid({
             ))}
           </tbody>
         </table>
+      </div>
+      {wide ? (
+        <div
+          aria-hidden
+          className={cn(
+            "pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-card via-card/70 to-transparent transition-opacity duration-300",
+            atEnd ? "opacity-0" : "opacity-100",
+          )}
+        />
+      ) : null}
       </div>
     </div>
   );

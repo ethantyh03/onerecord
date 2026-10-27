@@ -52,6 +52,7 @@ import { approvedAt, buildFieldReview, isMdmUser, sensitiveProperties } from "./
 import { EntityCell, Panel } from "./Panel";
 import { ServiceLayerPanel } from "./ServiceLayerPanel";
 import { StuckDemandTile } from "./StuckDemandTile";
+import { SwitchToMdmButton } from "./SwitchToMdmButton";
 
 type Tab = "dtw" | "sl";
 
@@ -263,9 +264,19 @@ export function MdmDetail({ id }: { id: string }) {
                   </span>
                 )}
                 {linked.length ? (
-                  <span className="block text-xs text-muted-foreground">
-                    {linked.map((p) => `${p.id} ${p.customerName}`).join(" · ")}
-                  </span>
+                  <>
+                    <span className="block text-xs text-muted-foreground">
+                      {linked.length} order{linked.length === 1 ? "" : "s"}
+                    </span>
+                    <ul className="mt-1 space-y-0.5 text-xs text-secondary-foreground" data-testid="mdm-linked-prs">
+                      {linked.slice(0, 3).map((p) => (
+                        <li key={p.id} className="truncate" title={`${p.id} · ${p.customerName} · ${formatSgd(p.sgd)}`}>
+                          <span className="font-mono text-[0.6875rem] text-muted-foreground">{p.id}</span> {p.customerName}
+                        </li>
+                      ))}
+                      {linked.length > 3 ? <li className="text-muted-foreground">+{linked.length - 3} more</li> : null}
+                    </ul>
+                  </>
                 ) : null}
               </dd>
             </div>
@@ -275,13 +286,13 @@ export function MdmDetail({ id }: { id: string }) {
       </div>
 
       {!mdm ? (
-        <div className="flex items-start gap-2.5 rounded-xl border border-warn/50 bg-warn-soft px-4 py-3 text-sm text-warn-ink">
-          <Info aria-hidden className="mt-0.5 size-4 shrink-0" />
-          <p>
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-2 rounded-xl border border-warn/50 bg-warn-soft px-4 py-3 text-sm text-warn-ink">
+          <Info aria-hidden className="size-4 shrink-0" />
+          <p className="min-w-0 flex-1">
             You&apos;re viewing as <strong className="font-semibold">{me.name}</strong> ({me.title}). Only the MDM team can generate
-            imports or create records in SAP B1{canSee ? "" : ", and credit terms and bank details stay masked"}. Switch persona to
-            Priya Nair to act.
+            imports or create records in SAP B1{canSee ? "" : ", and credit terms and bank details stay masked"}.
           </p>
+          <SwitchToMdmButton />
         </div>
       ) : null}
 

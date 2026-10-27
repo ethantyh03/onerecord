@@ -39,6 +39,7 @@ import {
   units,
 } from "./shared";
 import { productCPlan } from "./productC";
+import { SEASON_CAVEAT } from "./caveats";
 
 type Row = {
   month: string;
@@ -52,10 +53,19 @@ type Row = {
 
 const STEP_MS = 850;
 
-const SERIES: { key: "r6" | "r12" | "ets"; method: MethodId; label: string; color: string; width: number }[] = [
-  { key: "r6", method: "rolling6", label: "Rolling 6-month average", color: VIZ.context, width: 1.5 },
-  { key: "r12", method: "rolling12", label: "Rolling 12-month average (today's method)", color: VIZ.today, width: 2 },
-  { key: "ets", method: "etsDamped", label: "Seasonal ETS (ours)", color: VIZ.ours, width: 2.5 },
+const SERIES: { key: "r6" | "r12" | "ets"; method: MethodId; label: string; color: string; width: number; r: number }[] = [
+  { key: "r6", method: "rolling6", label: "Rolling 6-month average", color: VIZ.context, width: 1.5, r: 3 },
+  { key: "r12", method: "rolling12", label: "Rolling 12-month average (today's method)", color: VIZ.today, width: 3, r: 4 },
+  { key: "ets", method: "etsDamped", label: "Seasonal model (ours)", color: VIZ.ours, width: 3, r: 4.5 },
+];
+
+const ETS_HINT = "Damped Holt-Winters exponential smoothing (ETS): learns each month's usual seasonal swing.";
+const RANGE_LABEL = "Likely range (8 in 10 months land inside)";
+
+/** Y-axis padded 10% around the data instead of starting at 0, so the methods separate visibly. */
+const Y_DOMAIN: [(min: number) => number, (max: number) => number] = [
+  (min) => Math.max(0, Math.floor(min * 0.9)),
+  (max) => Math.ceil(max * 1.1),
 ];
 
 function h1(points: { h: number; value: number }[] | undefined): number | undefined {
@@ -72,7 +82,8 @@ export function ForecastPanel() {
   // step = number of origins revealed (0..total). Default: everything shown.
   const [step, setStep] = useState<number>(total);
   const [playing, setPlaying] = useState(false);
-  const [range, setRange] = useState<"all" | "recent">("all");
+  // Default to the last 18 months so the six backtest points fill the right third of the chart, not 8% of it.
+  const [range, setRange] = useState<"all" | "recent">("recent");
   const timer = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const stop = () => {
@@ -105,6 +116,7 @@ export function ForecastPanel() {
     }
     if (timer.current) clearInterval(timer.current);
     let k = 0;
+    setRange("recent");
     setStep(0);
     setPlaying(true);
     timer.current = setInterval(() => {
@@ -163,6 +175,11 @@ export function ForecastPanel() {
   const oursW = cell?.scores.etsDamped.wape ?? 0;
   const oursWins = cell ? cell.oursBeatsBaseline : false;
   const plan = isC ? productCPlan(country) : null;
+  const scoredMonths = origins
+    .map((o) => o.forecasts.etsDamped?.find((p) => p.h === 1)?.month)
+    .filter((m): m is string => Boolean(m));
+  const firstScored = scoredMonths[0];
+  const lastScored = scoredMonths[scoredMonths.length - 1];
   const firstForecast = backtest.forecastMonths[0];
   const lastForecast = backtest.forecastMonths[backtest.forecastMonths.length - 1];
 
@@ -209,7 +226,7 @@ export function ForecastPanel() {
                   Actual orders
                 </li>
                 {SERIES.map((s) => (
-                  <li key={s.key} className="flex items-center gap-1.5">
+                  <li key={s.key} className="flex items-center gap-1.5" title={s.key === "ets" ? ETS_HINT : undefined}>
                     <span aria-hidden className="inline-block size-2.5 rounded-full" style={{ background: s.color }} />
                     {s.label}
                   </li>
@@ -217,7 +234,7 @@ export function ForecastPanel() {
                 {!isC ? (
                   <li className="flex items-center gap-1.5">
                     <span aria-hidden className="inline-block h-2.5 w-3.5 rounded-[3px] opacity-25" style={{ background: VIZ.ours }} />
-                    Likely range, P10–P90
+                    {RANGE_LABEL}
                   </li>
                 ) : null}
               </ul>
@@ -258,12 +275,30 @@ export function ForecastPanel() {
                     minTickGap={8}
                   />
                   <YAxis
+                    domain={Y_DOMAIN}
+                    allowDataOverflow
                     tickFormatter={compactNumber}
                     tick={{ fontSize: 11, fill: VIZ.muted }}
                     tickLine={false}
                     axisLine={false}
                     width={44}
                   />
+                  {!isC && firstScored && lastScored && rows.some((r) => r.month === firstScored) ? (
+                    <ReferenceArea
+                      x1={firstScored}
+                      x2={lastScored}
+                      fill={VIZ.context}
+                      fillOpacity={0.14}
+                      stroke="none"
+                      label={{
+                        value: product === "A" ? "Scored months: the dengue-season rise" : "Scored months",
+                        position: "insideTopLeft",
+                        fontSize: 12,
+                        fontWeight: 600,
+                        fill: VIZ.ink,
+                      }}
+                    />
+                  ) : null}
                   {firstForecast && lastForecast ? (
                     <ReferenceArea
                       x1={firstForecast}
@@ -271,7 +306,7 @@ export function ForecastPanel() {
                       fill={VIZ.ours}
                       fillOpacity={0.05}
                       stroke="none"
-                      label={{ value: "Next 3 months", position: "insideTop", fontSize: 11, fill: VIZ.muted }}
+                      label={{ value: "Next 3 mo", position: "insideTopLeft", fontSize: 11, fill: VIZ.muted }}
                     />
                   ) : null}
                   {current ? (
@@ -280,7 +315,7 @@ export function ForecastPanel() {
                       stroke={VIZ.muted}
                       strokeWidth={1}
                       label={{
-                        value: `Data up to ${monthShort(current.origin)}`,
+                        value: `Data to ${monthShort(current.origin)}`,
                         position: "top",
                         fontSize: 11,
                         fill: VIZ.muted,
@@ -314,7 +349,7 @@ export function ForecastPanel() {
                       strokeDasharray="5 4"
                       dot={{ r: 3, fill: VIZ.ours, stroke: VIZ.surface, strokeWidth: 2 }}
                       isAnimationActive={false}
-                      name="ETS forecast"
+                      name="Our forecast"
                     />
                   ) : null}
                   {SERIES.map((s) => (
@@ -324,8 +359,8 @@ export function ForecastPanel() {
                       stroke={s.color}
                       strokeWidth={s.width}
                       connectNulls
-                      dot={{ r: s.key === "ets" ? 4.5 : 4, fill: s.color, stroke: VIZ.surface, strokeWidth: 2 }}
-                      activeDot={{ r: 6, stroke: VIZ.surface, strokeWidth: 2 }}
+                      dot={{ r: s.r, fill: s.color, stroke: VIZ.surface, strokeWidth: 2 }}
+                      activeDot={{ r: 6.5, stroke: VIZ.surface, strokeWidth: 2 }}
                       isAnimationActive={false}
                       name={s.label}
                     />
@@ -344,14 +379,14 @@ export function ForecastPanel() {
                               <TipRow
                                 key={s.key}
                                 color={s.color}
-                                label={s.key === "ets" ? "Ours (ETS)" : s.key === "r12" ? "Today's (rolling 12)" : "Rolling 6"}
+                                label={s.key === "ets" ? "Ours (seasonal model)" : s.key === "r12" ? "Today's (rolling 12)" : "Rolling 6"}
                                 value={units(r[s.key] as number)}
                               />
                             ) : null,
                           )}
                           {r.band && r.actual == null ? (
                             <>
-                              <TipRow color={VIZ.ours} dashed label="ETS forecast" value={units(r.p50 ?? 0)} />
+                              <TipRow color={VIZ.ours} dashed label="Our forecast" value={units(r.p50 ?? 0)} />
                               <TipRow label="Likely range" value={`${units(r.band[0])}–${units(r.band[1])}`} />
                             </>
                           ) : null}
@@ -382,6 +417,14 @@ export function ForecastPanel() {
                 "Press Replay to step through the six forecast dates."
               )}
             </p>
+            {!isC ? (
+              <p className="mt-1 text-[0.8125rem] font-medium text-secondary-foreground" data-testid="forecast-season-caveat">
+                {product === "A" && oursWins
+                  ? "In the dengue-season rise ours follows the turn; the rolling average lags behind it. "
+                  : ""}
+                {SEASON_CAVEAT}
+              </p>
+            ) : null}
           </div>
 
           <aside className="space-y-4 xl:border-l xl:pl-5">
@@ -450,7 +493,8 @@ export function ForecastPanel() {
                     ))}
                   </ul>
                   <p className="mt-1.5 text-xs text-muted-foreground">
-                    Range = P10–P90 from the backtest errors. Planners can hold safety stock at the top of the range.
+                    In 8 of 10 months the actual should land inside the range (P10–P90, from the backtest errors). Planners
+                    can hold safety stock at the top of the range.
                   </p>
                 </div>
                 <div className="border-t pt-3">

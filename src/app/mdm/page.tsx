@@ -4,7 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { MdmConsole } from "@/components/mdm/MdmConsole";
 
 export const metadata: Metadata = {
-  title: "MDM console · OneRecord",
+  title: "MDM console",
   description: "MDM final check: duplicate re-check, field review against SAP B1 limits, DTW import and the Phase 2 Service Layer payload.",
 };
 

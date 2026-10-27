@@ -4,7 +4,9 @@ import Link from "next/link";
 import { ArrowUpRight, CircleSlash2 } from "lucide-react";
 import { PageHeader, Phase2Badge } from "@/components/common";
 import { formatSgd } from "@/components/common/format";
+import { cn } from "@/lib/utils";
 import { computePhase2Case, BASE_VOLUME } from "./business-case";
+import { BriefMap } from "./brief-map";
 import { NoteChip, SectionHeading } from "./story-ui";
 
 interface NotInV1 {
@@ -26,7 +28,7 @@ export function ScopePage() {
     },
     {
       title: "Merging or retiring existing duplicate SAP records",
-      why: "That is a separate data-stewardship project. Version 1 stops new duplicates and uses a read-only golden-ID crosswalk so reports count each customer once.",
+      why: "That is a separate data-stewardship project. Version 1 stops new duplicates and uses a read-only golden-ID crosswalk so reports count each customer once. The handful of high-value merges Regional Pulse flags are done by hand in SAP by the MDM team; v1 doesn't automate them.",
     },
     {
       title: "A security model of our own",
@@ -48,13 +50,20 @@ export function ScopePage() {
     },
   ];
 
-  const roadmap: { title: string; detail: string }[] = [
-    { title: "6-week Microsoft 365 pilot build", detail: "Canvas app + SharePoint List + Power Automate, Singapore and Malaysia, Customer and Item." },
+  const roadmap: { title: string; detail: string; next?: boolean }[] = [
+    {
+      title: "6-week Microsoft 365 pilot build",
+      detail: "Canvas app + SharePoint List + Power Automate, Singapore and Malaysia, Customer and Item. The analytics rerun on SAP B1 extracts in week 1.",
+      next: true,
+    },
     {
       title: "Vendor bank-detail change with dual Finance control",
       detail: "Until then: call-back verification to an independently sourced number, plus a Finance Director step.",
     },
-    { title: "Delegation and out-of-office", detail: "Plus SLA calendars per country time zone and public holidays." },
+    {
+      title: "Delegation chains and holiday-aware SLA clocks",
+      detail: "Single-delegate out-of-office is already in v1. Next: delegation from the Entra ID manager chain, and SLA clocks that skip each country's public holidays and time zone.",
+    },
     { title: "In-tenant AI for paste-to-fill and inbox sorting", detail: "An LLM inside the Microsoft tenant, reading the shared mailbox directly." },
     {
       title: "Add a whole new request type from Admin",
@@ -62,8 +71,8 @@ export function ScopePage() {
     },
     { title: "Catch records created outside the workflow", detail: "Service Layer webhooks (FP 2602 and later) flag any record keyed straight into SAP." },
     {
-      title: "Regional Pulse in Power BI on real SAP B1 extracts",
-      detail: "Tender-pipeline planning for Product C; a pooled machine-learning forecaster once real history is loaded.",
+      title: "Regional Pulse as a scheduled Power BI report",
+      detail: "After the pilot's one-off rerun: a refreshed report, tender-pipeline planning for Product C, and a pooled machine-learning forecaster once real history is loaded.",
     },
     { title: "Audit PDF export, map view, mobile, more languages", detail: "Quality-of-life items, after adoption is proven." },
   ];
@@ -71,14 +80,16 @@ export function ScopePage() {
   return (
     <div className="mx-auto w-full max-w-[1320px] space-y-8 pb-10">
       <PageHeader
-        title="What we left out, on purpose"
-        subtitle="Version 1 fixes how master data gets in and makes the regional numbers trustworthy. Everything below was a choice, not a time cut, and comes with the reason."
+        title="Scope: what we built, and what we left out"
+        subtitle="Version 1 fixes how master data gets in and makes the regional numbers trustworthy. First, where each part of the brief is answered; then what we left out on purpose, each a choice and not a time cut, with the reason."
         meta={<NoteChip tone="brand">Answers the brief&apos;s “what you will not build”</NoteChip>}
       />
 
+      <BriefMap />
+
       <div className="grid gap-8 lg:grid-cols-2">
         <section aria-labelledby="not-v1-title">
-          <SectionHeading id="not-v1-title" title="Deliberately not in v1, and why" />
+          <SectionHeading id="not-v1-title" title="Deliberately not in v1, and why" className="scroll-mt-24" />
           <ul className="space-y-3" data-testid="scope-not-in-v1">
             {notInV1.map((n) => (
               <li key={n.title} className="flex gap-3 rounded-xl border bg-card p-4 shadow-raised">
@@ -99,18 +110,26 @@ export function ScopePage() {
         </section>
 
         <section aria-labelledby="roadmap-title">
-          <SectionHeading id="roadmap-title" title="Roadmap, in order" aside={<Phase2Badge label="not built" />} />
+          <SectionHeading id="roadmap-title" title="Roadmap, in order" />
           <ol className="relative space-y-0" data-testid="scope-roadmap">
             {roadmap.map((r, i) => (
               <li key={r.title} className="relative grid grid-cols-[2.25rem_1fr] gap-3 pb-5 last:pb-0">
                 {i < roadmap.length - 1 ? (
                   <span aria-hidden className="absolute top-9 bottom-0 left-[1.0625rem] w-px border-l border-dashed border-phase2/60" />
                 ) : null}
-                <span className="num relative z-10 inline-flex size-9 items-center justify-center rounded-full border border-dashed border-phase2 bg-phase2-soft text-sm font-semibold text-phase2-ink">
+                <span
+                  className={cn(
+                    "num relative z-10 inline-flex size-9 items-center justify-center rounded-full border text-sm font-semibold",
+                    r.next ? "border-primary bg-primary-soft text-primary" : "border-dashed border-phase2 bg-phase2-soft text-phase2-ink",
+                  )}
+                >
                   {i + 1}
                 </span>
                 <div className="pt-1.5">
-                  <h3 className="font-semibold text-foreground">{r.title}</h3>
+                  <h3 className="flex flex-wrap items-center gap-2 font-semibold text-foreground">
+                    {r.title}
+                    {r.next ? <NoteChip tone="ok">Phase 1 · next</NoteChip> : <Phase2Badge label="not built" />}
+                  </h3>
                   <p className="text-sm text-secondary-foreground">{r.detail}</p>
                 </div>
               </li>

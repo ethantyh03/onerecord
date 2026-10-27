@@ -38,7 +38,7 @@ export const PEOPLE: Person[] = [
   {
     id: "priya",
     name: "Priya Nair",
-    title: "MDM Analyst, Group Shared Services",
+    title: "MDM Analyst, Shared Services",
     roles: ["mdm", "admin"],
     entity: "SPD",
     country: "SG",
@@ -50,7 +50,7 @@ export const PEOPLE: Person[] = [
   {
     id: "marcus",
     name: "Marcus Wong",
-    title: "Head of Regional Sales, Meridian Life Sciences (new BU)",
+    title: "Head of Sales, Meridian (MLS)",
     roles: ["requestor", "sales_manager"],
     // Meridian Life Sciences joined the group recently; its business unit (MLS) is not yet
     // configured. Admin adds it during the demo (see NEW_BU_TEMPLATE in default-config.ts).

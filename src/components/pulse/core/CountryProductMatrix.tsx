@@ -6,6 +6,7 @@ import { matrix, type MatrixCell, type MatrixTotal, type MonthValueUnits } from 
 import type { CountryCode, ProductGroup } from "@/lib/types";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { SyntheticBadge } from "@/components/common/badges";
+import { MATCHER_CAVEAT } from "@/components/pulse/analytics/caveats";
 import { cn } from "@/lib/utils";
 import { usePulse, type PulseMeasure } from "./PulseContext";
 import { Sparkline } from "./Sparkline";
@@ -35,14 +36,15 @@ function TrendIcon({ v }: { v: number | null }) {
   );
 }
 
-function DeltaBadge({ delta, label }: { delta: number; label?: string }) {
+/** Neutral outline badge: the sign is in the text, so the colour doesn't pretend + or − is good or bad. */
+function DeltaBadge({ delta, label, text }: { delta: number; label?: string; text?: string }) {
   return (
     <span
-      className="inline-flex h-5 shrink-0 items-center gap-1 rounded-full border border-warn/50 bg-warn-soft px-1.5 text-[0.6875rem] font-semibold whitespace-nowrap text-warn-ink"
+      className="inline-flex h-5 shrink-0 items-center gap-1 rounded-full border border-border-strong bg-card/80 px-1.5 text-[0.6875rem] font-semibold whitespace-nowrap text-secondary-foreground"
       title={label}
     >
       <span aria-hidden>Δ</span>
-      <span className="num">{sgdDelta(delta)}</span>
+      <span className="num">{text ?? sgdDelta(delta)}</span>
       <span className="sr-only">changed by cleaning versus raw records</span>
     </span>
   );
@@ -68,11 +70,20 @@ function cellNumbers(cell: MatrixCell, measure: PulseMeasure) {
       };
 }
 
-function MatrixCellButton({ cell, showDelta }: { cell: MatrixCell; showDelta: boolean }) {
+/** "+1.2k units" / "−860 units" */
+function unitsDelta(v: number): string {
+  if (!v) return "0 units";
+  return `${v > 0 ? "+" : "−"}${countCompact(Math.abs(v))} units`;
+}
+
+function MatrixCellButton({ cell, rawCell, showDelta }: { cell: MatrixCell; rawCell?: MatrixCell; showDelta: boolean }) {
   const { measure, country, product, setCountry, setProduct } = usePulse();
   const n = cellNumbers(cell, measure);
   const selected = country === cell.country && product === cell.product;
   const hasDelta = showDelta && cell.changedByCleaning && cell.deltaVsRaw !== 0;
+  const unitDelta = rawCell ? cell.units12m - rawCell.units12m : null;
+  const deltaText = measure === "units" ? (unitDelta == null ? "" : unitsDelta(unitDelta)) : undefined;
+  const deltaTitle = `Cleaning moved ${sgdDelta(cell.deltaVsRaw)}${unitDelta != null ? ` (${unitsDelta(unitDelta)})` : ""} ${cell.deltaVsRaw > 0 ? "into" : "out of"} this box`;
 
   return (
     <Tooltip>
@@ -100,7 +111,7 @@ function MatrixCellButton({ cell, showDelta }: { cell: MatrixCell; showDelta: bo
             {n.value}
             {n.unit ? <span className="ml-1 text-xs font-medium text-secondary-foreground">{n.unit}</span> : null}
           </span>
-          {hasDelta ? <DeltaBadge delta={cell.deltaVsRaw} /> : null}
+          {hasDelta ? <DeltaBadge delta={cell.deltaVsRaw} text={deltaText} label={deltaTitle} /> : null}
         </span>
         <span className="mt-0.5 flex items-center gap-1 text-[0.8125rem] font-semibold text-foreground">
           <TrendIcon v={n.yoy} />
@@ -125,8 +136,9 @@ function MatrixCellButton({ cell, showDelta }: { cell: MatrixCell; showDelta: bo
         <span>Latest quarter vs same quarter last year: {formatPct(n.momentum)}.</span>
         {hasDelta ? (
           <span>
-            Cleaning moved {sgdDelta(cell.deltaVsRaw)} {cell.deltaVsRaw > 0 ? "into" : "out of"} this cell: orders that
-            were recorded under the wrong country or product.
+            Cleaning moved {sgdDelta(cell.deltaVsRaw)}
+            {unitDelta != null ? ` (${unitsDelta(unitDelta)})` : ""} {cell.deltaVsRaw > 0 ? "into" : "out of"} this cell:
+            orders that were recorded under the wrong country or product.
           </span>
         ) : null}
         <span className="opacity-80">Click to show this cell&apos;s forecast.</span>
@@ -195,6 +207,11 @@ export function CountryProductMatrix() {
     for (const c of v.cells) m.set(`${c.country}-${c.product}`, c);
     return m;
   }, [v]);
+  const rawByKey = useMemo(() => {
+    const m = new Map<string, MatrixCell>();
+    for (const c of raw.cells) m.set(`${c.country}-${c.product}`, c);
+    return m;
+  }, [raw]);
 
   const total = (list: MatrixTotal[], key: string) => list.find((t) => t.key === key);
   const rawCountryTotal = (key: CountryCode) => total(raw.countryTotals, key)?.sgd12m ?? 0;
@@ -232,8 +249,9 @@ export function CountryProductMatrix() {
   return (
     <section
       aria-labelledby="pulse-matrix-title"
+      id="pulse-matrix"
       data-testid="pulse-matrix"
-      className="rounded-xl border bg-card p-5 shadow-raised"
+      className="scroll-mt-24 rounded-xl border bg-card p-5 shadow-raised"
     >
       <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
         <div className="min-w-0 space-y-1">
@@ -246,7 +264,7 @@ export function CountryProductMatrix() {
           <p className="max-w-[80ch] text-sm text-muted-foreground">
             Each box is the last 12 months of confirmed orders ({measure === "units" ? "units" : "S$"}), the change on the
             same 12 months a year earlier, and the monthly trend ({spanLabel}; the darker line is this year). Colour shows
-            growth: blue is up, red is down.
+            growth: teal is up, sand is down.
           </p>
         </div>
         <p className="flex shrink-0 items-center gap-1.5 rounded-md bg-primary-soft px-2.5 py-1.5 text-xs font-medium text-accent-foreground">
@@ -281,7 +299,7 @@ export function CountryProductMatrix() {
               {PULSE_PRODUCTS.map((p) => {
                 const cell = byKey.get(`${c}-${p}`);
                 return cell ? (
-                  <MatrixCellButton key={p} cell={cell} showDelta={merged} />
+                  <MatrixCellButton key={p} cell={cell} rawCell={rawByKey.get(`${c}-${p}`)} showDelta={merged} />
                 ) : (
                   <div key={p} className="rounded-lg border border-dashed p-3 text-xs text-muted-foreground">
                     No orders recorded
@@ -323,8 +341,12 @@ export function CountryProductMatrix() {
         <p className="max-w-[70ch] text-xs leading-snug text-muted-foreground">
           {merged ? (
             <>
-              <span className="font-semibold text-warn-ink">Δ</span> marks the {changedCount} boxes that change once
-              customers are cleaned. {matrix.cleaningNote}
+              <span className="font-semibold text-foreground">Δ</span> marks the {changedCount} boxes that change once
+              customers are cleaned{measure === "units" ? " (in units; S$ in the tooltip)" : ""}.{" "}
+              {matrix.cleaningNote.replace(/\bSept\b/g, "Sep")}{" "}
+              <span className="font-medium text-secondary-foreground" data-testid="pulse-matrix-matcher-caveat">
+                {MATCHER_CAVEAT}
+              </span>
             </>
           ) : (
             "Raw view: every SAP record counted as recorded, including orders booked under the wrong country or product. Switch to merged customers to see what cleaning changes."

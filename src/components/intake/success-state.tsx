@@ -55,7 +55,7 @@ export function SuccessState({ request, people, prs, onNew }: SuccessStateProps)
           {request.expectedBy ? (
             <p className="mt-1.5 text-[0.9375rem] text-foreground/90">
               Expected live in SAP B1: <strong>{formatLiveDate(request.expectedBy)}</strong>
-              <span className="text-muted-foreground"> · today by email: ~18 days</span>
+              <span className="text-muted-foreground"> · today by email: median 14 days</span>
             </p>
           ) : null}
         </div>

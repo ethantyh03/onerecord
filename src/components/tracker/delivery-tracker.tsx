@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import {
   BellRing,
   Check,
+  CircleCheck,
   CircleAlert,
   CornerDownRight,
   Database,
@@ -31,7 +32,7 @@ import {
   formatSgtDateTime,
   formatSgtDay,
 } from "@/components/common";
-import { businessStages, mdmStep, type LinkedDemand } from "./tracker-utils";
+import { businessStages, mdmStep, subDayDuration, type LinkedDemand } from "./tracker-utils";
 
 type NodeState = "done" | "active" | "paused" | "failed" | "upcoming" | "unreached";
 
@@ -175,6 +176,9 @@ function StepCard({ step, req, now, people }: { step: ApprovalStep; req: MdmRequ
   const escalateAfter = useSandbox((s) => s.config.sla.escalateAfterBusinessDays);
   const elapsed = stepElapsedBusinessDays(step, now);
   const active = step.status === "pending" || step.status === "question";
+  const decided = (step.status === "approved" || step.status === "rejected") && !!step.activatedAt && !!step.decidedAt;
+  // "Done in 0d" reads like a glitch on camera: say "26 min" / "3 h" for decisions inside one business day.
+  const quickDecision = decided ? subDayDuration(stepElapsedBusinessDays(step, step.decidedAt!)) : null;
 
   let waiting: string;
   switch (step.status) {
@@ -228,7 +232,17 @@ function StepCard({ step, req, now, people }: { step: ApprovalStep; req: MdmRequ
       </div>
 
       <div className="flex flex-wrap items-center gap-2">
-        <SlaChip step={step} />
+        {quickDecision ? (
+          <span
+            className="num inline-flex h-6 shrink-0 items-center gap-1 rounded-md border border-border bg-transparent px-1.5 text-xs font-medium whitespace-nowrap text-muted-foreground"
+            title={`Decided ${quickDecision} after the step opened, well inside the business-day target.`}
+          >
+            <CircleCheck aria-hidden className="size-3.5" strokeWidth={2.25} />
+            Done in {quickDecision}
+          </span>
+        ) : (
+          <SlaChip step={step} />
+        )}
         <span className="num text-xs text-secondary-foreground">{waiting}</span>
       </div>
 

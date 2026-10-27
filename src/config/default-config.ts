@@ -49,7 +49,7 @@ export const STORAGE_CONDITIONS = [
 ] as const;
 
 const PHONE_PATTERN = "^\\+?[0-9][0-9 ()-]{6,19}$";
-const PHONE_HINT = "International format, e.g. +60 3 7491 9191";
+const PHONE_HINT = "International format, e.g. +60 3 5639 4180";
 const POSTCODE_PATTERN = "^[0-9]{5,6}$";
 const POSTCODE_HINT = "5–6 digits, e.g. 119074 (SG) or 47500 (MY)";
 const SWIFT_PATTERN = "^[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?$";

@@ -48,7 +48,7 @@
    "display": "S$205k"
   },
   "newLicences": "none in phase 1",
-  "sentence": "Phase 1 costs about S$39.9k with no new licences and releases ~1,751 hours a year (≈0.94 FTE), paying back in about 5.9 months at 80 requests a month."
+  "sentence": "Phase 1 costs about S$39.9k with no new licences for the workflow and releases ~1,751 hours a year (≈0.94 FTE), paying back in about 5.9 months at 80 requests a month."
  },
  "inputs": [
   {
@@ -447,7 +447,7 @@
   ]
  },
  "costs": {
-  "title": "Cost (phase 1 needs no new licences: standard connectors, SharePoint, Teams Approvals, SAP import files)",
+  "title": "Cost (phase 1 needs no new licences for the workflow: standard connectors, SharePoint, Teams Approvals, SAP import files)",
   "phase1": {
    "label": "Phase 1 (pilot → rollout)",
    "oneOff": {
@@ -1164,7 +1164,7 @@
     "fastVisibleApprovals": "na",
     "mdmChangesWithoutIt": "na",
     "regionalAnalytics": "no",
-    "verdict": "Not possible: B1 approval templates cover documents only",
+    "verdict": "Built-in approvals are document-centric: no structured intake, no duplicate check, no Teams routing and no parallel SLA for master-data requests",
     "chosen": false
    },
    {
@@ -1202,7 +1202,7 @@
    },
    {
     "option": "OneRecord (M365 workflow + small DS layer + DTW)",
-    "oneOff": "~S$40k, no new licences",
+    "oneOff": "~S$40k, no new licences for the workflow",
     "stopsIncomplete": "yes",
     "stopsDuplicates": "yes",
     "fastVisibleApprovals": "yes",

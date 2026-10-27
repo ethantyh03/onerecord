@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Database, Eye } from "lucide-react";
 import { useSandbox } from "@/lib/store";
@@ -35,6 +35,13 @@ export function AdminWorkspace() {
     buId: config.people.some((p) => p.entity === "MLS") ? "MLS" : (config.businessUnits[0]?.id ?? ""),
     values: {},
   }));
+
+  // Arriving from a long, scrolled page (e.g. the demo scene list), the browser clamps the old scroll to this
+  // page's first-paint height and Next keeps it (the header is "in view"), leaving the title ~32px under the
+  // top bar. Snap a small leftover offset back to the top once on arrival. DOM only: no state is touched.
+  useEffect(() => {
+    if (window.scrollY > 0 && window.scrollY < 120 && !window.location.hash) window.scrollTo({ top: 0 });
+  }, []);
 
   function changeTab(next: string) {
     if (!TAB_IDS.has(next)) return;

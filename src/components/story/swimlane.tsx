@@ -11,7 +11,7 @@ type Builder = "mdm" | "lean" | "outside";
 export const BUILDER_META: Record<Builder, { color: string; label: string; detail: string }> = {
   mdm: { color: "var(--chart-1)", label: "MDM team configures", detail: "fields, routes, business units; loads the daily import" },
   lean: { color: "var(--chart-3)", label: "Lean team builds", detail: "1 citizen developer + 1 analyst, ~6 weeks" },
-  outside: { color: "var(--chart-2)", label: "Outside help", detail: "SAP partner ~15 days · data-science contractor ~15 days" },
+  outside: { color: "oklch(0.56 0.15 266)", label: "Outside help", detail: "SAP partner ~15 days · data-science contractor ~15 days" },
 };
 
 interface Lane {
@@ -43,14 +43,14 @@ const BOXES: Box[] = [
     lane: 0,
     title: "Power Apps form",
     who: "Lean team + MDM",
-    lines: ["Canvas app on Microsoft", "365. Paste an email and", "it fills itself; MDM", "edits fields and rules."],
+    lines: ["Structured form. Paste", "an email; rules fill it", "(in-tenant AI: phase 2).", "MDM edits fields, rules."],
     cost: "Existing licences",
     builders: ["lean", "mdm"],
   },
   {
     lane: 1,
     title: "Duplicate check",
-    who: "DS contractor + lean team",
+    who: "DS contractor + lean",
     lines: ["Required fields and the", "IVD rule block submit.", "A nightly matcher writes", "match keys to SharePoint."],
     cost: "Standard connectors",
     builders: ["outside", "lean"],
@@ -76,14 +76,14 @@ const BOXES: Box[] = [
     title: "DTW import file",
     who: "MDM team, no build",
     lines: ["Daily batch with SAP's", "own field names, loaded", "by MDM after the final", "check."],
-    cost: "S$0 new licences (phase 1)",
+    cost: "S$0 · ships with SAP B1",
     builders: ["mdm"],
   },
   {
     lane: 5,
     title: "Power BI report",
-    who: "Analyst + DS contractor",
-    lines: ["B1 extracts ORDR/RDR1,", "OQUT, OCRD and OITM,", "joined by the golden-ID", "customer crosswalk."],
+    who: "Analyst + contractor",
+    lines: ["Reads orders, quotes,", "customers and items", "from SAP B1, with each", "hospital counted once."],
     cost: "Power BI Pro if not owned",
     builders: ["lean", "outside"],
   },
@@ -93,8 +93,7 @@ const PHASE2: Box = {
   lane: 4,
   title: "Service Layer",
   who: "SAP partner, ~15 days",
-  lines: ["Process-licensed flow →", "custom connector →", "data gateway → POST", "/b1s/v2/BusinessPartners", "/Items · /ProfitCenters"],
-  mono: [3, 4],
+  lines: ["Approved records post", "straight into SAP B1", "through its API. Only", "if the pilot proves it."],
   cost: "≤USD 1,980/yr (phase 2)",
   builders: ["outside"],
 };
@@ -115,7 +114,7 @@ const PULSE_CYCLE_S = PULSE_STEP_S * BOXES.length + 1.4;
 function BoxShape({ box, y, h, index, phase2 }: { box: Box; y: number; h: number; index?: number; phase2?: boolean }) {
   const x = box.lane * LANE_W + PAD;
   const stripeW = BOX_W / box.builders.length;
-  const bodyStart = y + (phase2 ? 82 : 88);
+  const bodyStart = y + (phase2 ? 113 : 88);
   const lineH = phase2 ? 19.5 : 21;
   return (
     <g>
@@ -201,9 +200,9 @@ function BoxShape({ box, y, h, index, phase2 }: { box: Box; y: number; h: number
       </text>
       {phase2 ? (
         <g>
-          <rect x={x + BOX_W - 74} y={y + 22} width={62} height={22} rx={11} fill="var(--phase2-soft)" stroke="var(--phase2)" strokeDasharray="3 2" />
-          <text x={x + BOX_W - 43} y={y + 37} fontSize={12} fontWeight={650} textAnchor="middle" fill="var(--phase2-ink)">
-            Phase 2
+          <rect x={x + 12} y={y + 69} width={120} height={22} rx={11} fill="var(--phase2-soft)" stroke="var(--phase2)" strokeDasharray="3 2" />
+          <text x={x + 72} y={y + 84} fontSize={12} fontWeight={650} textAnchor="middle" fill="var(--phase2-ink)">
+            Phase 2 · not built
           </text>
         </g>
       ) : null}
@@ -365,19 +364,24 @@ export function Swimlane() {
           <text x={14} y={30} fontSize={15} fontWeight={700} fill="var(--primary)">
             Phase 1 in numbers
           </text>
-          {[
-            ["~6 weeks", "to the pilot"],
-            ["S$39.9k", "one-off"],
-            ["S$0", "new licences"],
-            ["≈6 months", "payback"],
-          ].map(([big, small], i) => (
-            <text key={big} x={14} y={62 + i * 30} fontSize={14} fill="var(--secondary-foreground)">
+          {(
+            [
+              ["~6 weeks", "to the pilot", 60],
+              ["S$39.9k", "one-off", 88],
+              ["S$0", "new workflow licences", 116],
+              ["≈6 months", "payback", 162],
+            ] as const
+          ).map(([big, small, ty]) => (
+            <text key={big} x={14} y={ty} fontSize={14} fill="var(--secondary-foreground)">
               <tspan fontWeight={700} fontSize={17} fill="var(--foreground)">
                 {big}
               </tspan>{" "}
               {small}
             </text>
           ))}
+          <text x={14} y={134} fontSize={11.5} fill="var(--muted-foreground)">
+            Power BI Pro only if not owned
+          </text>
           <text x={14} y={ROW2_H - 14} fontSize={11.5} fill="var(--muted-foreground)">
             At 80 requests a month (/impact)
           </text>

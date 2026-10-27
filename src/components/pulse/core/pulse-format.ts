@@ -21,6 +21,7 @@ export function viewKey(view: PulseView): ViewKey {
 }
 
 const MINUS = "−";
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 /** 0.0486 → "+4.9%", -0.35 → "−35.0%" (one decimal under 10%, whole above). null → fallback. */
 export function formatPct(v: number | null | undefined, fallback = "n/a"): string {
@@ -66,16 +67,17 @@ export function measureValue(measure: PulseMeasure, sgd: number, units: number |
 
 /** "2026-11-15" → "15 Nov 2026" */
 export function formatIsoDate(iso: string): string {
-  const d = new Date(`${iso.slice(0, 10)}T00:00:00Z`);
-  if (Number.isNaN(d.getTime())) return iso;
-  return d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
+  const [y, mm, dd] = iso.slice(0, 10).split("-");
+  const name = MONTHS[Number(mm) - 1];
+  if (!name || !y || !dd) return iso;
+  return `${Number(dd)} ${name} ${y}`;
 }
 
-/** "2025-10" → "Oct 2025" */
+/** "2025-10" → "Oct 2025". Fixed three-letter months ("Sep", never ICU's "Sept"). */
 export function formatMonth(m: string): string {
-  const d = new Date(`${m}-01T00:00:00Z`);
-  if (Number.isNaN(d.getTime())) return m;
-  return d.toLocaleDateString("en-GB", { month: "short", year: "numeric", timeZone: "UTC" });
+  const [y, mm] = m.split("-");
+  const name = MONTHS[Number(mm) - 1];
+  return name && y ? `${name} ${y}` : m;
 }
 
 function trim(s: string): string {
@@ -83,7 +85,8 @@ function trim(s: string): string {
 }
 
 /**
- * Diverging fill for YoY growth: cool (chart-1) for growth, warm (chart-2) for decline, card surface at ±1%.
+ * Diverging fill for YoY growth: teal (chart-1) for growth, sand (chart-3) for decline, card surface within ±3%.
+ * Coral stays reserved for stuck demand and at-risk.
  * Built with color-mix on theme variables so it follows light and dark mode.
  */
 export const YOY_BINS: { min: number; max: number; label: string; pct: number; pole: "pos" | "neg" | "mid" }[] = [
@@ -98,7 +101,7 @@ export const YOY_BINS: { min: number; max: number; label: string; pct: number; p
 
 export function binFill(bin: (typeof YOY_BINS)[number]): string {
   if (bin.pole === "mid") return "color-mix(in oklch, var(--muted) 70%, var(--card))";
-  const hue = bin.pole === "pos" ? "var(--chart-1)" : "var(--chart-2)";
+  const hue = bin.pole === "pos" ? "var(--chart-1)" : "var(--chart-3)";
   return `color-mix(in oklch, ${hue} ${bin.pct}%, var(--card))`;
 }
 

@@ -126,9 +126,9 @@ Production is a Microsoft 365 build that the MDM team can own. See `/architectur
 **Licences:**
 - **Phase 1:** no new licences for the workflow. It uses standard connectors only.
 - **Phase 2:** adds a Process licence plus one Premium maker licence, ≤ USD 1,980 a year.
-- **Power BI:** Pro licences for ~10 viewers (≈USD 14/user/month, approx.), only if Lives does not already own them.
+- **Power BI:** Pro licences for ~10 viewers (≈USD 14/user/month, approx.), only if Lives does not already own them. The pilot analytics run without Power BI.
 
-**Why not SAP's own approvals?** SAP B1 approval procedures cover documents (sales, purchasing, inventory, payments), not master data. SAP B1's built-in approvals are document-centric: no structured intake, no duplicate check, no Teams routing and no parallel SLA for master-data requests. (Source: SAP Learning, "Implementing the approval processes in SAP Business One".)
+**Why not SAP's own approvals?** SAP B1's approval procedures are designed around documents (sales, purchasing, inventory, payments). They are document-centric: no structured intake, no duplicate check, no Teams routing and no parallel SLA for master-data requests. (Source: SAP Learning, "Implementing the approval processes in SAP Business One".)
 
 ## How it lands in SAP B1
 
@@ -228,20 +228,20 @@ These are real artefacts in `integrations/` that the lean team can start from:
 
 **Not in version 1, by choice** (details at `/scope`):
 - **Automatic posting to SAP B1 through the Service Layer.** It does not pay back on hours at our volumes.
-- **Merging or retiring existing duplicate SAP records.** That is a separate stewardship project; v1 uses a read-only golden-ID crosswalk.
+- **Merging or retiring existing duplicate SAP records.** That is a separate stewardship project; v1 uses a read-only golden-ID crosswalk. The few high-value merges Regional Pulse flags are done by hand in SAP by the MDM team.
 - **A security model of our own.** SSO, encryption and DLP come from Microsoft 365 and Entra ID.
 - **A drag-and-drop workflow designer.** Form-based settings are enough for the MDM team.
 - **Deep-learning forecasting.** It is not justified on monthly data at this scale.
 - **Changes to existing records, apart from Extend.**
 
 **Roadmap, in order:**
-1. A 6-week Microsoft 365 pilot (SG + MY, Customer + Item).
+1. A 6-week Microsoft 365 pilot (SG + MY, Customer + Item); the analytics rerun on SAP B1 extracts in week 1. *(Phase 1, next; items 2–8 are phase 2.)*
 2. Vendor bank-detail changes with dual Finance control.
-3. Delegation and SLA calendars per time zone.
-4. In-tenant LLM for paste-to-fill and inbox sorting.
+3. Delegation chains and SLA clocks that skip each country's public holidays (single-delegate out-of-office is already in v1).
+4. In-tenant LLM for paste-to-fill and inbox sorting (phase 1 uses rules).
 5. Adding a whole request type from Admin.
 6. Service Layer webhooks to catch records created outside the workflow.
-7. Regional Pulse in Power BI on real extracts.
+7. Regional Pulse as a scheduled Power BI report.
 8. Audit PDF export, map view, mobile and more languages.
 
 ## Credits

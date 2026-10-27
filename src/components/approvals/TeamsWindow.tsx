@@ -33,7 +33,7 @@ export function TeamsWindow({ request, step, me }: { request: MdmRequest; step: 
       aria-label="Microsoft Teams (simulated)"
     >
       {/* title bar */}
-      <div className="flex items-center gap-3 border-b border-[#e0e0e0] bg-[#ebebeb] px-3 py-1.5">
+      <div className="flex items-center gap-3 border-b border-[#e0e0e0] bg-[#ebebeb] px-3 py-1">
         <span className="flex gap-1.5" aria-hidden="true">
           <span className="size-2.5 rounded-full bg-[#d1d1d1]" />
           <span className="size-2.5 rounded-full bg-[#d1d1d1]" />
@@ -44,15 +44,15 @@ export function TeamsWindow({ request, step, me }: { request: MdmRequest; step: 
         </span>
         <span className="relative mx-auto flex w-full max-w-[420px] items-center" aria-hidden="true">
           <Search className="absolute left-2.5 size-3.5 text-[#616161]" />
-          <span className="h-7 w-full rounded-[4px] bg-white pl-8 text-[12px] leading-7 text-[#616161]">Search</span>
+          <span className="h-6 w-full rounded-[4px] bg-white pl-8 text-[12px] leading-6 text-[#616161]">Search</span>
         </span>
         <span className="rounded-full border border-[#e0b252] bg-[#fff6dc] px-2 py-px text-[11px] font-semibold text-[#5c4300]">
           Simulated
         </span>
-        <MsAvatar person={me} size={24} presence={me.outOfOffice ? "away" : "available"} />
+        <MsAvatar person={me} size={22} presence={me.outOfOffice ? "away" : "available"} />
       </div>
 
-      <div className="flex min-h-[560px]">
+      <div className="flex min-h-[480px]">
         {/* app rail */}
         <nav aria-hidden="true" className="flex w-[68px] shrink-0 flex-col items-center gap-1 border-r border-[#e0e0e0] bg-[#ebebeb] py-2">
           {RAIL.map((item) => {
@@ -79,14 +79,14 @@ export function TeamsWindow({ request, step, me }: { request: MdmRequest; step: 
 
         {/* chat with the Approvals app */}
         <div className="flex min-w-0 flex-1 flex-col">
-          <div className="flex items-center gap-2.5 border-b border-[#e0e0e0] bg-white px-4 py-2.5">
-            <span className="inline-flex size-8 items-center justify-center rounded-[6px] text-white" style={{ background: TEAMS.purple }} aria-hidden="true">
-              <ClipboardCheck className="size-4" />
+          <div className="flex items-center gap-2.5 border-b border-[#e0e0e0] bg-white px-4 py-1.5">
+            <span className="inline-flex size-6 items-center justify-center rounded-[5px] text-white" style={{ background: TEAMS.purple }} aria-hidden="true">
+              <ClipboardCheck className="size-3.5" />
             </span>
-            <div className="min-w-0">
-              <p className="text-[14px] font-semibold">OneRecord Approvals</p>
-              <p className="text-[11px] text-[#616161]">App · posts approval cards and reminders</p>
-            </div>
+            <p className="min-w-0 truncate text-[13px]">
+              <span className="font-semibold">OneRecord Approvals</span>
+              <span className="text-[11px] text-[#616161]"> · App · posts approval cards and reminders</span>
+            </p>
             <span className="ml-auto flex gap-4 text-[13px]" aria-hidden="true">
               <span className="border-b-2 pb-1 font-semibold" style={{ borderColor: TEAMS.purple }}>
                 Chat
@@ -95,9 +95,9 @@ export function TeamsWindow({ request, step, me }: { request: MdmRequest; step: 
             </span>
           </div>
 
-          <div className="flex-1 px-4 py-5 md:px-6">
+          <div className="flex-1 px-4 py-3 md:px-6">
             <div className="flex gap-3">
-              <span className="mt-6 inline-flex size-8 shrink-0 items-center justify-center rounded-[6px] text-white" style={{ background: TEAMS.purple }} aria-hidden="true">
+              <span className="mt-5 inline-flex size-8 shrink-0 items-center justify-center rounded-[6px] text-white" style={{ background: TEAMS.purple }} aria-hidden="true">
                 <ClipboardCheck className="size-4" />
               </span>
               <div className="min-w-0 max-w-[640px] flex-1">
@@ -144,6 +144,18 @@ const STEP_ICON: Record<ApprovalStep["status"], ReactNode> = {
   skipped: <CircleDashed className="size-4 text-muted-foreground/60" aria-hidden="true" />,
 };
 
+/** The strip's caption, true to the stages shown: only mention parallel or one-after-another steps that exist. */
+function routeCaption(stages: { mode: string; steps: ApprovalStep[] }[]): string {
+  const multi = stages.filter((s) => s.steps.length > 1);
+  const parallel = multi.some((s) => s.mode === "parallel");
+  const sequential = multi.some((s) => s.mode !== "parallel");
+  const lead = "Each stage opens when the one before it is approved.";
+  if (parallel && sequential) return `${lead} Some stages run their steps in parallel, others one after another.`;
+  if (parallel) return `${lead} Steps within a stage run in parallel.`;
+  if (sequential) return `${lead} Steps within a stage run one after another.`;
+  return lead;
+}
+
 /** Where the selected request goes: every stage and step with who holds it and its SLA. */
 export function RouteStrip({ request, people, highlightStepId }: { request: MdmRequest; people: Person[]; highlightStepId: string }) {
   const stages: { id: string; label: string; mode: string; steps: ApprovalStep[] }[] = [];
@@ -163,13 +175,14 @@ export function RouteStrip({ request, people, highlightStepId }: { request: MdmR
         <h3 id="route-heading" className="text-[0.9375rem] font-semibold">
           Route for {request.id}
         </h3>
-        <p className="text-xs text-muted-foreground">Each stage opens when the one before it is approved. Steps in a stage run in parallel.</p>
+        <p className="text-xs text-muted-foreground">{routeCaption(stages)}</p>
       </div>
       <ol className="mt-3 grid gap-3 md:grid-flow-col md:auto-cols-fr">
         {stages.map((stage, i) => (
           <li key={stage.id} className="min-w-0 rounded-lg border border-border bg-background/60 p-3">
             <p className="text-xs font-medium text-muted-foreground">
-              Stage {i + 1} · {stage.steps.length > 1 && stage.mode === "parallel" ? "in parallel" : stage.label}
+              Stage {i + 1} · {stage.label}
+              {stage.steps.length > 1 ? (stage.mode === "parallel" ? " · in parallel" : " · one after another") : ""}
             </p>
             <ul className="mt-2 space-y-2">
               {stage.steps.map((step) => {

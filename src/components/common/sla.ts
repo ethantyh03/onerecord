@@ -29,7 +29,7 @@ export function readSla(step: ApprovalStep, elapsedBd: number | null, sla: SlaCo
       const over = took > target;
       return {
         tone: "done",
-        label: `Done in ${formatDays(took)}d`,
+        label: took < 0.05 ? "Done same day" : `Done in ${formatDays(took)}d`,
         detail: over
           ? `Decided after ${formatDays(took)} business days, ${formatDays(took - target)} over the ${target}-day target.`
           : `Decided after ${formatDays(took)} of ${target} business days.`,

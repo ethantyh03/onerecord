@@ -12,6 +12,7 @@
  * - yoy / momentum are null when the prior period is 0.
  */
 import type { CountryCode, CustomerMaster, EntityCode, ItemMaster, MessageKind, ProductGroup } from "@/lib/types";
+import { pseudonymise } from "@/config/pseudonyms";
 
 import metaJson from "./meta.json";
 import masterJson from "./master.json";
@@ -711,7 +712,7 @@ export interface Impact {
 
 // ---------------------------------------------------------------- typed exports
 export const meta = metaJson as Meta;
-export const master = masterJson as MasterData;
+export const master = pseudonymise(masterJson as MasterData); // real hospital names → fictional (config/pseudonyms.ts)
 export const matrix = matrixJson as Matrix;
 export const streams = streamsJson as Streams;
 export const bridge = bridgeJson as Bridge;
@@ -720,9 +721,9 @@ export const stress = stressJson as Stress;
 export const cleanXMethod = cleanxmethodJson as CleanXMethod;
 export const matcherEval = matcherEvalJson as MatcherEval;
 export const signals = signalsJson as Signals;
-export const actions = actionsJson as Actions;
-export const triageEval = triageEvalJson as TriageEval;
-export const inbox = inboxJson as Inbox;
+export const actions = pseudonymise(actionsJson as Actions);
+export const triageEval = pseudonymise(triageEvalJson as TriageEval);
+export const inbox = pseudonymise(inboxJson as Inbox);
 export const summary = summaryJson as Summary;
 export const dedup = dedupJson as Dedup;
 export const impact = impactJson as Impact;

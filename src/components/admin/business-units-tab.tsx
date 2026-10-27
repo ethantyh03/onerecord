@@ -8,6 +8,7 @@ import { useSandbox } from "@/lib/store";
 import { PersonChip } from "@/components/common";
 import { Button } from "@/components/ui/button";
 import { BuSheet } from "./bu-sheet";
+import { pendingEntityLabel } from "./bu-template";
 import { Chip, describeRule, roleLabel } from "./shared";
 
 export function BusinessUnitsTab({ onBuSaved }: { onBuSaved?: (buId: string) => void }) {
@@ -58,7 +59,7 @@ export function BusinessUnitsTab({ onBuSaved }: { onBuSaved?: (buId: string) => 
         >
           <AlertTriangle className="size-5 shrink-0 text-warn-ink" aria-hidden />
           <div className="min-w-0 flex-1 text-[0.8125rem] text-warn-ink">
-            <p className="font-semibold">{entity} has people but no business-unit setup</p>
+            <p className="font-semibold">{pendingEntityLabel(entity)} has people but no business-unit setup</p>
             <p>
               {ids.map((id) => config.people.find((p) => p.id === id)?.name ?? id).join(", ")} can raise requests, but they go to whoever
               holds each role first, not to {entity}&rsquo;s own approvers.

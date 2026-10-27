@@ -4,7 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { SapWorkspace } from "./_components/SapWorkspace";
 
 export const metadata: Metadata = {
-  title: "SAP B1 sandbox · OneRecord",
+  title: "SAP B1 sandbox",
   description: "Simulated SAP Business One: DTW import wizard, master data forms and the Phase 2 Service Layer payload.",
 };
 

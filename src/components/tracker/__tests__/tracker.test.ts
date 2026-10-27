@@ -20,7 +20,7 @@ vi.hoisted(() => {
 import { useSandbox } from "@/lib/store";
 import { verifyChain } from "@/lib/engine/audit";
 import { approveAllAsAssignees } from "../demo-actions";
-import { businessStages, linkedDemandByRequest, mdmStep, requestAgeBusinessDays } from "../tracker-utils";
+import { businessStages, linkedDemandByRequest, mdmStep, requestAgeBusinessDays, subDayDuration } from "../tracker-utils";
 
 const S = () => useSandbox.getState();
 const req = (id: string) => S().requests.find((r) => r.id === id)!;
@@ -63,5 +63,16 @@ describe("tracker helpers", () => {
     const copy = chain.map((e) => (e.seq === target.seq ? { ...e, detail: "edited" } : e));
     expect(verifyChain(copy)).toEqual({ ok: false, brokenAt: target.seq });
     expect(verifyChain(S().audit).ok).toBe(true);
+  });
+});
+
+describe("subDayDuration", () => {
+  it("labels sub-day decisions in minutes or hours and leaves longer ones to the SLA chip", () => {
+    expect(subDayDuration(26 / (24 * 60))).toBe("26 min");
+    expect(subDayDuration(3 / 24)).toBe("3 h");
+    expect(subDayDuration(2.5 / 24)).toBe("2.5 h");
+    expect(subDayDuration(0)).toBe("under 1 min");
+    expect(subDayDuration(1)).toBeNull();
+    expect(subDayDuration(1.9)).toBeNull();
   });
 });

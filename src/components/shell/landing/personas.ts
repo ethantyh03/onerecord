@@ -30,7 +30,7 @@ export const LANDING_PERSONAS: LandingPersona[] = [
     id: "priya",
     shortName: "Priya",
     pain: "Keys every approved record into SAP B1 by hand, and catches a near-duplicate only if she remembers it.",
-    change: "Checks a clean record once, then imports it with a ready-made DTW file.",
+    change: "Checks a clean record once, then loads it into SAP with a ready-made import file.",
     href: "/mdm",
     startsOn: "MDM console",
   },

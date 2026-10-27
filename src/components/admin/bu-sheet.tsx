@@ -1,10 +1,9 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Plus, Sparkles } from "lucide-react";
+import { ChevronDown, Plus, RotateCcw } from "lucide-react";
 import type { BusinessUnit, FieldDef, ProductGroup, RoleId, StageDef } from "@/lib/types";
 import { PRODUCT_LABELS } from "@/lib/types";
-import { NEW_BU_TEMPLATE } from "@/config/default-config";
 import { useSandbox } from "@/lib/store";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,9 +11,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { ASSIGNABLE_ROLES, FieldLabel, NativeSelect, PersonOptions, deepClone, roleLabel, useSaveConfig } from "./shared";
 import { StageEditor, newStage } from "./stage-editor";
+import { onboardingTemplateFor } from "./bu-template";
 
 /** Roles every BU fills with its own people; the rest default to the shared group functions. */
 const BU_SPECIFIC_ROLES: RoleId[] = ["bu_head", "business_support"];
+/** Group functions named on the collapsed "shared group team" row. */
+const SUMMARY_ROLES: RoleId[] = ["finance", "qa_ra"];
 
 type Draft = {
   id: string;
@@ -72,7 +74,13 @@ function BuForm({ editing, presetCode, onOpenChange, onSaved }: BuSheetProps) {
   const config = useSandbox((s) => s.config);
   const save = useSaveConfig();
   const shared = config.businessUnits[0]?.roleAssignments ?? {};
-  const [draft, setDraft] = useState<Draft>(() => (editing ? toDraft(editing) : blankDraft(shared, presetCode)));
+  // Computed once per open (the form remounts on open): MLS people are waiting, so start from its onboarding sheet.
+  const [template] = useState(() => (editing ? null : onboardingTemplateFor(config, presetCode)));
+  const [draft, setDraft] = useState<Draft>(() =>
+    editing ? toDraft(editing) : template ? toDraft(template) : blankDraft(shared, presetCode),
+  );
+  const [fromTemplate, setFromTemplate] = useState(!!template);
+  const [showOtherRoles, setShowOtherRoles] = useState(false);
   const [tried, setTried] = useState(false);
   const isEdit = !!editing;
   /** BU stages apply to every request type, so a step condition can use any domain's field (first label wins). */
@@ -103,10 +111,47 @@ function BuForm({ editing, presetCode, onOpenChange, onSaved }: BuSheetProps) {
       return { ...d, roleAssignments };
     });
 
-  function fillDemo() {
-    setDraft(toDraft(NEW_BU_TEMPLATE));
+  function applyTemplate() {
+    if (!template) return;
+    setDraft(toDraft(template));
+    setFromTemplate(true);
     setTried(false);
   }
+
+  function startBlank() {
+    setDraft(blankDraft(shared));
+    setFromTemplate(false);
+    setTried(false);
+  }
+
+  const personName = (id?: string) => (id ? (config.people.find((p) => p.id === id)?.name ?? id) : undefined);
+  const personTitle = (id?: string) => (id ? config.people.find((p) => p.id === id)?.title : undefined);
+  const otherRoles = ASSIGNABLE_ROLES.filter((r) => !BU_SPECIFIC_ROLES.includes(r));
+  const sharedSummary = SUMMARY_ROLES.map((r) => `${roleLabel(r)}: ${personName(draft.roleAssignments[r]) ?? "group default"}`);
+  const moreCount = otherRoles.length - SUMMARY_ROLES.length;
+
+  const roleSelect = (role: RoleId) => (
+    <div key={role}>
+      <FieldLabel htmlFor={`bu-role-${role}`} hint={BU_SPECIFIC_ROLES.includes(role) ? "BU's own" : undefined}>
+        {roleLabel(role)}
+      </FieldLabel>
+      <NativeSelect
+        id={`bu-role-${role}`}
+        value={draft.roleAssignments[role] ?? ""}
+        aria-invalid={role === "bu_head" && !!show("bu_head")}
+        onChange={(e) => setRole(role, e.target.value)}
+        data-testid={`bu-role-${role}`}
+      >
+        <option value="">{role === "bu_head" ? "Choose a person…" : "Use the group default"}</option>
+        <PersonOptions people={config.people} role={role} nameOnly />
+      </NativeSelect>
+      {role === "bu_head" && show("bu_head") ? (
+        <p className="mt-1 text-xs text-destructive">{errors.bu_head}</p>
+      ) : personTitle(draft.roleAssignments[role]) ? (
+        <p className="mt-1 truncate text-xs text-muted-foreground">{personTitle(draft.roleAssignments[role])}</p>
+      ) : null}
+    </div>
+  );
 
   function onSave() {
     setTried(true);
@@ -143,13 +188,28 @@ function BuForm({ editing, presetCode, onOpenChange, onSaved }: BuSheetProps) {
             <SheetDescription>
               {isEdit
                 ? "Changes apply to requests submitted from now on. In-flight requests keep their route."
-                : "Its people start getting the right approvals as soon as you save. No IT ticket."}
+                : fromTemplate
+                  ? `Prefilled from ${template?.id ?? "the new BU"}'s onboarding sheet. Check it and save: its people get the right approvals straight away. No IT ticket.`
+                  : "Its people start getting the right approvals as soon as you save. No IT ticket."}
             </SheetDescription>
           </div>
-          {!isEdit ? (
-            <Button type="button" variant="ghost" size="sm" onClick={fillDemo} data-testid="admin-fill-demo" className="shrink-0 text-primary">
-              <Sparkles /> Fill demo values
-            </Button>
+          {!isEdit && template ? (
+            fromTemplate ? (
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={startBlank}
+                data-testid="admin-start-blank"
+                className="shrink-0 text-muted-foreground"
+              >
+                <RotateCcw /> Start blank
+              </Button>
+            ) : (
+              <Button type="button" variant="ghost" size="sm" onClick={applyTemplate} data-testid="admin-fill-demo" className="shrink-0 text-primary">
+                Use {template.id} onboarding sheet
+              </Button>
+            )
           ) : null}
         </div>
       </SheetHeader>
@@ -232,27 +292,35 @@ function BuForm({ editing, presetCode, onOpenChange, onSaved }: BuSheetProps) {
             <h3 id="bu-roles" className="text-sm font-semibold text-foreground">
               Who approves for this BU
             </h3>
-            <p className="text-xs text-muted-foreground">Group functions (Finance, QA/RA, MDM…) are prefilled with the shared team. Change any of them.</p>
+            <p className="text-xs text-muted-foreground">
+              The BU names its own head and business support. Group functions use the shared team unless you change them.
+            </p>
           </div>
-          <div className="grid gap-x-4 gap-y-2.5 sm:grid-cols-2">
-            {ASSIGNABLE_ROLES.map((role) => (
-              <div key={role}>
-                <FieldLabel htmlFor={`bu-role-${role}`} hint={BU_SPECIFIC_ROLES.includes(role) ? "BU's own" : undefined}>
-                  {roleLabel(role)}
-                </FieldLabel>
-                <NativeSelect
-                  id={`bu-role-${role}`}
-                  value={draft.roleAssignments[role] ?? ""}
-                  aria-invalid={role === "bu_head" && !!show("bu_head")}
-                  onChange={(e) => setRole(role, e.target.value)}
-                  data-testid={`bu-role-${role}`}
-                >
-                  <option value="">{role === "bu_head" ? "Choose a person…" : "Use the group default"}</option>
-                  <PersonOptions people={config.people} role={role} />
-                </NativeSelect>
-                {role === "bu_head" && show("bu_head") ? <p className="mt-1 text-xs text-destructive">{errors.bu_head}</p> : null}
+          <div className="grid gap-x-4 gap-y-2.5 sm:grid-cols-2">{BU_SPECIFIC_ROLES.map(roleSelect)}</div>
+          <div className="rounded-lg border border-border bg-muted/40">
+            <button
+              type="button"
+              className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-[0.8125rem] outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+              aria-expanded={showOtherRoles}
+              aria-controls="bu-other-roles"
+              onClick={() => setShowOtherRoles((v) => !v)}
+              data-testid="bu-other-roles-toggle"
+            >
+              <span className="shrink-0 font-medium text-foreground">Shared group team</span>
+              <span className="min-w-0 flex-1 truncate text-muted-foreground">
+                {sharedSummary.join(" · ")}
+                {moreCount > 0 ? ` · +${moreCount} more` : ""}
+              </span>
+              <span className="inline-flex shrink-0 items-center gap-1 text-xs font-medium text-primary">
+                {showOtherRoles ? "Hide" : "Change"}
+                <ChevronDown className={showOtherRoles ? "size-3.5 rotate-180 transition-transform" : "size-3.5 transition-transform"} aria-hidden />
+              </span>
+            </button>
+            {showOtherRoles ? (
+              <div id="bu-other-roles" className="grid gap-x-4 gap-y-2.5 border-t border-border px-3 py-3 sm:grid-cols-2">
+                {otherRoles.map(roleSelect)}
               </div>
-            ))}
+            ) : null}
           </div>
         </section>
 

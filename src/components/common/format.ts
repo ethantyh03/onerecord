@@ -70,13 +70,13 @@ export function formatSgtDay(v: string | number | Date): string {
   return valid(d) ? sgtWeekdayDate.format(d) : "—";
 }
 
-/** S$310,400 (whole dollars) or, with compact, S$310k / S$1.2m */
+/** S$310,400 (whole dollars) or, with compact, S$310k / S$1.2M */
 export function formatSgd(amount: number, opts: { compact?: boolean } = {}): string {
   if (!Number.isFinite(amount)) return "S$0";
   const sign = amount < 0 ? "-" : "";
   const abs = Math.abs(amount);
   if (opts.compact) {
-    if (abs >= 1_000_000) return `${sign}S$${trimZero((abs / 1_000_000).toFixed(abs >= 10_000_000 ? 0 : 1))}m`;
+    if (abs >= 1_000_000) return `${sign}S$${trimZero((abs / 1_000_000).toFixed(abs >= 10_000_000 ? 0 : 1))}M`;
     if (abs >= 10_000) return `${sign}S$${Math.round(abs / 1_000)}k`;
     if (abs >= 1_000) return `${sign}S$${trimZero((abs / 1_000).toFixed(1))}k`;
   }

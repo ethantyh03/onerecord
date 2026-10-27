@@ -7,11 +7,12 @@ import { cn } from "@/lib/utils";
 
 /**
  * Chart colours come from the shell's tokens so light and dark mode follow the theme.
- * Roles are fixed: "ours" is always teal, "today's method" always coral, context series slate.
+ * Roles are fixed: "ours" is always teal, "today's method" always amber, context series slate.
+ * Coral (chart-2) is reserved for stuck demand and at-risk, so no analytics series uses it.
  */
 export const VIZ = {
   ours: "var(--chart-1)",
-  today: "var(--chart-2)",
+  today: "var(--chart-3)",
   context: "var(--chart-5)",
   ink: "var(--foreground)",
   muted: "var(--muted-foreground)",
@@ -19,7 +20,7 @@ export const VIZ = {
   axis: "var(--border-strong)",
   surface: "var(--card)",
   gain: "var(--chart-1)",
-  loss: "var(--chart-2)",
+  loss: "var(--chart-3)",
   total: "var(--chart-5)",
 } as const;
 

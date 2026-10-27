@@ -117,6 +117,9 @@ test.describe("golden path", () => {
     await expect(page.getByTestId("pulse-hero")).toBeVisible();
     await expect(page.getByTestId("forecast-panel")).toBeVisible();
 
+    // The pulse scene opens on the raw SAP records (?view=raw); the presenter clicks "merge".
+    await expect(page.getByTestId("pulse-hero")).toHaveAttribute("data-view", "raw");
+    await page.getByTestId("pulse-toggle-merged").click();
     await expect(page.getByTestId("pulse-hero")).toHaveAttribute("data-view", "merged");
     await page.getByTestId("pulse-toggle-raw").click();
     await expect(page.getByTestId("pulse-hero")).toHaveAttribute("data-view", "raw");

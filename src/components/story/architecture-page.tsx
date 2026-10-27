@@ -27,7 +27,7 @@ const MAPPING: MappingRow[] = [
     part: "Request form",
     prototype: "New request",
     href: "/requests/new",
-    production: "Power Apps canvas app (or Microsoft Forms) in the default environment. No Dataverse or model-driven app, so no premium licence.",
+    production: "Power Apps canvas app (or Microsoft Forms) in the default environment. No Dataverse or model-driven app, so no premium licence. Paste-to-fill uses rules in phase 1; an in-tenant LLM is phase 2.",
     who: [
       { b: "lean", text: "Lean team builds" },
       { b: "mdm", text: "MDM configures fields" },
@@ -85,7 +85,7 @@ const MAPPING: MappingRow[] = [
     prototype: "Regional Pulse on synthetic data",
     href: "/pulse",
     production:
-      "Power BI on SAP B1 extracts (ORDR/RDR1 → orders, OQUT → open requests, OCRD, OITM) + the golden-ID crosswalk. Pro licences for ~10 viewers (≈USD 14/user/month, approx.) if not already owned.",
+      "Power BI on SAP B1 extracts (ORDR/RDR1 → orders, OQUT → open requests, OCRD, OITM) + the golden-ID crosswalk. Power BI Pro for ~10 viewers (≈USD 14/user/month, approx.) only if not already owned; the pilot analytics run without it.",
     who: [
       { b: "lean", text: "Lean team analyst" },
       { b: "outside", text: "DS contractor" },
@@ -116,7 +116,7 @@ const SAP_LEARNING_URL =
   "https://learning.sap.com/courses/implementing-sap-business-one/implementing-the-approval-processes-in-sap-business-one";
 
 function repoUrl(path: string, dir = false): string {
-  return `${LINKS.github.replace(/\/$/, "")}/${dir ? "tree" : "blob"}/main/${path}`;
+  return `${LINKS.github.replace(/\/$/, "")}/${dir ? "tree" : "blob"}/master/${path}`;
 }
 
 const KIT = [
@@ -213,7 +213,7 @@ function WhyNotSapApprovals() {
           Why not SAP&apos;s own approvals?
         </h2>
         <p className="max-w-[90ch] text-[0.9375rem] text-foreground">
-          SAP B1 approval procedures cover documents (sales, purchasing, inventory, payments), not master data. SAP B1&apos;s built-in approvals are
+          SAP B1&apos;s approval procedures are designed around documents (sales, purchasing, inventory, payments). They are
           document-centric: no structured intake, no duplicate check, no Teams routing and no parallel SLA for master-data requests. Purchase-order
           approvals can stay in SAP; master-data requests are approved in Microsoft 365, and SAP receives a clean, approved record.
         </p>
@@ -295,7 +295,7 @@ function FieldMapSection() {
                       {r.label}
                       {r.sensitive ? (
                         <span className="inline-flex items-center gap-1 rounded-full bg-warn-soft px-1.5 text-[0.6875rem] font-medium text-warn-ink">
-                          <Lock aria-hidden className="size-3" /> Finance only
+                          <Lock aria-hidden className="size-3" /> Finance &amp; MDM only
                         </span>
                       ) : null}
                     </span>

@@ -35,8 +35,8 @@ export function SapWindow({
       style={{ fontFamily: SAP_FONT }}
     >
       <div className="flex h-8 items-center gap-2 bg-gradient-to-b from-[#5a7a99] to-[#3c5a78] px-3 text-white">
-        <span className="inline-flex size-4 items-center justify-center rounded-[3px] bg-gradient-to-b from-[#ffd75e] to-[#f0a800] text-[9px] font-bold text-[#3b2a00]">
-          B1
+        <span className="inline-flex h-4 shrink-0 items-center rounded-[3px] border border-white/35 bg-white/10 px-1.5 text-[9px] font-semibold tracking-[0.08em] text-white/90">
+          SIMULATED
         </span>
         <span className="truncate text-[12px] font-semibold tracking-[0.01em]">{title}</span>
         <span className="ml-auto flex items-center gap-1" aria-hidden="true">

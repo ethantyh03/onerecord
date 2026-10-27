@@ -45,8 +45,8 @@ export function WaitingList({ items, selectedKey, onSelect, people, domains, per
       </header>
 
       {items.length === 0 ? (
-        <p className="px-4 py-6 text-sm text-muted-foreground">
-          Nothing is waiting on {personName}. New approvals land here and in Teams.
+        <p className="px-4 py-4 text-sm text-muted-foreground">
+          0 waiting<span className="sr-only"> on {personName}</span>
         </p>
       ) : (
         <ol className="divide-y divide-border">

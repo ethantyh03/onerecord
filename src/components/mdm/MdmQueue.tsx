@@ -22,7 +22,7 @@ import { approvedAt } from "./mdm-helpers";
 import { EntityCell, Panel } from "./Panel";
 
 /** Queue of requests waiting for the MDM final check, plus the records most recently created in SAP B1. */
-export function MdmQueue() {
+export function MdmQueue({ mine = true }: { mine?: boolean }) {
   const router = useRouter();
   const requests = useSandbox((s) => s.requests);
   const prs = useSandbox((s) => s.prs);
@@ -65,7 +65,7 @@ export function MdmQueue() {
         title={
           <span className="flex items-center gap-2">
             <ShieldCheck aria-hidden className="size-4 text-primary" />
-            Waiting for your final check
+            {mine ? "Waiting for your final check" : "Waiting for MDM’s final check"}
             <span className="num rounded-full bg-primary-soft px-2 py-px text-xs font-semibold text-accent-foreground">
               {queue.length}
             </span>

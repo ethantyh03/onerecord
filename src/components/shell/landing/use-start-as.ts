@@ -14,7 +14,7 @@ export function useStartAs() {
       const person = store.config.people.find((p) => p.id === personId);
       if (store.personaId !== personId) {
         store.setPersona(personId);
-        if (person) toast(`Now viewing as ${person.name}`, { description: person.title });
+        if (person) toast(`Now viewing as ${person.name}`, { description: person.title, position: "bottom-left" });
       }
       router.push(href);
     },

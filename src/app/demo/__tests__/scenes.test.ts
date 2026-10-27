@@ -21,7 +21,9 @@ vi.hoisted(() => {
 
 import { useSandbox, STORAGE_KEY } from "@/lib/store";
 import { selectStuckDemand } from "@/lib/selectors";
-import { SCENES, loadScene } from "@/lib/scenes";
+import { AMY_K2EDTA_ITEM, AMY_STORAGE_PICK, MARCUS_EXTEND, SCENES, loadScene } from "@/lib/scenes";
+import { AMY_EMAIL, extractForIntake } from "@/lib/extract-cache";
+import { DEFAULT_CONFIG } from "@/config/default-config";
 import { K2EDTA_ITEM } from "@/lib/seed";
 
 const s = () => useSandbox.getState();
@@ -53,7 +55,7 @@ describe("demo scenes", () => {
   });
 
   it("weijie-teams: extension pending on Wei Jie at Finance after Siti approved", async () => {
-    expect(await loadScene("weijie-teams")).toBe("/approvals");
+    expect(await loadScene("weijie-teams")).toBe("/approvals?id=REQ-1100");
     const r = s().requests.find((x) => x.id === "REQ-1100")!;
     expect(r.domainId).toBe("extend");
     expect(r.entity).toBe("MLS");
@@ -78,6 +80,38 @@ describe("demo scenes", () => {
     const res = s().markCreatedInSap("REQ-1100");
     expect(res.ok).toBe(true);
     expect(selectStuckDemand(s()).totalSgd).toBe(309_800);
+  });
+
+  it("pulse: opens Regional Pulse on raw SAP records so the merge happens on camera", async () => {
+    expect(await loadScene("pulse")).toBe("/pulse?view=raw");
+  });
+
+  it("Amy's item in priya-sap is exactly what her email extracts to, plus her manual picks", () => {
+    const ex = extractForIntake(AMY_EMAIL, DEFAULT_CONFIG.domains, "item");
+    expect(ex.source).toBe("cache");
+    for (const [k, v] of Object.entries(ex.values)) {
+      const mine = AMY_K2EDTA_ITEM[k];
+      if (typeof mine === "number") expect(mine, k).toBe(Number(v));
+      else expect(mine, k).toEqual(v);
+    }
+    expect(AMY_K2EDTA_ITEM.storage).toBe(AMY_STORAGE_PICK);
+    const amy = SCENES.find((x) => x.id === "amy-intake")!;
+    expect(amy.checklist.join(" ")).toContain(AMY_STORAGE_PICK);
+  });
+
+  it("Marcus's free-text reason does not leak the masked credit terms", () => {
+    const reason = String(MARCUS_EXTEND.reason);
+    expect(reason).not.toContain(String(MARCUS_EXTEND.paymentTerms));
+    expect(reason).not.toMatch(/45,?000/);
+  });
+
+  it("priya-sap replays byte-identically, audit hashes included", async () => {
+    await loadScene("priya-sap");
+    const a = JSON.stringify({ r: s().requests, audit: s().audit });
+    await new Promise((r) => setTimeout(r, 25));
+    await loadScene("priya-sap");
+    const b = JSON.stringify({ r: s().requests, audit: s().audit });
+    expect(b).toBe(a);
   });
 
   it("is deterministic: loading the same scene twice gives the same requests and persists", async () => {

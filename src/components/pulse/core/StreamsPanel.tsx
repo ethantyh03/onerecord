@@ -7,7 +7,7 @@ import { useStuckDemand } from "@/lib/selectors";
 import { SyntheticBadge } from "@/components/common/badges";
 import { formatSgd } from "@/components/common/format";
 import { Sparkline } from "./Sparkline";
-import { PULSE_COUNTRIES, countCompact, countryName, formatPct, sgdCompact } from "./pulse-format";
+import { PULSE_COUNTRIES, countCompact, countryName, formatMonth, formatPct, sgdCompact } from "./pulse-format";
 
 interface StreamDef {
   key: keyof Omit<StreamMonth, "month">;
@@ -61,10 +61,18 @@ function yoyFromSeries(series: StreamMonth[], key: StreamDef["key"]): number | n
   return prior > 0 ? cur / prior - 1 : null;
 }
 
+/** First month with recorded setup history: earlier months are 0 because none was generated, not because there were none. */
+function mdmHistoryStart(series: StreamMonth[]): number {
+  const i = series.findIndex((m) => m.mdmRequests > 0);
+  return i < 0 ? 0 : i;
+}
+
 function Track({ def, c }: { def: StreamDef; c: CountryStreams }) {
-  const values = c.series.map((m) => m[def.key] as number);
+  const isMdm = def.key === "mdmRequests";
+  const from = isMdm ? mdmHistoryStart(c.series) : 0;
+  const values = c.series.slice(from).map((m) => m[def.key] as number);
   const total = def.total(c);
-  const yoy = yoyFromSeries(c.series, def.key);
+  const yoy = isMdm ? null : yoyFromSeries(c.series, def.key);
   return (
     <div className="min-w-0">
       <div className="flex items-baseline justify-between gap-2">
@@ -78,16 +86,16 @@ function Track({ def, c }: { def: StreamDef; c: CountryStreams }) {
       </div>
       <div className="mt-0.5 flex items-baseline justify-between gap-2 text-[0.6875rem] text-muted-foreground">
         <span>{def.plain}</span>
-        <span className="num">{yoy == null ? "" : `${formatPct(yoy)} YoY`}</span>
+        <span className="num">{yoy == null ? (isMdm && from > 0 ? `from ${formatMonth(c.series[from].month)}` : "") : `${formatPct(yoy)} YoY`}</span>
       </div>
       <Sparkline
         values={values}
-        splitAt={12}
+        splitAt={isMdm ? undefined : 12}
         color={def.color}
         area={def.key === "poSgd"}
         height={30}
         className="mt-1"
-        label={`${def.label}, ${countryName(c.country)}, 24 months`}
+        label={`${def.label}, ${countryName(c.country)}, ${values.length} months`}
       />
     </div>
   );
@@ -108,8 +116,8 @@ export function StreamsPanel() {
             <SyntheticBadge />
           </div>
           <p className="max-w-[80ch] text-sm text-muted-foreground">
-            Last 12 months per country, each stream on its own scale. Every line covers 24 months; the coloured part is
-            this year.
+            Last 12 months per country, each stream on its own scale. Demand lines cover 24 months (the coloured part is
+            this year); setup requests start in Oct 2025, where the setup history begins.
           </p>
         </div>
       </div>
@@ -183,7 +191,8 @@ export function StreamsPanel() {
       <p className="mt-3 text-xs text-muted-foreground">
         Orders are counted on merged customers. Setup requests are counts of internal MDM work and never feed the order
         or growth figures. The only link between the two is stuck demand: a customer request that can&apos;t become an
-        order until a record is set up.
+        order until a record is set up. Setup lines start in Oct 2025: the synthetic data has no setup history before
+        then, which is not the same as no requests.
       </p>
     </section>
   );

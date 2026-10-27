@@ -10,8 +10,8 @@ import { usePitchKeys } from "../_lib/use-pitch-keys";
 const TILES = [
   {
     id: "time",
-    figure: "≤ 4 business days",
-    caption: "Median time from request to live record, down from 14 days today. Amy's item took 18.",
+    figure: "≤4 business days",
+    caption: "Median time from request to live record, down from 14 calendar days today. Amy's item took 18.",
   },
   {
     id: "hours",
@@ -72,7 +72,7 @@ function CloseFrame() {
             data-testid={`pitch-close-tile-${t.id}`}
             {...reveal(0.25 + i * 0.55)}
           >
-            <h2 className="text-[clamp(2rem,3.4vw,4.4rem)] leading-[1.02] font-semibold tracking-[-0.03em] text-white tabular-nums">
+            <h2 className="text-[clamp(2rem,3.4vw,4.4rem)] leading-[1.02] font-semibold tracking-[-0.03em] text-white proportional-nums">
               {t.figure}
             </h2>
             <p className="mt-[1.6vh] max-w-[34ch] text-[clamp(14px,1.1vw,21px)] leading-snug text-sidebar-foreground/80">
@@ -104,7 +104,7 @@ function CloseFrame() {
             </li>
           ))}
         </ul>
-        <p>Prototype on synthetic, illustrative data. Figures from our conservative base case.</p>
+        <p>Prototype on synthetic, illustrative data. Figures from our base case (80 requests a month); payback counts hard hours only.</p>
       </motion.footer>
     </div>
   );

@@ -1,12 +1,16 @@
 "use client";
 
-import { Copy, Lock, Paperclip, Sparkles } from "lucide-react";
+import { useState } from "react";
+import { Copy, Eye, EyeOff, Lock, Paperclip, Sparkles } from "lucide-react";
+import { toast } from "sonner";
 import type { DomainConfig, FieldDef, FieldValue, MdmRequest } from "@/lib/types";
 import { isEmptyValue, isFieldVisible } from "@/lib/engine/conditions";
 import { useSandbox } from "@/lib/store";
-import { buLabel } from "@/lib/selectors";
+import { buLabel, useCurrentPerson } from "@/lib/selectors";
+import { canSeeSensitive } from "@/lib/engine/masking";
 import { cn } from "@/lib/utils";
 import { MaskedValue, SapCode } from "@/components/common";
+import { Button } from "@/components/ui/button";
 import { countryName } from "./tracker-utils";
 
 function plainValue(f: FieldDef, v: FieldValue | undefined, bu: (id: string) => string): string {
@@ -33,10 +37,33 @@ export function RequestDataCard({ request, domain }: { request: MdmRequest; doma
     const key = f.section ?? "Details";
     sections.set(key, [...(sections.get(key) ?? []), f]);
   }
-  const hasSensitive = fields.some((f) => f.sensitive && !isEmptyValue(request.data[f.key]));
+  const sensitiveFields = fields.filter((f) => f.sensitive && !isEmptyValue(request.data[f.key]));
+  const hasSensitive = sensitiveFields.length > 0;
+
+  // One-click reveal for Finance / MDM. Tied to the viewer: switching persona masks everything again, and switching
+  // back does not silently re-show values that were revealed under another seat.
+  const person = useCurrentPerson();
+  const allowed = canSeeSensitive(person);
+  const [revealedFor, setRevealedFor] = useState<string | null>(null);
+  if (revealedFor !== null && revealedFor !== person?.id) setRevealedFor(null);
+  const revealedAll = allowed && !!person && revealedFor === person.id;
+
+  function revealAll() {
+    if (!person || !allowed || !hasSensitive) return;
+    const labels = sensitiveFields.map((f) => f.label).join(", ");
+    // One audit entry naming every field shown (the store falls back to the text when no single field matches).
+    useSandbox.getState().logSensitiveReveal(request.id, labels);
+    setRevealedFor(person.id);
+    toast("View recorded in the audit trail", { description: `${person.name} viewed ${labels} on ${request.id}.` });
+  }
 
   return (
-    <section className="overflow-hidden rounded-xl border bg-card shadow-raised" aria-labelledby="data-heading">
+    <section
+      id="request-data"
+      className="scroll-mt-20 overflow-hidden rounded-xl border bg-card shadow-raised"
+      aria-labelledby="data-heading"
+      data-testid="request-data"
+    >
       <div className="flex flex-col gap-2 border-b border-border px-5 py-4 md:flex-row md:items-start md:justify-between">
         <div className="space-y-1">
           <h2 id="data-heading" className="text-base font-semibold text-foreground">
@@ -47,10 +74,28 @@ export function RequestDataCard({ request, domain }: { request: MdmRequest; doma
           </p>
         </div>
         {hasSensitive ? (
-          <span className="inline-flex w-fit shrink-0 items-center gap-1.5 rounded-full border border-border-strong bg-background px-2.5 py-1 text-xs text-secondary-foreground">
-            <Lock aria-hidden className="size-3.5" />
-            Role-enforced in prototype; production: restricted SharePoint list + Entra ID
-          </span>
+          <div className="flex shrink-0 flex-col items-start gap-2 md:items-end">
+            {allowed ? (
+              <Button
+                variant={revealedAll ? "outline" : "default"}
+                size="sm"
+                onClick={revealedAll ? () => setRevealedFor(null) : revealAll}
+                data-testid="reveal-all-sensitive"
+              >
+                {revealedAll ? <EyeOff aria-hidden /> : <Eye aria-hidden />}
+                {revealedAll ? "Hide credit & bank values" : "Show credit & bank values (logged)"}
+              </Button>
+            ) : (
+              <span className="inline-flex h-7 items-center gap-1.5 text-xs font-medium text-secondary-foreground" data-testid="sensitive-locked">
+                <Lock aria-hidden className="size-3.5" />
+                Credit &amp; bank values: Finance and MDM only
+              </span>
+            )}
+            <span className="inline-flex w-fit items-center gap-1.5 rounded-full border border-border-strong bg-background px-2.5 py-1 text-xs text-secondary-foreground">
+              <Lock aria-hidden className="size-3.5" />
+              Role-enforced in prototype; production: restricted SharePoint list + Entra ID
+            </span>
+          </div>
         ) : null}
       </div>
 
@@ -74,7 +119,11 @@ export function RequestDataCard({ request, domain }: { request: MdmRequest; doma
                       ) : null}
                     </dt>
                     <dd className={cn("mt-0.5 text-sm break-words text-foreground", isEmptyValue(v) && "text-muted-foreground")}>
-                      {f.sensitive ? (
+                      {f.sensitive && revealedAll && !isEmptyValue(v) ? (
+                        <span className="num font-mono text-[0.8125rem] tracking-tight text-foreground" data-revealed="true">
+                          {typeof v === "number" ? v.toLocaleString("en-SG") : String(v)}
+                        </span>
+                      ) : f.sensitive ? (
                         <MaskedValue value={v} requestId={request.id} fieldKey={f.key} />
                       ) : f.type === "file" && !isEmptyValue(v) ? (
                         <span className="inline-flex items-center gap-1.5">

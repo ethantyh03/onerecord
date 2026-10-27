@@ -94,7 +94,7 @@ function HookFrame() {
             <motion.div
               key={e.subject}
               className={cn(
-                "absolute flex max-w-[42vw] items-baseline gap-[0.6em] text-[clamp(14px,1.2vw,24px)] leading-snug",
+                "absolute flex items-baseline whitespace-nowrap gap-[0.6em] text-[clamp(14px,1.2vw,24px)] leading-snug",
                 e.align === "right" && "flex-row-reverse text-right",
               )}
               style={e.pos}
@@ -115,14 +115,16 @@ function HookFrame() {
       {/* Counter */}
       <div className="absolute inset-x-0 top-[31%] flex flex-col items-center px-[6vw]">
         <motion.h1
-          className="text-[clamp(7rem,17vw,21rem)] leading-[0.86] font-semibold tracking-[-0.05em] tabular-nums"
+          className="text-[clamp(7rem,17vw,21rem)] leading-[0.86] font-semibold tracking-[-0.05em]"
           initial={false}
           animate={{ opacity: day > 0 ? 1 : 0 }}
           transition={{ duration: freeze ? 0 : 0.5 }}
           aria-label="18 days."
           data-testid="pitch-hook-counter"
         >
-          {shown} {shown === 1 ? "day" : "days"}.
+          {/* tabular-nums only on the digits: with it on, this font also gives "." a digit-wide advance */}
+          <span className="tabular-nums">{shown}</span>
+          {`\u00a0${shown === 1 ? "day" : "days"}.`}
         </motion.h1>
 
         {/* Day strip: one cell per calendar day, grouped by our illustrative breakdown */}
@@ -169,7 +171,7 @@ function HookFrame() {
             animate={{ opacity: done ? 1 : 0 }}
             transition={{ duration: freeze ? 0 : 0.6, delay: freeze ? 0 : 0.4 }}
           >
-            Our breakdown of App C (illustrative)
+            Our breakdown of Appendix C (illustrative)
           </motion.p>
         </motion.div>
       </div>

@@ -89,8 +89,8 @@ describe("seed scenario", () => {
     expect(r.blockedPrIds.sort()).toEqual(["PR-5521", "PR-5527"]);
     const prs = seed.prs.filter((p) => p.blockedByRequestId === "REQ-1042");
     expect(prs.map((p) => [p.id, p.customerName, p.sgd, p.status]).sort()).toEqual([
-      ["PR-5521", "Sunway Medical Centre", 48600, "blocked"],
-      ["PR-5527", "Penang General Hospital", 21400, "blocked"],
+      ["PR-5521", "Sungai Permai Medical Centre", 48600, "blocked"],
+      ["PR-5527", "Pulau Mutiara General Hospital", 21400, "blocked"],
     ]);
   });
 
@@ -302,13 +302,13 @@ describe("store", () => {
     expect(stepByRole("REQ-1038", "mdm").status).toBe("approved");
   });
 
-  it("REQ-1042: creating Amy's dengue item notifies her about Sunway and Penang", () => {
+  it("REQ-1042: creating Amy's dengue item notifies her about Sungai Permai and Pulau Mutiara", () => {
     S().setPersona("priya");
     const rec = S().markCreatedInSap("REQ-1042").record!;
     expect(rec.code).toBe("I-A-000813");
     const note = S().notifications.find((n) => n.toId === "amy" && n.requestId === "REQ-1042" && n.channel === "teams" && n.kind === "created");
     expect(note?.body).toBe(
-      "Your item I-A-000813 is live in SAP B1 — Sunway Medical Centre's PR-5521 and Penang General Hospital's PR-5527 can now be converted.",
+      "Your item I-A-000813 is live in SAP B1 — Sungai Permai Medical Centre's PR-5521 and Pulau Mutiara General Hospital's PR-5527 can now be converted.",
     );
     expect(selectStuckDemand(S()).totalSgd).toBe(345_800 - 70_000);
   });
@@ -416,7 +416,7 @@ describe("store", () => {
     S().setPersona("kyaw");
     const st = stepByRole("REQ-1043", "business_support");
     expect(S().rejectStep("REQ-1043", st.id, "").ok).toBe(false);
-    expect(S().rejectStep("REQ-1043", st.id, "Sunway already has a QTS ship-to; use C-MY-00031 as is.").ok).toBe(true);
+    expect(S().rejectStep("REQ-1043", st.id, "Sungai Permai already has a QTS ship-to; use C-MY-00031 as is.").ok).toBe(true);
     expect(req("REQ-1043").status).toBe("rejected");
     expect(S().notifications.some((n) => n.toId === "nurul" && n.kind === "rejected" && n.channel === "outlook")).toBe(true);
   });
@@ -544,7 +544,7 @@ describe("lead patch: sim clock, auto-link, segregation of duties, extend, lastU
       "Category = Lab consumable – IVD medical device → regulatory (QA/RA) review required",
     );
     const linked = S().prs.filter((p) => p.blockedByRequestId === id);
-    expect(linked.map((p) => p.customerName).sort()).toEqual(["Mount Faber Specialist Clinic", "Sunway Medical Centre", "Thomson Road Diagnostic Lab"]);
+    expect(linked.map((p) => p.customerName).sort()).toEqual(["Mount Faber Specialist Clinic", "Sungai Permai Medical Centre", "Thomson Road Diagnostic Lab"]);
     expect(r.blockedPrIds.sort()).toEqual(linked.map((p) => p.id).sort());
     const ev = S().audit.find((e) => e.requestId === id && e.action === "linked_waiting_orders");
     expect(ev?.detail).toMatch(/Linked 3 waiting orders \(S\$36,000\)/);

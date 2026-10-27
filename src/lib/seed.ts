@@ -62,7 +62,7 @@ export function recordName(domainId: string, data: Record<string, FieldValue>): 
   return "";
 }
 
-/** "New Item: Dengue NS1 Ag Rapid Test 25T", "Extend: Sunway Medical Centre → QTS", or "New Vendor (untitled)". */
+/** "New Item: Dengue NS1 Ag Rapid Test 25T", "Extend: Sungai Permai Medical Centre → QTS", or "New Vendor (untitled)". */
 export function requestTitle(domain: Pick<DomainConfig, "id" | "label"> | undefined, data: Record<string, FieldValue>): string {
   const label = domain?.label ?? "Request";
   const name = recordName(domain?.id ?? "", data);
@@ -397,8 +397,8 @@ const BASELINE_CUSTOMERS: CustomerRef[] = [
   { code: "C-SG-00017", name: "National University Hospital", entity: "SPD", country: "SG", taxId: "198500123K", street: "5 Lower Kent Ridge Road", city: "Singapore", zip: "119074", phone: "+65 6779 5555", segment: "Public hospital", createdAt: "2019-03-11T02:15:00.000Z" },
   { code: "C-SG-00064", name: "Kallang Community Hospital", entity: "SPD", country: "SG", taxId: "200307781M", street: "21 Kallang Bahru", city: "Singapore", zip: "339337", phone: "+65 6294 7020", segment: "Public hospital", createdAt: "2021-06-02T03:40:00.000Z" },
   { code: "C-SG-00088", name: "Novena Diagnostic Imaging Centre", entity: "QTS", country: "SG", taxId: "199804567D", street: "10 Sinaran Drive, #03-11", city: "Singapore", zip: "307506", phone: "+65 6352 6188", segment: "Diagnostic lab", createdAt: "2023-02-20T06:05:00.000Z" },
-  { code: "C-MY-00031", name: "Sunway Medical Centre", entity: "SPD", country: "MY", taxId: "199801007744", street: "5 Jalan Lagoon Selatan, Bandar Sunway", city: "Subang Jaya", zip: "47500", phone: "+60 3-7491 9191", segment: "Private hospital", createdAt: "2020-01-14T01:30:00.000Z" },
-  { code: "C-MY-00058", name: "Penang General Hospital", entity: "SPD", country: "MY", taxId: "196201000088", street: "Jalan Residensi", city: "George Town", zip: "10450", phone: "+60 4-222 5333", segment: "Public hospital", createdAt: "2021-09-07T02:50:00.000Z" },
+  { code: "C-MY-00031", name: "Sungai Permai Medical Centre", entity: "SPD", country: "MY", taxId: "199801033618", street: "8 Jalan Permai Utama, Taman Sungai Permai", city: "Subang Jaya", zip: "47500", phone: "+60 3-5639 4180", segment: "Private hospital", createdAt: "2020-01-14T01:30:00.000Z" },
+  { code: "C-MY-00058", name: "Pulau Mutiara General Hospital", entity: "SPD", country: "MY", taxId: "196201000088", street: "Jalan Mutiara Indah", city: "George Town", zip: "10450", phone: "+60 4-281 6620", segment: "Public hospital", createdAt: "2021-09-07T02:50:00.000Z" },
   { code: "C-TH-00041", name: "Bangkok Metro Lab", entity: "SPD", country: "TH", taxId: "0105551023874", street: "1120 Rama IV Road, Khlong Toei", city: "Bangkok", zip: "10110", phone: "+66 2 671 4400", segment: "Diagnostic lab", createdAt: "2022-04-25T03:20:00.000Z" },
   { code: "C-VN-00022", name: "Hue Central Diagnostics", entity: "SPD", country: "VN", taxId: "3301245789", street: "16 Le Loi Street", city: "Hue", zip: "530000", phone: "+84 234 3822 165", segment: "Diagnostic lab", createdAt: "2022-11-08T02:10:00.000Z" },
   { code: "C-MM-00009", name: "Yangon General Diagnostics", entity: "QTG", country: "MM", taxId: "104876213", street: "No. 82 Bogyoke Aung San Road, Pabedan Township", city: "Yangon", zip: "11141", phone: "+95 1 377 210", segment: "Diagnostic lab", createdAt: "2023-07-17T04:00:00.000Z" },
@@ -608,7 +608,7 @@ const HISTORY: HistSpec[] = [
   { domainId: "costcentre", requestorId: "benjamin", entity: "SPD", country: "MY", data: { centreCode: "MY-SPD04", centreName: "SPD Klang Valley Key Accounts", entity: "SPD", country: "MY", owner: "Ahmad Faiz Rahim", dimension: "2" } },
   { domainId: "item", requestorId: "amy", entity: "SPD", country: "SG", data: item("Hepatitis B sAg Rapid Test 40T", "IVD reagent", "A", "Seoul BioAssay Co., Ltd.", "KIT", 40, 28, 44, COLD, "DE0509034", "SPD", "SG, VN, MM") },
   { domainId: "customer", requestorId: "minhduc", entity: "QTS", country: "VN", data: cust("Da Nang Coastal Hospital", "VN", "QTS", "0401987654", "74 Hai Phong Street, Hai Chau District", "Da Nang", "550000", "+84 236 3821 480", "Public hospital", "Dr Le Thi Thu", "danangcoastal", "Net 60", 45000, "VND") },
-  { domainId: "extend", requestorId: "nurul", entity: "QTS", country: "MY", data: { existingCode: "C-MY-00058", existingName: "Penang General Hospital", extendToEntity: "QTS", newShipToAddress: "Pathology Department, Block B, Jalan Residensi, 10450 George Town", changesCreditTerms: "No", reason: "Penang General Hospital is buying a benchtop centrifuge from QTS; the customer exists only under SPD." } },
+  { domainId: "extend", requestorId: "nurul", entity: "QTS", country: "MY", data: { existingCode: "C-MY-00058", existingName: "Pulau Mutiara General Hospital", extendToEntity: "QTS", newShipToAddress: "Pathology Department, Block B, Jalan Mutiara Indah, 10450 George Town", changesCreditTerms: "No", reason: "Pulau Mutiara General Hospital is buying a benchtop centrifuge from QTS; the customer exists only under SPD." } },
   { domainId: "customer", requestorId: "thandar", entity: "QTG", country: "MM", data: cust("Mandalay City Hospital", "MM", "QTG", "105233871", "No. 35, 26th Street, Chanayethazan Township", "Mandalay", "05021", "+95 2 403 118", "Public hospital", "Dr Aung Kyaw Moe", "mandalaycityhospital", "Cash on delivery", 10000, "USD") },
   { domainId: "item", requestorId: "nurul", entity: "QTS", country: "MY", data: item("Benchtop Centrifuge CF-16R", "Instrument", "C", "Suzhou Precision Lab Instruments Co., Ltd.", "EA", 1, 6400, 9800, AMBIENT, null, "QTS", "MY, SG, TH") },
   { domainId: "customer", requestorId: "amy", entity: "SPD", country: "SG", data: cust("Tampines Family Clinic Group", "SG", "SPD", "201511203E", "9 Tampines Central 1, #04-12", "Singapore", "529536", "+65 6786 2290", "Clinic", "Ms Rachel Ng", "tampinesfamilyclinic", "Net 30", 20000, "SGD") },
@@ -878,19 +878,19 @@ const RECENT: RecentSpec[] = [
     submittedAgo: 3.8,
     status: "rejected",
     closedAgo: 3.1,
-    data: cust("Hospital Pulau Pinang", "MY", "SPD", "196201000088", "Jalan Residensi", "George Town", "10450", "+60 4-222 5333", "Public hospital", "Encik Rosli Hamid", "penanggh", "Net 60", 45000, "MYR"),
+    data: cust("Hospital Besar Pulau Mutiara", "MY", "SPD", "196201000088", "Jalan Mutiara Indah", "George Town", "10450", "+60 4-281 6620", "Public hospital", "Encik Rosli Hamid", "pmgh", "Net 60", 45000, "MYR"),
     plan: {
       "cust-bu": { s: "skipped" },
       "cust-bs": {
         s: "rejected",
         ago: 3.1,
-        comment: "Same tax ID as C-MY-00058 Penang General Hospital — this is the hospital's Malay name, already set up under SPD. Please use the existing code.",
+        comment: "Same tax ID as C-MY-00058 Pulau Mutiara General Hospital — this is the hospital's Malay name, already set up under SPD. Please use the existing code.",
       },
     },
     blockedPrIds: [],
     duplicateDecision: {
       matchCode: "C-MY-00058",
-      matchName: "Penang General Hospital",
+      matchName: "Pulau Mutiara General Hospital",
       score: 0.97,
       reasons: ["Same tax ID", "Same postcode", "Same phone"],
       choice: "override",
@@ -1053,7 +1053,7 @@ const RECENT: RecentSpec[] = [
     data: item("Dengue IgG/IgM Combo 30T", "IVD reagent", "A", "Hangzhou Clearview Diagnostics Co., Ltd.", "KIT", 30, 18.4, 27, COLD, "GB8102574-61208", "SPD", "MY, SG"),
     plan: {
       "item-qa": { s: "approved", ago: 1.1, comment: "MDA registration GB8102574-61208 verified; IFU in English and Bahasa Malaysia on file." },
-      "item-bu": { s: "approved", ago: 1.6, comment: "Approved — dengue season demand from Sunway and Penang." },
+      "item-bu": { s: "approved", ago: 1.6, comment: "Approved — dengue season demand from Sungai Permai and Pulau Mutiara." },
       "item-bs": { s: "approved", ago: 0.3, comment: "KIT of 30 tests, 2–8 °C storage, MY price list updated." },
       mdm: { s: "pending" },
     },
@@ -1071,17 +1071,17 @@ const RECENT: RecentSpec[] = [
     status: "in_approval",
     data: {
       existingCode: "C-MY-00031",
-      existingName: "Sunway Medical Centre",
+      existingName: "Sungai Permai Medical Centre",
       extendToEntity: "QTS",
-      newShipToAddress: "Level 2, Clinical Laboratory, 5 Jalan Lagoon Selatan, Bandar Sunway, 47500 Subang Jaya",
+      newShipToAddress: "Level 2, Clinical Laboratory, 8 Jalan Permai Utama, Taman Sungai Permai, 47500 Subang Jaya",
       changesCreditTerms: "No",
-      reason: "Sunway is buying a CG-90 coagulation analyser from QTS (PR-5531); the customer exists only under SPD.",
+      reason: "Sungai Permai is buying a CG-90 coagulation analyser from QTS (PR-5531); the customer exists only under SPD.",
     },
     plan: { "ext-bs": { s: "pending" } },
     blockedPrIds: ["PR-5531"],
     duplicateDecision: {
       matchCode: "C-MY-00031",
-      matchName: "Sunway Medical Centre",
+      matchName: "Sungai Permai Medical Centre",
       score: 1,
       reasons: ["100% name match", "Same postcode"],
       choice: "extend",
@@ -1444,15 +1444,15 @@ const RECENT_PRS: PrSpec[] = [
   { id: "PR-5516", ago: 2.9, customer: "Yangon Northpoint Diagnostics", country: "MM", entity: "SPD", product: "A", item: "Chikungunya IgM Rapid Test 30T", units: 110, sgd: 4510, status: "open" },
   { id: "PR-5517", ago: 2.8, customer: "Tampines Family Clinic Group", country: "SG", entity: "SPD", product: "A", item: "Influenza A/B Antigen Rapid Test 20T", units: 240, sgd: 7800, status: "blocked", blockedBy: "REQ-1036", missing: "item" },
   { id: "PR-5519", ago: 2.6, customer: "Hanoi Central Lab", country: "VN", entity: "SPD", product: "A", item: "HbA1c Reagent Kit 100T", units: 160, sgd: 22400, status: "blocked", blockedBy: "REQ-1040", missing: "customer" },
-  { id: "PR-5521", ago: 2.4, customer: "Sunway Medical Centre", country: "MY", entity: "SPD", product: "A", item: "Dengue IgG/IgM Combo 30T", units: 1800, sgd: 48600, status: "blocked", blockedBy: "REQ-1042", missing: "item" },
+  { id: "PR-5521", ago: 2.4, customer: "Sungai Permai Medical Centre", country: "MY", entity: "SPD", product: "A", item: "Dengue IgG/IgM Combo 30T", units: 1800, sgd: 48600, status: "blocked", blockedBy: "REQ-1042", missing: "item" },
   { id: "PR-5523", ago: 2.3, customer: "Kent Ridge BioLabs Pte Ltd", country: "SG", entity: "QTG", product: "B", item: "Cryovials 2 mL, Sterile (100s)", units: 200, sgd: 9200, status: "open" },
-  { id: "PR-5527", ago: 2.2, customer: "Penang General Hospital", country: "MY", entity: "SPD", product: "A", item: "Dengue IgG/IgM Combo 30T", units: 800, sgd: 21400, status: "blocked", blockedBy: "REQ-1042", missing: "item" },
+  { id: "PR-5527", ago: 2.2, customer: "Pulau Mutiara General Hospital", country: "MY", entity: "SPD", product: "A", item: "Dengue IgG/IgM Combo 30T", units: 800, sgd: 21400, status: "blocked", blockedBy: "REQ-1042", missing: "item" },
   { id: "PR-5529", ago: 1.5, customer: "Bangkok Metro Lab", country: "TH", entity: "SPD", product: "A", item: "HbA1c Reagent Kit 100T", units: 80, sgd: 11200, status: "open" },
-  { id: "PR-5531", ago: 0.8, customer: "Sunway Medical Centre", country: "MY", entity: "QTS", product: "C", item: "Coagulation Analyser CG-90", units: 1, sgd: 26500, status: "blocked", blockedBy: "REQ-1043", missing: "customer" },
+  { id: "PR-5531", ago: 0.8, customer: "Sungai Permai Medical Centre", country: "MY", entity: "QTS", product: "C", item: "Coagulation Analyser CG-90", units: 1, sgd: 26500, status: "blocked", blockedBy: "REQ-1043", missing: "customer" },
   { id: "PR-5533", ago: 0.6, customer: "Yangon Asia Royal Clinic", country: "MM", entity: "QTG", product: "B", item: "Microcentrifuge Tubes 1.5 mL (500s)", units: 140, sgd: 9800, status: "blocked", blockedBy: "REQ-1044", missing: "customer" },
   // Amy's live demo item (App C): orders already waiting for an item code that doesn't exist yet. No MDM request
   // covers them, so they are blocked with no blockedByRequestId until her request is submitted (auto-link).
-  { id: "PR-5534", ago: 4.2, customer: "Sunway Medical Centre", country: "MY", entity: "SPD", product: "B", item: K2EDTA_ITEM, units: 120, sgd: 14400, status: "blocked", missing: "item" },
+  { id: "PR-5534", ago: 4.2, customer: "Sungai Permai Medical Centre", country: "MY", entity: "SPD", product: "B", item: K2EDTA_ITEM, units: 120, sgd: 14400, status: "blocked", missing: "item" },
   { id: "PR-5536", ago: 2.7, customer: "Mount Faber Specialist Clinic", country: "SG", entity: "SPD", product: "B", item: K2EDTA_ITEM, units: 80, sgd: 9600, status: "blocked", missing: "item" },
   { id: "PR-5538", ago: 1.2, customer: "Thomson Road Diagnostic Lab", country: "SG", entity: "SPD", product: "B", item: K2EDTA_ITEM, units: 100, sgd: 12000, status: "blocked", missing: "item" },
   { id: "PR-5535", ago: 0.4, customer: "Hue Central Diagnostics", country: "VN", entity: "SPD", product: "A", item: "Malaria Pf/Pan Ag Rapid Test 25T", units: 200, sgd: 7600, status: "open" },
@@ -1524,7 +1524,7 @@ function buildPrs(ctx: Ctx, historical: MdmRequest[], recent: MdmRequest[], sapR
     const units = price > 5000 ? 1 : 60 + Math.floor(ctx.rng() * 20) * 10;
     return {
       id: "",
-      customerName: c?.name ?? "Sunway Medical Centre",
+      customerName: c?.name ?? "Sungai Permai Medical Centre",
       customerCode: c?.code ?? "C-MY-00031",
       country: (c?.fields["BPAddresses.Country"] as CountryCode) ?? req.country,
       entity: req.entity,

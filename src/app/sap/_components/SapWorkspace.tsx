@@ -59,7 +59,7 @@ export function SapWorkspace() {
     <div className="mx-auto w-full max-w-[1280px]">
       <PageHeader
         title="SAP Business One — simulated sandbox"
-        subtitle="What the MDM team does after the final check: load the generated DTW files, open the new record, and preview the Phase 2 Service Layer call."
+        subtitle="What the MDM team does after the final check: load the ready-made import files (SAP’s Data Transfer Workbench), open the new record, and preview Phase 2, where the record posts itself to SAP."
         meta={
           <span className="inline-flex items-center gap-1.5 rounded-full border border-[#e0b252] bg-[#fff6dc] px-2.5 py-0.5 text-[11.5px] font-medium text-[#5c4300]">
             <Info className="size-3.5" aria-hidden="true" />

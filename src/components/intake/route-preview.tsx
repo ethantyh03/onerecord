@@ -66,48 +66,45 @@ export function RoutePreview({ steps, people, slaDays, unconfiguredEntity }: Rou
                   <ChevronDown className="size-4 text-border-strong" />
                 </div>
               ) : null}
-              <div className={cn("rounded-xl border px-2.5 pt-2 pb-2.5", isMdm ? "border-primary/30 bg-primary-soft/50" : "border-border bg-background")}>
-                <div className="mb-1.5 flex items-center justify-between gap-2 px-0.5">
+              <div className={cn("rounded-xl border px-2 pt-1.5 pb-2", isMdm ? "border-primary/30 bg-primary-soft/50" : "border-border bg-background")}>
+                <div className="mb-1 flex items-center justify-between gap-2 px-0.5">
                   <span className="truncate text-[0.75rem] font-semibold text-foreground">{stage.label}</span>
                   <span className="shrink-0 text-[0.6875rem] text-muted-foreground">
-                    {parallel ? `${stage.steps.length} in parallel` : stage.steps.length > 1 ? "one after another" : ""}
+                    {parallel ? `${stage.steps.length} in parallel · ` : stage.steps.length > 1 ? "one after another · " : ""}
+                    <span className="inline-flex items-center gap-1 whitespace-nowrap">
+                      <Clock aria-hidden className="size-2.5" />
+                      {slaDays} business day{slaDays === 1 ? "" : "s"}
+                      {stage.steps.length > 1 ? " each" : ""}
+                    </span>
                   </span>
                 </div>
-                <div
-                  className={cn("grid gap-1.5", parallel ? (stage.steps.length >= 3 ? "grid-cols-3" : "grid-cols-2") : "grid-cols-1")}
-                >
+                <div className="grid grid-cols-1 gap-1">
                   <AnimatePresence mode="popLayout">
                     {stage.steps.map((s) => {
                       const p = personOf(s.assigneeId);
-                      const compact = parallel;
                       return (
                         <motion.div
                           layout={!reduce}
                           key={s.id}
                           data-testid={`route-step-${s.role}`}
-                          initial={reduce ? false : { opacity: 0, scale: 0.85, y: 6 }}
+                          initial={reduce ? false : { opacity: 0, scale: 0.92, y: 6 }}
                           animate={{ opacity: 1, scale: 1, y: 0 }}
-                          exit={{ opacity: 0, scale: 0.85 }}
+                          exit={{ opacity: 0, scale: 0.92 }}
                           transition={{ type: "spring", stiffness: 380, damping: 28 }}
                           className={cn(
-                            "relative min-w-0 rounded-lg border bg-card p-2",
+                            "relative flex min-w-0 items-center gap-2 rounded-lg border bg-card px-2 py-1.5",
                             s.addedBecause ? "border-primary/50 shadow-[0_0_0_3px_var(--primary-soft)]" : "border-border",
-                            compact ? "flex flex-col items-start gap-1" : "flex items-center gap-2.5",
                           )}
                           title={s.label}
                         >
-                          <PersonAvatar person={p} size={compact ? "sm" : "md"} />
-                          <div className="min-w-0">
-                            <p className="truncate text-[0.8125rem] leading-tight font-semibold">{p?.name ?? s.assigneeId}</p>
-                            <p className="truncate text-[0.6875rem] leading-tight text-muted-foreground">{ROLE_LABELS[s.role] ?? s.role}</p>
-                            <p className="mt-0.5 truncate text-[0.6875rem] leading-tight text-muted-foreground">{tzLabel(p)}</p>
-                            <p className="mt-1 inline-flex items-center gap-1 rounded-full bg-muted px-1.5 py-px text-[0.625rem] font-medium whitespace-nowrap text-foreground/80">
-                              <Clock aria-hidden className="size-2.5" />
-                              {slaDays} business day{slaDays === 1 ? "" : "s"}
-                            </p>
-                          </div>
+                          <PersonAvatar person={p} size="sm" />
+                          <p className="min-w-0 flex-1 truncate text-[0.8125rem] leading-tight">
+                            <span className="font-semibold">{p?.name ?? s.assigneeId}</span>
+                            <span className="text-muted-foreground"> · {ROLE_LABELS[s.role] ?? s.role}</span>
+                          </p>
+                          <span className="shrink-0 text-[0.6875rem] text-muted-foreground">{tzLabel(p)}</span>
                           {s.originalAssigneeId && s.originalAssigneeId !== s.assigneeId ? (
-                            <span className="absolute top-1.5 right-1.5 rounded-full bg-warn-soft px-1.5 text-[0.5625rem] font-medium text-warn-ink">
+                            <span className="absolute -top-1.5 right-1.5 rounded-full bg-warn-soft px-1.5 text-[0.5625rem] font-medium text-warn-ink">
                               delegate
                             </span>
                           ) : null}

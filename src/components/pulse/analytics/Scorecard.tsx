@@ -1,12 +1,13 @@
 "use client";
 
-import { Check, TriangleAlert } from "lucide-react";
+import { Check, Info, TriangleAlert } from "lucide-react";
 import { formatSgd } from "@/components/common";
 import { usePulse } from "@/components/pulse/core/PulseContext";
 import { backtest, type BacktestCell } from "@/data/contract";
 import { cn } from "@/lib/utils";
 import { COUNTRY_NAME, PanelFrame, PlainLine, VIZ, per100, signedPts, biasWords } from "./shared";
 import { productCPlan } from "./productC";
+import { SEASON_CAVEAT } from "./caveats";
 
 const ORDER = ["SG", "MY", "TH", "VN", "MM"];
 
@@ -67,8 +68,16 @@ export function Scorecard() {
       title="Forecast scorecard"
       subtitle={
         <>
-          Every country × product, scored the same way on six 2026 forecast dates. Error is {backtest.wapeFormula}, read as
-          &ldquo;off by N units per 100 ordered&rdquo;. Click a row to open it in the forecast chart.
+          Every country × product, scored the same way on six 2026 forecast dates. Error is read as &ldquo;off by N units
+          per 100 ordered&rdquo;
+          <span
+            className="ml-1 inline-flex translate-y-0.5 cursor-help text-muted-foreground"
+            title={`Forecast error (WAPE): ${backtest.wapeFormula}`}
+            aria-label={`Forecast error (WAPE): ${backtest.wapeFormula}`}
+          >
+            <Info className="size-3.5" aria-hidden />
+          </span>
+          . Click a row to open it in the forecast chart.
         </>
       }
     >
@@ -77,6 +86,9 @@ export function Scorecard() {
           <PlainLine>
             <span className="font-medium text-foreground">Products A and B:</span> {h.plainBaseline}. {h.plainOurs}.
           </PlainLine>
+          <p className="text-sm font-medium text-secondary-foreground" data-testid="scorecard-season-caveat">
+            {SEASON_CAVEAT}
+          </p>
           <p className="text-sm text-muted-foreground" data-testid="scorecard-winloss">
             {wl.sentence}
           </p>
@@ -100,9 +112,13 @@ export function Scorecard() {
             <tr className="border-b">
               <th className="px-3 py-2 text-left font-medium">Cell</th>
               <th className="px-3 py-2 text-right font-medium">Today&apos;s method (rolling 12)</th>
-              <th className="px-3 py-2 text-right font-medium">Ours (seasonal ETS)</th>
+              <th className="px-3 py-2 text-right font-medium" title="Damped Holt-Winters exponential smoothing (ETS)">
+                Ours (seasonal model)
+              </th>
               <th className="px-3 py-2 text-left font-medium">Difference</th>
-              <th className="px-3 py-2 text-right font-medium">Lean, today / ours</th>
+              <th className="px-3 py-2 text-right font-medium" title="Bias: + means the method orders too much on average, − too little">
+                Over (+) / under (−) forecast, today / ours
+              </th>
               <th className="px-3 py-2 text-left font-medium">Result</th>
             </tr>
           </thead>
@@ -195,7 +211,7 @@ export function Scorecard() {
         </table>
       </div>
       <p className="mt-3 text-xs text-muted-foreground">
-        Difference = ours − today&apos;s, in error points; negative means ours is closer. Lean: today&apos;s method{" "}
+        Difference = ours − today&apos;s, in error points; negative means ours is closer. Over/under: today&apos;s method{" "}
         {biasWords(h.baselineBias)} overall, ours {biasWords(h.oursBias)}. Product C is excluded from the headline: today&apos;s
         method is off by {per100(backtest.productC.baselineWape)} per 100 and ours by {per100(backtest.productC.oursWape)}.
         Pipeline-weighted = open PR/tender value for instruments × the country&apos;s historical PR→PO conversion.

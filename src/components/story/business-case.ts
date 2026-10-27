@@ -373,7 +373,7 @@ export const ALTERNATIVES: Alternative[] = [
   {
     id: "onerecord",
     option: "OneRecord (Microsoft 365 workflow + small data-science layer + SAP import file)",
-    oneOff: "~S$40k, no new licences",
+    oneOff: "~S$40k, no new workflow licences (Power BI Pro only if not owned)",
     stopsIncomplete: "yes",
     stopsDuplicates: "yes",
     fastVisibleApprovals: "yes",
@@ -399,7 +399,7 @@ export const SOURCES = {
   licences: "Process licence USD 150/month + 1 Premium maker USD 15/month = USD 1,980/yr × 1.33 (A25). Microsoft pricing (research log).",
   payg: "Pay-as-you-go USD 0.60 per premium flow run (preview); cheaper than a Process licence below 250 runs a month.",
   a24: "A24 (team assumption, CFO lens): 10% of stuck demand leaks away. Opportunity column only, never in payback.",
-  a26: "A26: baseline median 14 calendar days, between the brief's '2–3 weeks' and Amy's 18 (App C).",
+  a26: "A26: baseline median 14 calendar days, between the brief's '2–3 weeks' and Amy's 18 (case brief, Appendix C).",
   apqc: "APQC Open Standards Benchmarking: median 3.0 calendar days to set up a supplier (3,047 organisations).",
   edge: "EDGE (EnterpriseSG, from 30 Sep 2026): up to 50% of third-party costs for SMEs, S$30k digital sub-cap. Applies only if Lives qualifies as an SME on the turnover test.",
   fte: "1,872 working hours per FTE-year (research log).",

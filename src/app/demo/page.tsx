@@ -67,8 +67,10 @@ const BEATS: Beat[] = [
     resetAs: "amy",
     description: "Resets the sandbox, selects Amy and opens Home.",
     checklist: [
-      "Hold on the split: Clean in │ Money out.",
-      "Point at the badge: Runs on Microsoft 365, lands in SAP Business One.",
+      "Hold on the headline: “Messy master data hides money. One hospital, one record.”",
+      "Point at the badge above it: Runs on Microsoft 365 · lands in SAP Business One.",
+      "Point at the three spellings (Natl Univ Hosp · National University Hosp. · Nat'l University Hospital) merging into National University Hospital, C-SG-00017.",
+      "Let the process strip below run to step 6, Regional Pulse.",
     ],
     voiceover:
       "Lives Group's master data is created by email. Records arrive incomplete and duplicated, so the regional numbers built on them can't be trusted. OneRecord fixes both ends.",
@@ -140,6 +142,8 @@ export default function DemoConsolePage() {
     try {
       const route = await loadScene(id);
       remember(id);
+      // Leave /demo at the top so a short target page isn't left with a clamped scroll offset.
+      window.scrollTo(0, 0);
       router.push(route);
     } catch (err) {
       toast.error("Couldn't load the scene", {
@@ -158,6 +162,7 @@ export default function DemoConsolePage() {
       nudgeClock(previousOffsetMs);
     }
     remember(beat.key);
+    window.scrollTo(0, 0);
     router.push(beat.href);
   }
 

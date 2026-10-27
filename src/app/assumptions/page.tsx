@@ -4,7 +4,7 @@ import { ALL_ASSUMPTIONS } from "./_data";
 import { AssumptionsRegister } from "./_components/AssumptionsRegister";
 
 export const metadata: Metadata = {
-  title: "Assumptions register · OneRecord",
+  title: "Assumptions register",
   description: "Every labelled assumption behind OneRecord's process, data and business case, with its value and basis.",
 };
 

@@ -1,23 +1,57 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from "react";
 import { CheckCircle2, ExternalLink, FlaskConical, ShieldQuestion } from "lucide-react";
 import Link from "next/link";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { SyntheticBadge } from "@/components/common";
 import { meta, type DataHonestyItem } from "@/data/contract";
 import { LINKS } from "@/lib/links";
 import { cn } from "@/lib/utils";
+import { MATCHER_CAVEAT, SEASON_CAVEAT } from "./caveats";
 
-const STATUS: Record<DataHonestyItem["status"], { label: string; cls: string }> = {
+type ShownStatus = DataHonestyItem["status"] | "limitation";
+type ShownItem = { item: string; status: ShownStatus; detail: string };
+
+const STATUS: Record<ShownStatus, { label: string; cls: string }> = {
   synthetic: { label: "Synthetic", cls: "border-border-strong bg-muted text-secondary-foreground" },
   assumption: { label: "Assumption", cls: "border-warn/50 bg-warn-soft text-warn-ink" },
   validated: { label: "Validated here", cls: "border-ok/50 bg-ok-soft text-ok-ink" },
+  limitation: { label: "Limitation", cls: "border-warn bg-card text-warn-ink" },
   needs_pilot: { label: "Needs a pilot", cls: "border-dashed border-phase2 bg-phase2-soft text-phase2-ink" },
 };
 
-const ORDER: DataHonestyItem["status"][] = ["synthetic", "assumption", "validated", "needs_pilot"];
+const ORDER: ShownStatus[] = ["synthetic", "assumption", "validated", "limitation", "needs_pilot"];
+
+/** A limit presented as a validation reads as over-claiming: the season-dependence finding is a limitation. */
+function shownItems(): ShownItem[] {
+  const base: ShownItem[] = meta.dataHonesty.map((it) =>
+    /season dependence/i.test(it.item)
+      ? { item: "The forecast gain depends on the season", status: "limitation", detail: SEASON_CAVEAT }
+      : it,
+  );
+  base.push({ item: "Merged customers in a pilot", status: "needs_pilot", detail: MATCHER_CAVEAT });
+  return base.sort((a, b) => ORDER.indexOf(a.status) - ORDER.indexOf(b.status));
+}
+
+/** The planted stuck-demand check is measured on the synthetic history, not the live demo store. */
+function assertionText(name: string, assertion: string): string {
+  if (!/stuck demand/i.test(name)) return assertion;
+  const m = assertion.match(/Measured:\s*(\d+)/);
+  const k = m ? `S$${Math.round(Number(m[1]) / 1000)}k` : "";
+  return `Synthetic-history check on 28 Oct (12 blocked PRs): ${k}, inside S$150–450k (pass). The live Stuck demand tile also counts the requests scripted for the demo, so it reads higher.`;
+}
+
+interface HonestyCtx {
+  open: () => void;
+}
+const Ctx = createContext<HonestyCtx | null>(null);
+
+/** Opens the page's single "What's real here?" drawer from anywhere inside the provider. */
+export function useHonestyDrawer(): HonestyCtx | null {
+  return useContext(Ctx);
+}
 
 function Block({ title, children, note }: { title: string; children: ReactNode; note?: ReactNode }) {
   return (
@@ -33,17 +67,45 @@ function Block({ title, children, note }: { title: string; children: ReactNode; 
 
 const PARAMS_URL = `${LINKS.github}/blob/main/analytics/params.yaml`;
 
+/** Provides one drawer for the whole page; triggers anywhere inside call useHonestyDrawer().open(). */
+export function DataHonestyProvider({ children }: { children: ReactNode }) {
+  const [isOpen, setOpen] = useState(false);
+  const open = useCallback(() => setOpen(true), []);
+  const value = useMemo(() => ({ open }), [open]);
+  return (
+    <Ctx.Provider value={value}>
+      {children}
+      <HonestySheet open={isOpen} onOpenChange={setOpen} />
+    </Ctx.Provider>
+  );
+}
+
+/** Button that opens the drawer. Rendered in the page header and the footer. */
+export function DataHonestyDrawer({
+  label = "What's real here?",
+  testId = "honesty-drawer-open",
+  className,
+}: {
+  label?: string;
+  testId?: string;
+  className?: string;
+}) {
+  const ctx = useHonestyDrawer();
+  return (
+    <Button variant="outline" size="sm" data-testid={testId} className={className} onClick={() => ctx?.open()}>
+      <FlaskConical />
+      {label}
+    </Button>
+  );
+}
+
 /** Sheet listing what is synthetic, the planted patterns and their sources, validated vs pilot, and the pilot plan. */
-export function DataHonestyDrawer() {
-  const items = [...meta.dataHonesty].sort((a, b) => ORDER.indexOf(a.status) - ORDER.indexOf(b.status));
+function HonestySheet({ open, onOpenChange }: { open: boolean; onOpenChange: (o: boolean) => void }) {
+  const items = shownItems();
   const pilot = meta.pilotPlan;
 
   return (
-    <Sheet>
-      <SheetTrigger render={<Button variant="outline" size="sm" data-testid="honesty-drawer-open" />}>
-        <FlaskConical />
-        What&apos;s real here?
-      </SheetTrigger>
+    <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
         side="right"
         className="w-full gap-0 overflow-y-auto data-[side=right]:w-full data-[side=right]:sm:max-w-2xl"
@@ -97,7 +159,7 @@ export function DataHonestyDrawer() {
                       <span className="font-medium text-secondary-foreground">Source:</span> {p.source}
                     </span>
                     <span>
-                      <span className="font-medium text-secondary-foreground">Check:</span> {p.assertion}
+                      <span className="font-medium text-secondary-foreground">Check:</span> {assertionText(p.name, p.assertion)}
                     </span>
                   </div>
                 </li>
@@ -175,6 +237,7 @@ export function DataHonestyDrawer() {
 
           <Block title="Model limits">
             <ul className="list-disc space-y-1 pl-4 text-[0.8125rem] text-secondary-foreground">
+              <li>{MATCHER_CAVEAT}</li>
               {meta.modelCard.limitations.map((l) => (
                 <li key={l}>{l}</li>
               ))}

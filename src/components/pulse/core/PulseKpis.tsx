@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Clock4, FileStack, Hourglass, PackageCheck, Target, Workflow } from "lucide-react";
+import { CircleCheck, Clock4, FileStack, FlaskConical, Hourglass, PackageCheck, Target, Workflow } from "lucide-react";
 import { backtest, matrix, streams } from "@/data/contract";
 import { useSandbox } from "@/lib/store";
 import { useNow, useStuckDemand } from "@/lib/selectors";
@@ -9,7 +9,8 @@ import { businessDaysBetween } from "@/lib/engine/sla";
 import type { RequestStatus } from "@/lib/types";
 import { KpiTile } from "@/components/common/kpi-tile";
 import { formatSgd } from "@/components/common/format";
-import { SyntheticBadge } from "@/components/common/badges";
+import { useHonestyDrawer } from "@/components/pulse/analytics/DataHonestyDrawer";
+import { SEASON_CAVEAT_SHORT } from "@/components/pulse/analytics/caveats";
 import { usePulse } from "./PulseContext";
 import { formatPct, sgdCompact, viewKey } from "./pulse-format";
 
@@ -37,6 +38,22 @@ function median(xs: number[]): number {
 function oneDp(n: number): string {
   const r = Math.round(n * 10) / 10;
   return Number.isInteger(r) ? String(r) : r.toFixed(1);
+}
+
+/** "Illustrative" chip that opens the "What's real here?" drawer. */
+function IllustrativeChip() {
+  const honesty = useHonestyDrawer();
+  return (
+    <button
+      type="button"
+      onClick={() => honesty?.open()}
+      title="What's real here? Limits and caveats"
+      className="inline-flex h-5 shrink-0 items-center gap-1 rounded-full border border-border-strong/70 bg-card px-2 text-[0.6875rem] font-medium whitespace-nowrap text-muted-foreground transition-colors hover:border-primary/50 hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/40 focus-visible:outline-none"
+    >
+      <FlaskConical aria-hidden className="size-3" strokeWidth={2.25} />
+      Illustrative
+    </button>
+  );
 }
 
 const SEEN_KEY = "onerecord-pulse-unblock-seen";
@@ -122,15 +139,23 @@ export function PulseKpis() {
     [],
   );
 
+  /** Distinct setups the stuck PRs wait on: linked MDM requests, plus missing records nobody has requested yet. */
+  const setups = useMemo(() => {
+    const keys = new Set(
+      stuck.prs.map((p) => p.blockedByRequestId ?? `none:${p.customerCode ? "" : p.customerName}|${p.itemCode ? "" : p.itemName}`),
+    );
+    return keys.size;
+  }, [stuck.prs]);
+
   const h = backtest.headline;
   const released = lastUnblock && lastUnblock.afterSgd === stuck.totalSgd ? lastUnblock.beforeSgd - lastUnblock.afterSgd : 0;
 
   return (
-    <section aria-label="Headline numbers" className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+    <section id="pulse-kpis" aria-label="Headline numbers" className="grid scroll-mt-24 gap-4 sm:grid-cols-2 xl:grid-cols-3">
       <KpiTile
         icon={PackageCheck}
         tone="brand"
-        badge={<SyntheticBadge label="Illustrative" />}
+        badge={<IllustrativeChip />}
         label="Customer orders, last 12 months"
         value={sgdCompact(group.sgd12m)}
         caption={
@@ -143,7 +168,7 @@ export function PulseKpis() {
       />
       <KpiTile
         icon={FileStack}
-        badge={<SyntheticBadge label="Illustrative" />}
+        badge={<IllustrativeChip />}
         label="Open purchase requests"
         value={sgdCompact(pipeline.sgd)}
         caption={`${pipeline.count} quotes customers have accepted but not yet turned into orders. Pipeline, not counted as demand.`}
@@ -159,12 +184,13 @@ export function PulseKpis() {
           value={<span data-testid="pulse-stuck-demand-value">{formatSgd(shownStuck)}</span>}
           caption={
             stuck.count > 0
-              ? `${stuck.count} customer request${stuck.count === 1 ? "" : "s"} can't become orders until a customer or item is set up. Waiting ${oneDp(avgBlockedDays)} business days on average.`
-              : "No customer requests are waiting on a master record right now."
+              ? `${stuck.count} customer purchase request${stuck.count === 1 ? "" : "s"} (PRs) can't become orders: ${stuck.count === 1 ? "it waits" : "they wait"} on ${setups} customer or item setup${setups === 1 ? "" : "s"}, ${oneDp(avgBlockedDays)} business days on average.`
+              : "No customer purchase requests (PRs) are waiting on a setup right now."
           }
           footnote={
             released > 0 ? (
-              <span className="font-medium text-ok-ink">
+              <span className="inline-flex items-start gap-1 font-medium text-ok-ink">
+                <CircleCheck aria-hidden className="mt-px size-3.5 shrink-0" />
                 {formatSgd(released)} released when {lastUnblock?.requestId} was created in SAP B1
               </span>
             ) : (
@@ -177,13 +203,13 @@ export function PulseKpis() {
         icon={Workflow}
         label="Setup requests in flight"
         value={inFlight.count}
-        caption={`Median age ${oneDp(inFlight.medianAge)} business days since submission; ${inFlight.atMdm} waiting for the MDM final check. Our internal work, not demand.`}
+        caption={`Customer, item and vendor setups being approved. Median age ${oneDp(inFlight.medianAge)} business days; ${inFlight.atMdm} waiting for the MDM final check. Our internal work, not demand.`}
         footnote="Live from OneRecord."
       />
       <KpiTile
         icon={Target}
         tone="ok"
-        badge={<SyntheticBadge label="Illustrative" />}
+        badge={<IllustrativeChip />}
         label="Forecast error, Products A and B"
         value={
           <span className="flex items-baseline gap-2">
@@ -199,7 +225,7 @@ export function PulseKpis() {
           </span>
         }
         caption={`${h.plainBaseline}. ${h.plainOurs}.`}
-        footnote="Backtested on 6 months the model never saw. Illustrative."
+        footnote={`Backtested on 6 months the model never saw. ${SEASON_CAVEAT_SHORT}`}
       />
       <KpiTile
         icon={Clock4}

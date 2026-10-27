@@ -74,7 +74,7 @@
    "value": 5.9,
    "display": "5.9 months on S$39.9k",
    "unit": "months",
-   "sentence": "Phase 1 costs about S$39.9k with no new licences and releases ~1,751 hours a year (≈0.94 FTE), paying back in about 5.9 months at 80 requests a month.",
+   "sentence": "Phase 1 costs about S$39.9k with no new licences for the workflow and releases ~1,751 hours a year (≈0.94 FTE), paying back in about 5.9 months at 80 requests a month.",
    "sourceFile": "impact.json",
    "sourcePath": "headline.paybackMonths.value",
    "useIn": [

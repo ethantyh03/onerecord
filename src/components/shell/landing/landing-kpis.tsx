@@ -6,6 +6,12 @@ import { selectStuckDemand } from "@/lib/selectors";
 import { KpiTile } from "@/components/common/kpi-tile";
 import { SyntheticBadge } from "@/components/common/badges";
 import { formatSgd } from "@/components/common/format";
+import { headline } from "@/data/contract";
+
+/** Measured on the synthetic data (summary.json → headlines.duplicates), e.g. 25 of 388. */
+const DUP = headline("duplicates");
+const DUP_PCT = DUP?.baseline ? `${((DUP.value / DUP.baseline) * 100).toFixed(1)}%` : "6.4%";
+const DUP_OF = DUP?.baseline ? `${DUP.value} of ${DUP.baseline}` : "25 of 388";
 
 function LiveDot() {
   return (
@@ -31,18 +37,20 @@ export function LandingKpis() {
       <KpiTile
         icon={Timer}
         tone="brand"
-        label="Time to set up one new item code"
+        label="Median time to set up a new record"
         value={
           <span className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
-            <span className="text-muted-foreground line-through decoration-[2px] decoration-stuck/60">18 days</span>
+            <span className="text-muted-foreground line-through decoration-[2px] decoration-muted-foreground/50">
+              14 days
+            </span>
             <span aria-hidden className="text-muted-foreground">→</span>
             <span className="sr-only">down to</span>
             <span>≤ 4</span>
             <span className="text-lg font-medium tracking-[-0.01em] text-secondary-foreground">business days</span>
           </span>
         }
-        caption="Amy's item took 18 calendar days in the case. OneRecord targets a median of 4 business days or less."
-        footnote="Baseline from the case brief, Appendix C. Target is our KPI."
+        caption="Median 14 calendar days today → a median of 4 business days or less. Amy's item in the brief (Appendix C) took 18."
+        footnote="Baseline median: assumption A26. Target is our KPI."
       />
       <KpiTile
         icon={Hourglass}
@@ -63,9 +71,14 @@ export function LandingKpis() {
       <KpiTile
         icon={CopyX}
         label="New customer records that were duplicates"
-        value="6%"
-        caption="A hospital buying from SPD, QTS and QTG ended up with a record in each, spelled differently."
-        footnote="Assumption A13, illustrative."
+        value={DUP_PCT}
+        caption={`${DUP_OF} customer records are copies of a customer that already existed, re-created under another spelling or country code.`}
+        footnote={
+          <span className="inline-flex flex-wrap items-center gap-1.5">
+            <SyntheticBadge />
+            <span>Measured. Assumption A13 had ≈6%.</span>
+          </span>
+        }
       />
     </section>
   );

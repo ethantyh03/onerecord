@@ -33,7 +33,7 @@ describe("format", () => {
   it("formats SGD whole and compact", () => {
     expect(formatSgd(310400)).toBe("S$310,400");
     expect(formatSgd(310400, { compact: true })).toBe("S$310k");
-    expect(formatSgd(1_240_000, { compact: true })).toBe("S$1.2m");
+    expect(formatSgd(1_240_000, { compact: true })).toBe("S$1.2M");
     expect(formatSgd(4_500, { compact: true })).toBe("S$4.5k");
     expect(formatSgd(Number.NaN)).toBe("S$0");
   });

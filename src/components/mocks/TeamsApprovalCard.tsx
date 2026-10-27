@@ -3,11 +3,13 @@
 import Link from "next/link";
 import { useId, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
+import { toast } from "sonner";
 import {
   ArrowUpRight,
   CheckCircle2,
   ClipboardCheck,
   Clock3,
+  Eye,
   Info,
   Lock,
   MessageCircleQuestion,
@@ -18,6 +20,7 @@ import {
 } from "lucide-react";
 import { formatSgtDateTime } from "@/components/common/format";
 import { CALLBACK_LABEL, needsCallbackCheck } from "@/components/approvals/use-approval-actions";
+import { canSeeSensitive } from "@/lib/engine/masking";
 import { useSandbox } from "@/lib/store";
 import type { ApprovalStep, MdmRequest } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -25,7 +28,7 @@ import { MS_FONT, MsAvatar, TEAMS, findPerson, formatAgo, formatSgd, usePeople, 
 import { buildKeyFacts, countryName, formatFactValue, teamsSla, type TeamsSlaTone } from "./teams-helpers";
 
 /** What a sensitive field shows on any card or message: never the value, for anyone (final model decision 4). */
-export const CARD_MASK_TEXT = "•••• · view in OneRecord (Finance only)";
+export const CARD_MASK_TEXT = "•••• · view in OneRecord (Finance and MDM only)";
 
 export interface TeamsApprovalCardProps {
   request: MdmRequest;
@@ -53,8 +56,9 @@ const INPUT_CLS =
 /**
  * Microsoft Teams "Approvals" Adaptive Card look-alike. The production card is
  * integrations/teams/approval-card.json; this renders the same content in-app:
- * fact set, an always-visible comment box (required to reject), Approve / Reject,
- * and "Ask a question" as a show-card. Sensitive values never appear on the card.
+ * fact set, a comment box behind "Add comment" (opened automatically to reject), Approve / Reject,
+ * and "Ask a question" as a show-card. Sensitive values are never in the message: Finance and MDM
+ * can pull them from OneRecord into their own view of the card ("view in OneRecord"), and each view is logged.
  */
 export function TeamsApprovalCard({
   request,
@@ -76,6 +80,9 @@ export function TeamsApprovalCard({
   const [asking, setAsking] = useState(false);
   const [question, setQuestion] = useState("");
   const [calledBack, setCalledBack] = useState(false);
+  const [commentOpen, setCommentOpen] = useState(false);
+  /** Who pulled the sensitive values from OneRecord; any other viewer sees them masked. */
+  const [revealedFor, setRevealedFor] = useState<string | null>(null);
   const commentId = useId();
   const questionId = useId();
   const callbackId = useId();
@@ -96,6 +103,22 @@ export function TeamsApprovalCard({
     return { count: list.length, sgd: list.reduce((sum, p) => sum + p.sgd, 0) };
   }, [prs, request.blockedPrIds, request.id]);
 
+  const viewerPerson = findPerson(people, viewerId);
+  const mayReveal = canSeeSensitive(viewerPerson);
+  const revealed = mayReveal && revealedFor === viewerId;
+  const sensitiveFacts = facts.filter((f) => f.sensitive);
+  const viewerRole = viewerPerson?.roles.includes("mdm") ? "MDM" : "Finance";
+
+  function revealSensitive() {
+    if (!mayReveal || sensitiveFacts.length === 0) return;
+    setRevealedFor(viewerId);
+    const log = useSandbox.getState().logSensitiveReveal;
+    for (const f of sensitiveFacts) log(request.id, f.key);
+    toast("View recorded in the audit trail", {
+      description: `${viewerPerson?.name ?? "You"} viewed ${sensitiveFacts.map((f) => f.label.toLowerCase()).join(", ")} on ${request.id}.`,
+    });
+  }
+
   const actionable = step.status === "pending";
   const callbackRequired = actionable && needsCallbackCheck(request, step);
   const requestorName = requestor?.name ?? "the requestor";
@@ -111,6 +134,7 @@ export function TeamsApprovalCard({
     const ok = onApprove(full || undefined);
     if (ok !== false) {
       setComment("");
+      setCommentOpen(false);
       setCalledBack(false);
     }
   }
@@ -118,12 +142,16 @@ export function TeamsApprovalCard({
   function reject() {
     const note = comment.trim();
     if (!note) {
+      setCommentOpen(true);
       setCommentError(true);
       commentRef.current?.focus();
       return;
     }
     const ok = onReject(note);
-    if (ok !== false) setComment("");
+    if (ok !== false) {
+      setComment("");
+      setCommentOpen(false);
+    }
   }
 
   function sendQuestion() {
@@ -228,10 +256,37 @@ export function TeamsApprovalCard({
                 <dt className="font-semibold text-[#424242]">{f.label}</dt>
                 <dd className="min-w-0 break-words text-[#242424]">
                   {f.sensitive ? (
-                    <span data-testid="teams-masked" className="inline-flex items-center gap-1 text-[#616161]">
-                      <Lock className="size-3 shrink-0" aria-hidden="true" />
-                      <span>{CARD_MASK_TEXT}</span>
-                    </span>
+                    revealed ? (
+                      <span
+                        data-testid="teams-revealed"
+                        className="inline-flex items-center gap-1.5 rounded-[3px] bg-[#e7f4e7] px-1.5 font-semibold text-[#0e5c0e] tabular-nums"
+                      >
+                        <Eye className="size-3 shrink-0" aria-hidden="true" />
+                        {formatFactValue(f.value)}
+                      </span>
+                    ) : mayReveal ? (
+                      <button
+                        type="button"
+                        data-testid="teams-masked"
+                        onClick={revealSensitive}
+                        className="inline-flex items-center gap-1 rounded-[3px] text-left text-[#616161] outline-none hover:text-[#444791] focus-visible:outline-2 focus-visible:outline-[#5b5fc7]"
+                        title="Show the values from OneRecord. The view is recorded in the audit trail."
+                      >
+                        <Lock className="size-3 shrink-0" aria-hidden="true" />
+                        <span>
+                          •••• ·{" "}
+                          <span className="font-semibold underline underline-offset-2" style={{ color: TEAMS.purple }}>
+                            view in OneRecord
+                          </span>{" "}
+                          (Finance and MDM only)
+                        </span>
+                      </button>
+                    ) : (
+                      <span data-testid="teams-masked" className="inline-flex items-center gap-1 text-[#616161]">
+                        <Lock className="size-3 shrink-0" aria-hidden="true" />
+                        <span>{CARD_MASK_TEXT}</span>
+                      </span>
+                    )
                   ) : (
                     formatFactValue(f.value)
                   )}
@@ -247,6 +302,38 @@ export function TeamsApprovalCard({
               </div>
             ) : null}
           </dl>
+        ) : null}
+
+        {sensitiveFacts.length > 0 ? (
+          revealed ? (
+            <p data-testid="teams-reveal-note" className="mt-2 flex items-center gap-1.5 text-[11px] text-[#0e5c0e]">
+              <Eye className="size-3 shrink-0" aria-hidden="true" />
+              <span>
+                Pulled from OneRecord for {viewerPerson?.name ?? "you"} ({viewerRole}) · view logged · never stored in the
+                Teams message.{" "}
+                <button type="button" className="font-semibold underline underline-offset-2" onClick={() => setRevealedFor(null)}>
+                  Hide
+                </button>
+              </span>
+            </p>
+          ) : mayReveal ? (
+            <button
+              type="button"
+              data-testid="teams-view-sensitive"
+              onClick={revealSensitive}
+              className="mt-2 inline-flex items-center gap-1.5 text-[12px] font-semibold hover:underline"
+              style={{ color: TEAMS.purple }}
+            >
+              <Eye className="size-3.5" aria-hidden="true" />
+              {sensitiveFacts.length === 1 ? "View the masked value in OneRecord" : `View the ${sensitiveFacts.length} masked values in OneRecord`}
+              <span className="font-normal text-[#616161]">· every view is logged</span>
+            </button>
+          ) : (
+            <p data-testid="teams-mask-note" className="mt-2 flex items-center gap-1.5 text-[11px] text-[#616161]">
+              <Lock className="size-3 shrink-0" aria-hidden="true" />
+              Credit terms and bank details stay in OneRecord. Only Finance and MDM can view them.
+            </p>
+          )
         ) : null}
 
         {/* Why you're seeing this */}
@@ -302,6 +389,7 @@ export function TeamsApprovalCard({
               </div>
             ) : null}
 
+            {commentOpen ? (
             <div className="mt-3">
               <label htmlFor={commentId} className="mb-1 block text-[12px] font-semibold text-[#424242]">
                 Comment <span className="font-normal text-[#616161]">(required to reject)</span>
@@ -311,6 +399,7 @@ export function TeamsApprovalCard({
                 ref={commentRef}
                 data-testid="teams-comment"
                 rows={compact ? 1 : 2}
+                autoFocus
                 value={comment}
                 maxLength={500}
                 aria-invalid={commentError || undefined}
@@ -327,6 +416,7 @@ export function TeamsApprovalCard({
                 </p>
               ) : null}
             </div>
+            ) : null}
 
             <div className="mt-3 flex flex-wrap gap-2">
               <TeamsButton
@@ -344,6 +434,17 @@ export function TeamsApprovalCard({
               <TeamsButton data-testid="teams-ask" pressed={asking} onClick={() => setAsking((v) => !v)} aria-expanded={asking}>
                 Ask a question
               </TeamsButton>
+              {!commentOpen ? (
+                <button
+                  type="button"
+                  data-testid="teams-add-comment"
+                  onClick={() => setCommentOpen(true)}
+                  className="ml-1 self-center text-[12px] font-semibold hover:underline"
+                  style={{ color: TEAMS.purple }}
+                >
+                  Add comment
+                </button>
+              ) : null}
             </div>
 
             <AnimatePresence initial={false}>
@@ -396,7 +497,7 @@ export function TeamsApprovalCard({
 
         <div className="mt-3 flex items-center gap-2 border-t border-[#ebebeb] pt-2.5">
           <Link
-            href={`/requests/view?id=${encodeURIComponent(request.id)}`}
+            href={`/requests/view?id=${encodeURIComponent(request.id)}#request-data`}
             data-testid="teams-open-details"
             className="inline-flex items-center gap-1 text-[12px] font-semibold hover:underline"
             style={{ color: TEAMS.purple }}

@@ -104,3 +104,16 @@ export function demandFor(map: Map<string, LinkedDemand>, id: string): LinkedDem
 export function searchText(req: MdmRequest, requestorName: string): string {
   return `${req.id} ${req.title} ${requestorName} ${req.entity} ${req.country} ${req.sapCode ?? ""}`.toLowerCase();
 }
+
+/**
+ * Wall-clock label for a decision that took under one business day ("26 min", "3 h"), so the tracker never says
+ * "Done in 0d". Returns null for a day or more (the SLA chip's "Done in 1.2d" reads fine there).
+ */
+export function subDayDuration(businessDays: number): string | null {
+  if (!Number.isFinite(businessDays) || businessDays >= 1) return null;
+  const minutes = Math.max(0, Math.round(businessDays * 24 * 60));
+  if (minutes < 1) return "under 1 min";
+  if (minutes < 60) return `${minutes} min`;
+  const hours = Math.round(minutes / 6) / 10;
+  return `${Number.isInteger(hours) ? hours : hours.toFixed(1)} h`;
+}

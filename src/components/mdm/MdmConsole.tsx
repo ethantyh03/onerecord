@@ -10,6 +10,7 @@ import { isMdmUser } from "./mdm-helpers";
 import { MdmDetail } from "./MdmDetail";
 import { MdmQueue } from "./MdmQueue";
 import { StuckDemandTile } from "./StuckDemandTile";
+import { SwitchToMdmButton } from "./SwitchToMdmButton";
 
 /** /mdm (queue) and /mdm?id=REQ-… (detail). Must render inside <Suspense> because it reads the search params. */
 export function MdmConsole() {
@@ -35,13 +36,14 @@ function MdmHome() {
       />
 
       {!mdm ? (
-        <p className="mb-5 flex items-start gap-2 rounded-xl border border-warn/50 bg-warn-soft px-4 py-3 text-sm text-warn-ink">
-          <ShieldCheck aria-hidden className="mt-0.5 size-4 shrink-0" />
-          <span>
+        <div className="mb-5 flex flex-wrap items-center gap-x-3 gap-y-2 rounded-xl border border-warn/50 bg-warn-soft px-4 py-3 text-sm text-warn-ink">
+          <ShieldCheck aria-hidden className="size-4 shrink-0" />
+          <span className="min-w-0 flex-1">
             You&apos;re viewing as <strong className="font-semibold">{me.name}</strong> ({me.title}). This console belongs to the MDM
-            team: you can look, but only MDM can import records into SAP B1. Switch persona to Priya Nair to act.
+            team: you can look, but only MDM can import records into SAP B1.
           </span>
-        </p>
+          <SwitchToMdmButton />
+        </div>
       ) : null}
 
       <div className="mb-6 grid gap-4 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)_minmax(0,1fr)]">
@@ -49,7 +51,7 @@ function MdmHome() {
         <KpiTile
           tone="brand"
           icon={ShieldCheck}
-          label="Waiting for final check"
+          label={mdm ? "Waiting for your final check" : "Waiting for MDM's final check"}
           value={queueCount}
           caption="Fully approved by the business; MDM checks and imports them."
         />
@@ -66,7 +68,7 @@ function MdmHome() {
         />
       </div>
 
-      <MdmQueue />
+      <MdmQueue mine={mdm} />
     </div>
   );
 }

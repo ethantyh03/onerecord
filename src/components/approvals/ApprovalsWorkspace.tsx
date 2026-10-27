@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowUpRight, Building2, CheckCheck, Eye, FileJson, Mail, MessageSquare, ShieldAlert } from "lucide-react";
 import { EmptyState, PageHeader } from "@/components/common";
 import { Button } from "@/components/ui/button";
@@ -60,6 +60,7 @@ export function ApprovalsLoading() {
 function Approvals() {
   const me = useCurrentPerson();
   const params = useSearchParams();
+  const router = useRouter();
   const paramId = params.get("id");
   const requests = useSandbox((s) => s.requests);
   const config = useSandbox((s) => s.config);
@@ -113,6 +114,12 @@ function Approvals() {
     return out.sort((a, b) => Number(b.step.status === "question") - Number(a.step.status === "question"));
   }, [requests, me.id, answeredKeys]);
 
+  /** Open a card and keep its id in the URL, so a persona switch stays on the same request. */
+  function openCard(request: MdmRequest, step: ApprovalStep) {
+    setSelection({ personaId: me.id, requestId: request.id, stepId: step.id });
+    if (paramId !== request.id) router.replace(`/approvals?id=${encodeURIComponent(request.id)}`, { scroll: false });
+  }
+
   const bu = buById({ config }, me.entity);
   const selectedKey = selected ? `${selected.request.id}:${selected.step.id}` : null;
   const tab: Tab = tabState;
@@ -143,7 +150,7 @@ function Approvals() {
           <WaitingList
             items={waiting}
             selectedKey={selectedKey}
-            onSelect={(e) => setSelection({ personaId: me.id, requestId: e.request.id, stepId: e.step.id })}
+            onSelect={(e) => openCard(e.request, e.step)}
             people={config.people}
             domains={config.domains}
             personName={firstName(me.name)}
@@ -178,7 +185,10 @@ function Approvals() {
                 step={selected.step}
                 me={me}
                 people={config.people}
-                onClose={() => setSelection({ personaId: me.id, requestId: "", stepId: "" })}
+                onClose={() => {
+                  setSelection({ personaId: me.id, requestId: "", stepId: "" });
+                  if (paramId) router.replace("/approvals", { scroll: false });
+                }}
               />
               <Tabs value={tab} onValueChange={(v) => setTab(v as Tab)}>
                 <div className="flex flex-wrap items-center gap-3">
@@ -217,7 +227,7 @@ function Approvals() {
               <RouteStrip request={selected.request} people={config.people} highlightStepId={selected.step.id} />
             </section>
           ) : (
-            <NothingWaiting me={me} requests={requests} onSwitch={setPersona} onOpen={(r, s) => setSelection({ personaId: me.id, requestId: r.id, stepId: s.id })} />
+            <NothingWaiting me={me} requests={requests} onSwitch={setPersona} onOpen={openCard} />
           )}
         </div>
       </div>

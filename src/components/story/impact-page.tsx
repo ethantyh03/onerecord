@@ -54,6 +54,10 @@ function one(n: number): string {
 function months(n: number): string {
   return Number.isFinite(n) ? `${n.toFixed(1)} months` : "never";
 }
+/** S$2.64M: the same style as summary.json and the Pulse headline figures. */
+function millions(n: number): string {
+  return `S$${(n / 1_000_000).toFixed(2)}M`;
+}
 function years(n: number): string {
   return Number.isFinite(n) ? `~${n < 10 ? n.toFixed(1) : Math.round(n)} years` : "never";
 }
@@ -78,7 +82,11 @@ export function ImpactPage() {
       <PageHeader
         title="The business case"
         subtitle="What OneRecord saves, what it costs and when it pays back. Only hard savings (hours released) count towards payback; delayed revenue and growth signals sit in their own columns."
-        meta={<NoteChip tone="brand">Assumptions A12–A27 labelled</NoteChip>}
+        meta={
+          <Link href="/assumptions#group-business" className="rounded-full outline-none focus-visible:ring-3 focus-visible:ring-ring/40">
+            <NoteChip tone="brand">Every input labelled, A12–A26</NoteChip>
+          </Link>
+        }
         actions={
           <Link href="/assumptions" className={buttonVariants({ variant: "outline" })}>
             <ScrollText aria-hidden />
@@ -92,13 +100,13 @@ export function ImpactPage() {
         <KpiTile
           icon={CalendarClock}
           tone="brand"
-          label="Time to set up a record"
+          label="Median time to set up a record"
           value={
             <Figure formula={<>{SOURCES.a26} Target: median ≤4 business days, in line with the APQC benchmark of 3.0 days.</>}>
-              14 → ≤4 days
+              14<span className="text-[0.9375rem] font-medium"> days</span> → ≤4<span className="text-[0.9375rem] font-medium"> business days</span>
             </Figure>
           }
-          caption="Median 14 calendar days today → ≤4 business days. Amy's worst case (App C) took 18."
+          caption="Median 14 calendar days today → ≤4 business days. Amy's item in the case brief (Appendix C) took 18."
           footnote="A26 · APQC benchmark 3.0 days"
         />
         <KpiTile
@@ -141,13 +149,13 @@ export function ImpactPage() {
         />
         <KpiTile
           icon={KeyRound}
-          label="New licences, phase 1"
+          label="New workflow licences, phase 1"
           value={
             <Figure formula="Phase 1 runs on standard connectors only: Power Apps canvas app, SharePoint List, Power Automate standard Approvals in Teams/Outlook, and the SAP import file loaded by MDM. Licences Lives already owns with Microsoft 365.">
               None
             </Figure>
           }
-          caption="No new licences for the workflow in phase 1 (standard connectors only)"
+          caption="No new licences for the workflow in phase 1 (standard connectors only). Power BI Pro only if not owned."
           footnote="Research log: Microsoft licensing"
         />
       </section>
@@ -302,7 +310,7 @@ export function ImpactPage() {
               </tr>
             </thead>
             <tbody>
-              <CostGroupRow label="Phase 1: pilot, then roll-out" badge={<NoteChip tone="ok">No new licences</NoteChip>} />
+              <CostGroupRow label="Phase 1: pilot, then roll-out" badge={<NoteChip tone="ok">No new licences for the workflow</NoteChip>} />
               <CostRow item="Lean team build, 6 weeks" who="1 citizen developer + 1 analyst" oneOff={<Figure formula="2 people × 6 weeks × 40 h × S$50 (A22)">{formatSgd(I.leanTeamSgd)}</Figure>} />
               <CostRow item="Duplicate matcher and forecast" who="Data-science / Power Platform contractor, ~15 days" oneOff={<Figure formula="15 days × S$650/day (A22, upper end of S$450–650, low confidence)">{formatSgd(I.contractorSgd)}</Figure>} />
               <CostRow item="Forms, routes and business units" who="MDM team configures" oneOff={<Figure formula="48 h × S$50 (A22)">{formatSgd(I.mdmConfigSgd)}</Figure>} />
@@ -311,6 +319,15 @@ export function ImpactPage() {
                 item="Run and maintain"
                 who="Lean team"
                 yearly={<Figure formula={`15% of ${formatSgd(oneOff)} a year. ${SOURCES.run}`}>{formatSgd(run)}</Figure>}
+              />
+              <CostRow
+                item="Regional Pulse in Power BI, only if not owned"
+                who="Microsoft, ~10 viewers"
+                yearly={
+                  <Figure formula="Power BI Pro for ~10 viewers at ≈USD 14/user/month (approx.) = ≈USD 1,680 a year, only if Lives does not already own it. The pilot analytics run without Power BI, so it is not in the total.">
+                    ≈USD 14/user/month, not in total
+                  </Figure>
+                }
               />
               <CostRow item="Phase 1 total" who="" strong oneOff={<Figure formula={SOURCES.a22}>{formatSgd(oneOff)}</Figure>} yearly={formatSgd(run)} />
               <CostGroupRow label="Phase 2: automatic posting to SAP B1" badge={<Phase2Badge label="after the pilot" />} />
@@ -321,11 +338,6 @@ export function ImpactPage() {
                 yearly={<Figure formula={SOURCES.licences}>≤{formatSgd(p2.licencesSgdPerYear)} (USD 1,980)</Figure>}
               />
               <CostRow item="Maintenance" who="SAP partner" yearly={<Figure formula={`15% of ${formatSgd(I.sapPartnerSgd)} a year`}>{formatSgd(p2.maintenanceSgdPerYear)}</Figure>} />
-              <CostRow
-                item="Regional Pulse in Power BI"
-                who="Microsoft"
-                yearly={<Figure formula="Power BI Pro for ~10 viewers at ≈USD 14/user/month (approx.), only if Lives does not already own it.">≈USD 14/user/month, if not owned</Figure>}
-              />
             </tbody>
           </table>
         </div>
@@ -630,7 +642,7 @@ function OpportunityColumn() {
         label: "Accounts dropping off",
         value: (
           <Figure formula={`Trailing-12-month value of flagged accounts, at risk before any save. Assumed save rate ${Math.round(a.dropOffSaveRate * 100)}%. From signals.json.`}>
-            {formatSgd(t.dropOffAddressableSgd, { compact: true })}
+            {millions(t.dropOffAddressableSgd)} at risk, before save rate
           </Figure>
         ),
       },
@@ -638,7 +650,7 @@ function OpportunityColumn() {
         label: "Cross-sell gaps",
         value: (
           <Figure formula={`Σ peer-gap value, addressable before conversion. Assumed conversion ${Math.round(a.crossSellConversion * 100)}%. From signals.json.`}>
-            {formatSgd(t.crossSellAddressableSgd, { compact: true })}
+            {millions(t.crossSellAddressableSgd)} addressable, before conversion
           </Figure>
         ),
       },

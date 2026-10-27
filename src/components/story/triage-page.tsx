@@ -8,7 +8,7 @@ import { inbox, triageEval, type InboxMessage } from "@/data/contract";
 import { classifyMessage } from "@/lib/engine/triage";
 import type { MessageKind } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { SectionHeading } from "./story-ui";
+import { Figure, SectionHeading } from "./story-ui";
 
 const KINDS: MessageKind[] = ["po", "pr", "enquiry", "followup", "mdm"];
 
@@ -91,7 +91,7 @@ export function TriagePage() {
   return (
     <div className="mx-auto w-full max-w-[1320px] space-y-8 pb-10">
       <PageHeader
-        title="Inbound sorting"
+        title="Inbox triage"
         subtitle="Everything that lands in the shared sales mailbox, sorted into five streams with the reason for each. Customer demand and our own setup work are never mixed."
         meta={
           <>
@@ -322,7 +322,11 @@ function EvalCard() {
           <p className="mt-1 text-xs text-muted-foreground">sorted into the right stream</p>
         </div>
         <div className="pb-1 text-sm text-secondary-foreground">
-          <span className="num font-semibold text-foreground">{e.macroF1.toFixed(2)}</span> average F1 across streams
+          Each of the five streams scores about the same (
+          <Figure formula={<>Macro-averaged F1 score across the five streams: {e.macroF1.toFixed(2)}. F1 balances how many of a stream&apos;s messages the rules catch with how many they wrongly add.</>}>
+            ≈{Math.round(e.macroF1 * 100)}%
+          </Figure>
+          )
         </div>
       </div>
       <p className="mt-3 text-sm text-foreground">{e.plain}</p>

@@ -2,11 +2,33 @@
 
 import { useMemo } from "react";
 import { Bar, BarChart, CartesianGrid, Cell, LabelList, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { formatSgd } from "@/components/common";
 import { usePulse, type PulseView } from "@/components/pulse/core/PulseContext";
 import { bridge, type BridgeKey, type BridgeStep } from "@/data/contract";
 import type { CountryCode } from "@/lib/types";
-import { COUNTRY_CODES, COUNTRY_NAME, PanelFrame, PlainLine, Segmented, Swatch, TipBox, TipRow, VIZ, compactNumber } from "./shared";
+import { sgdCompact } from "@/components/pulse/core/pulse-format";
+import { COUNTRY_CODES, COUNTRY_NAME, PanelFrame, PlainLine, Segmented, Swatch, TipBox, TipRow, VIZ } from "./shared";
+
+/** "S$16.7M" with one decimal and an uppercase M, so a +2.5% change is visible in the endpoints. */
+function money(v: number): string {
+  const a = Math.abs(v);
+  if (a >= 1_000_000) return `S$${(a / 1_000_000).toFixed(1)}M`;
+  return sgdCompact(a);
+}
+
+function plural(n: number, one: string, many = `${one}s`): string {
+  return `${n} ${n === 1 ? one : many}`;
+}
+
+/** Nice step for the axis floor: S$1M for multi-million totals, S$100k below that. */
+function axisFloor(rows: { base: number; value: number; key: BridgeKey }[]): number {
+  const lows = rows.filter((r) => r.key !== "prior" && r.key !== "current").map((r) => r.base);
+  const totals = rows.filter((r) => r.key === "prior" || r.key === "current").map((r) => r.value);
+  const lo = Math.min(...lows, ...totals);
+  if (!Number.isFinite(lo) || lo <= 0) return 0;
+  const step = lo >= 5_000_000 ? 1_000_000 : lo >= 500_000 ? 100_000 : 10_000;
+  const floor = Math.floor((lo * 0.92) / step) * step;
+  return floor > 0 ? floor : 0;
+}
 
 const SHORT: Record<BridgeKey, string> = {
   prior: "Prior 12M",
@@ -54,7 +76,7 @@ function toRows(steps: BridgeStep[]): Row[] {
       base = running;
       value = -s.sgd;
     }
-    const money = formatSgd(Math.abs(s.sgd), { compact: true });
+    const m = money(s.sgd);
     return {
       key: s.key,
       name: SHORT[s.key],
@@ -64,7 +86,7 @@ function toRows(steps: BridgeStep[]): Row[] {
       signed: s.sgd,
       customers: s.customers,
       color: colorFor(s.key),
-      display: isTotal ? money : `${s.sgd >= 0 ? "+" : "−"}${money}`,
+      display: isTotal ? m : `${s.sgd >= 0 ? "+" : "−"}${m}`,
     };
   });
 }
@@ -79,6 +101,7 @@ export function GrowthBridge() {
   const cb = bridge.countries.find((c) => c.country === country);
   const steps = useMemo(() => (cb ? (view === "merged" ? cb.dedup : cb.raw) : []), [cb, view]);
   const rows = useMemo(() => toRows(steps), [steps]);
+  const yMin = useMemo(() => axisFloor(rows), [rows]);
 
   const prior = stepOf(steps, "prior")?.sgd ?? 0;
   const current = stepOf(steps, "current")?.sgd ?? 0;
@@ -154,13 +177,15 @@ export function GrowthBridge() {
                           {payload.value}
                         </text>
                         <text textAnchor="middle" dy={27} fontSize={11} fill="var(--muted-foreground)">
-                          {rows[index] ? `${rows[index].customers} customers` : ""}
+                          {rows[index] ? plural(rows[index].customers, "customer") : ""}
                         </text>
                       </g>
                     )}
                   />
                   <YAxis
-                    tickFormatter={(v: number) => `S$${compactNumber(v)}`}
+                    domain={[yMin, "auto"]}
+                    allowDataOverflow
+                    tickFormatter={(v: number) => money(v)}
                     tick={{ fontSize: 11, fill: VIZ.muted }}
                     tickLine={false}
                     axisLine={false}
@@ -174,7 +199,7 @@ export function GrowthBridge() {
                       return (
                         <TipBox title={r.label}>
                           <TipRow color={r.color} label="Value" value={r.display} />
-                          <TipRow label="Customers" value={r.customers} />
+                          <TipRow label="Customers" value={plural(r.customers, "customer")} />
                         </TipBox>
                       );
                     }}
@@ -189,6 +214,11 @@ export function GrowthBridge() {
                 </BarChart>
               </ResponsiveContainer>
             </div>
+            {yMin > 0 ? (
+              <p className="mt-1 text-xs text-muted-foreground">
+                Axis starts at {money(yMin)}, not zero, so the changes are visible; the grey bars are cut at the bottom.
+              </p>
+            ) : null}
           </div>
           <aside className="space-y-3 xl:border-l xl:pl-5">
             <div>
@@ -199,7 +229,7 @@ export function GrowthBridge() {
                 {growth == null ? "—" : `${growth >= 0 ? "+" : "−"}${Math.abs(growth * 100).toFixed(1)}%`}
               </div>
               <p className="mt-1 text-xs text-muted-foreground">
-                {formatSgd(prior, { compact: true })} → {formatSgd(current, { compact: true })}
+                {money(prior)} → {money(current)}
               </p>
             </div>
             {phantom > 0 ? (
@@ -214,7 +244,7 @@ export function GrowthBridge() {
                   <>
                     Merged, <strong className="num">{phantom}</strong> &ldquo;new&rdquo; or &ldquo;lost&rdquo; customers
                     disappear: they were existing hospitals under a second record. New-customer value falls from{" "}
-                    {formatSgd(rawNewSgd, { compact: true })} to {formatSgd(dNewSgd, { compact: true })}.
+                    {money(rawNewSgd)} to {money(dNewSgd)}.
                   </>
                 )}
               </PlainLine>

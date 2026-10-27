@@ -33,6 +33,8 @@ interface Row {
   rank: number;
   name: string;
   sub: string;
+  /** Second caption line (the golden ID), so neither line is truncated. */
+  sub2?: string;
   sgd12m: number;
   yoy: number | null;
   status?: TopAccountRaw["status"];
@@ -64,7 +66,8 @@ export function HeroReveal() {
         key: `g-${a.goldenId}`,
         rank,
         name: a.name,
-        sub: a.records > 1 ? `${a.records} SAP records merged · ${a.goldenId}` : a.goldenId,
+        sub: a.records > 1 ? `${a.records} SAP records merged` : a.goldenId,
+        sub2: a.records > 1 ? a.goldenId : undefined,
         sgd12m: a.sgd12m,
         yoy: a.yoy,
         isHero: a.goldenId === heroId,
@@ -91,6 +94,9 @@ export function HeroReveal() {
 
   if (!cb) return null;
 
+  const extra = Math.max(0, rows.length - LIST_LEN);
+  const heroShort = hero?.name.split(" ").slice(0, 2).join(" ") ?? "hero";
+
   const records = cb.example.records.map((r) => ({
     ...r,
     stats: cb.topAccounts.raw.find((a) => a.cardCode === r.cardCode),
@@ -100,9 +106,10 @@ export function HeroReveal() {
   return (
     <section
       aria-labelledby="pulse-hero-title"
+      id="pulse-hero"
       data-testid="pulse-hero"
       data-view={view}
-      className="overflow-hidden rounded-xl border bg-card shadow-raised"
+      className="scroll-mt-24 overflow-hidden rounded-xl border bg-card shadow-raised"
     >
       <div className="flex flex-col gap-3 border-b px-5 py-4 lg:flex-row lg:items-center lg:justify-between">
         <div className="min-w-0 space-y-1">
@@ -131,15 +138,17 @@ export function HeroReveal() {
           <div className="mb-2 flex items-baseline justify-between text-xs text-muted-foreground">
             <span>
               {merged ? "Top 10 customers, merged (one row per hospital)" : "Top 10 customers, raw (one row per SAP record)"}
+              {extra > 0 ? ` + the other ${heroShort} record${extra === 1 ? "" : "s"}` : ""}
             </span>
             <span>Last 12 months · YoY</span>
           </div>
           <ol className="space-y-1" aria-live="polite">
-            {rows.map((r) => (
+            {rows.map((r, idx) => (
               <li
                 key={r.key}
                 className={cn(
                   "relative grid grid-cols-[1.5rem_minmax(0,1fr)_4.75rem_4.25rem] items-center gap-x-3 rounded-md px-2 py-1.5",
+                  idx === LIST_LEN && "mt-2.5 before:absolute before:inset-x-2 before:-top-1.5 before:border-t before:border-dashed before:border-border-strong",
                   r.isHero && merged && "bg-stuck-soft animate-in fade-in-0 slide-in-from-bottom-2 duration-700",
                   r.isHero && !merged && "bg-warn-soft/70",
                 )}
@@ -175,7 +184,10 @@ export function HeroReveal() {
                         }}
                       />
                     </span>
-                    <span className="hidden w-40 shrink-0 truncate text-[0.6875rem] text-muted-foreground sm:block">{r.sub}</span>
+                    <span className="hidden w-40 shrink-0 text-[0.6875rem] leading-tight text-muted-foreground sm:block">
+                      <span className="block truncate">{r.sub}</span>
+                      {r.sub2 ? <span className="num block truncate">{r.sub2}</span> : null}
+                    </span>
                   </div>
                 </div>
                 <span className="num text-right text-sm font-medium text-foreground">{sgdCompact(r.sgd12m)}</span>
@@ -199,15 +211,21 @@ export function HeroReveal() {
 
         {/* Merge stage */}
         <div className="flex flex-col bg-canvas/60 px-5 py-4">
-          <div className="relative h-[17.5rem]">
+          <div
+            className={cn(
+              "relative transition-[height] duration-700 ease-[cubic-bezier(.2,.7,.2,1)]",
+              merged ? "h-[10.5rem]" : "h-[17.5rem]",
+            )}
+          >
             {records.map((r, i) => (
               <div
                 key={r.cardCode}
                 data-testid={`pulse-hero-record-${i}`}
                 className="absolute inset-x-0 top-0 rounded-lg border border-warn/50 bg-card px-3.5 py-2.5 shadow-raised transition-[transform,opacity] duration-700 ease-[cubic-bezier(.2,.7,.2,1)]"
                 style={{
-                  transform: merged ? "translateY(5.5rem) scale(0.92)" : `translateY(${i * 5.75}rem)`,
+                  transform: merged ? "translateY(1rem) scale(0.92)" : `translateY(${i * 5.75}rem)`,
                   opacity: merged ? 0 : 1,
+                  pointerEvents: merged ? "none" : "auto",
                   transitionDelay: merged ? `${i * 90}ms` : `${(2 - i) * 70 + 200}ms`,
                   zIndex: 3 - i,
                 }}
@@ -244,16 +262,17 @@ export function HeroReveal() {
                 data-testid="pulse-hero-golden"
                 className="absolute inset-x-0 top-0 rounded-xl border-2 border-stuck/60 bg-card px-4 py-3.5 shadow-float transition-[transform,opacity] duration-700 ease-[cubic-bezier(.2,.7,.2,1)]"
                 style={{
-                  transform: merged ? "translateY(3.5rem) scale(1)" : "translateY(4.5rem) scale(0.94)",
+                  transform: merged ? "translateY(0) scale(1)" : "translateY(4.5rem) scale(0.94)",
                   opacity: merged ? 1 : 0,
                   transitionDelay: merged ? "380ms" : "0ms",
                   pointerEvents: merged ? "auto" : "none",
                 }}
                 aria-hidden={!merged}
               >
-                <div className="flex items-center justify-between gap-2 text-xs text-muted-foreground">
-                  <span>
-                    One hospital · {hero.goldenId} · {hero.records} records merged
+                <div className="flex items-start justify-between gap-2 text-xs text-muted-foreground">
+                  <span className="leading-tight">
+                    One hospital · {hero.records} records merged
+                    <span className="num block">{hero.goldenId}</span>
                   </span>
                   <span className="rounded-full bg-stuck px-1.5 py-px text-[0.625rem] font-semibold text-stuck-foreground">
                     #{heroRank} in Malaysia
@@ -273,7 +292,7 @@ export function HeroReveal() {
             ) : null}
           </div>
 
-          <p className="text-sm text-foreground">{merged ? cb.example.dedupStory : cb.example.rawStory}</p>
+          <p className="mt-3 text-sm text-foreground">{merged ? cb.example.dedupStory : cb.example.rawStory}</p>
 
           {heroAction ? (
             <div
@@ -296,7 +315,9 @@ export function HeroReveal() {
                   By {formatIsoDate(heroAction.byWhen)}
                 </span>
                 {heroAction.sgdAddressable != null ? (
-                  <span className="num">{sgdCompact(heroAction.sgdAddressable)} addressable, before conversion</span>
+                  <span className="num whitespace-nowrap" title="Addressable before conversion">
+                    {sgdCompact(heroAction.sgdAddressable)} addressable
+                  </span>
                 ) : null}
               </div>
             </div>

@@ -54,19 +54,27 @@ export function withBusinessUnit(config: AppConfig, bu: BusinessUnit = NEW_BU_TE
   return next;
 }
 
-/** Amy's live demo item (App C), with every required field filled. */
+/** The storage condition Amy picks in the amy-intake scene (her email says "4-25C", which spans two classes). */
+export const AMY_STORAGE_PICK = "Ambient (15–30 °C)";
+
+/**
+ * Amy's live demo item (App C), with every required field filled. It is exactly what her pasted email
+ * extracts to (src/lib/extract-cache.ts: Meditube Korea, S$18.50 cost, S$27.00 list, 100 per PCK) plus the
+ * fields she completes by hand in the amy-intake scene, so the item is the same in her scene and Priya's.
+ * A vitest (src/app/demo/__tests__/scenes.test.ts) keeps the two from drifting.
+ */
 export const AMY_K2EDTA_ITEM: Record<string, FieldValue> = {
   itemName: K2EDTA_ITEM,
   category: IVD_CONSUMABLE_CATEGORY,
   productGroup: "B",
-  manufacturer: "Meditube Industries Sdn Bhd",
+  manufacturer: "Meditube Korea Co., Ltd.",
   regLicenceNo: "HSA-DE-0012345",
   regCertificate: "HSA-registration-K2EDTA-4mL.pdf",
   uom: "PCK",
   packSize: 100,
-  costPrice: 78,
-  salesPrice: 120,
-  storage: "Ambient (15–30 °C)",
+  costPrice: 18.5,
+  salesPrice: 27,
+  storage: AMY_STORAGE_PICK,
   entity: "SPD",
   countries: "SG, MY",
 };
@@ -80,7 +88,7 @@ export const MARCUS_EXTEND: Record<string, FieldValue> = {
   paymentTerms: "Net 60",
   creditLimit: 45000,
   reason:
-    "MLS will supply PCR reagents and molecular test kits to NUH's diagnostic lab from Q1 2027. NUH already exists in SAP B1, so we are extending the existing account to MLS instead of opening a second one. Public-hospital payment cycle needs Net 60.",
+    "MLS will supply PCR reagents and molecular test kits to NUH's diagnostic lab from Q1 2027. NUH already exists in SAP B1, so we are extending it to MLS instead of opening a second account. Public-hospital payment cycle needs longer terms.",
 };
 
 export const SCENES: Scene[] = [
@@ -97,9 +105,9 @@ export const SCENES: Scene[] = [
       "Amy pastes her old email and the form fills itself. Because her blood collection tube is regulated as an IVD medical device, the licence number becomes mandatory and Quality is added to the route automatically: the exact step she missed last time. Before she submits, she sees who approves, in parallel, and when it'll be live.",
     checklist: [
       "In the paste panel, click “Amy's old email”, then “Fill the form”. The chip shows one sensitive value removed.",
-      "Point at the filled fields and the “cached for demo” badge.",
+      "Point at the filled fields and the “Rules + cached example” badge.",
       "Category reads “Lab consumable – IVD medical device”: the licence no. and certificate turn required and the QA/RA chip slides into the route.",
-      "Pick a storage condition, type the licence no. and attach the sample certificate. Hold on the route: QA/RA · BU Head · Business Support in parallel → MDM, expected live Tue 3 Nov.",
+      "Pick storage “Ambient (15–30 °C)”, type the licence no. HSA-DE-0012345 and attach the sample certificate. Hold on the route: QA/RA · BU Head · Business Support in parallel → MDM, expected live Tue 3 Nov.",
       "Submit. The receipt mentions 3 waiting orders linked (S$36,000).",
     ],
   },
@@ -133,7 +141,7 @@ export const SCENES: Scene[] = [
     voiceoverHint:
       "When he requests a hospital that already exists under another name, OneRecord catches it before any approver sees it, and he extends the existing record instead.",
     checklist: [
-      "Click into the customer name (or retype the last letter) so the duplicate check runs.",
+      "Hold while the page scrolls down to the amber duplicate card (the check runs on load).",
       "Hold on the amber card: National University Hospital · C-SG-00017 · same tax ID.",
       "Click “Extend to my entity”. The form switches to an extension of C-SG-00017 for MLS.",
     ],
@@ -143,14 +151,14 @@ export const SCENES: Scene[] = [
     clock: "10:05",
     title: "Clean in: Wei Jie approves in Teams",
     persona: "weijie",
-    route: "/approvals",
+    route: "/approvals?id=",
     timecode: "1:02–1:20",
     description:
       "Marcus's extension of National University Hospital to MLS (Net 60, S$45,000 credit limit) is submitted; Siti approved Business Support at 09:48. It now waits on Wei Jie (Finance).",
     voiceoverHint:
-      "Approvals arrive in Teams, where approvers already work, with reminders before anything goes stale. Credit terms and bank details never travel in the message. Only Finance can see them, and every view and decision is logged. Marcus always knows where his request stands.",
+      "Approvals arrive in Teams, where approvers already work, with reminders before anything goes stale. Credit terms and bank details never travel in the message. Only Finance and the MDM team can see them, and every view and decision is logged. Marcus always knows where his request stands.",
     checklist: [
-      "Open the Teams card: credit terms show “•••• · view in OneRecord (Finance only)”.",
+      "REQ-1100 (National University Hospital → MLS) is preselected; check the Teams card title before you start. Credit terms show “•••• · view in OneRecord”.",
       "Open the details: the values are visible to Wei Jie (Finance).",
       "2-second flip: switch persona to Amy (values masked), then back to Wei Jie.",
       "Click Approve. The tracker step turns green; the chip reads “Reminder after 1 business day”.",
@@ -179,7 +187,7 @@ export const SCENES: Scene[] = [
     clock: "09:00",
     title: "Clean out: Regional Pulse",
     persona: "weijie",
-    route: "/pulse",
+    route: "/pulse?view=raw",
     timecode: "2:02–2:32",
     description: "Fresh sandbox, Wei Jie on Regional Pulse. Synthetic, illustrative data throughout.",
     voiceoverHint:
@@ -187,7 +195,7 @@ export const SCENES: Scene[] = [
     checklist: [
       "Hold 2 s on the header: window and growth formula.",
       "Country × product matrix, then the streams legend (orders · open requests · MDM setups).",
-      "Flip the merge toggle: the Malaysian hero account rises to the top.",
+      "In the Malaysia card, click “Merge the duplicates”: three records collapse into one hospital (G-MY-0002) and it rises to the top. (The scene opens on raw SAP records; if the card already shows merged, click “Show raw SAP records” off camera first.)",
       "Forecast replay for SG × Product A, then one country action card.",
     ],
   },
@@ -285,87 +293,98 @@ export async function loadScene(id: SceneId): Promise<string> {
   if (!scene) throw new Error(`Unknown scene "${id}"`);
 
   const previousOffsetMs = store().clockOffsetMs;
-  store().resetSandbox();
+  // Freeze real time while the script replays, so every timestamp (and so every audit hash) is pinned
+  // to the sim clock alone and a scene is byte-identical across reloads. The clock runs again afterwards.
+  const realNow = Date.now;
+  const frozenMs = realNow();
+  Date.now = () => frozenMs;
   let route = scene.route;
+  try {
+    store().resetSandbox();
 
-  switch (id) {
-    case "amy-intake": {
-      as("amy");
-      break;
-    }
-
-    case "admin-marcus": {
-      as("priya");
-      break;
-    }
-
-    case "marcus-dup": {
-      clockAt(-25); // Priya added MLS at 08:35
-      addMlsBusinessUnit();
-      clockAt(0);
-      as("marcus");
-      const draftId = store().createDraft("customer", {
-        customerName: "Natl Univ Hosp",
-        country: "SG",
-        taxId: NUH.taxId,
-        entity: NEW_BU_TEMPLATE.id,
-      });
-      route = `/requests/new?draft=${encodeURIComponent(draftId)}`;
-      break;
-    }
-
-    case "weijie-teams": {
-      clockAt(-25);
-      addMlsBusinessUnit();
-      clockAt(22); // Marcus submits at 09:22
-      as("marcus");
-      const reqId = store().createDraft("extend", MARCUS_EXTEND);
-      submit(reqId);
-      // Approve everything ahead of Finance (Business Support, Siti, at 09:48).
-      for (let guard = 0; guard < 6; guard++) {
-        const r = request(reqId);
-        const pending = pendingBusinessSteps(r);
-        if (pending.some((s) => s.role === "finance")) break;
-        const next = pending[0];
-        if (!next) throw new Error(`Scene setup: ${reqId} has no Finance step pending`);
-        approveAsAssignee(reqId, next, 48 + guard * 5, "MLS entity and NUH address confirmed.");
+    switch (id) {
+      case "amy-intake": {
+        as("amy");
+        break;
       }
-      const fin = pendingBusinessSteps(request(reqId)).find((s) => s.role === "finance");
-      if (!fin) throw new Error(`Scene setup: ${reqId} is not waiting on Finance`);
-      clockAt(65); // now 10:05
-      as(fin.assigneeId === "weijie" ? "weijie" : fin.assigneeId);
-      break;
-    }
 
-    case "priya-sap": {
-      clockAt(14); // Amy submits at 09:14
-      as("amy");
-      const reqId = store().createDraft("item", AMY_K2EDTA_ITEM);
-      submit(reqId);
-      for (let guard = 0; guard < 8; guard++) {
-        const pending = pendingBusinessSteps(request(reqId));
-        if (pending.length === 0) break;
-        // Parallel steps: approve in a natural order, each at its own time.
-        const sorted = [...pending].sort(
-          (a, b) => (PARALLEL_ORDER[a.role]?.at ?? 300) - (PARALLEL_ORDER[b.role]?.at ?? 300),
-        );
-        for (const step of sorted) {
-          const plan = PARALLEL_ORDER[step.role];
-          approveAsAssignee(reqId, step, plan?.at ?? 280 + guard * 10, plan?.comment);
+      case "admin-marcus": {
+        as("priya");
+        break;
+      }
+
+      case "marcus-dup": {
+        clockAt(-25); // Priya added MLS at 08:35
+        addMlsBusinessUnit();
+        clockAt(0);
+        as("marcus");
+        const draftId = store().createDraft("customer", {
+          customerName: "Natl Univ Hosp",
+          country: "SG",
+          taxId: NUH.taxId,
+          entity: NEW_BU_TEMPLATE.id,
+        });
+        route = `/requests/new?draft=${encodeURIComponent(draftId)}`;
+        break;
+      }
+
+      case "weijie-teams": {
+        clockAt(-25);
+        addMlsBusinessUnit();
+        clockAt(22); // Marcus submits at 09:22
+        as("marcus");
+        const reqId = store().createDraft("extend", MARCUS_EXTEND);
+        submit(reqId);
+        // Approve everything ahead of Finance (Business Support, Siti, at 09:48).
+        for (let guard = 0; guard < 6; guard++) {
+          const r = request(reqId);
+          const pending = pendingBusinessSteps(r);
+          if (pending.some((s) => s.role === "finance")) break;
+          const next = pending[0];
+          if (!next) throw new Error(`Scene setup: ${reqId} has no Finance step pending`);
+          approveAsAssignee(reqId, next, 48 + guard * 5, "MLS entity and NUH address confirmed.");
         }
+        const fin = pendingBusinessSteps(request(reqId)).find((s) => s.role === "finance");
+        if (!fin) throw new Error(`Scene setup: ${reqId} is not waiting on Finance`);
+        clockAt(65); // now 10:05
+        as(fin.assigneeId === "weijie" ? "weijie" : fin.assigneeId);
+        // Wei Jie's queue is sorted by closest deadline, so preselect Marcus's request explicitly.
+        route = `/approvals?id=${encodeURIComponent(reqId)}`;
+        break;
       }
-      const r = request(reqId);
-      if (r.status !== "mdm_review") throw new Error(`Scene setup: ${reqId} is ${r.status}, not at MDM review`);
-      clockAt(310); // now 14:10
-      as("priya");
-      route = `/mdm?id=${encodeURIComponent(reqId)}`;
-      break;
-    }
 
-    case "pulse": {
-      as("weijie");
-      break;
+      case "priya-sap": {
+        clockAt(14); // Amy submits at 09:14
+        as("amy");
+        const reqId = store().createDraft("item", AMY_K2EDTA_ITEM);
+        submit(reqId);
+        for (let guard = 0; guard < 8; guard++) {
+          const pending = pendingBusinessSteps(request(reqId));
+          if (pending.length === 0) break;
+          // Parallel steps: approve in a natural order, each at its own time.
+          const sorted = [...pending].sort(
+            (a, b) => (PARALLEL_ORDER[a.role]?.at ?? 300) - (PARALLEL_ORDER[b.role]?.at ?? 300),
+          );
+          for (const step of sorted) {
+            const plan = PARALLEL_ORDER[step.role];
+            approveAsAssignee(reqId, step, plan?.at ?? 280 + guard * 10, plan?.comment);
+          }
+        }
+        const r = request(reqId);
+        if (r.status !== "mdm_review") throw new Error(`Scene setup: ${reqId} is ${r.status}, not at MDM review`);
+        clockAt(310); // now 14:10
+        as("priya");
+        route = `/mdm?id=${encodeURIComponent(reqId)}`;
+        break;
+      }
+
+      case "pulse": {
+        as("weijie");
+        break;
+      }
     }
+  } finally {
+    Date.now = realNow;
   }
 
   nudgeClock(previousOffsetMs);

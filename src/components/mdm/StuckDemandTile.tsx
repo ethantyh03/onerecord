@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { AlertTriangle } from "lucide-react";
 import { useSandbox } from "@/lib/store";
 import { useStuckDemand } from "@/lib/selectors";
-import { formatSgd, KpiTile, SapCode, SyntheticBadge } from "@/components/common";
+import { formatSgd, KpiTile, SapCode } from "@/components/common";
 import { cn } from "@/lib/utils";
 
 /**
@@ -58,6 +58,19 @@ function useCountDown(target: number): { shown: number; dropping: boolean } {
   return { shown, dropping };
 }
 
+/** Same red "Live" tag the Home and Pulse stuck-demand tiles carry. */
+function LiveBadge() {
+  return (
+    <span className="inline-flex h-5 items-center gap-1.5 rounded-full border border-stuck/30 bg-stuck-soft px-2 text-[0.6875rem] font-medium text-stuck-ink">
+      <span className="relative flex size-1.5">
+        <span className="absolute inline-flex size-full animate-ping rounded-full bg-stuck opacity-60 motion-reduce:hidden" />
+        <span className="relative inline-flex size-1.5 rounded-full bg-stuck" />
+      </span>
+      Live
+    </span>
+  );
+}
+
 /** Live stuck-demand tile: customer orders blocked by missing master data. Counts down when MDM releases them. */
 export function StuckDemandTile({ className }: { className?: string }) {
   const stuck = useStuckDemand();
@@ -74,7 +87,7 @@ export function StuckDemandTile({ className }: { className?: string }) {
       tone="stuck"
       icon={AlertTriangle}
       label="Stuck demand"
-      badge={<SyntheticBadge label="Synthetic, illustrative" />}
+      badge={<LiveBadge />}
       value={
         <span className="flex items-baseline gap-3">
           <span
@@ -99,7 +112,7 @@ export function StuckDemandTile({ className }: { className?: string }) {
       }
       caption={
         <>
-          {stuck.count} purchase request{stuck.count === 1 ? "" : "s"} can&apos;t become sales orders until a customer or item
+          {stuck.count} customer purchase request{stuck.count === 1 ? "" : "s"} (PRs) can&apos;t become orders until a customer or item
           code exists in SAP B1.
         </>
       }

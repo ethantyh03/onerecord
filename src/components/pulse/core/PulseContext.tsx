@@ -5,7 +5,7 @@
  * Contract between pulse-core (owns the page) and pulse-analytics (owns analytics panels).
  * Do not change the shape without the lead.
  */
-import { createContext, useContext, useMemo, useState, type ReactNode } from "react";
+import { createContext, useContext, useLayoutEffect, useMemo, useState, type ReactNode } from "react";
 import type { CountryCode, ProductGroup } from "@/lib/types";
 
 export type PulseView = "merged" | "raw"; // merged = golden IDs (default)
@@ -30,6 +30,15 @@ export function PulseProvider({ children }: { children: ReactNode }) {
   const [measure, setMeasure] = useState<PulseMeasure>("sgd");
   const [country, setCountry] = useState<CountryCode>("SG");
   const [product, setProduct] = useState<ProductGroup>("A");
+  // `?view=raw` (used by the /demo pulse scene) opens on the raw SAP records. Read once, before
+  // first paint, so the page never flashes the merged view. Server render stays "merged".
+  useLayoutEffect(() => {
+    try {
+      if (new URLSearchParams(window.location.search).get("view") === "raw") setView("raw");
+    } catch {
+      /* ignore */
+    }
+  }, []);
   const value = useMemo(
     () => ({ view, setView, measure, setMeasure, country, setCountry, product, setProduct }),
     [view, measure, country, product],

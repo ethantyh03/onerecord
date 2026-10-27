@@ -1,13 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight, Check, Database } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { SapCode } from "@/components/common/sap-code";
 import { cn } from "@/lib/utils";
 import { useStartAs } from "./use-start-as";
 
-/** Three entities each keyed the same hospital their own way. OneRecord resolves them to one. */
+/**
+ * Illustrative: three requestors (one per entity) type the same hospital their own way.
+ * Each request is caught at intake against the one master record, so no copy is created.
+ * The master record itself belongs to SPD (seed: C-SG-00017, entity SPD).
+ */
 const SPELLINGS = [
   { entity: "SPD", typed: "Natl Univ Hosp" },
   { entity: "QTS", typed: "National University Hosp." },
@@ -18,7 +22,7 @@ function GoldenRecord() {
   return (
     <figure className="relative rounded-2xl border bg-card p-4 shadow-float">
       <figcaption className="text-[0.8125rem] font-medium text-muted-foreground">
-        Three entities, three spellings of one hospital
+        Three requests, three spellings, one record
       </figcaption>
 
       <ul className="mt-3 space-y-1.5">
@@ -27,13 +31,15 @@ function GoldenRecord() {
             key={s.entity}
             className="flex items-center gap-3 rounded-lg border border-dashed border-border-strong/80 bg-muted/45 px-3 py-1.5"
           >
-            <span className="w-9 shrink-0 text-xs font-semibold text-muted-foreground">{s.entity}</span>
-            <span className="min-w-0 flex-1 truncate text-sm text-secondary-foreground line-through decoration-stuck/55 decoration-[1.5px]">
+            <span className="w-9 shrink-0 text-xs font-semibold text-muted-foreground" title={`Typed by a ${s.entity} requestor`}>
+              {s.entity}
+            </span>
+            <span className="min-w-0 flex-1 truncate text-sm text-muted-foreground line-through decoration-muted-foreground/45 decoration-[1.5px]">
               {s.typed}
             </span>
             <span className="inline-flex shrink-0 items-center gap-1 text-xs font-medium text-ok-ink">
               <Check aria-hidden className="size-3.5" strokeWidth={2.5} />
-              Matched
+              Caught at intake
             </span>
           </li>
         ))}
@@ -55,8 +61,8 @@ function GoldenRecord() {
           <dd className="num font-mono text-[0.78rem] text-foreground">198500123K</dd>
           <dt className="text-muted-foreground">Address</dt>
           <dd className="text-foreground">5 Lower Kent Ridge Road, Singapore 119074</dd>
-          <dt className="text-muted-foreground">Used by</dt>
-          <dd className="text-foreground">SPD, QTS and QTG</dd>
+          <dt className="text-muted-foreground">Master record</dt>
+          <dd className="text-foreground">SPD · no duplicates created</dd>
         </dl>
       </div>
     </figure>
@@ -69,6 +75,15 @@ export function LandingHero() {
   return (
     <section className="grid items-center gap-x-12 gap-y-8 pt-1 pb-2 xl:grid-cols-[minmax(0,1fr)_360px] xl:pt-3">
       <div className="max-w-[50rem]">
+        <p
+          data-testid="home-platform-badge"
+          className="mb-4 inline-flex flex-wrap items-center gap-x-2 gap-y-1 rounded-full border border-primary/25 bg-primary-soft px-3 py-1 text-[0.8125rem] font-medium text-foreground"
+        >
+          <Database aria-hidden className="size-3.5 text-primary" />
+          <span>Runs on Microsoft 365</span>
+          <span aria-hidden className="text-muted-foreground">·</span>
+          <span>lands in SAP Business One</span>
+        </p>
         <h1 className="text-[clamp(2.25rem,3.2vw,3.5rem)] leading-[1.04] font-bold tracking-[-0.035em] text-foreground">
           <span className="block">Messy master data hides money.</span>
           <span className="mt-1 block">One hospital, one record.</span>

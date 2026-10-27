@@ -41,7 +41,9 @@ function Head({ rateLabel }: { rateLabel: string }) {
   return (
     <thead className="bg-muted/50 text-xs text-muted-foreground">
       <tr className="border-b">
-        <th className="px-3 py-2 text-left font-medium">Customer (golden ID)</th>
+        <th className="px-3 py-2 text-left font-medium" title="Golden ID: one ID per real hospital, however many SAP records it has">
+          Customer (one ID per real hospital)
+        </th>
         <th className="px-3 py-2 text-left font-medium">Country</th>
         <th className="px-3 py-2 text-left font-medium">Product</th>
         <th className="px-3 py-2 text-left font-medium">Why it is flagged</th>
@@ -74,7 +76,7 @@ export function SignalsTables() {
     <PanelFrame
       testId="signals-tables"
       title="Customers to act on"
-      subtitle="Computed on merged customers (golden IDs), so a hospital that buys through several entities is judged as one customer."
+      subtitle="Computed on merged customers (one ID per real hospital), so a hospital that buys through several entities is judged as one customer. Hover a reason to read it in full."
       actions={
         <>
           <Segmented<Tab>
@@ -120,7 +122,9 @@ export function SignalsTables() {
                 <tr key={`${r.goldenId}-${r.product}`} className="border-b last:border-b-0">
                   <IdCells row={r} highlight={r.country === country} />
                   <td className="max-w-[46ch] px-3 py-2.5 align-top">
-                    <div className="leading-snug">{r.reason}</div>
+                    <div className="line-clamp-2 leading-snug" title={r.reason}>
+                      {r.reason}
+                    </div>
                     <div className="mt-0.5 text-xs text-muted-foreground">
                       Last 6 months {formatSgd(r.trailing6mSgd, { compact: true })} vs {formatSgd(r.prior6mSgd, { compact: true })} ·{" "}
                       {r.daysSinceLastPo} days since last order (usual {r.medianReorderDays})
@@ -134,7 +138,9 @@ export function SignalsTables() {
                 <tr key={`${r.goldenId}-${r.product}`} className="border-b last:border-b-0">
                   <IdCells row={r} highlight={r.country === country} />
                   <td className="max-w-[46ch] px-3 py-2.5 align-top">
-                    <div className="leading-snug">{r.reason}</div>
+                    <div className="line-clamp-2 leading-snug" title={r.reason}>
+                      {r.reason}
+                    </div>
                     <div className="mt-0.5 text-xs text-muted-foreground">
                       Peer median {formatSgd(r.peerMedianSgd, { compact: true })} a year
                       {r.installedBase ? " · our instrument installed" : ""}

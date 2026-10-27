@@ -39,7 +39,7 @@ Deadline: **12:00 SGT Wed 28 Oct 2026**. The user is asleep until ~07:30 and has
 | 03:02 | DS DONE + committed (bf0f8f2). Headlines: S$53.4M +4.0% YoY; forecast off 11 → 9 per 100 (A+B, illustrative; gain seasonal); Bukit Damai MY #2 −32% once merged; matcher held-out P 0.929 / R 0.867; payback 5.9 mo; stress test passes (no-signal −0.6 pts) |
 | 03:06 | Real-data build green; golden path 24/24. Server on :3100 (background). Wave 3 review/fix launched (wf_c60c0da1-e11) |
 
-| ~03:10 | USAGE LIMIT REACHED. Wave 3 (wf_c60c0da1-e11) stopped during review, before any fixer ran. The :3100 server also exited |
+| ~03:10 | USAGE LIMIT REACHED. Wave 3 (wf_c60c0da1-e11) stopped mid-Fix phase: the working tree has UNCOMMITTED partial fixer edits (README, approvals page, e2e, business_case.py, …). On resume, run tsc + vitest first and keep or repair them. The :3100 server also exited |
 
 ## RESUME AT 05:27 (after the usage reset)
 1. cd C:/Users/ethan/dev/onerecord && git status (should be clean apart from reviewer screenshots in test-results/)

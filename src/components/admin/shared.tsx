@@ -135,16 +135,17 @@ export function NativeSelect({
   );
 }
 
-/** Options for a person picker: role holders first, then everyone else. */
-export function PersonOptions({ people, role }: { people: Person[]; role: RoleId }) {
+/** Options for a person picker: role holders first, then everyone else. `nameOnly` drops the job title (show it beside the select instead). */
+export function PersonOptions({ people, role, nameOnly = false }: { people: Person[]; role: RoleId; nameOnly?: boolean }) {
   const { holders, others } = peopleForRole(people, role);
+  const text = (p: Person) => (nameOnly ? p.name : `${p.name} · ${p.title}`);
   return (
     <>
       {holders.length ? (
         <optgroup label={`${roleLabel(role)}s`}>
           {holders.map((p) => (
             <option key={p.id} value={p.id}>
-              {p.name} · {p.title}
+              {text(p)}
             </option>
           ))}
         </optgroup>
@@ -152,7 +153,7 @@ export function PersonOptions({ people, role }: { people: Person[]; role: RoleId
       <optgroup label="Everyone else">
         {others.map((p) => (
           <option key={p.id} value={p.id}>
-            {p.name} · {p.title}
+            {text(p)}
           </option>
         ))}
       </optgroup>

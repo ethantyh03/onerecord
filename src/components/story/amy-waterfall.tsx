@@ -35,13 +35,13 @@ export function AmyWaterfall() {
   let running = t.beforeDays;
   bars.push({
     id: "start",
-    label: "Amy's request today",
-    short: "Today",
+    label: "Amy's request today (case brief, Appendix C)",
+    short: "Amy today",
     low: 0,
     high: t.beforeDays,
     kind: "total",
     value: `${t.beforeDays} days`,
-    tip: "App C: Amy's new item code took 18 calendar days, a bounced request and three approvers one at a time.",
+    tip: "Case brief, Appendix C: Amy's new item code took 18 calendar days, a bounced request and three approvers one at a time.",
   });
   for (const s of AMY_WATERFALL) {
     const saved = s.beforeDays - s.afterDays;
@@ -59,8 +59,8 @@ export function AmyWaterfall() {
   }
   bars.push({
     id: "end",
-    label: "With OneRecord",
-    short: "With OneRecord",
+    label: "Amy with OneRecord",
+    short: "Amy with OneRecord",
     low: 0,
     high: t.afterDays,
     kind: "total",
@@ -78,10 +78,10 @@ export function AmyWaterfall() {
             <p id="amy-waterfall-title" className="font-semibold text-foreground">
               Where Amy&apos;s 18 days go
             </p>
-            <p className="text-sm text-muted-foreground">Calendar days, our breakdown of App C (illustrative)</p>
+            <p className="text-sm text-muted-foreground">Calendar days, our breakdown of the case brief, Appendix C (illustrative)</p>
           </div>
           <div className="flex flex-wrap gap-1.5">
-            <NoteChip>Scenario from case brief, App C</NoteChip>
+            <NoteChip>Scenario from case brief, Appendix C</NoteChip>
           </div>
         </figcaption>
 
@@ -156,6 +156,10 @@ export function AmyWaterfall() {
             ))}
           </div>
         </div>
+        <p className="mt-4 border-t pt-3 text-xs text-muted-foreground">
+          The pilot KPI is the median: ≤4 business days (≈6 calendar days) across all requests. Amy&apos;s path comes in shorter because her approvals
+          run in parallel.
+        </p>
       </figure>
 
       <div className="overflow-hidden rounded-xl border bg-card shadow-raised">

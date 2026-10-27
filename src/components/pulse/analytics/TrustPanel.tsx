@@ -15,6 +15,7 @@ import { Check, X } from "lucide-react";
 import { cleanXMethod, matcherEval, stress, triageEval } from "@/data/contract";
 import type { MessageKind } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { MATCHER_CAVEAT } from "./caveats";
 import { COUNTRY_NAME, PanelFrame, PlainLine, TipBox, TipRow, VIZ, per100, signedPts } from "./shared";
 
 const KIND_LABEL: Record<MessageKind, string> = {
@@ -24,6 +25,13 @@ const KIND_LABEL: Record<MessageKind, string> = {
   followup: "Follow-up",
   mdm: "MDM setup",
 };
+
+/** One name for our model across the page: "Seasonal model (ours)", ETS only in tooltips. */
+function plainModel(s: string): string {
+  return s.replace(/\b(?:[Dd]amped |[Ss]easonal )?(?:Holt-Winters )?ETS\b/g, (_m: string, offset: number) =>
+    offset === 0 ? "Seasonal model" : "seasonal model",
+  );
+}
 
 function SubHead({ n, title, children }: { n: string; title: string; children?: ReactNode }) {
   return (
@@ -68,8 +76,9 @@ function MatcherSection() {
           <BigStat value={<span className="num">{Math.round(hm.precision * 100)} of 100</span>} label="Precision" caption={`${m.plain.precision}.`} />
           <BigStat value={<span className="num">{Math.round(hm.recall * 100)} of 100</span>} label="Recall" caption={`${m.plain.recall}.`} />
           <p className="text-xs text-muted-foreground">
-            F1 {hm.f1.toFixed(2)} · {hm.tp} found, {hm.fp} false alarms, {hm.fn} missed, out of {hm.pairsScored.toLocaleString("en-SG")}{" "}
-            candidate pairs ({hm.truePairs} real duplicates). A perfect score would be a warning sign; we expect 0.80–0.97.
+            Balance of the two (F1) {hm.f1.toFixed(2)} · {hm.tp} found, {hm.fp} false alarm{hm.fp === 1 ? "" : "s"}, {hm.fn}{" "}
+            missed, out of {hm.pairsScored.toLocaleString("en-SG")} candidate pairs ({hm.truePairs} real duplicates). A perfect
+            score would be a warning sign; we expect 0.80–0.97.
           </p>
         </div>
 
@@ -92,12 +101,22 @@ function MatcherSection() {
                 <YAxis
                   dataKey="precision"
                   type="number"
-                  domain={[0.6, 1]}
+                  domain={[0, 1]}
+                  ticks={[0, 0.25, 0.5, 0.75, 1]}
                   tickFormatter={(v: number) => `${Math.round(v * 100)}`}
                   tick={{ fontSize: 11, fill: VIZ.muted }}
                   tickLine={false}
                   axisLine={false}
-                  width={34}
+                  width={44}
+                  label={{
+                    value: "Warnings that are real (per 100)",
+                    angle: -90,
+                    position: "insideLeft",
+                    offset: 10,
+                    dy: 70,
+                    fontSize: 11,
+                    fill: VIZ.muted,
+                  }}
                 />
                 <Line
                   dataKey="precision"
@@ -113,7 +132,7 @@ function MatcherSection() {
                   fill={VIZ.surface}
                   stroke={VIZ.ink}
                   strokeWidth={2}
-                  label={{ value: `Chosen: ${m.threshold.toFixed(2)}`, position: "left", fontSize: 11, fill: VIZ.ink }}
+                  label={{ value: `Chosen: ${m.threshold}`, position: "left", fontSize: 11, fill: VIZ.ink }}
                 />
                 <Tooltip
                   cursor={false}
@@ -150,6 +169,9 @@ function MatcherSection() {
         </div>
 
         <div className="space-y-2.5">
+          <p className="rounded-lg border border-warn/50 bg-warn-soft px-3 py-2.5 text-[0.8125rem] leading-snug text-warn-ink" data-testid="trust-matcher-caveat">
+            {MATCHER_CAVEAT}
+          </p>
           <div className="text-xs font-medium text-muted-foreground">Where it goes wrong, and why</div>
           {m.examples.slice(0, 3).map((e, i) => (
             <div key={i} className="rounded-lg border px-3 py-2.5">
@@ -219,7 +241,10 @@ function StressSection() {
           </tbody>
         </table>
       </div>
-      <p className="mt-2 text-xs text-muted-foreground">Errors are units off per 100 ordered. {stress.scope}.</p>
+      <p className="mt-2 text-xs text-muted-foreground">
+        Errors are units off per 100 ordered: Products A and B, all five countries, merged customers, the same six forecast
+        dates as the scorecard.
+      </p>
       <PlainLine className="mt-2 text-sm">{stress.verdict}</PlainLine>
     </div>
   );
@@ -253,8 +278,8 @@ function CleanXMethodSection() {
       </SubHead>
       <div className="grid grid-cols-[auto_1fr_1fr] gap-2 text-sm">
         <div />
-        <div className="px-1 text-xs font-medium text-muted-foreground">{c.colLabels.rolling}</div>
-        <div className="px-1 text-xs font-medium text-muted-foreground">{c.colLabels.ours}</div>
+        <div className="px-1 text-xs font-medium text-muted-foreground">{plainModel(c.colLabels.rolling)}</div>
+        <div className="px-1 text-xs font-medium text-muted-foreground">{plainModel(c.colLabels.ours)}</div>
         <div className="flex max-w-36 items-center pr-1 text-xs font-medium text-muted-foreground">{c.rowLabels.raw}</div>
         {cell("raw", "rolling")}
         {cell("raw", "ours")}
@@ -273,7 +298,7 @@ function CleanXMethodSection() {
           Total: <span className="num font-semibold">{c.totalImprovementPts.toFixed(1)} pts</span>
         </span>
       </div>
-      <PlainLine className="mt-2 text-sm">{c.sentence}</PlainLine>
+      <PlainLine className="mt-2 text-sm">{plainModel(c.sentence)}</PlainLine>
     </div>
   );
 }
@@ -284,7 +309,7 @@ function TriageSection() {
   const correct = Math.round(t.accuracy * 100);
   return (
     <div>
-      <SubHead n="4" title="Inbound sorting rules, tested honestly">
+      <SubHead n="4" title="Inbox triage rules, tested honestly">
         Tested on {t.testSetSize} messages written independently of the rules and never used to tune them.
       </SubHead>
       <p className="-mt-1.5 mb-3 max-w-[100ch] text-xs text-muted-foreground">{t.testSet}</p>

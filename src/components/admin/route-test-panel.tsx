@@ -11,6 +11,7 @@ import { PersonAvatar, formatSgtDay } from "@/components/common";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { Chip, FieldLabel, NativeSelect, roleLabel } from "./shared";
+import { pendingEntityName } from "./bu-template";
 
 export interface RouteTestState {
   domainId: string;
@@ -50,7 +51,7 @@ export function RouteTestPanel({ state, onChange }: { state: RouteTestState; onC
     const known = new Set(configured.map((b) => b.id));
     const missing = [...new Set(config.people.map((p) => p.entity))]
       .filter((e) => !known.has(e))
-      .map((e) => ({ id: e, label: `${e} · not configured yet`, configured: false }));
+      .map((e) => ({ id: e, label: `${pendingEntityName(e)} · not configured yet`, configured: false }));
     return [...configured, ...missing];
   }, [config.businessUnits, config.people]);
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { History, Info } from "lucide-react";
@@ -12,7 +12,7 @@ import { activateNext, buildRoute, expectedCompletion } from "@/lib/engine/routi
 import { isEmptyValue, isFieldRequired, isFieldVisible } from "@/lib/engine/conditions";
 import { entitiesOf } from "@/lib/seed";
 import { extractForIntake, PASTE_EXAMPLES, type IntakeExtraction } from "@/lib/extract-cache";
-import { PageHeader, PersonAvatar, SapCode } from "@/components/common";
+import { PageHeader, PersonAvatar } from "@/components/common";
 import { cn } from "@/lib/utils";
 import { TypePicker } from "./type-picker";
 import { PastePanel } from "./paste-panel";
@@ -23,6 +23,7 @@ import { SuccessState } from "./success-state";
 import {
   completeness,
   defaultData,
+  DUP_DECISION_THRESHOLD,
   dupCandidates,
   dupInputFor,
   entityOptions,
@@ -39,6 +40,28 @@ const CATEGORY_GROUP: Record<string, string> = {
   Instrument: "C",
   "Spare part": "C",
 };
+
+/** Height kept clear under the sticky top bar when scrolling something into view. */
+const TOP_CLEARANCE = 80;
+
+/**
+ * Scroll down just enough to show the whole of `el`, without pushing its top (or the `keep` element, e.g. the
+ * name field being typed in) under the top bar. Never scrolls up. A DOM side effect only; no React state.
+ */
+function revealBelow(el: HTMLElement | null, keep?: HTMLElement | null) {
+  if (!el) return;
+  const r = el.getBoundingClientRect();
+  const overflow = r.bottom + 16 - window.innerHeight;
+  if (overflow <= 0) return;
+  let delta = Math.min(overflow, r.top - TOP_CLEARANCE);
+  if (keep) {
+    const k = keep.getBoundingClientRect();
+    // Keep the field (and its label) on screen when that still leaves the card's header and top match visible.
+    const keepLimit = k.top - TOP_CLEARANCE - 36;
+    if (keepLimit > 0 && r.top - keepLimit + 260 <= window.innerHeight) delta = Math.min(delta, keepLimit);
+  }
+  if (delta > 0) window.scrollBy({ top: delta, behavior: "smooth" });
+}
 
 function sampleFileName(data: Record<string, FieldValue>): string {
   const base = String(data.itemName ?? "product")
@@ -107,6 +130,12 @@ function IntakeForm({ domainParam, draftParam }: { domainParam: string | null; d
   const [pasteResult, setPasteResult] = useState<IntakeExtraction | null>(null);
   const [submittedId, setSubmittedId] = useState<string | null>(null);
   const [submitError, setSubmitError] = useState<string | undefined>();
+  // The type is already known (?domain= or a resumed draft): show it as one compact row, not five cards.
+  const [pickerOpen, setPickerOpen] = useState(!init.domainId);
+  // A resumed draft is already filled in, so the paste box starts folded away.
+  const [pasteCollapsed, setPasteCollapsed] = useState(!!init.draftId);
+  const pasteRef = useRef<HTMLDivElement>(null);
+  const dupRef = useRef<HTMLDivElement>(null);
 
   const domain: DomainConfig | undefined = config.domains.find((d) => d.id === domainId && d.enabled);
   const entOpts = useMemo(() => entityOptions(config.businessUnits, person), [config.businessUnits, person]);
@@ -127,6 +156,17 @@ function IntakeForm({ domainParam, draftParam }: { domainParam: string | null; d
     [debouncedKey, candidates],
   );
   const checking = dupKey !== debouncedKey;
+
+  // When a likely duplicate appears (including on a resumed draft), bring the amber card on screen.
+  const strongCode = matches[0] && matches[0].score >= DUP_DECISION_THRESHOLD ? matches[0].record.cardCode : null;
+  useEffect(() => {
+    if (!strongCode) return;
+    const t = window.setTimeout(() => {
+      const nameEl = document.getElementById("fld-customerName") ?? document.getElementById("fld-vendorName");
+      revealBelow(dupRef.current, nameEl);
+    }, 350);
+    return () => window.clearTimeout(t);
+  }, [strongCode]);
 
   // Extend: look the existing record up by code (or suggest by name).
   const existingCode = String(data.existingCode ?? "").trim().toUpperCase();
@@ -212,6 +252,7 @@ function IntakeForm({ domainParam, draftParam }: { domainParam: string | null; d
   // ---- handlers ----------------------------------------------------------------------------------
   const resetForDomain = (d: DomainConfig, values: Record<string, FieldValue> = {}) => {
     setDomainId(d.id);
+    setPickerOpen(false);
     setData({ ...defaultData(d, person), ...values });
     setAiKeys([]);
     setDecision(undefined);
@@ -226,7 +267,10 @@ function IntakeForm({ domainParam, draftParam }: { domainParam: string | null; d
   };
 
   const selectDomain = (id: string) => {
-    if (id === domainId) return;
+    if (id === domainId) {
+      setPickerOpen(false);
+      return;
+    }
     const d = config.domains.find((x) => x.id === id && x.enabled);
     if (d) resetForDomain(d);
   };
@@ -261,8 +305,16 @@ function IntakeForm({ domainParam, draftParam }: { domainParam: string | null; d
     setAiKeys(x.filledKeys);
     setPasteText(x.redactedText);
     setPasteResult(x);
+    setPasteCollapsed(true);
     setFillEpoch((n) => n + 1);
     setPulseMissing(true);
+    // Fold the paste box to its result and bring the filled fields up under it.
+    window.setTimeout(() => {
+      const el = pasteRef.current;
+      if (!el) return;
+      const top = el.getBoundingClientRect().top + window.scrollY - TOP_CLEARANCE - 8;
+      window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+    }, 60);
   };
 
   const extendFrom = (m: DuplicateMatch) => {
@@ -285,7 +337,7 @@ function IntakeForm({ domainParam, draftParam }: { domainParam: string | null; d
     resetForDomain(ext, carry);
     setDecision({ matchCode: m.record.cardCode, matchName: m.record.cardName, score: m.score, reasons: [...m.reasons], choice: "extend" });
     setPasteResult(null);
-    toast.success(`Switched to Extend Existing Record`, { description: `${m.record.cardName} (${m.record.cardCode}) → ${myEntity}` });
+    toast.success(`Switched to ${ext.label}`, { description: `${m.record.cardName} (${m.record.cardCode}) → ${myEntity}` });
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -346,6 +398,8 @@ function IntakeForm({ domainParam, draftParam }: { domainParam: string | null; d
     setPulseMissing(false);
     setPasteText("");
     setPasteResult(null);
+    setPasteCollapsed(false);
+    setPickerOpen(true);
     setNotice(null);
     setSubmitError(undefined);
     router.replace("/requests/new", { scroll: true });
@@ -358,9 +412,20 @@ function IntakeForm({ domainParam, draftParam }: { domainParam: string | null; d
       title="New request"
       subtitle="One form for every master-data request. It checks for duplicates, shows who approves, and hands a clean record to SAP B1."
       meta={
-        <span className="inline-flex h-5 items-center rounded-full border border-border bg-card px-2 text-[0.6875rem] text-muted-foreground">
-          Production: Power Apps form in Microsoft 365
-        </span>
+        <>
+          <span className="inline-flex h-5 items-center rounded-full border border-border bg-card px-2 text-[0.6875rem] text-muted-foreground">
+            Production: Power Apps form in Microsoft 365
+          </span>
+          {notice ? (
+            <span
+              data-testid="intake-notice"
+              className="inline-flex min-h-5 items-center gap-1.5 rounded-full border border-border bg-card px-2 text-[0.6875rem] text-muted-foreground"
+            >
+              <History aria-hidden className="size-3" />
+              {notice}
+            </span>
+          ) : null}
+        </>
       }
       actions={
         <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card py-1 pr-3 pl-1 text-[0.8125rem]">
@@ -425,32 +490,36 @@ function IntakeForm({ domainParam, draftParam }: { domainParam: string | null; d
   return (
     <div className="pb-10">
       {header}
-      {notice ? (
-        <div className="mb-4 flex items-center gap-2 rounded-lg border border-border bg-card px-3.5 py-2 text-[0.8125rem] text-muted-foreground">
-          <History aria-hidden className="size-4" />
-          {notice}
-          {draftId ? <SapCode code={draftId} /> : null}
-        </div>
-      ) : null}
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(340px,410px)]">
         <div className="min-w-0 space-y-5">
           <section aria-labelledby="type-title">
-            <h2 id="type-title" className="mb-2.5 text-base font-semibold">
+            <h2 id="type-title" className={cn("mb-2.5 text-base font-semibold", !pickerOpen && domain && "sr-only")}>
               What do you need?
             </h2>
-            <TypePicker domains={config.domains} selectedId={domainId} onSelect={selectDomain} />
+            <TypePicker
+              domains={config.domains}
+              selectedId={domainId}
+              onSelect={selectDomain}
+              collapsed={!pickerOpen && !!domain}
+              onExpand={() => setPickerOpen(true)}
+            />
           </section>
 
-          <PastePanel
-            text={pasteText}
-            onTextChange={setPasteText}
-            onExample={(k) => setPasteText(PASTE_EXAMPLES[k].text)}
-            onApply={applyPaste}
-            result={pasteResult}
-            resultDomainLabel={pasteResult ? config.domains.find((d) => d.id === pasteResult.domainId)?.label : undefined}
-            missingLabels={pasteResult && pasteResult.domainId === domainId ? comp.missing.map((f) => f.label) : []}
-          />
+          <div ref={pasteRef}>
+            <PastePanel
+              text={pasteText}
+              onTextChange={setPasteText}
+              onExample={(k) => setPasteText(PASTE_EXAMPLES[k].text)}
+              onApply={applyPaste}
+              result={pasteResult}
+              resultDomainLabel={pasteResult ? config.domains.find((d) => d.id === pasteResult.domainId)?.label : undefined}
+              missingLabels={pasteResult && pasteResult.domainId === domainId ? comp.missing.map((f) => f.label) : []}
+              domainId={domainId}
+              collapsed={pasteCollapsed}
+              onExpand={() => setPasteCollapsed(false)}
+            />
+          </div>
 
           {!domain ? (
             <div className="flex items-center gap-2.5 rounded-xl border border-dashed border-border-strong bg-card/60 px-5 py-6 text-sm text-muted-foreground">
@@ -489,7 +558,11 @@ function IntakeForm({ domainParam, draftParam }: { domainParam: string | null; d
                     })}
                   </div>
                 </section>
-                {i === 0 && dupBlock}
+                {i === 0 && dupBlock ? (
+                  <div ref={dupRef} className="scroll-mt-24">
+                    {dupBlock}
+                  </div>
+                ) : null}
               </div>
             ))
           )}
