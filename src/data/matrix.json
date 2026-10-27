@@ -1,5 +1,5 @@
 {
- "isMock": true,
+ "isMock": false,
  "window": {
   "label": "Oct 2025 – Sep 2026",
   "start": "2025-10",
@@ -39,1663 +39,1663 @@
   "2026-08",
   "2026-09"
  ],
- "growthFormula": "Growth = PO value (Oct 2025–Sep 2026) ÷ PO value (Oct 2024–Sep 2025) − 1, per country × product, on de-duplicated customers (golden IDs). SGD across products; units within a product.",
+ "growthFormula": "Growth = PO value (Oct 2025–Sep 2026) ÷ PO value (Oct 2024–Sep 2025) − 1, per country × product, on de-duplicated customers (golden IDs). PO value in SGD for cross-product totals; PO units within a product.",
  "momentumFormula": "Momentum = PO value (Jul–Sep 2026) ÷ PO value (Jul–Sep 2025) − 1",
- "measureNote": "PO value in SGD (fixed illustrative FX) for cross-product totals; PO units within a product. Confirmed customer POs only.",
+ "measureNote": "Confirmed customer POs only (PRs, enquiries, follow-ups and MDM requests are not volume). PO value in SGD at fixed illustrative FX for cross-product totals; PO units within a product. We compare the same 12 months a year apart, never half-years, so dengue season, fiscal-year flushes and CNY/Tet do not show up as growth.",
  "views": {
   "raw": {
    "cells": [
     {
      "country": "SG",
      "product": "A",
-     "sgd12m": 11094843,
-     "sgdPrior12m": 10653735,
-     "yoy": 0.0414,
-     "units12m": 59972,
-     "unitsPrior12m": 57588,
-     "unitsYoy": 0.0414,
-     "sgd3m": 3254205,
-     "sgdPrior3m": 2985235,
-     "momentum": 0.0901,
-     "momentumUnits": 0.0901,
+     "sgd12m": 10407037,
+     "sgdPrior12m": 9584237,
+     "yoy": 0.0858,
+     "units12m": 76921,
+     "unitsPrior12m": 68853,
+     "unitsYoy": 0.1172,
+     "sgd3m": 2951945,
+     "sgdPrior3m": 2529356,
+     "momentum": 0.1671,
+     "momentumUnits": 0.1964,
      "series": [
       {
        "month": "2024-10",
-       "sgd": 1426423,
-       "units": 7710
+       "sgd": 900766,
+       "units": 6490
       },
       {
        "month": "2024-11",
-       "sgd": 787958,
-       "units": 4259
+       "sgd": 798480,
+       "units": 5876
       },
       {
        "month": "2024-12",
-       "sgd": 751660,
-       "units": 4063
+       "sgd": 657693,
+       "units": 4668
       },
       {
        "month": "2025-01",
-       "sgd": 676416,
-       "units": 3656
+       "sgd": 798271,
+       "units": 5780
       },
       {
        "month": "2025-02",
-       "sgd": 629680,
-       "units": 3404
+       "sgd": 714486,
+       "units": 5064
       },
       {
        "month": "2025-03",
-       "sgd": 673941,
-       "units": 3643
+       "sgd": 733560,
+       "units": 5385
       },
       {
        "month": "2025-04",
-       "sgd": 783159,
-       "units": 4233
+       "sgd": 781455,
+       "units": 5683
       },
       {
        "month": "2025-05",
-       "sgd": 973720,
-       "units": 5263
+       "sgd": 803057,
+       "units": 5591
       },
       {
        "month": "2025-06",
-       "sgd": 965542,
-       "units": 5219
+       "sgd": 867112,
+       "units": 6064
       },
       {
        "month": "2025-07",
-       "sgd": 928935,
-       "units": 5021
+       "sgd": 884343,
+       "units": 6501
       },
       {
        "month": "2025-08",
-       "sgd": 1081200,
-       "units": 5844
+       "sgd": 846495,
+       "units": 6028
       },
       {
        "month": "2025-09",
-       "sgd": 975100,
-       "units": 5271
+       "sgd": 798518,
+       "units": 5723
       },
       {
        "month": "2025-10",
-       "sgd": 955825,
-       "units": 5167
+       "sgd": 776806,
+       "units": 5728
       },
       {
        "month": "2025-11",
-       "sgd": 723490,
-       "units": 3911
+       "sgd": 715972,
+       "units": 5126
       },
       {
        "month": "2025-12",
-       "sgd": 778078,
-       "units": 4206
+       "sgd": 665388,
+       "units": 4899
       },
       {
        "month": "2026-01",
-       "sgd": 853483,
-       "units": 4613
+       "sgd": 856357,
+       "units": 6136
       },
       {
        "month": "2026-02",
-       "sgd": 717776,
-       "units": 3880
+       "sgd": 765415,
+       "units": 5714
       },
       {
        "month": "2026-03",
-       "sgd": 857041,
-       "units": 4633
+       "sgd": 939129,
+       "units": 7124
       },
       {
        "month": "2026-04",
-       "sgd": 948592,
-       "units": 5128
+       "sgd": 849103,
+       "units": 6432
       },
       {
        "month": "2026-05",
-       "sgd": 1002228,
-       "units": 5417
+       "sgd": 949554,
+       "units": 6915
       },
       {
        "month": "2026-06",
-       "sgd": 1004124,
-       "units": 5428
+       "sgd": 937367,
+       "units": 7010
       },
       {
        "month": "2026-07",
-       "sgd": 992642,
-       "units": 5366
+       "sgd": 1087701,
+       "units": 8002
       },
       {
        "month": "2026-08",
-       "sgd": 1109020,
-       "units": 5995
+       "sgd": 852967,
+       "units": 6395
       },
       {
        "month": "2026-09",
-       "sgd": 1152543,
-       "units": 6230
+       "sgd": 1011277,
+       "units": 7440
       }
      ],
      "deltaVsRaw": 0,
-     "changedByCleaning": false
+     "changedByCleaning": true
     },
     {
      "country": "SG",
      "product": "B",
-     "sgd12m": 5236462,
-     "sgdPrior12m": 4974362,
-     "yoy": 0.0527,
-     "units12m": 124678,
-     "unitsPrior12m": 118437,
-     "unitsYoy": 0.0527,
-     "sgd3m": 1361284,
-     "sgdPrior3m": 1368237,
-     "momentum": -0.0051,
-     "momentumUnits": -0.0051,
+     "sgd12m": 4258314,
+     "sgdPrior12m": 3840834,
+     "yoy": 0.1087,
+     "units12m": 320666,
+     "unitsPrior12m": 286755,
+     "unitsYoy": 0.1183,
+     "sgd3m": 1160082,
+     "sgdPrior3m": 1037175,
+     "momentum": 0.1185,
+     "momentumUnits": 0.1212,
      "series": [
       {
        "month": "2024-10",
-       "sgd": 548499,
-       "units": 13059
+       "sgd": 324318,
+       "units": 23910
       },
       {
        "month": "2024-11",
-       "sgd": 375908,
-       "units": 8950
+       "sgd": 335658,
+       "units": 25435
       },
       {
        "month": "2024-12",
-       "sgd": 383787,
-       "units": 9138
+       "sgd": 216568,
+       "units": 16379
       },
       {
        "month": "2025-01",
-       "sgd": 336043,
-       "units": 8001
+       "sgd": 329226,
+       "units": 25222
       },
       {
        "month": "2025-02",
-       "sgd": 280187,
-       "units": 6671
+       "sgd": 297286,
+       "units": 21048
       },
       {
        "month": "2025-03",
-       "sgd": 479855,
-       "units": 11425
+       "sgd": 373598,
+       "units": 28485
       },
       {
        "month": "2025-04",
-       "sgd": 365746,
-       "units": 8708
+       "sgd": 295906,
+       "units": 22629
       },
       {
        "month": "2025-05",
-       "sgd": 411054,
-       "units": 9787
+       "sgd": 322286,
+       "units": 23918
       },
       {
        "month": "2025-06",
-       "sgd": 425046,
-       "units": 10120
+       "sgd": 308811,
+       "units": 22628
       },
       {
        "month": "2025-07",
-       "sgd": 488183,
-       "units": 11623
+       "sgd": 326812,
+       "units": 24813
       },
       {
        "month": "2025-08",
-       "sgd": 407161,
-       "units": 9694
+       "sgd": 347528,
+       "units": 25263
       },
       {
        "month": "2025-09",
-       "sgd": 472893,
-       "units": 11259
+       "sgd": 362835,
+       "units": 27025
       },
       {
        "month": "2025-10",
-       "sgd": 381050,
-       "units": 9073
+       "sgd": 330569,
+       "units": 25026
       },
       {
        "month": "2025-11",
-       "sgd": 378425,
-       "units": 9010
+       "sgd": 316595,
+       "units": 23430
       },
       {
        "month": "2025-12",
-       "sgd": 395195,
-       "units": 9409
+       "sgd": 271219,
+       "units": 20462
       },
       {
        "month": "2026-01",
-       "sgd": 377689,
-       "units": 8993
+       "sgd": 378838,
+       "units": 28028
       },
       {
        "month": "2026-02",
-       "sgd": 376321,
-       "units": 8960
+       "sgd": 279250,
+       "units": 21833
       },
       {
        "month": "2026-03",
-       "sgd": 581115,
-       "units": 13836
+       "sgd": 447093,
+       "units": 33337
       },
       {
        "month": "2026-04",
-       "sgd": 421391,
-       "units": 10033
+       "sgd": 339550,
+       "units": 26609
       },
       {
        "month": "2026-05",
-       "sgd": 456775,
-       "units": 10876
+       "sgd": 362236,
+       "units": 26572
       },
       {
        "month": "2026-06",
-       "sgd": 507218,
-       "units": 12077
+       "sgd": 372883,
+       "units": 28924
       },
       {
        "month": "2026-07",
-       "sgd": 475195,
-       "units": 11314
+       "sgd": 390218,
+       "units": 28901
       },
       {
        "month": "2026-08",
-       "sgd": 437696,
-       "units": 10421
+       "sgd": 382401,
+       "units": 28475
       },
       {
        "month": "2026-09",
-       "sgd": 448393,
-       "units": 10676
+       "sgd": 387463,
+       "units": 29069
       }
      ],
      "deltaVsRaw": 0,
-     "changedByCleaning": false
+     "changedByCleaning": true
     },
     {
      "country": "SG",
      "product": "C",
-     "sgd12m": 2976733,
-     "sgdPrior12m": 2584307,
-     "yoy": 0.1518,
-     "units12m": 83,
-     "unitsPrior12m": 72,
-     "unitsYoy": 0.1518,
-     "sgd3m": 781660,
-     "sgdPrior3m": 831382,
-     "momentum": -0.0598,
-     "momentumUnits": -0.0598,
+     "sgd12m": 3499873,
+     "sgdPrior12m": 3269717,
+     "yoy": 0.0704,
+     "units12m": 189,
+     "unitsPrior12m": 176,
+     "unitsYoy": 0.0739,
+     "sgd3m": 905125,
+     "sgdPrior3m": 1037413,
+     "momentum": -0.1275,
+     "momentumUnits": -0.0196,
      "series": [
       {
        "month": "2024-10",
-       "sgd": 87598,
-       "units": 2
-      },
-      {
-       "month": "2024-11",
-       "sgd": 235406,
-       "units": 7
-      },
-      {
-       "month": "2024-12",
-       "sgd": 157094,
-       "units": 4
-      },
-      {
-       "month": "2025-01",
-       "sgd": 159287,
-       "units": 4
-      },
-      {
-       "month": "2025-02",
-       "sgd": 134672,
-       "units": 4
-      },
-      {
-       "month": "2025-03",
-       "sgd": 304656,
-       "units": 8
-      },
-      {
-       "month": "2025-04",
-       "sgd": 292158,
-       "units": 8
-      },
-      {
-       "month": "2025-05",
-       "sgd": 241794,
-       "units": 7
-      },
-      {
-       "month": "2025-06",
-       "sgd": 140261,
-       "units": 4
-      },
-      {
-       "month": "2025-07",
-       "sgd": 202374,
-       "units": 6
-      },
-      {
-       "month": "2025-08",
-       "sgd": 219961,
-       "units": 6
-      },
-      {
-       "month": "2025-09",
-       "sgd": 409047,
-       "units": 11
-      },
-      {
-       "month": "2025-10",
-       "sgd": 108742,
-       "units": 3
-      },
-      {
-       "month": "2025-11",
-       "sgd": 219649,
-       "units": 6
-      },
-      {
-       "month": "2025-12",
-       "sgd": 295341,
-       "units": 8
-      },
-      {
-       "month": "2026-01",
-       "sgd": 388908,
-       "units": 11
-      },
-      {
-       "month": "2026-02",
-       "sgd": 164106,
-       "units": 5
-      },
-      {
-       "month": "2026-03",
-       "sgd": 432900,
-       "units": 12
-      },
-      {
-       "month": "2026-04",
-       "sgd": 271007,
-       "units": 8
-      },
-      {
-       "month": "2026-05",
-       "sgd": 81606,
-       "units": 2
-      },
-      {
-       "month": "2026-06",
-       "sgd": 232817,
-       "units": 6
-      },
-      {
-       "month": "2026-07",
-       "sgd": 486595,
-       "units": 14
-      },
-      {
-       "month": "2026-08",
-       "sgd": 245453,
-       "units": 7
-      },
-      {
-       "month": "2026-09",
-       "sgd": 49612,
-       "units": 1
-      }
-     ],
-     "deltaVsRaw": 0,
-     "changedByCleaning": false
-    },
-    {
-     "country": "MY",
-     "product": "A",
-     "sgd12m": 7979037,
-     "sgdPrior12m": 8059939,
-     "yoy": -0.01,
-     "units12m": 43130,
-     "unitsPrior12m": 43567,
-     "unitsYoy": -0.01,
-     "sgd3m": 1914760,
-     "sgdPrior3m": 1921432,
-     "momentum": -0.0035,
-     "momentumUnits": -0.0035,
-     "series": [
-      {
-       "month": "2024-10",
-       "sgd": 600191,
-       "units": 3244
-      },
-      {
-       "month": "2024-11",
-       "sgd": 893079,
-       "units": 4827
-      },
-      {
-       "month": "2024-12",
-       "sgd": 800025,
-       "units": 4324
-      },
-      {
-       "month": "2025-01",
-       "sgd": 638580,
-       "units": 3452
-      },
-      {
-       "month": "2025-02",
-       "sgd": 563450,
-       "units": 3046
-      },
-      {
-       "month": "2025-03",
-       "sgd": 673103,
-       "units": 3638
-      },
-      {
-       "month": "2025-04",
-       "sgd": 722416,
-       "units": 3905
-      },
-      {
-       "month": "2025-05",
-       "sgd": 580450,
-       "units": 3138
-      },
-      {
-       "month": "2025-06",
-       "sgd": 667215,
-       "units": 3607
-      },
-      {
-       "month": "2025-07",
-       "sgd": 583838,
-       "units": 3156
-      },
-      {
-       "month": "2025-08",
-       "sgd": 680544,
-       "units": 3679
-      },
-      {
-       "month": "2025-09",
-       "sgd": 657049,
-       "units": 3552
-      },
-      {
-       "month": "2025-10",
-       "sgd": 633481,
-       "units": 3424
-      },
-      {
-       "month": "2025-11",
-       "sgd": 749727,
-       "units": 4053
-      },
-      {
-       "month": "2025-12",
-       "sgd": 717364,
-       "units": 3878
-      },
-      {
-       "month": "2026-01",
-       "sgd": 772971,
-       "units": 4178
-      },
-      {
-       "month": "2026-02",
-       "sgd": 622467,
-       "units": 3365
-      },
-      {
-       "month": "2026-03",
-       "sgd": 681850,
-       "units": 3686
-      },
-      {
-       "month": "2026-04",
-       "sgd": 553639,
-       "units": 2993
-      },
-      {
-       "month": "2026-05",
-       "sgd": 629223,
-       "units": 3401
-      },
-      {
-       "month": "2026-06",
-       "sgd": 703557,
-       "units": 3803
-      },
-      {
-       "month": "2026-07",
-       "sgd": 636712,
-       "units": 3442
-      },
-      {
-       "month": "2026-08",
-       "sgd": 626705,
-       "units": 3388
-      },
-      {
-       "month": "2026-09",
-       "sgd": 651342,
-       "units": 3521
-      }
-     ],
-     "deltaVsRaw": 0,
-     "changedByCleaning": false
-    },
-    {
-     "country": "MY",
-     "product": "B",
-     "sgd12m": 3695126,
-     "sgdPrior12m": 3903824,
-     "yoy": -0.0535,
-     "units12m": 87979,
-     "unitsPrior12m": 92948,
-     "unitsYoy": -0.0535,
-     "sgd3m": 932294,
-     "sgdPrior3m": 999770,
-     "momentum": -0.0675,
-     "momentumUnits": -0.0675,
-     "series": [
-      {
-       "month": "2024-10",
-       "sgd": 291127,
-       "units": 6932
-      },
-      {
-       "month": "2024-11",
-       "sgd": 390170,
-       "units": 9290
-      },
-      {
-       "month": "2024-12",
-       "sgd": 415922,
-       "units": 9903
-      },
-      {
-       "month": "2025-01",
-       "sgd": 256721,
-       "units": 6112
-      },
-      {
-       "month": "2025-02",
-       "sgd": 295597,
-       "units": 7038
-      },
-      {
-       "month": "2025-03",
-       "sgd": 318115,
-       "units": 7574
-      },
-      {
-       "month": "2025-04",
-       "sgd": 309085,
-       "units": 7359
-      },
-      {
-       "month": "2025-05",
-       "sgd": 306654,
-       "units": 7301
-      },
-      {
-       "month": "2025-06",
-       "sgd": 320662,
-       "units": 7635
-      },
-      {
-       "month": "2025-07",
-       "sgd": 349077,
-       "units": 8311
-      },
-      {
-       "month": "2025-08",
-       "sgd": 317561,
-       "units": 7561
-      },
-      {
-       "month": "2025-09",
-       "sgd": 333132,
-       "units": 7932
-      },
-      {
-       "month": "2025-10",
-       "sgd": 266139,
-       "units": 6337
-      },
-      {
-       "month": "2025-11",
-       "sgd": 340165,
-       "units": 8099
-      },
-      {
-       "month": "2025-12",
-       "sgd": 416013,
-       "units": 9905
-      },
-      {
-       "month": "2026-01",
-       "sgd": 251133,
-       "units": 5979
-      },
-      {
-       "month": "2026-02",
-       "sgd": 263034,
-       "units": 6263
-      },
-      {
-       "month": "2026-03",
-       "sgd": 321729,
-       "units": 7660
-      },
-      {
-       "month": "2026-04",
-       "sgd": 325397,
-       "units": 7748
-      },
-      {
-       "month": "2026-05",
-       "sgd": 272330,
-       "units": 6484
-      },
-      {
-       "month": "2026-06",
-       "sgd": 306891,
-       "units": 7307
-      },
-      {
-       "month": "2026-07",
-       "sgd": 295716,
-       "units": 7041
-      },
-      {
-       "month": "2026-08",
-       "sgd": 301025,
-       "units": 7167
-      },
-      {
-       "month": "2026-09",
-       "sgd": 335553,
-       "units": 7989
-      }
-     ],
-     "deltaVsRaw": 0,
-     "changedByCleaning": false
-    },
-    {
-     "country": "MY",
-     "product": "C",
-     "sgd12m": 2819364,
-     "sgdPrior12m": 2849254,
-     "yoy": -0.0105,
-     "units12m": 78,
-     "unitsPrior12m": 79,
-     "unitsYoy": -0.0105,
-     "sgd3m": 788503,
-     "sgdPrior3m": 499029,
-     "momentum": 0.5801,
-     "momentumUnits": 0.5801,
-     "series": [
-      {
-       "month": "2024-10",
-       "sgd": 416500,
+       "sgd": 244378,
        "units": 12
       },
       {
        "month": "2024-11",
-       "sgd": 146507,
-       "units": 4
+       "sgd": 84037,
+       "units": 12
       },
       {
        "month": "2024-12",
-       "sgd": 130561,
-       "units": 4
+       "sgd": 357914,
+       "units": 19
       },
       {
        "month": "2025-01",
-       "sgd": 408740,
-       "units": 11
+       "sgd": 142388,
+       "units": 12
       },
       {
        "month": "2025-02",
-       "sgd": 72593,
-       "units": 2
+       "sgd": 111525,
+       "units": 11
       },
       {
        "month": "2025-03",
-       "sgd": 546282,
-       "units": 15
+       "sgd": 608851,
+       "units": 27
       },
       {
        "month": "2025-04",
-       "sgd": 131718,
-       "units": 4
-      },
-      {
-       "month": "2025-05",
-       "sgd": 355211,
+       "sgd": 76240,
        "units": 10
       },
       {
+       "month": "2025-05",
+       "sgd": 322746,
+       "units": 11
+      },
+      {
        "month": "2025-06",
-       "sgd": 142115,
-       "units": 4
+       "sgd": 284225,
+       "units": 11
       },
       {
        "month": "2025-07",
-       "sgd": 202447,
-       "units": 6
+       "sgd": 557462,
+       "units": 20
       },
       {
        "month": "2025-08",
-       "sgd": 152165,
-       "units": 4
+       "sgd": 239298,
+       "units": 14
       },
       {
        "month": "2025-09",
-       "sgd": 144417,
-       "units": 4
+       "sgd": 240653,
+       "units": 17
       },
       {
        "month": "2025-10",
-       "sgd": 185428,
-       "units": 5
+       "sgd": 146048,
+       "units": 13
       },
       {
        "month": "2025-11",
-       "sgd": 320353,
+       "sgd": 145803,
        "units": 9
       },
       {
        "month": "2025-12",
-       "sgd": 444294,
-       "units": 12
+       "sgd": 316465,
+       "units": 17
       },
       {
        "month": "2026-01",
-       "sgd": 171338,
-       "units": 5
+       "sgd": 284907,
+       "units": 14
       },
       {
        "month": "2026-02",
-       "sgd": 96214,
-       "units": 3
+       "sgd": 663258,
+       "units": 31
       },
       {
        "month": "2026-03",
-       "sgd": 159636,
-       "units": 4
+       "sgd": 263426,
+       "units": 13
       },
       {
        "month": "2026-04",
-       "sgd": 348772,
+       "sgd": 136656,
        "units": 10
       },
       {
        "month": "2026-05",
-       "sgd": 110466,
-       "units": 3
+       "sgd": 146139,
+       "units": 12
       },
       {
        "month": "2026-06",
-       "sgd": 194360,
-       "units": 5
+       "sgd": 492047,
+       "units": 20
       },
       {
        "month": "2026-07",
-       "sgd": 300572,
+       "sgd": 388544,
+       "units": 26
+      },
+      {
+       "month": "2026-08",
+       "sgd": 210186,
        "units": 8
       },
       {
-       "month": "2026-08",
-       "sgd": 218172,
-       "units": 6
-      },
-      {
        "month": "2026-09",
-       "sgd": 269759,
-       "units": 7
+       "sgd": 306395,
+       "units": 16
       }
      ],
      "deltaVsRaw": 0,
      "changedByCleaning": false
     },
     {
-     "country": "TH",
+     "country": "MY",
      "product": "A",
-     "sgd12m": 5509313,
-     "sgdPrior12m": 4936327,
-     "yoy": 0.1161,
-     "units12m": 29780,
-     "unitsPrior12m": 26683,
-     "unitsYoy": 0.1161,
-     "sgd3m": 1743181,
-     "sgdPrior3m": 1620285,
-     "momentum": 0.0758,
-     "momentumUnits": 0.0758,
+     "sgd12m": 7592412,
+     "sgdPrior12m": 8025709,
+     "yoy": -0.054,
+     "units12m": 65142,
+     "unitsPrior12m": 69128,
+     "unitsYoy": -0.0577,
+     "sgd3m": 1978399,
+     "sgdPrior3m": 2125126,
+     "momentum": -0.069,
+     "momentumUnits": -0.0815,
      "series": [
       {
        "month": "2024-10",
-       "sgd": 359620,
-       "units": 1944
+       "sgd": 735393,
+       "units": 6395
       },
       {
        "month": "2024-11",
-       "sgd": 342508,
-       "units": 1851
+       "sgd": 670115,
+       "units": 5784
       },
       {
        "month": "2024-12",
-       "sgd": 304877,
-       "units": 1648
+       "sgd": 567382,
+       "units": 4726
       },
       {
        "month": "2025-01",
-       "sgd": 365810,
-       "units": 1977
+       "sgd": 711296,
+       "units": 6199
       },
       {
        "month": "2025-02",
-       "sgd": 407689,
-       "units": 2204
+       "sgd": 606690,
+       "units": 5143
       },
       {
        "month": "2025-03",
-       "sgd": 315768,
-       "units": 1707
+       "sgd": 683101,
+       "units": 5936
       },
       {
        "month": "2025-04",
-       "sgd": 332547,
-       "units": 1798
+       "sgd": 652108,
+       "units": 5567
       },
       {
        "month": "2025-05",
-       "sgd": 353896,
-       "units": 1913
+       "sgd": 615810,
+       "units": 5230
       },
       {
        "month": "2025-06",
-       "sgd": 533326,
-       "units": 2883
+       "sgd": 658689,
+       "units": 5774
       },
       {
        "month": "2025-07",
-       "sgd": 493200,
-       "units": 2666
+       "sgd": 812968,
+       "units": 7195
       },
       {
        "month": "2025-08",
-       "sgd": 526706,
-       "units": 2847
+       "sgd": 667715,
+       "units": 5674
       },
       {
        "month": "2025-09",
-       "sgd": 600379,
-       "units": 3245
+       "sgd": 644443,
+       "units": 5505
       },
       {
        "month": "2025-10",
-       "sgd": 389737,
-       "units": 2107
+       "sgd": 695878,
+       "units": 6010
       },
       {
        "month": "2025-11",
-       "sgd": 426050,
-       "units": 2303
+       "sgd": 642133,
+       "units": 5623
       },
       {
        "month": "2025-12",
-       "sgd": 411432,
-       "units": 2224
+       "sgd": 570027,
+       "units": 4841
       },
       {
        "month": "2026-01",
-       "sgd": 391117,
-       "units": 2114
+       "sgd": 679117,
+       "units": 5790
       },
       {
        "month": "2026-02",
-       "sgd": 432655,
-       "units": 2339
+       "sgd": 511592,
+       "units": 4507
       },
       {
        "month": "2026-03",
-       "sgd": 394930,
-       "units": 2135
+       "sgd": 666555,
+       "units": 5611
       },
       {
        "month": "2026-04",
-       "sgd": 351554,
-       "units": 1900
+       "sgd": 613281,
+       "units": 5381
       },
       {
        "month": "2026-05",
-       "sgd": 376114,
-       "units": 2033
+       "sgd": 600172,
+       "units": 5201
       },
       {
        "month": "2026-06",
-       "sgd": 592543,
-       "units": 3203
+       "sgd": 635259,
+       "units": 5302
       },
       {
        "month": "2026-07",
-       "sgd": 559229,
-       "units": 3023
+       "sgd": 672036,
+       "units": 5788
       },
       {
        "month": "2026-08",
-       "sgd": 642274,
-       "units": 3472
+       "sgd": 642574,
+       "units": 5353
       },
       {
        "month": "2026-09",
-       "sgd": 541679,
-       "units": 2928
+       "sgd": 663789,
+       "units": 5735
       }
      ],
      "deltaVsRaw": 0,
-     "changedByCleaning": false
+     "changedByCleaning": true
     },
     {
-     "country": "TH",
+     "country": "MY",
      "product": "B",
-     "sgd12m": 2646945,
-     "sgdPrior12m": 2413531,
-     "yoy": 0.0967,
-     "units12m": 59887,
-     "unitsPrior12m": 54655,
-     "unitsYoy": 0.0957,
-     "sgd3m": 861293,
-     "sgdPrior3m": 782775,
-     "momentum": 0.1003,
-     "momentumUnits": 0.1016,
+     "sgd12m": 3069807,
+     "sgdPrior12m": 2724332,
+     "yoy": 0.1268,
+     "units12m": 247377,
+     "unitsPrior12m": 221821,
+     "unitsYoy": 0.1152,
+     "sgd3m": 847804,
+     "sgdPrior3m": 744693,
+     "momentum": 0.1385,
+     "momentumUnits": 0.1153,
      "series": [
       {
        "month": "2024-10",
-       "sgd": 156511,
-       "units": 3522
+       "sgd": 246481,
+       "units": 20007
       },
       {
        "month": "2024-11",
-       "sgd": 172056,
-       "units": 3902
+       "sgd": 219368,
+       "units": 17487
       },
       {
        "month": "2024-12",
-       "sgd": 186321,
-       "units": 4263
+       "sgd": 190096,
+       "units": 16340
       },
       {
        "month": "2025-01",
-       "sgd": 171220,
-       "units": 3868
+       "sgd": 200859,
+       "units": 15684
       },
       {
        "month": "2025-02",
-       "sgd": 180928,
-       "units": 4076
+       "sgd": 212520,
+       "units": 17649
       },
       {
        "month": "2025-03",
-       "sgd": 192818,
-       "units": 4411
+       "sgd": 242003,
+       "units": 19187
       },
       {
        "month": "2025-04",
-       "sgd": 178755,
-       "units": 4067
+       "sgd": 226762,
+       "units": 18291
       },
       {
        "month": "2025-05",
-       "sgd": 199766,
-       "units": 4555
+       "sgd": 226074,
+       "units": 18520
       },
       {
        "month": "2025-06",
-       "sgd": 192379,
-       "units": 4277
+       "sgd": 215475,
+       "units": 17600
       },
       {
        "month": "2025-07",
-       "sgd": 236757,
-       "units": 5356
+       "sgd": 262317,
+       "units": 22114
       },
       {
        "month": "2025-08",
-       "sgd": 234661,
-       "units": 5287
+       "sgd": 241653,
+       "units": 19648
       },
       {
        "month": "2025-09",
-       "sgd": 311358,
-       "units": 7072
+       "sgd": 240723,
+       "units": 19294
       },
       {
        "month": "2025-10",
-       "sgd": 194661,
-       "units": 4413
+       "sgd": 248432,
+       "units": 20080
       },
       {
        "month": "2025-11",
-       "sgd": 167222,
-       "units": 3739
+       "sgd": 237088,
+       "units": 19839
       },
       {
        "month": "2025-12",
-       "sgd": 189215,
-       "units": 4271
+       "sgd": 235004,
+       "units": 19710
       },
       {
        "month": "2026-01",
-       "sgd": 206894,
-       "units": 4703
+       "sgd": 231617,
+       "units": 18384
       },
       {
        "month": "2026-02",
-       "sgd": 176513,
-       "units": 3956
+       "sgd": 237606,
+       "units": 19109
       },
       {
        "month": "2026-03",
-       "sgd": 221880,
-       "units": 5058
+       "sgd": 238142,
+       "units": 19218
       },
       {
        "month": "2026-04",
-       "sgd": 177572,
-       "units": 4028
+       "sgd": 287681,
+       "units": 23094
       },
       {
        "month": "2026-05",
-       "sgd": 213491,
-       "units": 4869
+       "sgd": 232018,
+       "units": 17524
       },
       {
        "month": "2026-06",
-       "sgd": 238203,
-       "units": 5334
+       "sgd": 274414,
+       "units": 22324
       },
       {
        "month": "2026-07",
-       "sgd": 263695,
-       "units": 5960
+       "sgd": 293287,
+       "units": 23722
       },
       {
        "month": "2026-08",
-       "sgd": 272000,
-       "units": 6111
+       "sgd": 255162,
+       "units": 20286
       },
       {
        "month": "2026-09",
-       "sgd": 325598,
-       "units": 7444
+       "sgd": 299355,
+       "units": 24087
       }
      ],
      "deltaVsRaw": 0,
-     "changedByCleaning": false
+     "changedByCleaning": true
     },
     {
-     "country": "TH",
+     "country": "MY",
      "product": "C",
-     "sgd12m": 1624314,
-     "sgdPrior12m": 1528651,
-     "yoy": 0.0626,
-     "units12m": 45,
-     "unitsPrior12m": 42,
-     "unitsYoy": 0.0626,
-     "sgd3m": 556305,
-     "sgdPrior3m": 714718,
-     "momentum": -0.2216,
-     "momentumUnits": -0.2216,
+     "sgd12m": 2394984,
+     "sgdPrior12m": 2073439,
+     "yoy": 0.1551,
+     "units12m": 119,
+     "unitsPrior12m": 100,
+     "unitsYoy": 0.19,
+     "sgd3m": 544461,
+     "sgdPrior3m": 320303,
+     "momentum": 0.6998,
+     "momentumUnits": 0.55,
      "series": [
       {
        "month": "2024-10",
-       "sgd": 151209,
-       "units": 4
-      },
-      {
-       "month": "2024-11",
-       "sgd": 53791,
-       "units": 1
-      },
-      {
-       "month": "2024-12",
-       "sgd": 54006,
-       "units": 2
-      },
-      {
-       "month": "2025-01",
-       "sgd": 127618,
-       "units": 4
-      },
-      {
-       "month": "2025-02",
-       "sgd": 118155,
-       "units": 3
-      },
-      {
-       "month": "2025-03",
-       "sgd": 22003,
-       "units": 1
-      },
-      {
-       "month": "2025-04",
-       "sgd": 68697,
-       "units": 2
-      },
-      {
-       "month": "2025-05",
-       "sgd": 146458,
-       "units": 4
-      },
-      {
-       "month": "2025-06",
-       "sgd": 71996,
-       "units": 2
-      },
-      {
-       "month": "2025-07",
-       "sgd": 249441,
+       "sgd": 113311,
        "units": 7
       },
       {
-       "month": "2025-08",
-       "sgd": 240676,
-       "units": 7
-      },
-      {
-       "month": "2025-09",
-       "sgd": 224601,
-       "units": 6
-      },
-      {
-       "month": "2025-10",
-       "sgd": 221984,
-       "units": 6
-      },
-      {
-       "month": "2025-11",
-       "sgd": 193612,
-       "units": 5
-      },
-      {
-       "month": "2025-12",
-       "sgd": 140693,
-       "units": 4
-      },
-      {
-       "month": "2026-01",
-       "sgd": 29629,
-       "units": 1
-      },
-      {
-       "month": "2026-02",
-       "sgd": 43598,
-       "units": 1
-      },
-      {
-       "month": "2026-03",
-       "sgd": 73452,
-       "units": 2
-      },
-      {
-       "month": "2026-04",
-       "sgd": 79314,
-       "units": 2
-      },
-      {
-       "month": "2026-05",
-       "sgd": 181449,
-       "units": 5
-      },
-      {
-       "month": "2026-06",
-       "sgd": 104277,
-       "units": 3
-      },
-      {
-       "month": "2026-07",
-       "sgd": 169689,
-       "units": 5
-      },
-      {
-       "month": "2026-08",
-       "sgd": 201466,
-       "units": 6
-      },
-      {
-       "month": "2026-09",
-       "sgd": 185150,
-       "units": 5
-      }
-     ],
-     "deltaVsRaw": 0,
-     "changedByCleaning": false
-    },
-    {
-     "country": "VN",
-     "product": "A",
-     "sgd12m": 5249542,
-     "sgdPrior12m": 4441747,
-     "yoy": 0.1819,
-     "units12m": 28376,
-     "unitsPrior12m": 24009,
-     "unitsYoy": 0.1819,
-     "sgd3m": 1900688,
-     "sgdPrior3m": 1409532,
-     "momentum": 0.3485,
-     "momentumUnits": 0.3485,
-     "series": [
-      {
-       "month": "2024-10",
-       "sgd": 471931,
-       "units": 2551
-      },
-      {
        "month": "2024-11",
-       "sgd": 454736,
-       "units": 2458
+       "sgd": 245028,
+       "units": 14
       },
       {
        "month": "2024-12",
-       "sgd": 285428,
-       "units": 1543
+       "sgd": 200076,
+       "units": 16
       },
       {
        "month": "2025-01",
-       "sgd": 314225,
-       "units": 1699
+       "sgd": 151775,
+       "units": 8
       },
       {
        "month": "2025-02",
-       "sgd": 211287,
-       "units": 1142
+       "sgd": 320201,
+       "units": 9
       },
       {
        "month": "2025-03",
-       "sgd": 317284,
-       "units": 1715
+       "sgd": 216963,
+       "units": 6
       },
       {
        "month": "2025-04",
-       "sgd": 320885,
-       "units": 1735
+       "sgd": 128182,
+       "units": 6
       },
       {
        "month": "2025-05",
-       "sgd": 347816,
-       "units": 1880
-      },
-      {
-       "month": "2025-06",
-       "sgd": 308625,
-       "units": 1668
-      },
-      {
-       "month": "2025-07",
-       "sgd": 418903,
-       "units": 2264
-      },
-      {
-       "month": "2025-08",
-       "sgd": 520087,
-       "units": 2811
-      },
-      {
-       "month": "2025-09",
-       "sgd": 470543,
-       "units": 2543
-      },
-      {
-       "month": "2025-10",
-       "sgd": 531060,
-       "units": 2871
-      },
-      {
-       "month": "2025-11",
-       "sgd": 506927,
-       "units": 2740
-      },
-      {
-       "month": "2025-12",
-       "sgd": 330817,
-       "units": 1788
-      },
-      {
-       "month": "2026-01",
-       "sgd": 325855,
-       "units": 1761
-      },
-      {
-       "month": "2026-02",
-       "sgd": 258783,
-       "units": 1399
-      },
-      {
-       "month": "2026-03",
-       "sgd": 376170,
-       "units": 2033
-      },
-      {
-       "month": "2026-04",
-       "sgd": 327196,
-       "units": 1769
-      },
-      {
-       "month": "2026-05",
-       "sgd": 332438,
-       "units": 1797
-      },
-      {
-       "month": "2026-06",
-       "sgd": 359606,
-       "units": 1944
-      },
-      {
-       "month": "2026-07",
-       "sgd": 593987,
-       "units": 3211
-      },
-      {
-       "month": "2026-08",
-       "sgd": 659776,
-       "units": 3566
-      },
-      {
-       "month": "2026-09",
-       "sgd": 646925,
-       "units": 3497
-      }
-     ],
-     "deltaVsRaw": 0,
-     "changedByCleaning": false
-    },
-    {
-     "country": "VN",
-     "product": "B",
-     "sgd12m": 2139002,
-     "sgdPrior12m": 2037080,
-     "yoy": 0.05,
-     "units12m": 50929,
-     "unitsPrior12m": 48502,
-     "unitsYoy": 0.05,
-     "sgd3m": 677225,
-     "sgdPrior3m": 592648,
-     "momentum": 0.1427,
-     "momentumUnits": 0.1427,
-     "series": [
-      {
-       "month": "2024-10",
-       "sgd": 180694,
-       "units": 4302
-      },
-      {
-       "month": "2024-11",
-       "sgd": 188994,
-       "units": 4500
-      },
-      {
-       "month": "2024-12",
-       "sgd": 201161,
-       "units": 4790
-      },
-      {
-       "month": "2025-01",
-       "sgd": 130021,
-       "units": 3096
-      },
-      {
-       "month": "2025-02",
-       "sgd": 113609,
-       "units": 2705
-      },
-      {
-       "month": "2025-03",
-       "sgd": 136884,
-       "units": 3259
-      },
-      {
-       "month": "2025-04",
-       "sgd": 151809,
-       "units": 3615
-      },
-      {
-       "month": "2025-05",
-       "sgd": 184585,
-       "units": 4395
-      },
-      {
-       "month": "2025-06",
-       "sgd": 156675,
-       "units": 3730
-      },
-      {
-       "month": "2025-07",
-       "sgd": 207030,
-       "units": 4929
-      },
-      {
-       "month": "2025-08",
-       "sgd": 188443,
-       "units": 4487
-      },
-      {
-       "month": "2025-09",
-       "sgd": 197176,
-       "units": 4695
-      },
-      {
-       "month": "2025-10",
-       "sgd": 188917,
-       "units": 4498
-      },
-      {
-       "month": "2025-11",
-       "sgd": 188541,
-       "units": 4489
-      },
-      {
-       "month": "2025-12",
-       "sgd": 195889,
-       "units": 4664
-      },
-      {
-       "month": "2026-01",
-       "sgd": 141650,
-       "units": 3373
-      },
-      {
-       "month": "2026-02",
-       "sgd": 99966,
-       "units": 2380
-      },
-      {
-       "month": "2026-03",
-       "sgd": 162571,
-       "units": 3871
-      },
-      {
-       "month": "2026-04",
-       "sgd": 168963,
-       "units": 4023
-      },
-      {
-       "month": "2026-05",
-       "sgd": 161177,
-       "units": 3838
-      },
-      {
-       "month": "2026-06",
-       "sgd": 154102,
-       "units": 3669
-      },
-      {
-       "month": "2026-07",
-       "sgd": 225735,
-       "units": 5375
-      },
-      {
-       "month": "2026-08",
-       "sgd": 213976,
-       "units": 5095
-      },
-      {
-       "month": "2026-09",
-       "sgd": 237514,
-       "units": 5655
-      }
-     ],
-     "deltaVsRaw": 0,
-     "changedByCleaning": false
-    },
-    {
-     "country": "VN",
-     "product": "C",
-     "sgd12m": 1192772,
-     "sgdPrior12m": 1205293,
-     "yoy": -0.0104,
-     "units12m": 33,
-     "unitsPrior12m": 33,
-     "unitsYoy": -0.0104,
-     "sgd3m": 302192,
-     "sgdPrior3m": 191136,
-     "momentum": 0.581,
-     "momentumUnits": 0.581,
-     "series": [
-      {
-       "month": "2024-10",
-       "sgd": 143093,
-       "units": 4
-      },
-      {
-       "month": "2024-11",
-       "sgd": 148090,
-       "units": 4
-      },
-      {
-       "month": "2024-12",
-       "sgd": 393806,
+       "sgd": 288626,
        "units": 11
       },
       {
-       "month": "2025-01",
-       "sgd": 135639,
-       "units": 4
-      },
-      {
-       "month": "2025-02",
-       "sgd": 26480,
-       "units": 1
-      },
-      {
-       "month": "2025-03",
-       "sgd": 61594,
-       "units": 2
-      },
-      {
-       "month": "2025-04",
-       "sgd": 30430,
-       "units": 1
-      },
-      {
-       "month": "2025-05",
-       "sgd": 59164,
-       "units": 2
-      },
-      {
        "month": "2025-06",
-       "sgd": 15860,
-       "units": 0
-      },
-      {
-       "month": "2025-07",
-       "sgd": 28344,
-       "units": 1
-      },
-      {
-       "month": "2025-08",
-       "sgd": 91771,
+       "sgd": 88973,
        "units": 3
       },
       {
+       "month": "2025-07",
+       "sgd": 57216,
+       "units": 7
+      },
+      {
+       "month": "2025-08",
+       "sgd": 150820,
+       "units": 6
+      },
+      {
        "month": "2025-09",
-       "sgd": 71021,
-       "units": 2
+       "sgd": 112267,
+       "units": 7
       },
       {
        "month": "2025-10",
-       "sgd": 90770,
+       "sgd": 126128,
+       "units": 9
+      },
+      {
+       "month": "2025-11",
+       "sgd": 194176,
+       "units": 10
+      },
+      {
+       "month": "2025-12",
+       "sgd": 518058,
+       "units": 19
+      },
+      {
+       "month": "2026-01",
+       "sgd": 52507,
+       "units": 7
+      },
+      {
+       "month": "2026-02",
+       "sgd": 201043,
+       "units": 9
+      },
+      {
+       "month": "2026-03",
+       "sgd": 129293,
+       "units": 7
+      },
+      {
+       "month": "2026-04",
+       "sgd": 69812,
+       "units": 9
+      },
+      {
+       "month": "2026-05",
+       "sgd": 181046,
+       "units": 9
+      },
+      {
+       "month": "2026-06",
+       "sgd": 378461,
+       "units": 9
+      },
+      {
+       "month": "2026-07",
+       "sgd": 108936,
+       "units": 7
+      },
+      {
+       "month": "2026-08",
+       "sgd": 221603,
+       "units": 12
+      },
+      {
+       "month": "2026-09",
+       "sgd": 213922,
+       "units": 12
+      }
+     ],
+     "deltaVsRaw": 0,
+     "changedByCleaning": false
+    },
+    {
+     "country": "TH",
+     "product": "A",
+     "sgd12m": 5742182,
+     "sgdPrior12m": 5516593,
+     "yoy": 0.0409,
+     "units12m": 49508,
+     "unitsPrior12m": 48301,
+     "unitsYoy": 0.025,
+     "sgd3m": 1656152,
+     "sgdPrior3m": 1592266,
+     "momentum": 0.0401,
+     "momentumUnits": 0.0481,
+     "series": [
+      {
+       "month": "2024-10",
+       "sgd": 515373,
+       "units": 4656
+      },
+      {
+       "month": "2024-11",
+       "sgd": 407605,
+       "units": 3559
+      },
+      {
+       "month": "2024-12",
+       "sgd": 366560,
+       "units": 3261
+      },
+      {
+       "month": "2025-01",
+       "sgd": 516169,
+       "units": 4520
+      },
+      {
+       "month": "2025-02",
+       "sgd": 424356,
+       "units": 3856
+      },
+      {
+       "month": "2025-03",
+       "sgd": 416095,
+       "units": 3677
+      },
+      {
+       "month": "2025-04",
+       "sgd": 340429,
+       "units": 3065
+      },
+      {
+       "month": "2025-05",
+       "sgd": 507037,
+       "units": 4328
+      },
+      {
+       "month": "2025-06",
+       "sgd": 430703,
+       "units": 3752
+      },
+      {
+       "month": "2025-07",
+       "sgd": 544383,
+       "units": 4699
+      },
+      {
+       "month": "2025-08",
+       "sgd": 541682,
+       "units": 4524
+      },
+      {
+       "month": "2025-09",
+       "sgd": 506201,
+       "units": 4404
+      },
+      {
+       "month": "2025-10",
+       "sgd": 458325,
+       "units": 3811
+      },
+      {
+       "month": "2025-11",
+       "sgd": 438190,
+       "units": 3746
+      },
+      {
+       "month": "2025-12",
+       "sgd": 406319,
+       "units": 3548
+      },
+      {
+       "month": "2026-01",
+       "sgd": 464786,
+       "units": 3927
+      },
+      {
+       "month": "2026-02",
+       "sgd": 439448,
+       "units": 3712
+      },
+      {
+       "month": "2026-03",
+       "sgd": 460892,
+       "units": 4096
+      },
+      {
+       "month": "2026-04",
+       "sgd": 392480,
+       "units": 3480
+      },
+      {
+       "month": "2026-05",
+       "sgd": 456822,
+       "units": 4096
+      },
+      {
+       "month": "2026-06",
+       "sgd": 568767,
+       "units": 4809
+      },
+      {
+       "month": "2026-07",
+       "sgd": 571519,
+       "units": 4884
+      },
+      {
+       "month": "2026-08",
+       "sgd": 570391,
+       "units": 4844
+      },
+      {
+       "month": "2026-09",
+       "sgd": 514242,
+       "units": 4555
+      }
+     ],
+     "deltaVsRaw": 0,
+     "changedByCleaning": true
+    },
+    {
+     "country": "TH",
+     "product": "B",
+     "sgd12m": 2442158,
+     "sgdPrior12m": 2273553,
+     "yoy": 0.0742,
+     "units12m": 192671,
+     "unitsPrior12m": 186682,
+     "unitsYoy": 0.0321,
+     "sgd3m": 688123,
+     "sgdPrior3m": 684403,
+     "momentum": 0.0054,
+     "momentumUnits": 0.0018,
+     "series": [
+      {
+       "month": "2024-10",
+       "sgd": 181352,
+       "units": 16383
+      },
+      {
+       "month": "2024-11",
+       "sgd": 161341,
+       "units": 14295
+      },
+      {
+       "month": "2024-12",
+       "sgd": 133656,
+       "units": 10830
+      },
+      {
+       "month": "2025-01",
+       "sgd": 205752,
+       "units": 18057
+      },
+      {
+       "month": "2025-02",
+       "sgd": 157730,
+       "units": 13526
+      },
+      {
+       "month": "2025-03",
+       "sgd": 208268,
+       "units": 16101
+      },
+      {
+       "month": "2025-04",
+       "sgd": 164418,
+       "units": 13717
+      },
+      {
+       "month": "2025-05",
+       "sgd": 199181,
+       "units": 15406
+      },
+      {
+       "month": "2025-06",
+       "sgd": 177453,
+       "units": 13101
+      },
+      {
+       "month": "2025-07",
+       "sgd": 233209,
+       "units": 18785
+      },
+      {
+       "month": "2025-08",
+       "sgd": 211917,
+       "units": 16853
+      },
+      {
+       "month": "2025-09",
+       "sgd": 239277,
+       "units": 19628
+      },
+      {
+       "month": "2025-10",
+       "sgd": 195269,
+       "units": 15379
+      },
+      {
+       "month": "2025-11",
+       "sgd": 205817,
+       "units": 15187
+      },
+      {
+       "month": "2025-12",
+       "sgd": 164824,
+       "units": 12864
+      },
+      {
+       "month": "2026-01",
+       "sgd": 194998,
+       "units": 15454
+      },
+      {
+       "month": "2026-02",
+       "sgd": 220035,
+       "units": 16568
+      },
+      {
+       "month": "2026-03",
+       "sgd": 201445,
+       "units": 17448
+      },
+      {
+       "month": "2026-04",
+       "sgd": 171182,
+       "units": 13483
+      },
+      {
+       "month": "2026-05",
+       "sgd": 187717,
+       "units": 15050
+      },
+      {
+       "month": "2026-06",
+       "sgd": 212749,
+       "units": 15874
+      },
+      {
+       "month": "2026-07",
+       "sgd": 205923,
+       "units": 16202
+      },
+      {
+       "month": "2026-08",
+       "sgd": 235539,
+       "units": 18627
+      },
+      {
+       "month": "2026-09",
+       "sgd": 246660,
+       "units": 20535
+      }
+     ],
+     "deltaVsRaw": 0,
+     "changedByCleaning": true
+    },
+    {
+     "country": "TH",
+     "product": "C",
+     "sgd12m": 1850208,
+     "sgdPrior12m": 1900628,
+     "yoy": -0.0265,
+     "units12m": 100,
+     "unitsPrior12m": 89,
+     "unitsYoy": 0.1236,
+     "sgd3m": 704201,
+     "sgdPrior3m": 672702,
+     "momentum": 0.0468,
+     "momentumUnits": 0.4,
+     "series": [
+      {
+       "month": "2024-10",
+       "sgd": 201294,
+       "units": 9
+      },
+      {
+       "month": "2024-11",
+       "sgd": 58551,
+       "units": 6
+      },
+      {
+       "month": "2024-12",
+       "sgd": 211082,
+       "units": 13
+      },
+      {
+       "month": "2025-01",
+       "sgd": 113229,
+       "units": 10
+      },
+      {
+       "month": "2025-02",
+       "sgd": 82509,
+       "units": 4
+      },
+      {
+       "month": "2025-03",
+       "sgd": 175334,
+       "units": 4
+      },
+      {
+       "month": "2025-04",
+       "sgd": 101094,
+       "units": 3
+      },
+      {
+       "month": "2025-05",
+       "sgd": 132265,
+       "units": 6
+      },
+      {
+       "month": "2025-06",
+       "sgd": 152568,
+       "units": 9
+      },
+      {
+       "month": "2025-07",
+       "sgd": 73321,
+       "units": 4
+      },
+      {
+       "month": "2025-08",
+       "sgd": 249951,
+       "units": 10
+      },
+      {
+       "month": "2025-09",
+       "sgd": 349429,
+       "units": 11
+      },
+      {
+       "month": "2025-10",
+       "sgd": 62712,
        "units": 3
       },
       {
        "month": "2025-11",
-       "sgd": 116480,
-       "units": 3
-      },
-      {
-       "month": "2025-12",
-       "sgd": 260038,
+       "sgd": 90944,
        "units": 7
       },
       {
+       "month": "2025-12",
+       "sgd": 129053,
+       "units": 9
+      },
+      {
        "month": "2026-01",
-       "sgd": 147921,
+       "sgd": 27827,
        "units": 4
       },
       {
        "month": "2026-02",
-       "sgd": 32896,
-       "units": 1
+       "sgd": 276498,
+       "units": 11
       },
       {
        "month": "2026-03",
-       "sgd": 55164,
-       "units": 2
+       "sgd": 153185,
+       "units": 6
       },
       {
        "month": "2026-04",
-       "sgd": 40663,
-       "units": 1
+       "sgd": 134112,
+       "units": 11
       },
       {
        "month": "2026-05",
-       "sgd": 64222,
-       "units": 2
+       "sgd": 190767,
+       "units": 8
       },
       {
        "month": "2026-06",
-       "sgd": 82427,
-       "units": 2
+       "sgd": 80908,
+       "units": 6
       },
       {
        "month": "2026-07",
-       "sgd": 88348,
-       "units": 2
+       "sgd": 154218,
+       "units": 12
       },
       {
        "month": "2026-08",
-       "sgd": 133894,
+       "sgd": 417880,
+       "units": 13
+      },
+      {
+       "month": "2026-09",
+       "sgd": 132103,
+       "units": 10
+      }
+     ],
+     "deltaVsRaw": 0,
+     "changedByCleaning": false
+    },
+    {
+     "country": "VN",
+     "product": "A",
+     "sgd12m": 5373300,
+     "sgdPrior12m": 4737069,
+     "yoy": 0.1343,
+     "units12m": 45359,
+     "unitsPrior12m": 41397,
+     "unitsYoy": 0.0957,
+     "sgd3m": 1573210,
+     "sgdPrior3m": 1307602,
+     "momentum": 0.2031,
+     "momentumUnits": 0.138,
+     "series": [
+      {
+       "month": "2024-10",
+       "sgd": 472985,
+       "units": 4236
+      },
+      {
+       "month": "2024-11",
+       "sgd": 436241,
+       "units": 3859
+      },
+      {
+       "month": "2024-12",
+       "sgd": 305746,
+       "units": 2746
+      },
+      {
+       "month": "2025-01",
+       "sgd": 360326,
+       "units": 3028
+      },
+      {
+       "month": "2025-02",
+       "sgd": 356894,
+       "units": 3153
+      },
+      {
+       "month": "2025-03",
+       "sgd": 347937,
+       "units": 3125
+      },
+      {
+       "month": "2025-04",
+       "sgd": 375434,
+       "units": 3107
+      },
+      {
+       "month": "2025-05",
+       "sgd": 386095,
+       "units": 3315
+      },
+      {
+       "month": "2025-06",
+       "sgd": 387809,
+       "units": 3395
+      },
+      {
+       "month": "2025-07",
+       "sgd": 485523,
+       "units": 4207
+      },
+      {
+       "month": "2025-08",
+       "sgd": 389956,
+       "units": 3182
+      },
+      {
+       "month": "2025-09",
+       "sgd": 432123,
+       "units": 4044
+      },
+      {
+       "month": "2025-10",
+       "sgd": 484241,
+       "units": 3999
+      },
+      {
+       "month": "2025-11",
+       "sgd": 382068,
+       "units": 3385
+      },
+      {
+       "month": "2025-12",
+       "sgd": 370929,
+       "units": 3073
+      },
+      {
+       "month": "2026-01",
+       "sgd": 457607,
+       "units": 4035
+      },
+      {
+       "month": "2026-02",
+       "sgd": 311485,
+       "units": 2536
+      },
+      {
+       "month": "2026-03",
+       "sgd": 461247,
+       "units": 3842
+      },
+      {
+       "month": "2026-04",
+       "sgd": 381288,
+       "units": 3167
+      },
+      {
+       "month": "2026-05",
+       "sgd": 408410,
+       "units": 3518
+      },
+      {
+       "month": "2026-06",
+       "sgd": 542814,
+       "units": 4793
+      },
+      {
+       "month": "2026-07",
+       "sgd": 551135,
+       "units": 4404
+      },
+      {
+       "month": "2026-08",
+       "sgd": 514384,
+       "units": 4319
+      },
+      {
+       "month": "2026-09",
+       "sgd": 507691,
+       "units": 4288
+      }
+     ],
+     "deltaVsRaw": 0,
+     "changedByCleaning": true
+    },
+    {
+     "country": "VN",
+     "product": "B",
+     "sgd12m": 1977833,
+     "sgdPrior12m": 1783156,
+     "yoy": 0.1092,
+     "units12m": 180599,
+     "unitsPrior12m": 160516,
+     "unitsYoy": 0.1251,
+     "sgd3m": 566827,
+     "sgdPrior3m": 486422,
+     "momentum": 0.1653,
+     "momentumUnits": 0.1633,
+     "series": [
+      {
+       "month": "2024-10",
+       "sgd": 176403,
+       "units": 15696
+      },
+      {
+       "month": "2024-11",
+       "sgd": 137956,
+       "units": 12117
+      },
+      {
+       "month": "2024-12",
+       "sgd": 135191,
+       "units": 12685
+      },
+      {
+       "month": "2025-01",
+       "sgd": 118087,
+       "units": 10297
+      },
+      {
+       "month": "2025-02",
+       "sgd": 127629,
+       "units": 11650
+      },
+      {
+       "month": "2025-03",
+       "sgd": 155943,
+       "units": 14293
+      },
+      {
+       "month": "2025-04",
+       "sgd": 147868,
+       "units": 13533
+      },
+      {
+       "month": "2025-05",
+       "sgd": 150169,
+       "units": 13414
+      },
+      {
+       "month": "2025-06",
+       "sgd": 147488,
+       "units": 13339
+      },
+      {
+       "month": "2025-07",
+       "sgd": 169258,
+       "units": 15064
+      },
+      {
+       "month": "2025-08",
+       "sgd": 161885,
+       "units": 14584
+      },
+      {
+       "month": "2025-09",
+       "sgd": 155279,
+       "units": 13844
+      },
+      {
+       "month": "2025-10",
+       "sgd": 192491,
+       "units": 17704
+      },
+      {
+       "month": "2025-11",
+       "sgd": 141634,
+       "units": 12728
+      },
+      {
+       "month": "2025-12",
+       "sgd": 152086,
+       "units": 13320
+      },
+      {
+       "month": "2026-01",
+       "sgd": 146471,
+       "units": 13970
+      },
+      {
+       "month": "2026-02",
+       "sgd": 121791,
+       "units": 11081
+      },
+      {
+       "month": "2026-03",
+       "sgd": 177397,
+       "units": 15457
+      },
+      {
+       "month": "2026-04",
+       "sgd": 149775,
+       "units": 14701
+      },
+      {
+       "month": "2026-05",
+       "sgd": 160810,
+       "units": 14266
+      },
+      {
+       "month": "2026-06",
+       "sgd": 168551,
+       "units": 16779
+      },
+      {
+       "month": "2026-07",
+       "sgd": 197639,
+       "units": 17318
+      },
+      {
+       "month": "2026-08",
+       "sgd": 181819,
+       "units": 16111
+      },
+      {
+       "month": "2026-09",
+       "sgd": 187369,
+       "units": 17164
+      }
+     ],
+     "deltaVsRaw": 0,
+     "changedByCleaning": true
+    },
+    {
+     "country": "VN",
+     "product": "C",
+     "sgd12m": 1510332,
+     "sgdPrior12m": 1995046,
+     "yoy": -0.243,
+     "units12m": 76,
+     "unitsPrior12m": 66,
+     "unitsYoy": 0.1515,
+     "sgd3m": 321928,
+     "sgdPrior3m": 321426,
+     "momentum": 0.0016,
+     "momentumUnits": -0.3125,
+     "series": [
+      {
+       "month": "2024-10",
+       "sgd": 240782,
+       "units": 5
+      },
+      {
+       "month": "2024-11",
+       "sgd": 236590,
+       "units": 4
+      },
+      {
+       "month": "2024-12",
+       "sgd": 540233,
+       "units": 13
+      },
+      {
+       "month": "2025-01",
+       "sgd": 36522,
+       "units": 5
+      },
+      {
+       "month": "2025-02",
+       "sgd": 138338,
+       "units": 4
+      },
+      {
+       "month": "2025-03",
+       "sgd": 92188,
+       "units": 3
+      },
+      {
+       "month": "2025-04",
+       "sgd": 154475,
+       "units": 2
+      },
+      {
+       "month": "2025-05",
+       "sgd": 166631,
+       "units": 6
+      },
+      {
+       "month": "2025-06",
+       "sgd": 67863,
+       "units": 8
+      },
+      {
+       "month": "2025-07",
+       "sgd": 63918,
+       "units": 9
+      },
+      {
+       "month": "2025-08",
+       "sgd": 242518,
+       "units": 6
+      },
+      {
+       "month": "2025-09",
+       "sgd": 14990,
+       "units": 1
+      },
+      {
+       "month": "2025-10",
+       "sgd": 147752,
+       "units": 8
+      },
+      {
+       "month": "2025-11",
+       "sgd": 216845,
+       "units": 10
+      },
+      {
+       "month": "2025-12",
+       "sgd": 281282,
+       "units": 8
+      },
+      {
+       "month": "2026-01",
+       "sgd": 84060,
+       "units": 8
+      },
+      {
+       "month": "2026-02",
+       "sgd": 16558,
+       "units": 3
+      },
+      {
+       "month": "2026-03",
+       "sgd": 75532,
+       "units": 4
+      },
+      {
+       "month": "2026-04",
+       "sgd": 116902,
+       "units": 8
+      },
+      {
+       "month": "2026-05",
+       "sgd": 78420,
+       "units": 6
+      },
+      {
+       "month": "2026-06",
+       "sgd": 171051,
+       "units": 10
+      },
+      {
+       "month": "2026-07",
+       "sgd": 212237,
+       "units": 3
+      },
+      {
+       "month": "2026-08",
+       "sgd": 73622,
        "units": 4
       },
       {
        "month": "2026-09",
-       "sgd": 79951,
-       "units": 2
+       "sgd": 36070,
+       "units": 4
       }
      ],
      "deltaVsRaw": 0,
@@ -1704,412 +1704,412 @@
     {
      "country": "MM",
      "product": "A",
-     "sgd12m": 2103288,
-     "sgdPrior12m": 1994715,
-     "yoy": 0.0544,
-     "units12m": 11369,
-     "unitsPrior12m": 10782,
-     "unitsYoy": 0.0544,
-     "sgd3m": 663499,
-     "sgdPrior3m": 634146,
-     "momentum": 0.0463,
-     "momentumUnits": 0.0463,
+     "sgd12m": 1973673,
+     "sgdPrior12m": 2176159,
+     "yoy": -0.093,
+     "units12m": 18282,
+     "unitsPrior12m": 20001,
+     "unitsYoy": -0.0859,
+     "sgd3m": 580967,
+     "sgdPrior3m": 590626,
+     "momentum": -0.0164,
+     "momentumUnits": -0.0115,
      "series": [
       {
        "month": "2024-10",
-       "sgd": 118928,
-       "units": 643
+       "sgd": 191681,
+       "units": 1762
       },
       {
        "month": "2024-11",
-       "sgd": 134142,
-       "units": 725
+       "sgd": 172899,
+       "units": 1305
       },
       {
        "month": "2024-12",
-       "sgd": 144814,
-       "units": 783
+       "sgd": 166165,
+       "units": 1689
       },
       {
        "month": "2025-01",
-       "sgd": 136024,
-       "units": 735
+       "sgd": 212385,
+       "units": 1839
       },
       {
        "month": "2025-02",
-       "sgd": 157803,
-       "units": 853
+       "sgd": 163047,
+       "units": 1556
       },
       {
        "month": "2025-03",
-       "sgd": 173690,
-       "units": 939
+       "sgd": 157410,
+       "units": 1588
       },
       {
        "month": "2025-04",
-       "sgd": 115692,
-       "units": 625
+       "sgd": 171748,
+       "units": 1557
       },
       {
        "month": "2025-05",
-       "sgd": 140644,
-       "units": 760
+       "sgd": 186777,
+       "units": 1720
       },
       {
        "month": "2025-06",
-       "sgd": 238832,
-       "units": 1291
+       "sgd": 163422,
+       "units": 1575
       },
       {
        "month": "2025-07",
-       "sgd": 265497,
-       "units": 1435
+       "sgd": 227543,
+       "units": 1965
       },
       {
        "month": "2025-08",
-       "sgd": 212880,
-       "units": 1151
+       "sgd": 168452,
+       "units": 1559
       },
       {
        "month": "2025-09",
-       "sgd": 155769,
-       "units": 842
+       "sgd": 194631,
+       "units": 1886
       },
       {
        "month": "2025-10",
-       "sgd": 175552,
-       "units": 949
+       "sgd": 177532,
+       "units": 1592
       },
       {
        "month": "2025-11",
-       "sgd": 133415,
-       "units": 721
+       "sgd": 146124,
+       "units": 1450
       },
       {
        "month": "2025-12",
-       "sgd": 138425,
-       "units": 748
+       "sgd": 140260,
+       "units": 1196
       },
       {
        "month": "2026-01",
-       "sgd": 149493,
-       "units": 808
+       "sgd": 164775,
+       "units": 1571
       },
       {
        "month": "2026-02",
-       "sgd": 148778,
-       "units": 804
+       "sgd": 122803,
+       "units": 1166
       },
       {
        "month": "2026-03",
-       "sgd": 165876,
-       "units": 897
+       "sgd": 169514,
+       "units": 1617
       },
       {
        "month": "2026-04",
-       "sgd": 135390,
-       "units": 732
+       "sgd": 110961,
+       "units": 1021
       },
       {
        "month": "2026-05",
-       "sgd": 134511,
-       "units": 727
+       "sgd": 162633,
+       "units": 1346
       },
       {
        "month": "2026-06",
-       "sgd": 258349,
-       "units": 1396
+       "sgd": 198103,
+       "units": 1975
       },
       {
        "month": "2026-07",
-       "sgd": 237429,
-       "units": 1283
+       "sgd": 207358,
+       "units": 1762
       },
       {
        "month": "2026-08",
-       "sgd": 275209,
-       "units": 1488
+       "sgd": 179231,
+       "units": 1683
       },
       {
        "month": "2026-09",
-       "sgd": 150861,
-       "units": 815
+       "sgd": 194378,
+       "units": 1903
       }
      ],
      "deltaVsRaw": 0,
-     "changedByCleaning": false
+     "changedByCleaning": true
     },
     {
      "country": "MM",
      "product": "B",
-     "sgd12m": 901370,
-     "sgdPrior12m": 899483,
-     "yoy": 0.0021,
-     "units12m": 21461,
-     "unitsPrior12m": 21416,
-     "unitsYoy": 0.0021,
-     "sgd3m": 250923,
-     "sgdPrior3m": 243951,
-     "momentum": 0.0286,
-     "momentumUnits": 0.0286,
+     "sgd12m": 797549,
+     "sgdPrior12m": 879467,
+     "yoy": -0.0931,
+     "units12m": 62411,
+     "unitsPrior12m": 69547,
+     "unitsYoy": -0.1026,
+     "sgd3m": 199677,
+     "sgdPrior3m": 219775,
+     "momentum": -0.0914,
+     "momentumUnits": -0.064,
      "series": [
       {
        "month": "2024-10",
-       "sgd": 72588,
-       "units": 1728
+       "sgd": 78694,
+       "units": 6616
       },
       {
        "month": "2024-11",
-       "sgd": 70167,
-       "units": 1671
+       "sgd": 64562,
+       "units": 5512
       },
       {
        "month": "2024-12",
-       "sgd": 65616,
-       "units": 1562
+       "sgd": 58060,
+       "units": 3640
       },
       {
        "month": "2025-01",
-       "sgd": 77207,
-       "units": 1838
+       "sgd": 94394,
+       "units": 7861
       },
       {
        "month": "2025-02",
-       "sgd": 66902,
-       "units": 1593
+       "sgd": 63123,
+       "units": 4842
       },
       {
        "month": "2025-03",
-       "sgd": 87120,
-       "units": 2074
+       "sgd": 96247,
+       "units": 7814
       },
       {
        "month": "2025-04",
-       "sgd": 60510,
-       "units": 1441
+       "sgd": 58755,
+       "units": 4520
       },
       {
        "month": "2025-05",
-       "sgd": 66398,
-       "units": 1581
+       "sgd": 74990,
+       "units": 6124
       },
       {
        "month": "2025-06",
-       "sgd": 89024,
-       "units": 2120
+       "sgd": 70866,
+       "units": 5297
       },
       {
        "month": "2025-07",
-       "sgd": 82332,
-       "units": 1960
+       "sgd": 72692,
+       "units": 5267
       },
       {
        "month": "2025-08",
-       "sgd": 83375,
-       "units": 1985
+       "sgd": 73892,
+       "units": 5751
       },
       {
        "month": "2025-09",
-       "sgd": 78244,
-       "units": 1863
+       "sgd": 73191,
+       "units": 6303
       },
       {
        "month": "2025-10",
-       "sgd": 64839,
-       "units": 1544
+       "sgd": 88811,
+       "units": 6579
       },
       {
        "month": "2025-11",
-       "sgd": 57216,
-       "units": 1362
+       "sgd": 60729,
+       "units": 5192
       },
       {
        "month": "2025-12",
-       "sgd": 80236,
-       "units": 1910
+       "sgd": 63135,
+       "units": 4587
       },
       {
        "month": "2026-01",
-       "sgd": 85783,
-       "units": 2042
+       "sgd": 62590,
+       "units": 5119
       },
       {
        "month": "2026-02",
-       "sgd": 69111,
-       "units": 1646
+       "sgd": 56242,
+       "units": 4495
       },
       {
        "month": "2026-03",
-       "sgd": 75636,
-       "units": 1801
+       "sgd": 78832,
+       "units": 5980
       },
       {
        "month": "2026-04",
-       "sgd": 59497,
-       "units": 1417
+       "sgd": 38348,
+       "units": 3180
       },
       {
        "month": "2026-05",
-       "sgd": 70309,
-       "units": 1674
+       "sgd": 72539,
+       "units": 4921
       },
       {
        "month": "2026-06",
-       "sgd": 87821,
-       "units": 2091
+       "sgd": 76646,
+       "units": 6145
       },
       {
        "month": "2026-07",
-       "sgd": 81433,
-       "units": 1939
+       "sgd": 76480,
+       "units": 5938
       },
       {
        "month": "2026-08",
-       "sgd": 93771,
-       "units": 2233
+       "sgd": 61210,
+       "units": 5203
       },
       {
        "month": "2026-09",
-       "sgd": 75718,
-       "units": 1803
+       "sgd": 61987,
+       "units": 5072
       }
      ],
      "deltaVsRaw": 0,
-     "changedByCleaning": false
+     "changedByCleaning": true
     },
     {
      "country": "MM",
      "product": "C",
-     "sgd12m": 494653,
-     "sgdPrior12m": 600293,
-     "yoy": -0.176,
-     "units12m": 14,
-     "unitsPrior12m": 17,
-     "unitsYoy": -0.176,
-     "sgd3m": 118508,
-     "sgdPrior3m": 151269,
-     "momentum": -0.2166,
-     "momentumUnits": -0.2166,
+     "sgd12m": 552328,
+     "sgdPrior12m": 621438,
+     "yoy": -0.1112,
+     "units12m": 30,
+     "unitsPrior12m": 33,
+     "unitsYoy": -0.0909,
+     "sgd3m": 160960,
+     "sgdPrior3m": 117757,
+     "momentum": 0.3669,
+     "momentumUnits": 0.5,
      "series": [
       {
        "month": "2024-10",
-       "sgd": 21815,
-       "units": 1
+       "sgd": 65879,
+       "units": 2
       },
       {
        "month": "2024-11",
-       "sgd": 34954,
-       "units": 1
+       "sgd": 71308,
+       "units": 4
       },
       {
        "month": "2024-12",
-       "sgd": 13570,
-       "units": 0
+       "sgd": 8686,
+       "units": 1
       },
       {
        "month": "2025-01",
-       "sgd": 42052,
-       "units": 1
+       "sgd": 91137,
+       "units": 5
       },
       {
        "month": "2025-02",
-       "sgd": 82348,
-       "units": 2
+       "sgd": 100493,
+       "units": 6
       },
       {
        "month": "2025-03",
-       "sgd": 58039,
-       "units": 2
+       "sgd": 80378,
+       "units": 5
       },
       {
        "month": "2025-04",
-       "sgd": 47001,
-       "units": 1
+       "sgd": 51177,
+       "units": 2
       },
       {
        "month": "2025-05",
-       "sgd": 104346,
-       "units": 3
+       "sgd": 12621,
+       "units": 1
       },
       {
        "month": "2025-06",
-       "sgd": 44899,
+       "sgd": 22002,
        "units": 1
       },
       {
        "month": "2025-07",
-       "sgd": 55089,
-       "units": 2
-      },
-      {
-       "month": "2025-08",
-       "sgd": 66898,
-       "units": 2
-      },
-      {
-       "month": "2025-09",
-       "sgd": 29282,
+       "sgd": 21767,
        "units": 1
       },
       {
+       "month": "2025-08",
+       "sgd": 0,
+       "units": 0
+      },
+      {
+       "month": "2025-09",
+       "sgd": 95990,
+       "units": 5
+      },
+      {
        "month": "2025-10",
-       "sgd": 54708,
-       "units": 2
+       "sgd": 8419,
+       "units": 1
       },
       {
        "month": "2025-11",
-       "sgd": 28992,
+       "sgd": 10039,
        "units": 1
       },
       {
        "month": "2025-12",
-       "sgd": 43732,
+       "sgd": 11847,
        "units": 1
       },
       {
        "month": "2026-01",
-       "sgd": 90465,
+       "sgd": 26338,
        "units": 3
       },
       {
        "month": "2026-02",
-       "sgd": 35889,
-       "units": 1
+       "sgd": 35197,
+       "units": 5
       },
       {
        "month": "2026-03",
-       "sgd": 18669,
-       "units": 1
+       "sgd": 77968,
+       "units": 4
       },
       {
        "month": "2026-04",
-       "sgd": 18951,
+       "sgd": 10097,
        "units": 1
       },
       {
        "month": "2026-05",
-       "sgd": 63938,
-       "units": 2
+       "sgd": 194719,
+       "units": 3
       },
       {
        "month": "2026-06",
-       "sgd": 20801,
-       "units": 1
+       "sgd": 16745,
+       "units": 2
       },
       {
        "month": "2026-07",
-       "sgd": 62376,
+       "sgd": 43757,
        "units": 2
       },
       {
        "month": "2026-08",
-       "sgd": 22507,
-       "units": 1
+       "sgd": 73490,
+       "units": 4
       },
       {
        "month": "2026-09",
-       "sgd": 33625,
-       "units": 1
+       "sgd": 43713,
+       "units": 3
       }
      ],
      "deltaVsRaw": 0,
@@ -2119,526 +2119,526 @@
    "countryTotals": [
     {
      "key": "SG",
-     "sgd12m": 19308038,
-     "sgdPrior12m": 18212403,
-     "yoy": 0.0602,
-     "momentum": 0.0409,
+     "sgd12m": 18165224,
+     "sgdPrior12m": 16694788,
+     "yoy": 0.0881,
+     "momentum": 0.0898,
      "series": [
       {
        "month": "2024-10",
-       "sgd": 2062520
+       "sgd": 1469462
       },
       {
        "month": "2024-11",
-       "sgd": 1399272
+       "sgd": 1218175
       },
       {
        "month": "2024-12",
-       "sgd": 1292540
+       "sgd": 1232176
       },
       {
        "month": "2025-01",
-       "sgd": 1171747
+       "sgd": 1269885
       },
       {
        "month": "2025-02",
-       "sgd": 1044539
+       "sgd": 1123297
       },
       {
        "month": "2025-03",
-       "sgd": 1458452
+       "sgd": 1716010
       },
       {
        "month": "2025-04",
-       "sgd": 1441063
+       "sgd": 1153600
       },
       {
        "month": "2025-05",
-       "sgd": 1626568
+       "sgd": 1448090
       },
       {
        "month": "2025-06",
-       "sgd": 1530849
+       "sgd": 1460149
       },
       {
        "month": "2025-07",
-       "sgd": 1619492
+       "sgd": 1768617
       },
       {
        "month": "2025-08",
-       "sgd": 1708322
+       "sgd": 1433322
       },
       {
        "month": "2025-09",
-       "sgd": 1857039
+       "sgd": 1402006
       },
       {
        "month": "2025-10",
-       "sgd": 1445617
+       "sgd": 1253422
       },
       {
        "month": "2025-11",
-       "sgd": 1321563
+       "sgd": 1178369
       },
       {
        "month": "2025-12",
-       "sgd": 1468613
+       "sgd": 1253072
       },
       {
        "month": "2026-01",
-       "sgd": 1620080
+       "sgd": 1520102
       },
       {
        "month": "2026-02",
-       "sgd": 1258203
+       "sgd": 1707923
       },
       {
        "month": "2026-03",
-       "sgd": 1871056
+       "sgd": 1649648
       },
       {
        "month": "2026-04",
-       "sgd": 1640990
+       "sgd": 1325309
       },
       {
        "month": "2026-05",
-       "sgd": 1540609
+       "sgd": 1457930
       },
       {
        "month": "2026-06",
-       "sgd": 1744159
+       "sgd": 1802297
       },
       {
        "month": "2026-07",
-       "sgd": 1954431
+       "sgd": 1866463
       },
       {
        "month": "2026-08",
-       "sgd": 1792169
+       "sgd": 1445554
       },
       {
        "month": "2026-09",
-       "sgd": 1650548
+       "sgd": 1705135
       }
      ]
     },
     {
      "key": "MY",
-     "sgd12m": 14493527,
-     "sgdPrior12m": 14813017,
-     "yoy": -0.0216,
-     "momentum": 0.063,
+     "sgd12m": 13057203,
+     "sgdPrior12m": 12823480,
+     "yoy": 0.0182,
+     "momentum": 0.0566,
      "series": [
       {
        "month": "2024-10",
-       "sgd": 1307817
+       "sgd": 1095185
       },
       {
        "month": "2024-11",
-       "sgd": 1429755
+       "sgd": 1134511
       },
       {
        "month": "2024-12",
-       "sgd": 1346508
+       "sgd": 957554
       },
       {
        "month": "2025-01",
-       "sgd": 1304041
+       "sgd": 1063930
       },
       {
        "month": "2025-02",
-       "sgd": 931640
+       "sgd": 1139411
       },
       {
        "month": "2025-03",
-       "sgd": 1537500
+       "sgd": 1142066
       },
       {
        "month": "2025-04",
-       "sgd": 1163219
+       "sgd": 1007052
       },
       {
        "month": "2025-05",
-       "sgd": 1242315
+       "sgd": 1130510
       },
       {
        "month": "2025-06",
-       "sgd": 1129991
+       "sgd": 963137
       },
       {
        "month": "2025-07",
-       "sgd": 1135362
+       "sgd": 1132501
       },
       {
        "month": "2025-08",
-       "sgd": 1150270
+       "sgd": 1060188
       },
       {
        "month": "2025-09",
-       "sgd": 1134598
+       "sgd": 997433
       },
       {
        "month": "2025-10",
-       "sgd": 1085048
+       "sgd": 1070437
       },
       {
        "month": "2025-11",
-       "sgd": 1410245
+       "sgd": 1073397
       },
       {
        "month": "2025-12",
-       "sgd": 1577671
+       "sgd": 1323088
       },
       {
        "month": "2026-01",
-       "sgd": 1195441
+       "sgd": 963241
       },
       {
        "month": "2026-02",
-       "sgd": 981715
+       "sgd": 950242
       },
       {
        "month": "2026-03",
-       "sgd": 1163215
+       "sgd": 1033990
       },
       {
        "month": "2026-04",
-       "sgd": 1227808
+       "sgd": 970773
       },
       {
        "month": "2026-05",
-       "sgd": 1012019
+       "sgd": 1013236
       },
       {
        "month": "2026-06",
-       "sgd": 1204808
+       "sgd": 1288134
       },
       {
        "month": "2026-07",
-       "sgd": 1233000
+       "sgd": 1074258
       },
       {
        "month": "2026-08",
-       "sgd": 1145903
+       "sgd": 1119338
       },
       {
        "month": "2026-09",
-       "sgd": 1256654
+       "sgd": 1177067
       }
      ]
     },
     {
      "key": "TH",
-     "sgd12m": 9780571,
-     "sgdPrior12m": 8878509,
-     "yoy": 0.1016,
-     "momentum": 0.0138,
+     "sgd12m": 10034548,
+     "sgdPrior12m": 9690774,
+     "yoy": 0.0355,
+     "momentum": 0.0336,
      "series": [
       {
        "month": "2024-10",
-       "sgd": 667340
+       "sgd": 898019
       },
       {
        "month": "2024-11",
-       "sgd": 568356
+       "sgd": 627497
       },
       {
        "month": "2024-12",
-       "sgd": 545203
+       "sgd": 711298
       },
       {
        "month": "2025-01",
-       "sgd": 664648
+       "sgd": 835150
       },
       {
        "month": "2025-02",
-       "sgd": 706773
+       "sgd": 664595
       },
       {
        "month": "2025-03",
-       "sgd": 530588
+       "sgd": 799697
       },
       {
        "month": "2025-04",
-       "sgd": 579999
+       "sgd": 605940
       },
       {
        "month": "2025-05",
-       "sgd": 700120
+       "sgd": 838482
       },
       {
        "month": "2025-06",
-       "sgd": 797702
+       "sgd": 760724
       },
       {
        "month": "2025-07",
-       "sgd": 979399
+       "sgd": 850913
       },
       {
        "month": "2025-08",
-       "sgd": 1002043
+       "sgd": 1003551
       },
       {
        "month": "2025-09",
-       "sgd": 1136338
+       "sgd": 1094907
       },
       {
        "month": "2025-10",
-       "sgd": 806382
+       "sgd": 716306
       },
       {
        "month": "2025-11",
-       "sgd": 786884
+       "sgd": 734951
       },
       {
        "month": "2025-12",
-       "sgd": 741340
+       "sgd": 700197
       },
       {
        "month": "2026-01",
-       "sgd": 627639
+       "sgd": 687612
       },
       {
        "month": "2026-02",
-       "sgd": 652766
+       "sgd": 935981
       },
       {
        "month": "2026-03",
-       "sgd": 690263
+       "sgd": 815522
       },
       {
        "month": "2026-04",
-       "sgd": 608440
+       "sgd": 697774
       },
       {
        "month": "2026-05",
-       "sgd": 771055
+       "sgd": 835306
       },
       {
        "month": "2026-06",
-       "sgd": 935022
+       "sgd": 862424
       },
       {
        "month": "2026-07",
-       "sgd": 992613
+       "sgd": 931660
       },
       {
        "month": "2026-08",
-       "sgd": 1115740
+       "sgd": 1223810
       },
       {
        "month": "2026-09",
-       "sgd": 1052427
+       "sgd": 893005
       }
      ]
     },
     {
      "key": "VN",
-     "sgd12m": 8581316,
-     "sgdPrior12m": 7684121,
-     "yoy": 0.1168,
-     "momentum": 0.3131,
+     "sgd12m": 8861465,
+     "sgdPrior12m": 8515272,
+     "yoy": 0.0407,
+     "momentum": 0.1638,
      "series": [
       {
        "month": "2024-10",
-       "sgd": 795718
+       "sgd": 890170
       },
       {
        "month": "2024-11",
-       "sgd": 791820
+       "sgd": 810787
       },
       {
        "month": "2024-12",
-       "sgd": 880395
+       "sgd": 981169
       },
       {
        "month": "2025-01",
-       "sgd": 579885
+       "sgd": 514934
       },
       {
        "month": "2025-02",
-       "sgd": 351376
+       "sgd": 622861
       },
       {
        "month": "2025-03",
-       "sgd": 515762
+       "sgd": 596068
       },
       {
        "month": "2025-04",
-       "sgd": 503124
+       "sgd": 677777
       },
       {
        "month": "2025-05",
-       "sgd": 591565
+       "sgd": 702895
       },
       {
        "month": "2025-06",
-       "sgd": 481159
+       "sgd": 603160
       },
       {
        "month": "2025-07",
-       "sgd": 654277
+       "sgd": 718698
       },
       {
        "month": "2025-08",
-       "sgd": 800300
+       "sgd": 794359
       },
       {
        "month": "2025-09",
-       "sgd": 738740
+       "sgd": 602393
       },
       {
        "month": "2025-10",
-       "sgd": 810746
+       "sgd": 824484
       },
       {
        "month": "2025-11",
-       "sgd": 811948
+       "sgd": 740547
       },
       {
        "month": "2025-12",
-       "sgd": 786744
+       "sgd": 804298
       },
       {
        "month": "2026-01",
-       "sgd": 615427
+       "sgd": 688139
       },
       {
        "month": "2026-02",
-       "sgd": 391646
+       "sgd": 449834
       },
       {
        "month": "2026-03",
-       "sgd": 593906
+       "sgd": 714177
       },
       {
        "month": "2026-04",
-       "sgd": 536821
+       "sgd": 647965
       },
       {
        "month": "2026-05",
-       "sgd": 557837
+       "sgd": 647640
       },
       {
        "month": "2026-06",
-       "sgd": 596136
+       "sgd": 882415
       },
       {
        "month": "2026-07",
-       "sgd": 908070
+       "sgd": 961010
       },
       {
        "month": "2026-08",
-       "sgd": 1007647
+       "sgd": 769825
       },
       {
        "month": "2026-09",
-       "sgd": 964389
+       "sgd": 731130
       }
      ]
     },
     {
      "key": "MM",
-     "sgd12m": 3499311,
-     "sgdPrior12m": 3494491,
-     "yoy": 0.0014,
-     "momentum": 0.0035,
+     "sgd12m": 3323549,
+     "sgdPrior12m": 3677064,
+     "yoy": -0.0961,
+     "momentum": 0.0145,
      "series": [
       {
        "month": "2024-10",
-       "sgd": 213331
+       "sgd": 336254
       },
       {
        "month": "2024-11",
-       "sgd": 239262
+       "sgd": 308769
       },
       {
        "month": "2024-12",
-       "sgd": 224001
+       "sgd": 232911
       },
       {
        "month": "2025-01",
-       "sgd": 255283
+       "sgd": 397916
       },
       {
        "month": "2025-02",
-       "sgd": 307053
+       "sgd": 326663
       },
       {
        "month": "2025-03",
-       "sgd": 318849
+       "sgd": 334034
       },
       {
        "month": "2025-04",
-       "sgd": 223203
+       "sgd": 281681
       },
       {
        "month": "2025-05",
-       "sgd": 311387
+       "sgd": 274388
       },
       {
        "month": "2025-06",
-       "sgd": 372755
+       "sgd": 256289
       },
       {
        "month": "2025-07",
-       "sgd": 402918
+       "sgd": 322002
       },
       {
        "month": "2025-08",
-       "sgd": 363153
+       "sgd": 242344
       },
       {
        "month": "2025-09",
-       "sgd": 263295
+       "sgd": 363813
       },
       {
        "month": "2025-10",
-       "sgd": 295099
+       "sgd": 274762
       },
       {
        "month": "2025-11",
-       "sgd": 219622
+       "sgd": 216892
       },
       {
        "month": "2025-12",
-       "sgd": 262393
+       "sgd": 215242
       },
       {
        "month": "2026-01",
-       "sgd": 325741
+       "sgd": 253703
       },
       {
        "month": "2026-02",
-       "sgd": 253778
+       "sgd": 214242
       },
       {
        "month": "2026-03",
-       "sgd": 260181
+       "sgd": 326315
       },
       {
        "month": "2026-04",
-       "sgd": 213838
+       "sgd": 159405
       },
       {
        "month": "2026-05",
-       "sgd": 268759
+       "sgd": 429891
       },
       {
        "month": "2026-06",
-       "sgd": 366971
+       "sgd": 291494
       },
       {
        "month": "2026-07",
-       "sgd": 381239
+       "sgd": 327595
       },
       {
        "month": "2026-08",
-       "sgd": 391488
+       "sgd": 313932
       },
       {
        "month": "2026-09",
-       "sgd": 260204
+       "sgd": 300078
       }
      ]
     }
@@ -2646,425 +2646,425 @@
    "productTotals": [
     {
      "key": "A",
-     "sgd12m": 31936023,
-     "sgdPrior12m": 30086463,
-     "yoy": 0.0615,
-     "momentum": 0.1057,
-     "units12m": 172627,
+     "sgd12m": 31088604,
+     "sgdPrior12m": 30039767,
+     "yoy": 0.0349,
+     "momentum": 0.0731,
+     "units12m": 255212,
      "series": [
       {
        "month": "2024-10",
-       "sgd": 2977094
+       "sgd": 2816198
       },
       {
        "month": "2024-11",
-       "sgd": 2612422
+       "sgd": 2485339
       },
       {
        "month": "2024-12",
-       "sgd": 2286804
+       "sgd": 2063546
       },
       {
        "month": "2025-01",
-       "sgd": 2131054
+       "sgd": 2598447
       },
       {
        "month": "2025-02",
-       "sgd": 1969909
+       "sgd": 2265474
       },
       {
        "month": "2025-03",
-       "sgd": 2153786
+       "sgd": 2338102
       },
       {
        "month": "2025-04",
-       "sgd": 2274697
+       "sgd": 2321174
       },
       {
        "month": "2025-05",
-       "sgd": 2396525
+       "sgd": 2498776
       },
       {
        "month": "2025-06",
-       "sgd": 2713540
+       "sgd": 2507735
       },
       {
        "month": "2025-07",
-       "sgd": 2690373
+       "sgd": 2954761
       },
       {
        "month": "2025-08",
-       "sgd": 3021417
+       "sgd": 2614300
       },
       {
        "month": "2025-09",
-       "sgd": 2858840
+       "sgd": 2575916
       },
       {
        "month": "2025-10",
-       "sgd": 2685656
+       "sgd": 2592782
       },
       {
        "month": "2025-11",
-       "sgd": 2539607
+       "sgd": 2324487
       },
       {
        "month": "2025-12",
-       "sgd": 2376116
+       "sgd": 2152924
       },
       {
        "month": "2026-01",
-       "sgd": 2492918
+       "sgd": 2622642
       },
       {
        "month": "2026-02",
-       "sgd": 2180458
+       "sgd": 2150744
       },
       {
        "month": "2026-03",
-       "sgd": 2475869
+       "sgd": 2697337
       },
       {
        "month": "2026-04",
-       "sgd": 2316371
+       "sgd": 2347113
       },
       {
        "month": "2026-05",
-       "sgd": 2474515
+       "sgd": 2577592
       },
       {
        "month": "2026-06",
-       "sgd": 2918180
+       "sgd": 2882310
       },
       {
        "month": "2026-07",
-       "sgd": 3020000
+       "sgd": 3089748
       },
       {
        "month": "2026-08",
-       "sgd": 3312984
+       "sgd": 2759548
       },
       {
        "month": "2026-09",
-       "sgd": 3143349
+       "sgd": 2891377
       }
      ]
     },
     {
      "key": "B",
-     "sgd12m": 14618905,
-     "sgdPrior12m": 14228281,
-     "yoy": 0.0275,
-     "momentum": 0.024,
-     "units12m": 344933,
+     "sgd12m": 12545662,
+     "sgdPrior12m": 11501342,
+     "yoy": 0.0908,
+     "momentum": 0.0914,
+     "units12m": 1003724,
      "series": [
       {
        "month": "2024-10",
-       "sgd": 1249419
+       "sgd": 1007249
       },
       {
        "month": "2024-11",
-       "sgd": 1197295
+       "sgd": 918884
       },
       {
        "month": "2024-12",
-       "sgd": 1252806
+       "sgd": 733572
       },
       {
        "month": "2025-01",
-       "sgd": 971213
+       "sgd": 948317
       },
       {
        "month": "2025-02",
-       "sgd": 937224
+       "sgd": 858289
       },
       {
        "month": "2025-03",
-       "sgd": 1214793
+       "sgd": 1076060
       },
       {
        "month": "2025-04",
-       "sgd": 1065906
+       "sgd": 893708
       },
       {
        "month": "2025-05",
-       "sgd": 1168457
+       "sgd": 972700
       },
       {
        "month": "2025-06",
-       "sgd": 1183786
+       "sgd": 920094
       },
       {
        "month": "2025-07",
-       "sgd": 1363380
+       "sgd": 1064287
       },
       {
        "month": "2025-08",
-       "sgd": 1231201
+       "sgd": 1036876
       },
       {
        "month": "2025-09",
-       "sgd": 1392801
+       "sgd": 1071306
       },
       {
        "month": "2025-10",
-       "sgd": 1095606
+       "sgd": 1055571
       },
       {
        "month": "2025-11",
-       "sgd": 1131569
+       "sgd": 961863
       },
       {
        "month": "2025-12",
-       "sgd": 1276547
+       "sgd": 886268
       },
       {
        "month": "2026-01",
-       "sgd": 1063149
+       "sgd": 1014514
       },
       {
        "month": "2026-02",
-       "sgd": 984946
+       "sgd": 914924
       },
       {
        "month": "2026-03",
-       "sgd": 1362931
+       "sgd": 1142910
       },
       {
        "month": "2026-04",
-       "sgd": 1152820
+       "sgd": 986535
       },
       {
        "month": "2026-05",
-       "sgd": 1174083
+       "sgd": 1015320
       },
       {
        "month": "2026-06",
-       "sgd": 1294236
+       "sgd": 1105243
       },
       {
        "month": "2026-07",
-       "sgd": 1341773
+       "sgd": 1163548
       },
       {
        "month": "2026-08",
-       "sgd": 1318470
+       "sgd": 1116131
       },
       {
        "month": "2026-09",
-       "sgd": 1422776
+       "sgd": 1182834
       }
      ]
     },
     {
      "key": "C",
-     "sgd12m": 9107836,
-     "sgdPrior12m": 8767797,
-     "yoy": 0.0388,
-     "momentum": 0.0669,
-     "units12m": 253,
+     "sgd12m": 9807724,
+     "sgdPrior12m": 9860269,
+     "yoy": -0.0053,
+     "momentum": 0.0677,
+     "units12m": 514,
      "series": [
       {
        "month": "2024-10",
-       "sgd": 820214
+       "sgd": 865644
       },
       {
        "month": "2024-11",
-       "sgd": 618748
+       "sgd": 695516
       },
       {
        "month": "2024-12",
-       "sgd": 749036
+       "sgd": 1317991
       },
       {
        "month": "2025-01",
-       "sgd": 873337
+       "sgd": 535051
       },
       {
        "month": "2025-02",
-       "sgd": 434247
+       "sgd": 753066
       },
       {
        "month": "2025-03",
-       "sgd": 992574
+       "sgd": 1173714
       },
       {
        "month": "2025-04",
-       "sgd": 570004
+       "sgd": 511168
       },
       {
        "month": "2025-05",
-       "sgd": 906972
+       "sgd": 922889
       },
       {
        "month": "2025-06",
-       "sgd": 415131
+       "sgd": 615630
       },
       {
        "month": "2025-07",
-       "sgd": 737695
+       "sgd": 773684
       },
       {
        "month": "2025-08",
-       "sgd": 771470
+       "sgd": 882588
       },
       {
        "month": "2025-09",
-       "sgd": 878369
+       "sgd": 813330
       },
       {
        "month": "2025-10",
-       "sgd": 661631
+       "sgd": 491059
       },
       {
        "month": "2025-11",
-       "sgd": 879086
+       "sgd": 657806
       },
       {
        "month": "2025-12",
-       "sgd": 1184098
+       "sgd": 1256705
       },
       {
        "month": "2026-01",
-       "sgd": 828261
+       "sgd": 475640
       },
       {
        "month": "2026-02",
-       "sgd": 372703
+       "sgd": 1192554
       },
       {
        "month": "2026-03",
-       "sgd": 739820
+       "sgd": 699404
       },
       {
        "month": "2026-04",
-       "sgd": 758707
+       "sgd": 467579
       },
       {
        "month": "2026-05",
-       "sgd": 501681
+       "sgd": 791091
       },
       {
        "month": "2026-06",
-       "sgd": 634680
+       "sgd": 1139212
       },
       {
        "month": "2026-07",
-       "sgd": 1107579
+       "sgd": 907691
       },
       {
        "month": "2026-08",
-       "sgd": 821492
+       "sgd": 996781
       },
       {
        "month": "2026-09",
-       "sgd": 618097
+       "sgd": 732202
       }
      ]
     }
    ],
    "group": {
     "key": "ALL",
-    "sgd12m": 55662764,
-    "sgdPrior12m": 53082541,
-    "yoy": 0.0486,
-    "momentum": 0.0777,
+    "sgd12m": 53441989,
+    "sgdPrior12m": 51401377,
+    "yoy": 0.0397,
+    "momentum": 0.0764,
     "series": [
      {
       "month": "2024-10",
-      "sgd": 5046727
+      "sgd": 4689090
      },
      {
       "month": "2024-11",
-      "sgd": 4428465
+      "sgd": 4099739
      },
      {
       "month": "2024-12",
-      "sgd": 4288646
+      "sgd": 4115108
      },
      {
       "month": "2025-01",
-      "sgd": 3975604
+      "sgd": 4081814
      },
      {
       "month": "2025-02",
-      "sgd": 3341380
+      "sgd": 3876829
      },
      {
       "month": "2025-03",
-      "sgd": 4361152
+      "sgd": 4587876
      },
      {
       "month": "2025-04",
-      "sgd": 3910608
+      "sgd": 3726050
      },
      {
       "month": "2025-05",
-      "sgd": 4471955
+      "sgd": 4394365
      },
      {
       "month": "2025-06",
-      "sgd": 4312457
+      "sgd": 4043460
      },
      {
       "month": "2025-07",
-      "sgd": 4791448
+      "sgd": 4792732
      },
      {
       "month": "2025-08",
-      "sgd": 5024088
+      "sgd": 4533763
      },
      {
       "month": "2025-09",
-      "sgd": 5130010
+      "sgd": 4460551
      },
      {
       "month": "2025-10",
-      "sgd": 4442893
+      "sgd": 4139412
      },
      {
       "month": "2025-11",
-      "sgd": 4550262
+      "sgd": 3944157
      },
      {
       "month": "2025-12",
-      "sgd": 4836761
+      "sgd": 4295897
      },
      {
       "month": "2026-01",
-      "sgd": 4384328
+      "sgd": 4112796
      },
      {
       "month": "2026-02",
-      "sgd": 3538107
+      "sgd": 4258221
      },
      {
       "month": "2026-03",
-      "sgd": 4578620
+      "sgd": 4539652
      },
      {
       "month": "2026-04",
-      "sgd": 4227898
+      "sgd": 3801227
      },
      {
       "month": "2026-05",
-      "sgd": 4150279
+      "sgd": 4384003
      },
      {
       "month": "2026-06",
-      "sgd": 4847096
+      "sgd": 5126765
      },
      {
       "month": "2026-07",
-      "sgd": 5469352
+      "sgd": 5160987
      },
      {
       "month": "2026-08",
-      "sgd": 5452946
+      "sgd": 4872460
      },
      {
       "month": "2026-09",
-      "sgd": 5184222
+      "sgd": 4806413
      }
     ]
    }
@@ -3074,1654 +3074,1654 @@
     {
      "country": "SG",
      "product": "A",
-     "sgd12m": 10370504,
-     "sgdPrior12m": 10653735,
-     "yoy": -0.0266,
-     "units12m": 56057,
-     "unitsPrior12m": 57588,
-     "unitsYoy": -0.0266,
-     "sgd3m": 2977634,
-     "sgdPrior3m": 2985235,
-     "momentum": -0.0025,
-     "momentumUnits": -0.0025,
+     "sgd12m": 9550460,
+     "sgdPrior12m": 9584237,
+     "yoy": -0.0035,
+     "units12m": 68434,
+     "unitsPrior12m": 68853,
+     "unitsYoy": -0.0061,
+     "sgd3m": 2638403,
+     "sgdPrior3m": 2529356,
+     "momentum": 0.0431,
+     "momentumUnits": 0.0282,
      "series": [
       {
        "month": "2024-10",
-       "sgd": 1426423,
-       "units": 7710
+       "sgd": 900766,
+       "units": 6490
       },
       {
        "month": "2024-11",
-       "sgd": 787958,
-       "units": 4259
+       "sgd": 798480,
+       "units": 5876
       },
       {
        "month": "2024-12",
-       "sgd": 751660,
-       "units": 4063
+       "sgd": 657693,
+       "units": 4668
       },
       {
        "month": "2025-01",
-       "sgd": 676416,
-       "units": 3656
+       "sgd": 798271,
+       "units": 5780
       },
       {
        "month": "2025-02",
-       "sgd": 629680,
-       "units": 3404
+       "sgd": 714486,
+       "units": 5064
       },
       {
        "month": "2025-03",
-       "sgd": 673941,
-       "units": 3643
+       "sgd": 733560,
+       "units": 5385
       },
       {
        "month": "2025-04",
-       "sgd": 783159,
-       "units": 4233
+       "sgd": 781455,
+       "units": 5683
       },
       {
        "month": "2025-05",
-       "sgd": 973720,
-       "units": 5263
+       "sgd": 803057,
+       "units": 5591
       },
       {
        "month": "2025-06",
-       "sgd": 965542,
-       "units": 5219
+       "sgd": 867112,
+       "units": 6064
       },
       {
        "month": "2025-07",
-       "sgd": 928935,
-       "units": 5021
+       "sgd": 884343,
+       "units": 6501
       },
       {
        "month": "2025-08",
-       "sgd": 1081200,
-       "units": 5844
+       "sgd": 846495,
+       "units": 6028
       },
       {
        "month": "2025-09",
-       "sgd": 975100,
-       "units": 5271
+       "sgd": 798518,
+       "units": 5723
       },
       {
        "month": "2025-10",
-       "sgd": 955825,
-       "units": 5167
+       "sgd": 776806,
+       "units": 5728
       },
       {
        "month": "2025-11",
-       "sgd": 723490,
-       "units": 3911
+       "sgd": 715972,
+       "units": 5126
       },
       {
        "month": "2025-12",
-       "sgd": 778078,
-       "units": 4206
+       "sgd": 665388,
+       "units": 4899
       },
       {
        "month": "2026-01",
-       "sgd": 770010,
-       "units": 4162
+       "sgd": 801398,
+       "units": 5639
       },
       {
        "month": "2026-02",
-       "sgd": 650787,
-       "units": 3518
+       "sgd": 680096,
+       "units": 4939
       },
       {
        "month": "2026-03",
-       "sgd": 777745,
-       "units": 4204
+       "sgd": 847650,
+       "units": 6133
       },
       {
        "month": "2026-04",
-       "sgd": 882818,
-       "units": 4772
+       "sgd": 745202,
+       "units": 5382
       },
       {
        "month": "2026-05",
-       "sgd": 929990,
-       "units": 5027
+       "sgd": 850691,
+       "units": 5906
       },
       {
        "month": "2026-06",
-       "sgd": 924126,
-       "units": 4995
+       "sgd": 828854,
+       "units": 5916
       },
       {
        "month": "2026-07",
-       "sgd": 903103,
-       "units": 4882
+       "sgd": 981483,
+       "units": 7006
       },
       {
        "month": "2026-08",
-       "sgd": 1016093,
-       "units": 5492
+       "sgd": 766332,
+       "units": 5546
       },
       {
        "month": "2026-09",
-       "sgd": 1058438,
-       "units": 5721
+       "sgd": 890588,
+       "units": 6214
       }
      ],
-     "deltaVsRaw": -724339,
+     "deltaVsRaw": -856577,
      "changedByCleaning": true
     },
     {
      "country": "SG",
      "product": "B",
-     "sgd12m": 4919813,
-     "sgdPrior12m": 4974362,
-     "yoy": -0.011,
-     "units12m": 117138,
-     "unitsPrior12m": 118437,
-     "unitsYoy": -0.011,
-     "sgd3m": 1242465,
-     "sgdPrior3m": 1368237,
-     "momentum": -0.0919,
-     "momentumUnits": -0.0919,
+     "sgd12m": 4057266,
+     "sgdPrior12m": 3840834,
+     "yoy": 0.0564,
+     "units12m": 302875,
+     "unitsPrior12m": 286755,
+     "unitsYoy": 0.0562,
+     "sgd3m": 1085520,
+     "sgdPrior3m": 1037175,
+     "momentum": 0.0466,
+     "momentumUnits": 0.0363,
      "series": [
       {
        "month": "2024-10",
-       "sgd": 548499,
-       "units": 13059
+       "sgd": 324318,
+       "units": 23910
       },
       {
        "month": "2024-11",
-       "sgd": 375908,
-       "units": 8950
+       "sgd": 335658,
+       "units": 25435
       },
       {
        "month": "2024-12",
-       "sgd": 383787,
-       "units": 9138
+       "sgd": 216568,
+       "units": 16379
       },
       {
        "month": "2025-01",
-       "sgd": 336043,
-       "units": 8001
+       "sgd": 329226,
+       "units": 25222
       },
       {
        "month": "2025-02",
-       "sgd": 280187,
-       "units": 6671
+       "sgd": 297286,
+       "units": 21048
       },
       {
        "month": "2025-03",
-       "sgd": 479855,
-       "units": 11425
+       "sgd": 373598,
+       "units": 28485
       },
       {
        "month": "2025-04",
-       "sgd": 365746,
-       "units": 8708
+       "sgd": 295906,
+       "units": 22629
       },
       {
        "month": "2025-05",
-       "sgd": 411054,
-       "units": 9787
+       "sgd": 322286,
+       "units": 23918
       },
       {
        "month": "2025-06",
-       "sgd": 425046,
-       "units": 10120
+       "sgd": 308811,
+       "units": 22628
       },
       {
        "month": "2025-07",
-       "sgd": 488183,
-       "units": 11623
+       "sgd": 326812,
+       "units": 24813
       },
       {
        "month": "2025-08",
-       "sgd": 407161,
-       "units": 9694
+       "sgd": 347528,
+       "units": 25263
       },
       {
        "month": "2025-09",
-       "sgd": 472893,
-       "units": 11259
+       "sgd": 362835,
+       "units": 27025
       },
       {
        "month": "2025-10",
-       "sgd": 381050,
-       "units": 9073
+       "sgd": 330569,
+       "units": 25026
       },
       {
        "month": "2025-11",
-       "sgd": 378425,
-       "units": 9010
+       "sgd": 316595,
+       "units": 23430
       },
       {
        "month": "2025-12",
-       "sgd": 395195,
-       "units": 9409
+       "sgd": 271219,
+       "units": 20462
       },
       {
        "month": "2026-01",
-       "sgd": 348286,
-       "units": 8293
+       "sgd": 361200,
+       "units": 26468
       },
       {
        "month": "2026-02",
-       "sgd": 348613,
-       "units": 8300
+       "sgd": 268082,
+       "units": 20541
       },
       {
        "month": "2026-03",
-       "sgd": 544652,
-       "units": 12968
+       "sgd": 419423,
+       "units": 30963
       },
       {
        "month": "2026-04",
-       "sgd": 384222,
-       "units": 9148
+       "sgd": 318502,
+       "units": 24540
       },
       {
        "month": "2026-05",
-       "sgd": 424407,
-       "units": 10105
+       "sgd": 337406,
+       "units": 24707
       },
       {
        "month": "2026-06",
-       "sgd": 472499,
-       "units": 11250
+       "sgd": 348750,
+       "units": 26836
       },
       {
        "month": "2026-07",
-       "sgd": 436809,
-       "units": 10400
+       "sgd": 359466,
+       "units": 26395
       },
       {
        "month": "2026-08",
-       "sgd": 399631,
-       "units": 9515
+       "sgd": 359751,
+       "units": 26471
       },
       {
        "month": "2026-09",
-       "sgd": 406025,
-       "units": 9667
+       "sgd": 366302,
+       "units": 27036
       }
      ],
-     "deltaVsRaw": -316649,
+     "deltaVsRaw": -201048,
      "changedByCleaning": true
     },
     {
      "country": "SG",
      "product": "C",
-     "sgd12m": 2976733,
-     "sgdPrior12m": 2584307,
-     "yoy": 0.1518,
-     "units12m": 83,
-     "unitsPrior12m": 72,
-     "unitsYoy": 0.1518,
-     "sgd3m": 781660,
-     "sgdPrior3m": 831382,
-     "momentum": -0.0598,
-     "momentumUnits": -0.0598,
+     "sgd12m": 3499873,
+     "sgdPrior12m": 3269717,
+     "yoy": 0.0704,
+     "units12m": 189,
+     "unitsPrior12m": 176,
+     "unitsYoy": 0.0739,
+     "sgd3m": 905125,
+     "sgdPrior3m": 1037413,
+     "momentum": -0.1275,
+     "momentumUnits": -0.0196,
      "series": [
       {
        "month": "2024-10",
-       "sgd": 87598,
-       "units": 2
-      },
-      {
-       "month": "2024-11",
-       "sgd": 235406,
-       "units": 7
-      },
-      {
-       "month": "2024-12",
-       "sgd": 157094,
-       "units": 4
-      },
-      {
-       "month": "2025-01",
-       "sgd": 159287,
-       "units": 4
-      },
-      {
-       "month": "2025-02",
-       "sgd": 134672,
-       "units": 4
-      },
-      {
-       "month": "2025-03",
-       "sgd": 304656,
-       "units": 8
-      },
-      {
-       "month": "2025-04",
-       "sgd": 292158,
-       "units": 8
-      },
-      {
-       "month": "2025-05",
-       "sgd": 241794,
-       "units": 7
-      },
-      {
-       "month": "2025-06",
-       "sgd": 140261,
-       "units": 4
-      },
-      {
-       "month": "2025-07",
-       "sgd": 202374,
-       "units": 6
-      },
-      {
-       "month": "2025-08",
-       "sgd": 219961,
-       "units": 6
-      },
-      {
-       "month": "2025-09",
-       "sgd": 409047,
-       "units": 11
-      },
-      {
-       "month": "2025-10",
-       "sgd": 108742,
-       "units": 3
-      },
-      {
-       "month": "2025-11",
-       "sgd": 219649,
-       "units": 6
-      },
-      {
-       "month": "2025-12",
-       "sgd": 295341,
-       "units": 8
-      },
-      {
-       "month": "2026-01",
-       "sgd": 388908,
-       "units": 11
-      },
-      {
-       "month": "2026-02",
-       "sgd": 164106,
-       "units": 5
-      },
-      {
-       "month": "2026-03",
-       "sgd": 432900,
-       "units": 12
-      },
-      {
-       "month": "2026-04",
-       "sgd": 271007,
-       "units": 8
-      },
-      {
-       "month": "2026-05",
-       "sgd": 81606,
-       "units": 2
-      },
-      {
-       "month": "2026-06",
-       "sgd": 232817,
-       "units": 6
-      },
-      {
-       "month": "2026-07",
-       "sgd": 486595,
-       "units": 14
-      },
-      {
-       "month": "2026-08",
-       "sgd": 245453,
-       "units": 7
-      },
-      {
-       "month": "2026-09",
-       "sgd": 49612,
-       "units": 1
-      }
-     ],
-     "deltaVsRaw": 0,
-     "changedByCleaning": false
-    },
-    {
-     "country": "MY",
-     "product": "A",
-     "sgd12m": 8455669,
-     "sgdPrior12m": 8059939,
-     "yoy": 0.0491,
-     "units12m": 45706,
-     "unitsPrior12m": 43567,
-     "unitsYoy": 0.0491,
-     "sgd3m": 2070011,
-     "sgdPrior3m": 1921432,
-     "momentum": 0.0773,
-     "momentumUnits": 0.0773,
-     "series": [
-      {
-       "month": "2024-10",
-       "sgd": 600191,
-       "units": 3244
-      },
-      {
-       "month": "2024-11",
-       "sgd": 893079,
-       "units": 4827
-      },
-      {
-       "month": "2024-12",
-       "sgd": 800025,
-       "units": 4324
-      },
-      {
-       "month": "2025-01",
-       "sgd": 638580,
-       "units": 3452
-      },
-      {
-       "month": "2025-02",
-       "sgd": 563450,
-       "units": 3046
-      },
-      {
-       "month": "2025-03",
-       "sgd": 673103,
-       "units": 3638
-      },
-      {
-       "month": "2025-04",
-       "sgd": 722416,
-       "units": 3905
-      },
-      {
-       "month": "2025-05",
-       "sgd": 580450,
-       "units": 3138
-      },
-      {
-       "month": "2025-06",
-       "sgd": 667215,
-       "units": 3607
-      },
-      {
-       "month": "2025-07",
-       "sgd": 583838,
-       "units": 3156
-      },
-      {
-       "month": "2025-08",
-       "sgd": 680544,
-       "units": 3679
-      },
-      {
-       "month": "2025-09",
-       "sgd": 657049,
-       "units": 3552
-      },
-      {
-       "month": "2025-10",
-       "sgd": 633481,
-       "units": 3424
-      },
-      {
-       "month": "2025-11",
-       "sgd": 749727,
-       "units": 4053
-      },
-      {
-       "month": "2025-12",
-       "sgd": 717364,
-       "units": 3878
-      },
-      {
-       "month": "2026-01",
-       "sgd": 835644,
-       "units": 4517
-      },
-      {
-       "month": "2026-02",
-       "sgd": 672937,
-       "units": 3637
-      },
-      {
-       "month": "2026-03",
-       "sgd": 737135,
-       "units": 3985
-      },
-      {
-       "month": "2026-04",
-       "sgd": 598528,
-       "units": 3235
-      },
-      {
-       "month": "2026-05",
-       "sgd": 680241,
-       "units": 3677
-      },
-      {
-       "month": "2026-06",
-       "sgd": 760602,
-       "units": 4111
-      },
-      {
-       "month": "2026-07",
-       "sgd": 688337,
-       "units": 3721
-      },
-      {
-       "month": "2026-08",
-       "sgd": 677519,
-       "units": 3662
-      },
-      {
-       "month": "2026-09",
-       "sgd": 704154,
-       "units": 3806
-      }
-     ],
-     "deltaVsRaw": 476632,
-     "changedByCleaning": true
-    },
-    {
-     "country": "MY",
-     "product": "B",
-     "sgd12m": 3911840,
-     "sgdPrior12m": 3903824,
-     "yoy": 0.0021,
-     "units12m": 93139,
-     "unitsPrior12m": 92948,
-     "unitsYoy": 0.0021,
-     "sgd3m": 1007885,
-     "sgdPrior3m": 999770,
-     "momentum": 0.0081,
-     "momentumUnits": 0.0081,
-     "series": [
-      {
-       "month": "2024-10",
-       "sgd": 291127,
-       "units": 6932
-      },
-      {
-       "month": "2024-11",
-       "sgd": 390170,
-       "units": 9290
-      },
-      {
-       "month": "2024-12",
-       "sgd": 415922,
-       "units": 9903
-      },
-      {
-       "month": "2025-01",
-       "sgd": 256721,
-       "units": 6112
-      },
-      {
-       "month": "2025-02",
-       "sgd": 295597,
-       "units": 7038
-      },
-      {
-       "month": "2025-03",
-       "sgd": 318115,
-       "units": 7574
-      },
-      {
-       "month": "2025-04",
-       "sgd": 309085,
-       "units": 7359
-      },
-      {
-       "month": "2025-05",
-       "sgd": 306654,
-       "units": 7301
-      },
-      {
-       "month": "2025-06",
-       "sgd": 320662,
-       "units": 7635
-      },
-      {
-       "month": "2025-07",
-       "sgd": 349077,
-       "units": 8311
-      },
-      {
-       "month": "2025-08",
-       "sgd": 317561,
-       "units": 7561
-      },
-      {
-       "month": "2025-09",
-       "sgd": 333132,
-       "units": 7932
-      },
-      {
-       "month": "2025-10",
-       "sgd": 266139,
-       "units": 6337
-      },
-      {
-       "month": "2025-11",
-       "sgd": 340165,
-       "units": 8099
-      },
-      {
-       "month": "2025-12",
-       "sgd": 416013,
-       "units": 9905
-      },
-      {
-       "month": "2026-01",
-       "sgd": 271495,
-       "units": 6464
-      },
-      {
-       "month": "2026-02",
-       "sgd": 284361,
-       "units": 6771
-      },
-      {
-       "month": "2026-03",
-       "sgd": 347815,
-       "units": 8281
-      },
-      {
-       "month": "2026-04",
-       "sgd": 351781,
-       "units": 8376
-      },
-      {
-       "month": "2026-05",
-       "sgd": 294411,
-       "units": 7010
-      },
-      {
-       "month": "2026-06",
-       "sgd": 331774,
-       "units": 7899
-      },
-      {
-       "month": "2026-07",
-       "sgd": 319693,
-       "units": 7612
-      },
-      {
-       "month": "2026-08",
-       "sgd": 325433,
-       "units": 7748
-      },
-      {
-       "month": "2026-09",
-       "sgd": 362760,
-       "units": 8637
-      }
-     ],
-     "deltaVsRaw": 216714,
-     "changedByCleaning": true
-    },
-    {
-     "country": "MY",
-     "product": "C",
-     "sgd12m": 2819364,
-     "sgdPrior12m": 2849254,
-     "yoy": -0.0105,
-     "units12m": 78,
-     "unitsPrior12m": 79,
-     "unitsYoy": -0.0105,
-     "sgd3m": 788503,
-     "sgdPrior3m": 499029,
-     "momentum": 0.5801,
-     "momentumUnits": 0.5801,
-     "series": [
-      {
-       "month": "2024-10",
-       "sgd": 416500,
+       "sgd": 244378,
        "units": 12
       },
       {
        "month": "2024-11",
-       "sgd": 146507,
-       "units": 4
+       "sgd": 84037,
+       "units": 12
       },
       {
        "month": "2024-12",
-       "sgd": 130561,
-       "units": 4
+       "sgd": 357914,
+       "units": 19
       },
       {
        "month": "2025-01",
-       "sgd": 408740,
-       "units": 11
+       "sgd": 142388,
+       "units": 12
       },
       {
        "month": "2025-02",
-       "sgd": 72593,
-       "units": 2
+       "sgd": 111525,
+       "units": 11
       },
       {
        "month": "2025-03",
-       "sgd": 546282,
-       "units": 15
+       "sgd": 608851,
+       "units": 27
       },
       {
        "month": "2025-04",
-       "sgd": 131718,
-       "units": 4
-      },
-      {
-       "month": "2025-05",
-       "sgd": 355211,
+       "sgd": 76240,
        "units": 10
       },
       {
+       "month": "2025-05",
+       "sgd": 322746,
+       "units": 11
+      },
+      {
        "month": "2025-06",
-       "sgd": 142115,
-       "units": 4
+       "sgd": 284225,
+       "units": 11
       },
       {
        "month": "2025-07",
-       "sgd": 202447,
-       "units": 6
+       "sgd": 557462,
+       "units": 20
       },
       {
        "month": "2025-08",
-       "sgd": 152165,
-       "units": 4
+       "sgd": 239298,
+       "units": 14
       },
       {
        "month": "2025-09",
-       "sgd": 144417,
-       "units": 4
+       "sgd": 240653,
+       "units": 17
       },
       {
        "month": "2025-10",
-       "sgd": 185428,
-       "units": 5
+       "sgd": 146048,
+       "units": 13
       },
       {
        "month": "2025-11",
-       "sgd": 320353,
+       "sgd": 145803,
        "units": 9
       },
       {
        "month": "2025-12",
-       "sgd": 444294,
-       "units": 12
+       "sgd": 316465,
+       "units": 17
       },
       {
        "month": "2026-01",
-       "sgd": 171338,
-       "units": 5
+       "sgd": 284907,
+       "units": 14
       },
       {
        "month": "2026-02",
-       "sgd": 96214,
-       "units": 3
+       "sgd": 663258,
+       "units": 31
       },
       {
        "month": "2026-03",
-       "sgd": 159636,
-       "units": 4
+       "sgd": 263426,
+       "units": 13
       },
       {
        "month": "2026-04",
-       "sgd": 348772,
+       "sgd": 136656,
        "units": 10
       },
       {
        "month": "2026-05",
-       "sgd": 110466,
-       "units": 3
+       "sgd": 146139,
+       "units": 12
       },
       {
        "month": "2026-06",
-       "sgd": 194360,
-       "units": 5
+       "sgd": 492047,
+       "units": 20
       },
       {
        "month": "2026-07",
-       "sgd": 300572,
+       "sgd": 388544,
+       "units": 26
+      },
+      {
+       "month": "2026-08",
+       "sgd": 210186,
        "units": 8
       },
       {
-       "month": "2026-08",
-       "sgd": 218172,
-       "units": 6
-      },
-      {
        "month": "2026-09",
-       "sgd": 269759,
-       "units": 7
+       "sgd": 306395,
+       "units": 16
       }
      ],
      "deltaVsRaw": 0,
      "changedByCleaning": false
     },
     {
-     "country": "TH",
+     "country": "MY",
      "product": "A",
-     "sgd12m": 5679704,
-     "sgdPrior12m": 5088997,
-     "yoy": 0.1161,
-     "units12m": 30701,
-     "unitsPrior12m": 27508,
-     "unitsYoy": 0.1161,
-     "sgd3m": 1797094,
-     "sgdPrior3m": 1670397,
-     "momentum": 0.0758,
-     "momentumUnits": 0.0758,
+     "sgd12m": 8129109,
+     "sgdPrior12m": 8025709,
+     "yoy": 0.0129,
+     "units12m": 70512,
+     "unitsPrior12m": 69128,
+     "unitsYoy": 0.02,
+     "sgd3m": 2166446,
+     "sgdPrior3m": 2125126,
+     "momentum": 0.0194,
+     "momentumUnits": 0.0229,
      "series": [
       {
        "month": "2024-10",
-       "sgd": 370743,
-       "units": 2004
+       "sgd": 735393,
+       "units": 6395
       },
       {
        "month": "2024-11",
-       "sgd": 353101,
-       "units": 1909
+       "sgd": 670115,
+       "units": 5784
       },
       {
        "month": "2024-12",
-       "sgd": 314306,
-       "units": 1699
+       "sgd": 567382,
+       "units": 4726
       },
       {
        "month": "2025-01",
-       "sgd": 377124,
-       "units": 2039
+       "sgd": 711296,
+       "units": 6199
       },
       {
        "month": "2025-02",
-       "sgd": 420298,
-       "units": 2272
+       "sgd": 606690,
+       "units": 5143
       },
       {
        "month": "2025-03",
-       "sgd": 325534,
-       "units": 1760
+       "sgd": 683101,
+       "units": 5936
       },
       {
        "month": "2025-04",
-       "sgd": 342832,
-       "units": 1853
+       "sgd": 652108,
+       "units": 5567
       },
       {
        "month": "2025-05",
-       "sgd": 364841,
-       "units": 1972
+       "sgd": 615810,
+       "units": 5230
       },
       {
        "month": "2025-06",
-       "sgd": 549821,
-       "units": 2972
+       "sgd": 658689,
+       "units": 5774
       },
       {
        "month": "2025-07",
-       "sgd": 508454,
-       "units": 2748
+       "sgd": 812968,
+       "units": 7195
       },
       {
        "month": "2025-08",
-       "sgd": 542996,
-       "units": 2935
+       "sgd": 667715,
+       "units": 5674
       },
       {
        "month": "2025-09",
-       "sgd": 618948,
-       "units": 3346
+       "sgd": 644443,
+       "units": 5505
       },
       {
        "month": "2025-10",
-       "sgd": 401791,
-       "units": 2172
+       "sgd": 695878,
+       "units": 6010
       },
       {
        "month": "2025-11",
-       "sgd": 439227,
-       "units": 2374
+       "sgd": 642133,
+       "units": 5623
       },
       {
        "month": "2025-12",
-       "sgd": 424156,
-       "units": 2293
+       "sgd": 570027,
+       "units": 4841
       },
       {
        "month": "2026-01",
-       "sgd": 403213,
-       "units": 2180
+       "sgd": 713570,
+       "units": 6157
       },
       {
        "month": "2026-02",
-       "sgd": 446036,
-       "units": 2411
+       "sgd": 574319,
+       "units": 5074
       },
       {
        "month": "2026-03",
-       "sgd": 407145,
-       "units": 2201
+       "sgd": 716290,
+       "units": 6149
       },
       {
        "month": "2026-04",
-       "sgd": 362427,
-       "units": 1959
+       "sgd": 680542,
+       "units": 6050
       },
       {
        "month": "2026-05",
-       "sgd": 387747,
-       "units": 2096
+       "sgd": 663798,
+       "units": 5833
       },
       {
        "month": "2026-06",
-       "sgd": 610869,
-       "units": 3302
+       "sgd": 706107,
+       "units": 5981
       },
       {
        "month": "2026-07",
-       "sgd": 576525,
-       "units": 3116
+       "sgd": 741542,
+       "units": 6474
       },
       {
        "month": "2026-08",
-       "sgd": 662138,
-       "units": 3579
+       "sgd": 688896,
+       "units": 5841
       },
       {
        "month": "2026-09",
-       "sgd": 558432,
-       "units": 3019
+       "sgd": 736009,
+       "units": 6479
       }
      ],
-     "deltaVsRaw": 170391,
+     "deltaVsRaw": 536697,
      "changedByCleaning": true
     },
     {
-     "country": "TH",
+     "country": "MY",
      "product": "B",
-     "sgd12m": 2476553,
-     "sgdPrior12m": 2260861,
-     "yoy": 0.0954,
-     "units12m": 58966,
-     "unitsPrior12m": 53830,
-     "unitsYoy": 0.0954,
-     "sgd3m": 807380,
-     "sgdPrior3m": 732663,
-     "momentum": 0.102,
-     "momentumUnits": 0.102,
+     "sgd12m": 3176669,
+     "sgdPrior12m": 2724332,
+     "yoy": 0.166,
+     "units12m": 259145,
+     "unitsPrior12m": 221821,
+     "unitsYoy": 0.1683,
+     "sgd3m": 885396,
+     "sgdPrior3m": 744693,
+     "momentum": 0.1889,
+     "momentumUnits": 0.1837,
      "series": [
       {
        "month": "2024-10",
-       "sgd": 145389,
-       "units": 3462
+       "sgd": 246481,
+       "units": 20007
       },
       {
        "month": "2024-11",
-       "sgd": 161463,
-       "units": 3844
+       "sgd": 219368,
+       "units": 17487
       },
       {
        "month": "2024-12",
-       "sgd": 176892,
-       "units": 4212
+       "sgd": 190096,
+       "units": 16340
       },
       {
        "month": "2025-01",
-       "sgd": 159907,
-       "units": 3807
+       "sgd": 200859,
+       "units": 15684
       },
       {
        "month": "2025-02",
-       "sgd": 168319,
-       "units": 4008
+       "sgd": 212520,
+       "units": 17649
       },
       {
        "month": "2025-03",
-       "sgd": 183052,
-       "units": 4358
+       "sgd": 242003,
+       "units": 19187
       },
       {
        "month": "2025-04",
-       "sgd": 168470,
-       "units": 4011
+       "sgd": 226762,
+       "units": 18291
       },
       {
        "month": "2025-05",
-       "sgd": 188821,
-       "units": 4496
+       "sgd": 226074,
+       "units": 18520
       },
       {
        "month": "2025-06",
-       "sgd": 175885,
-       "units": 4188
+       "sgd": 215475,
+       "units": 17600
       },
       {
        "month": "2025-07",
-       "sgd": 221504,
-       "units": 5274
+       "sgd": 262317,
+       "units": 22114
       },
       {
        "month": "2025-08",
-       "sgd": 218371,
-       "units": 5199
+       "sgd": 241653,
+       "units": 19648
       },
       {
        "month": "2025-09",
-       "sgd": 292789,
-       "units": 6971
+       "sgd": 240723,
+       "units": 19294
       },
       {
        "month": "2025-10",
-       "sgd": 182607,
-       "units": 4348
+       "sgd": 248432,
+       "units": 20080
       },
       {
        "month": "2025-11",
-       "sgd": 154045,
-       "units": 3668
+       "sgd": 237088,
+       "units": 19839
       },
       {
        "month": "2025-12",
-       "sgd": 176490,
-       "units": 4202
+       "sgd": 235004,
+       "units": 19710
       },
       {
        "month": "2026-01",
-       "sgd": 194798,
-       "units": 4638
+       "sgd": 242086,
+       "units": 19540
       },
       {
        "month": "2026-02",
-       "sgd": 163132,
-       "units": 3884
+       "sgd": 246217,
+       "units": 20210
       },
       {
        "month": "2026-03",
-       "sgd": 209666,
-       "units": 4992
+       "sgd": 250634,
+       "units": 20493
       },
       {
        "month": "2026-04",
-       "sgd": 166699,
-       "units": 3969
+       "sgd": 299990,
+       "units": 24518
       },
       {
        "month": "2026-05",
-       "sgd": 201859,
-       "units": 4806
+       "sgd": 246292,
+       "units": 18903
       },
       {
        "month": "2026-06",
-       "sgd": 219877,
-       "units": 5235
+       "sgd": 285529,
+       "units": 23579
       },
       {
        "month": "2026-07",
-       "sgd": 246399,
-       "units": 5867
+       "sgd": 307907,
+       "units": 25288
       },
       {
        "month": "2026-08",
-       "sgd": 252136,
-       "units": 6003
+       "sgd": 264180,
+       "units": 21437
       },
       {
        "month": "2026-09",
-       "sgd": 308845,
-       "units": 7353
+       "sgd": 313309,
+       "units": 25548
       }
      ],
-     "deltaVsRaw": -170392,
+     "deltaVsRaw": 106862,
      "changedByCleaning": true
     },
     {
-     "country": "TH",
+     "country": "MY",
      "product": "C",
-     "sgd12m": 1624314,
-     "sgdPrior12m": 1528651,
-     "yoy": 0.0626,
-     "units12m": 45,
-     "unitsPrior12m": 42,
-     "unitsYoy": 0.0626,
-     "sgd3m": 556305,
-     "sgdPrior3m": 714718,
-     "momentum": -0.2216,
-     "momentumUnits": -0.2216,
+     "sgd12m": 2394984,
+     "sgdPrior12m": 2073439,
+     "yoy": 0.1551,
+     "units12m": 119,
+     "unitsPrior12m": 100,
+     "unitsYoy": 0.19,
+     "sgd3m": 544461,
+     "sgdPrior3m": 320303,
+     "momentum": 0.6998,
+     "momentumUnits": 0.55,
      "series": [
       {
        "month": "2024-10",
-       "sgd": 151209,
-       "units": 4
-      },
-      {
-       "month": "2024-11",
-       "sgd": 53791,
-       "units": 1
-      },
-      {
-       "month": "2024-12",
-       "sgd": 54006,
-       "units": 2
-      },
-      {
-       "month": "2025-01",
-       "sgd": 127618,
-       "units": 4
-      },
-      {
-       "month": "2025-02",
-       "sgd": 118155,
-       "units": 3
-      },
-      {
-       "month": "2025-03",
-       "sgd": 22003,
-       "units": 1
-      },
-      {
-       "month": "2025-04",
-       "sgd": 68697,
-       "units": 2
-      },
-      {
-       "month": "2025-05",
-       "sgd": 146458,
-       "units": 4
-      },
-      {
-       "month": "2025-06",
-       "sgd": 71996,
-       "units": 2
-      },
-      {
-       "month": "2025-07",
-       "sgd": 249441,
+       "sgd": 113311,
        "units": 7
       },
       {
-       "month": "2025-08",
-       "sgd": 240676,
-       "units": 7
-      },
-      {
-       "month": "2025-09",
-       "sgd": 224601,
-       "units": 6
-      },
-      {
-       "month": "2025-10",
-       "sgd": 221984,
-       "units": 6
-      },
-      {
-       "month": "2025-11",
-       "sgd": 193612,
-       "units": 5
-      },
-      {
-       "month": "2025-12",
-       "sgd": 140693,
-       "units": 4
-      },
-      {
-       "month": "2026-01",
-       "sgd": 29629,
-       "units": 1
-      },
-      {
-       "month": "2026-02",
-       "sgd": 43598,
-       "units": 1
-      },
-      {
-       "month": "2026-03",
-       "sgd": 73452,
-       "units": 2
-      },
-      {
-       "month": "2026-04",
-       "sgd": 79314,
-       "units": 2
-      },
-      {
-       "month": "2026-05",
-       "sgd": 181449,
-       "units": 5
-      },
-      {
-       "month": "2026-06",
-       "sgd": 104277,
-       "units": 3
-      },
-      {
-       "month": "2026-07",
-       "sgd": 169689,
-       "units": 5
-      },
-      {
-       "month": "2026-08",
-       "sgd": 201466,
-       "units": 6
-      },
-      {
-       "month": "2026-09",
-       "sgd": 185150,
-       "units": 5
-      }
-     ],
-     "deltaVsRaw": 0,
-     "changedByCleaning": false
-    },
-    {
-     "country": "VN",
-     "product": "A",
-     "sgd12m": 5497248,
-     "sgdPrior12m": 4441747,
-     "yoy": 0.2376,
-     "units12m": 29715,
-     "unitsPrior12m": 24009,
-     "unitsYoy": 0.2376,
-     "sgd3m": 2022009,
-     "sgdPrior3m": 1409532,
-     "momentum": 0.4345,
-     "momentumUnits": 0.4345,
-     "series": [
-      {
-       "month": "2024-10",
-       "sgd": 471931,
-       "units": 2551
-      },
-      {
        "month": "2024-11",
-       "sgd": 454736,
-       "units": 2458
+       "sgd": 245028,
+       "units": 14
       },
       {
        "month": "2024-12",
-       "sgd": 285428,
-       "units": 1543
+       "sgd": 200076,
+       "units": 16
       },
       {
        "month": "2025-01",
-       "sgd": 314225,
-       "units": 1699
+       "sgd": 151775,
+       "units": 8
       },
       {
        "month": "2025-02",
-       "sgd": 211287,
-       "units": 1142
+       "sgd": 320201,
+       "units": 9
       },
       {
        "month": "2025-03",
-       "sgd": 317284,
-       "units": 1715
+       "sgd": 216963,
+       "units": 6
       },
       {
        "month": "2025-04",
-       "sgd": 320885,
-       "units": 1735
+       "sgd": 128182,
+       "units": 6
       },
       {
        "month": "2025-05",
-       "sgd": 347816,
-       "units": 1880
-      },
-      {
-       "month": "2025-06",
-       "sgd": 308625,
-       "units": 1668
-      },
-      {
-       "month": "2025-07",
-       "sgd": 418903,
-       "units": 2264
-      },
-      {
-       "month": "2025-08",
-       "sgd": 520087,
-       "units": 2811
-      },
-      {
-       "month": "2025-09",
-       "sgd": 470543,
-       "units": 2543
-      },
-      {
-       "month": "2025-10",
-       "sgd": 531060,
-       "units": 2871
-      },
-      {
-       "month": "2025-11",
-       "sgd": 506927,
-       "units": 2740
-      },
-      {
-       "month": "2025-12",
-       "sgd": 330817,
-       "units": 1788
-      },
-      {
-       "month": "2026-01",
-       "sgd": 346655,
-       "units": 1874
-      },
-      {
-       "month": "2026-02",
-       "sgd": 275302,
-       "units": 1488
-      },
-      {
-       "month": "2026-03",
-       "sgd": 400181,
-       "units": 2163
-      },
-      {
-       "month": "2026-04",
-       "sgd": 348081,
-       "units": 1882
-      },
-      {
-       "month": "2026-05",
-       "sgd": 353658,
-       "units": 1912
-      },
-      {
-       "month": "2026-06",
-       "sgd": 382560,
-       "units": 2068
-      },
-      {
-       "month": "2026-07",
-       "sgd": 631901,
-       "units": 3416
-      },
-      {
-       "month": "2026-08",
-       "sgd": 701890,
-       "units": 3794
-      },
-      {
-       "month": "2026-09",
-       "sgd": 688218,
-       "units": 3720
-      }
-     ],
-     "deltaVsRaw": 247706,
-     "changedByCleaning": true
-    },
-    {
-     "country": "VN",
-     "product": "B",
-     "sgd12m": 2238938,
-     "sgdPrior12m": 2037080,
-     "yoy": 0.0991,
-     "units12m": 53308,
-     "unitsPrior12m": 48502,
-     "unitsYoy": 0.0991,
-     "sgd3m": 720453,
-     "sgdPrior3m": 592648,
-     "momentum": 0.2156,
-     "momentumUnits": 0.2156,
-     "series": [
-      {
-       "month": "2024-10",
-       "sgd": 180694,
-       "units": 4302
-      },
-      {
-       "month": "2024-11",
-       "sgd": 188994,
-       "units": 4500
-      },
-      {
-       "month": "2024-12",
-       "sgd": 201161,
-       "units": 4790
-      },
-      {
-       "month": "2025-01",
-       "sgd": 130021,
-       "units": 3096
-      },
-      {
-       "month": "2025-02",
-       "sgd": 113609,
-       "units": 2705
-      },
-      {
-       "month": "2025-03",
-       "sgd": 136884,
-       "units": 3259
-      },
-      {
-       "month": "2025-04",
-       "sgd": 151809,
-       "units": 3615
-      },
-      {
-       "month": "2025-05",
-       "sgd": 184585,
-       "units": 4395
-      },
-      {
-       "month": "2025-06",
-       "sgd": 156675,
-       "units": 3730
-      },
-      {
-       "month": "2025-07",
-       "sgd": 207030,
-       "units": 4929
-      },
-      {
-       "month": "2025-08",
-       "sgd": 188443,
-       "units": 4487
-      },
-      {
-       "month": "2025-09",
-       "sgd": 197176,
-       "units": 4695
-      },
-      {
-       "month": "2025-10",
-       "sgd": 188917,
-       "units": 4498
-      },
-      {
-       "month": "2025-11",
-       "sgd": 188541,
-       "units": 4489
-      },
-      {
-       "month": "2025-12",
-       "sgd": 195889,
-       "units": 4664
-      },
-      {
-       "month": "2026-01",
-       "sgd": 150692,
-       "units": 3588
-      },
-      {
-       "month": "2026-02",
-       "sgd": 106347,
-       "units": 2532
-      },
-      {
-       "month": "2026-03",
-       "sgd": 172948,
-       "units": 4118
-      },
-      {
-       "month": "2026-04",
-       "sgd": 179748,
-       "units": 4280
-      },
-      {
-       "month": "2026-05",
-       "sgd": 171465,
-       "units": 4082
-      },
-      {
-       "month": "2026-06",
-       "sgd": 163939,
-       "units": 3903
-      },
-      {
-       "month": "2026-07",
-       "sgd": 240144,
-       "units": 5718
-      },
-      {
-       "month": "2026-08",
-       "sgd": 227635,
-       "units": 5420
-      },
-      {
-       "month": "2026-09",
-       "sgd": 252674,
-       "units": 6016
-      }
-     ],
-     "deltaVsRaw": 99936,
-     "changedByCleaning": true
-    },
-    {
-     "country": "VN",
-     "product": "C",
-     "sgd12m": 1192772,
-     "sgdPrior12m": 1205293,
-     "yoy": -0.0104,
-     "units12m": 33,
-     "unitsPrior12m": 33,
-     "unitsYoy": -0.0104,
-     "sgd3m": 302192,
-     "sgdPrior3m": 191136,
-     "momentum": 0.581,
-     "momentumUnits": 0.581,
-     "series": [
-      {
-       "month": "2024-10",
-       "sgd": 143093,
-       "units": 4
-      },
-      {
-       "month": "2024-11",
-       "sgd": 148090,
-       "units": 4
-      },
-      {
-       "month": "2024-12",
-       "sgd": 393806,
+       "sgd": 288626,
        "units": 11
       },
       {
-       "month": "2025-01",
-       "sgd": 135639,
-       "units": 4
-      },
-      {
-       "month": "2025-02",
-       "sgd": 26480,
-       "units": 1
-      },
-      {
-       "month": "2025-03",
-       "sgd": 61594,
-       "units": 2
-      },
-      {
-       "month": "2025-04",
-       "sgd": 30430,
-       "units": 1
-      },
-      {
-       "month": "2025-05",
-       "sgd": 59164,
-       "units": 2
-      },
-      {
        "month": "2025-06",
-       "sgd": 15860,
-       "units": 0
-      },
-      {
-       "month": "2025-07",
-       "sgd": 28344,
-       "units": 1
-      },
-      {
-       "month": "2025-08",
-       "sgd": 91771,
+       "sgd": 88973,
        "units": 3
       },
       {
+       "month": "2025-07",
+       "sgd": 57216,
+       "units": 7
+      },
+      {
+       "month": "2025-08",
+       "sgd": 150820,
+       "units": 6
+      },
+      {
        "month": "2025-09",
-       "sgd": 71021,
-       "units": 2
+       "sgd": 112267,
+       "units": 7
       },
       {
        "month": "2025-10",
-       "sgd": 90770,
+       "sgd": 126128,
+       "units": 9
+      },
+      {
+       "month": "2025-11",
+       "sgd": 194176,
+       "units": 10
+      },
+      {
+       "month": "2025-12",
+       "sgd": 518058,
+       "units": 19
+      },
+      {
+       "month": "2026-01",
+       "sgd": 52507,
+       "units": 7
+      },
+      {
+       "month": "2026-02",
+       "sgd": 201043,
+       "units": 9
+      },
+      {
+       "month": "2026-03",
+       "sgd": 129293,
+       "units": 7
+      },
+      {
+       "month": "2026-04",
+       "sgd": 69812,
+       "units": 9
+      },
+      {
+       "month": "2026-05",
+       "sgd": 181046,
+       "units": 9
+      },
+      {
+       "month": "2026-06",
+       "sgd": 378461,
+       "units": 9
+      },
+      {
+       "month": "2026-07",
+       "sgd": 108936,
+       "units": 7
+      },
+      {
+       "month": "2026-08",
+       "sgd": 221603,
+       "units": 12
+      },
+      {
+       "month": "2026-09",
+       "sgd": 213922,
+       "units": 12
+      }
+     ],
+     "deltaVsRaw": 0,
+     "changedByCleaning": false
+    },
+    {
+     "country": "TH",
+     "product": "A",
+     "sgd12m": 6018176,
+     "sgdPrior12m": 5680860,
+     "yoy": 0.0594,
+     "units12m": 53510,
+     "unitsPrior12m": 50521,
+     "unitsYoy": 0.0592,
+     "sgd3m": 1728758,
+     "sgdPrior3m": 1666240,
+     "momentum": 0.0375,
+     "momentumUnits": 0.0471,
+     "series": [
+      {
+       "month": "2024-10",
+       "sgd": 515373,
+       "units": 4656
+      },
+      {
+       "month": "2024-11",
+       "sgd": 407605,
+       "units": 3559
+      },
+      {
+       "month": "2024-12",
+       "sgd": 366560,
+       "units": 3261
+      },
+      {
+       "month": "2025-01",
+       "sgd": 518839,
+       "units": 4588
+      },
+      {
+       "month": "2025-02",
+       "sgd": 429563,
+       "units": 3884
+      },
+      {
+       "month": "2025-03",
+       "sgd": 425111,
+       "units": 3775
+      },
+      {
+       "month": "2025-04",
+       "sgd": 364425,
+       "units": 3425
+      },
+      {
+       "month": "2025-05",
+       "sgd": 523308,
+       "units": 4498
+      },
+      {
+       "month": "2025-06",
+       "sgd": 463836,
+       "units": 4263
+      },
+      {
+       "month": "2025-07",
+       "sgd": 570364,
+       "units": 5046
+      },
+      {
+       "month": "2025-08",
+       "sgd": 567458,
+       "units": 4806
+      },
+      {
+       "month": "2025-09",
+       "sgd": 528419,
+       "units": 4760
+      },
+      {
+       "month": "2025-10",
+       "sgd": 476622,
+       "units": 4137
+      },
+      {
+       "month": "2025-11",
+       "sgd": 474424,
+       "units": 4333
+      },
+      {
+       "month": "2025-12",
+       "sgd": 426066,
+       "units": 3799
+      },
+      {
+       "month": "2026-01",
+       "sgd": 483111,
+       "units": 4159
+      },
+      {
+       "month": "2026-02",
+       "sgd": 468085,
+       "units": 4204
+      },
+      {
+       "month": "2026-03",
+       "sgd": 476376,
+       "units": 4308
+      },
+      {
+       "month": "2026-04",
+       "sgd": 409165,
+       "units": 3718
+      },
+      {
+       "month": "2026-05",
+       "sgd": 474321,
+       "units": 4427
+      },
+      {
+       "month": "2026-06",
+       "sgd": 601249,
+       "units": 5125
+      },
+      {
+       "month": "2026-07",
+       "sgd": 595980,
+       "units": 5180
+      },
+      {
+       "month": "2026-08",
+       "sgd": 597185,
+       "units": 5303
+      },
+      {
+       "month": "2026-09",
+       "sgd": 535593,
+       "units": 4817
+      }
+     ],
+     "deltaVsRaw": 275994,
+     "changedByCleaning": true
+    },
+    {
+     "country": "TH",
+     "product": "B",
+     "sgd12m": 2166164,
+     "sgdPrior12m": 2109286,
+     "yoy": 0.027,
+     "units12m": 188669,
+     "unitsPrior12m": 184462,
+     "unitsYoy": 0.0228,
+     "sgd3m": 615517,
+     "sgdPrior3m": 610429,
+     "momentum": 0.0083,
+     "momentumUnits": 0.0012,
+     "series": [
+      {
+       "month": "2024-10",
+       "sgd": 181352,
+       "units": 16383
+      },
+      {
+       "month": "2024-11",
+       "sgd": 161341,
+       "units": 14295
+      },
+      {
+       "month": "2024-12",
+       "sgd": 133656,
+       "units": 10830
+      },
+      {
+       "month": "2025-01",
+       "sgd": 203081,
+       "units": 17989
+      },
+      {
+       "month": "2025-02",
+       "sgd": 152523,
+       "units": 13498
+      },
+      {
+       "month": "2025-03",
+       "sgd": 199252,
+       "units": 16003
+      },
+      {
+       "month": "2025-04",
+       "sgd": 140422,
+       "units": 13357
+      },
+      {
+       "month": "2025-05",
+       "sgd": 182910,
+       "units": 15236
+      },
+      {
+       "month": "2025-06",
+       "sgd": 144320,
+       "units": 12590
+      },
+      {
+       "month": "2025-07",
+       "sgd": 207228,
+       "units": 18438
+      },
+      {
+       "month": "2025-08",
+       "sgd": 186142,
+       "units": 16571
+      },
+      {
+       "month": "2025-09",
+       "sgd": 217059,
+       "units": 19272
+      },
+      {
+       "month": "2025-10",
+       "sgd": 176972,
+       "units": 15053
+      },
+      {
+       "month": "2025-11",
+       "sgd": 169584,
+       "units": 14600
+      },
+      {
+       "month": "2025-12",
+       "sgd": 145078,
+       "units": 12613
+      },
+      {
+       "month": "2026-01",
+       "sgd": 176673,
+       "units": 15222
+      },
+      {
+       "month": "2026-02",
+       "sgd": 191397,
+       "units": 16076
+      },
+      {
+       "month": "2026-03",
+       "sgd": 185962,
+       "units": 17236
+      },
+      {
+       "month": "2026-04",
+       "sgd": 154497,
+       "units": 13245
+      },
+      {
+       "month": "2026-05",
+       "sgd": 170218,
+       "units": 14719
+      },
+      {
+       "month": "2026-06",
+       "sgd": 180267,
+       "units": 15558
+      },
+      {
+       "month": "2026-07",
+       "sgd": 181462,
+       "units": 15906
+      },
+      {
+       "month": "2026-08",
+       "sgd": 208746,
+       "units": 18168
+      },
+      {
+       "month": "2026-09",
+       "sgd": 225310,
+       "units": 20273
+      }
+     ],
+     "deltaVsRaw": -275994,
+     "changedByCleaning": true
+    },
+    {
+     "country": "TH",
+     "product": "C",
+     "sgd12m": 1850208,
+     "sgdPrior12m": 1900628,
+     "yoy": -0.0265,
+     "units12m": 100,
+     "unitsPrior12m": 89,
+     "unitsYoy": 0.1236,
+     "sgd3m": 704201,
+     "sgdPrior3m": 672702,
+     "momentum": 0.0468,
+     "momentumUnits": 0.4,
+     "series": [
+      {
+       "month": "2024-10",
+       "sgd": 201294,
+       "units": 9
+      },
+      {
+       "month": "2024-11",
+       "sgd": 58551,
+       "units": 6
+      },
+      {
+       "month": "2024-12",
+       "sgd": 211082,
+       "units": 13
+      },
+      {
+       "month": "2025-01",
+       "sgd": 113229,
+       "units": 10
+      },
+      {
+       "month": "2025-02",
+       "sgd": 82509,
+       "units": 4
+      },
+      {
+       "month": "2025-03",
+       "sgd": 175334,
+       "units": 4
+      },
+      {
+       "month": "2025-04",
+       "sgd": 101094,
+       "units": 3
+      },
+      {
+       "month": "2025-05",
+       "sgd": 132265,
+       "units": 6
+      },
+      {
+       "month": "2025-06",
+       "sgd": 152568,
+       "units": 9
+      },
+      {
+       "month": "2025-07",
+       "sgd": 73321,
+       "units": 4
+      },
+      {
+       "month": "2025-08",
+       "sgd": 249951,
+       "units": 10
+      },
+      {
+       "month": "2025-09",
+       "sgd": 349429,
+       "units": 11
+      },
+      {
+       "month": "2025-10",
+       "sgd": 62712,
        "units": 3
       },
       {
        "month": "2025-11",
-       "sgd": 116480,
-       "units": 3
-      },
-      {
-       "month": "2025-12",
-       "sgd": 260038,
+       "sgd": 90944,
        "units": 7
       },
       {
+       "month": "2025-12",
+       "sgd": 129053,
+       "units": 9
+      },
+      {
        "month": "2026-01",
-       "sgd": 147921,
+       "sgd": 27827,
        "units": 4
       },
       {
        "month": "2026-02",
-       "sgd": 32896,
-       "units": 1
+       "sgd": 276498,
+       "units": 11
       },
       {
        "month": "2026-03",
-       "sgd": 55164,
-       "units": 2
+       "sgd": 153185,
+       "units": 6
       },
       {
        "month": "2026-04",
-       "sgd": 40663,
-       "units": 1
+       "sgd": 134112,
+       "units": 11
       },
       {
        "month": "2026-05",
-       "sgd": 64222,
-       "units": 2
+       "sgd": 190767,
+       "units": 8
       },
       {
        "month": "2026-06",
-       "sgd": 82427,
-       "units": 2
+       "sgd": 80908,
+       "units": 6
       },
       {
        "month": "2026-07",
-       "sgd": 88348,
-       "units": 2
+       "sgd": 154218,
+       "units": 12
       },
       {
        "month": "2026-08",
-       "sgd": 133894,
+       "sgd": 417880,
+       "units": 13
+      },
+      {
+       "month": "2026-09",
+       "sgd": 132103,
+       "units": 10
+      }
+     ],
+     "deltaVsRaw": 0,
+     "changedByCleaning": false
+    },
+    {
+     "country": "VN",
+     "product": "A",
+     "sgd12m": 5757960,
+     "sgdPrior12m": 4769263,
+     "yoy": 0.2073,
+     "units12m": 50226,
+     "unitsPrior12m": 42258,
+     "unitsYoy": 0.1886,
+     "sgd3m": 1729989,
+     "sgdPrior3m": 1317490,
+     "momentum": 0.3131,
+     "momentumUnits": 0.2824,
+     "series": [
+      {
+       "month": "2024-10",
+       "sgd": 472985,
+       "units": 4236
+      },
+      {
+       "month": "2024-11",
+       "sgd": 436241,
+       "units": 3859
+      },
+      {
+       "month": "2024-12",
+       "sgd": 305746,
+       "units": 2746
+      },
+      {
+       "month": "2025-01",
+       "sgd": 363556,
+       "units": 3112
+      },
+      {
+       "month": "2025-02",
+       "sgd": 356894,
+       "units": 3153
+      },
+      {
+       "month": "2025-03",
+       "sgd": 349745,
+       "units": 3172
+      },
+      {
+       "month": "2025-04",
+       "sgd": 380564,
+       "units": 3250
+      },
+      {
+       "month": "2025-05",
+       "sgd": 391405,
+       "units": 3463
+      },
+      {
+       "month": "2025-06",
+       "sgd": 394636,
+       "units": 3570
+      },
+      {
+       "month": "2025-07",
+       "sgd": 491192,
+       "units": 4365
+      },
+      {
+       "month": "2025-08",
+       "sgd": 392028,
+       "units": 3233
+      },
+      {
+       "month": "2025-09",
+       "sgd": 434270,
+       "units": 4099
+      },
+      {
+       "month": "2025-10",
+       "sgd": 488941,
+       "units": 4130
+      },
+      {
+       "month": "2025-11",
+       "sgd": 384843,
+       "units": 3460
+      },
+      {
+       "month": "2025-12",
+       "sgd": 374517,
+       "units": 3173
+      },
+      {
+       "month": "2026-01",
+       "sgd": 489409,
+       "units": 4474
+      },
+      {
+       "month": "2026-02",
+       "sgd": 334078,
+       "units": 2744
+      },
+      {
+       "month": "2026-03",
+       "sgd": 506508,
+       "units": 4393
+      },
+      {
+       "month": "2026-04",
+       "sgd": 421510,
+       "units": 3643
+      },
+      {
+       "month": "2026-05",
+       "sgd": 445822,
+       "units": 3954
+      },
+      {
+       "month": "2026-06",
+       "sgd": 582343,
+       "units": 5255
+      },
+      {
+       "month": "2026-07",
+       "sgd": 600965,
+       "units": 5069
+      },
+      {
+       "month": "2026-08",
+       "sgd": 563199,
+       "units": 4904
+      },
+      {
+       "month": "2026-09",
+       "sgd": 565824,
+       "units": 5027
+      }
+     ],
+     "deltaVsRaw": 384660,
+     "changedByCleaning": true
+    },
+    {
+     "country": "VN",
+     "product": "B",
+     "sgd12m": 2007240,
+     "sgdPrior12m": 1750962,
+     "yoy": 0.1464,
+     "units12m": 184872,
+     "unitsPrior12m": 159655,
+     "unitsYoy": 0.1579,
+     "sgd3m": 572513,
+     "sgdPrior3m": 476534,
+     "momentum": 0.2014,
+     "momentumUnits": 0.2057,
+     "series": [
+      {
+       "month": "2024-10",
+       "sgd": 176403,
+       "units": 15696
+      },
+      {
+       "month": "2024-11",
+       "sgd": 137956,
+       "units": 12117
+      },
+      {
+       "month": "2024-12",
+       "sgd": 135191,
+       "units": 12685
+      },
+      {
+       "month": "2025-01",
+       "sgd": 114856,
+       "units": 10213
+      },
+      {
+       "month": "2025-02",
+       "sgd": 127629,
+       "units": 11650
+      },
+      {
+       "month": "2025-03",
+       "sgd": 154136,
+       "units": 14246
+      },
+      {
+       "month": "2025-04",
+       "sgd": 142738,
+       "units": 13390
+      },
+      {
+       "month": "2025-05",
+       "sgd": 144859,
+       "units": 13266
+      },
+      {
+       "month": "2025-06",
+       "sgd": 140661,
+       "units": 13164
+      },
+      {
+       "month": "2025-07",
+       "sgd": 163589,
+       "units": 14906
+      },
+      {
+       "month": "2025-08",
+       "sgd": 159813,
+       "units": 14533
+      },
+      {
+       "month": "2025-09",
+       "sgd": 153132,
+       "units": 13789
+      },
+      {
+       "month": "2025-10",
+       "sgd": 187791,
+       "units": 17573
+      },
+      {
+       "month": "2025-11",
+       "sgd": 138859,
+       "units": 12653
+      },
+      {
+       "month": "2025-12",
+       "sgd": 148499,
+       "units": 13220
+      },
+      {
+       "month": "2026-01",
+       "sgd": 142345,
+       "units": 14065
+      },
+      {
+       "month": "2026-02",
+       "sgd": 124348,
+       "units": 11272
+      },
+      {
+       "month": "2026-03",
+       "sgd": 189059,
+       "units": 16458
+      },
+      {
+       "month": "2026-04",
+       "sgd": 154931,
+       "units": 15251
+      },
+      {
+       "month": "2026-05",
+       "sgd": 169191,
+       "units": 14693
+      },
+      {
+       "month": "2026-06",
+       "sgd": 179705,
+       "units": 17565
+      },
+      {
+       "month": "2026-07",
+       "sgd": 200653,
+       "units": 17903
+      },
+      {
+       "month": "2026-08",
+       "sgd": 186949,
+       "units": 16740
+      },
+      {
+       "month": "2026-09",
+       "sgd": 184911,
+       "units": 17479
+      }
+     ],
+     "deltaVsRaw": 29407,
+     "changedByCleaning": true
+    },
+    {
+     "country": "VN",
+     "product": "C",
+     "sgd12m": 1510332,
+     "sgdPrior12m": 1995046,
+     "yoy": -0.243,
+     "units12m": 76,
+     "unitsPrior12m": 66,
+     "unitsYoy": 0.1515,
+     "sgd3m": 321928,
+     "sgdPrior3m": 321426,
+     "momentum": 0.0016,
+     "momentumUnits": -0.3125,
+     "series": [
+      {
+       "month": "2024-10",
+       "sgd": 240782,
+       "units": 5
+      },
+      {
+       "month": "2024-11",
+       "sgd": 236590,
+       "units": 4
+      },
+      {
+       "month": "2024-12",
+       "sgd": 540233,
+       "units": 13
+      },
+      {
+       "month": "2025-01",
+       "sgd": 36522,
+       "units": 5
+      },
+      {
+       "month": "2025-02",
+       "sgd": 138338,
+       "units": 4
+      },
+      {
+       "month": "2025-03",
+       "sgd": 92188,
+       "units": 3
+      },
+      {
+       "month": "2025-04",
+       "sgd": 154475,
+       "units": 2
+      },
+      {
+       "month": "2025-05",
+       "sgd": 166631,
+       "units": 6
+      },
+      {
+       "month": "2025-06",
+       "sgd": 67863,
+       "units": 8
+      },
+      {
+       "month": "2025-07",
+       "sgd": 63918,
+       "units": 9
+      },
+      {
+       "month": "2025-08",
+       "sgd": 242518,
+       "units": 6
+      },
+      {
+       "month": "2025-09",
+       "sgd": 14990,
+       "units": 1
+      },
+      {
+       "month": "2025-10",
+       "sgd": 147752,
+       "units": 8
+      },
+      {
+       "month": "2025-11",
+       "sgd": 216845,
+       "units": 10
+      },
+      {
+       "month": "2025-12",
+       "sgd": 281282,
+       "units": 8
+      },
+      {
+       "month": "2026-01",
+       "sgd": 84060,
+       "units": 8
+      },
+      {
+       "month": "2026-02",
+       "sgd": 16558,
+       "units": 3
+      },
+      {
+       "month": "2026-03",
+       "sgd": 75532,
+       "units": 4
+      },
+      {
+       "month": "2026-04",
+       "sgd": 116902,
+       "units": 8
+      },
+      {
+       "month": "2026-05",
+       "sgd": 78420,
+       "units": 6
+      },
+      {
+       "month": "2026-06",
+       "sgd": 171051,
+       "units": 10
+      },
+      {
+       "month": "2026-07",
+       "sgd": 212237,
+       "units": 3
+      },
+      {
+       "month": "2026-08",
+       "sgd": 73622,
        "units": 4
       },
       {
        "month": "2026-09",
-       "sgd": 79951,
-       "units": 2
+       "sgd": 36070,
+       "units": 4
       }
      ],
      "deltaVsRaw": 0,
@@ -4730,412 +4730,412 @@
     {
      "country": "MM",
      "product": "A",
-     "sgd12m": 2103288,
-     "sgdPrior12m": 1994715,
-     "yoy": 0.0544,
-     "units12m": 11369,
-     "unitsPrior12m": 10782,
-     "unitsYoy": 0.0544,
-     "sgd3m": 663499,
-     "sgdPrior3m": 634146,
-     "momentum": 0.0463,
-     "momentumUnits": 0.0463,
+     "sgd12m": 1982450,
+     "sgdPrior12m": 2178263,
+     "yoy": -0.0899,
+     "units12m": 18365,
+     "unitsPrior12m": 20021,
+     "unitsYoy": -0.0827,
+     "sgd3m": 580967,
+     "sgdPrior3m": 591468,
+     "momentum": -0.0178,
+     "momentumUnits": -0.0129,
      "series": [
       {
        "month": "2024-10",
-       "sgd": 118928,
-       "units": 643
+       "sgd": 191681,
+       "units": 1762
       },
       {
        "month": "2024-11",
-       "sgd": 134142,
-       "units": 725
+       "sgd": 172899,
+       "units": 1305
       },
       {
        "month": "2024-12",
-       "sgd": 144814,
-       "units": 783
+       "sgd": 166165,
+       "units": 1689
       },
       {
        "month": "2025-01",
-       "sgd": 136024,
-       "units": 735
+       "sgd": 212385,
+       "units": 1839
       },
       {
        "month": "2025-02",
-       "sgd": 157803,
-       "units": 853
+       "sgd": 163047,
+       "units": 1556
       },
       {
        "month": "2025-03",
-       "sgd": 173690,
-       "units": 939
+       "sgd": 157410,
+       "units": 1588
       },
       {
        "month": "2025-04",
-       "sgd": 115692,
-       "units": 625
+       "sgd": 171748,
+       "units": 1557
       },
       {
        "month": "2025-05",
-       "sgd": 140644,
-       "units": 760
+       "sgd": 186777,
+       "units": 1720
       },
       {
        "month": "2025-06",
-       "sgd": 238832,
-       "units": 1291
+       "sgd": 164684,
+       "units": 1587
       },
       {
        "month": "2025-07",
-       "sgd": 265497,
-       "units": 1435
+       "sgd": 227543,
+       "units": 1965
       },
       {
        "month": "2025-08",
-       "sgd": 212880,
-       "units": 1151
+       "sgd": 169293,
+       "units": 1567
       },
       {
        "month": "2025-09",
-       "sgd": 155769,
-       "units": 842
+       "sgd": 194631,
+       "units": 1886
       },
       {
        "month": "2025-10",
-       "sgd": 175552,
-       "units": 949
+       "sgd": 180225,
+       "units": 1617
       },
       {
        "month": "2025-11",
-       "sgd": 133415,
-       "units": 721
+       "sgd": 146124,
+       "units": 1450
       },
       {
        "month": "2025-12",
-       "sgd": 138425,
-       "units": 748
+       "sgd": 141942,
+       "units": 1212
       },
       {
        "month": "2026-01",
-       "sgd": 149493,
-       "units": 808
+       "sgd": 164775,
+       "units": 1571
       },
       {
        "month": "2026-02",
-       "sgd": 148778,
-       "units": 804
+       "sgd": 125627,
+       "units": 1193
       },
       {
        "month": "2026-03",
-       "sgd": 165876,
-       "units": 897
+       "sgd": 169514,
+       "units": 1617
       },
       {
        "month": "2026-04",
-       "sgd": 135390,
-       "units": 732
+       "sgd": 112539,
+       "units": 1036
       },
       {
        "month": "2026-05",
-       "sgd": 134511,
-       "units": 727
+       "sgd": 162633,
+       "units": 1346
       },
       {
        "month": "2026-06",
-       "sgd": 258349,
-       "units": 1396
+       "sgd": 198103,
+       "units": 1975
       },
       {
        "month": "2026-07",
-       "sgd": 237429,
-       "units": 1283
+       "sgd": 207358,
+       "units": 1762
       },
       {
        "month": "2026-08",
-       "sgd": 275209,
-       "units": 1488
+       "sgd": 179231,
+       "units": 1683
       },
       {
        "month": "2026-09",
-       "sgd": 150861,
-       "units": 815
+       "sgd": 194378,
+       "units": 1903
       }
      ],
-     "deltaVsRaw": 0,
-     "changedByCleaning": false
+     "deltaVsRaw": 8777,
+     "changedByCleaning": true
     },
     {
      "country": "MM",
      "product": "B",
-     "sgd12m": 901370,
-     "sgdPrior12m": 899483,
-     "yoy": 0.0021,
-     "units12m": 21461,
-     "unitsPrior12m": 21416,
-     "unitsYoy": 0.0021,
-     "sgd3m": 250923,
-     "sgdPrior3m": 243951,
-     "momentum": 0.0286,
-     "momentumUnits": 0.0286,
+     "sgd12m": 788772,
+     "sgdPrior12m": 877363,
+     "yoy": -0.101,
+     "units12m": 62328,
+     "unitsPrior12m": 69527,
+     "unitsYoy": -0.1035,
+     "sgd3m": 199677,
+     "sgdPrior3m": 218934,
+     "momentum": -0.088,
+     "momentumUnits": -0.0635,
      "series": [
       {
        "month": "2024-10",
-       "sgd": 72588,
-       "units": 1728
+       "sgd": 78694,
+       "units": 6616
       },
       {
        "month": "2024-11",
-       "sgd": 70167,
-       "units": 1671
+       "sgd": 64562,
+       "units": 5512
       },
       {
        "month": "2024-12",
-       "sgd": 65616,
-       "units": 1562
+       "sgd": 58060,
+       "units": 3640
       },
       {
        "month": "2025-01",
-       "sgd": 77207,
-       "units": 1838
+       "sgd": 94394,
+       "units": 7861
       },
       {
        "month": "2025-02",
-       "sgd": 66902,
-       "units": 1593
+       "sgd": 63123,
+       "units": 4842
       },
       {
        "month": "2025-03",
-       "sgd": 87120,
-       "units": 2074
+       "sgd": 96247,
+       "units": 7814
       },
       {
        "month": "2025-04",
-       "sgd": 60510,
-       "units": 1441
+       "sgd": 58755,
+       "units": 4520
       },
       {
        "month": "2025-05",
-       "sgd": 66398,
-       "units": 1581
+       "sgd": 74990,
+       "units": 6124
       },
       {
        "month": "2025-06",
-       "sgd": 89024,
-       "units": 2120
+       "sgd": 69604,
+       "units": 5285
       },
       {
        "month": "2025-07",
-       "sgd": 82332,
-       "units": 1960
+       "sgd": 72692,
+       "units": 5267
       },
       {
        "month": "2025-08",
-       "sgd": 83375,
-       "units": 1985
+       "sgd": 73051,
+       "units": 5743
       },
       {
        "month": "2025-09",
-       "sgd": 78244,
-       "units": 1863
+       "sgd": 73191,
+       "units": 6303
       },
       {
        "month": "2025-10",
-       "sgd": 64839,
-       "units": 1544
+       "sgd": 86118,
+       "units": 6554
       },
       {
        "month": "2025-11",
-       "sgd": 57216,
-       "units": 1362
+       "sgd": 60729,
+       "units": 5192
       },
       {
        "month": "2025-12",
-       "sgd": 80236,
-       "units": 1910
+       "sgd": 61452,
+       "units": 4571
       },
       {
        "month": "2026-01",
-       "sgd": 85783,
-       "units": 2042
+       "sgd": 62590,
+       "units": 5119
       },
       {
        "month": "2026-02",
-       "sgd": 69111,
-       "units": 1646
+       "sgd": 53419,
+       "units": 4468
       },
       {
        "month": "2026-03",
-       "sgd": 75636,
-       "units": 1801
+       "sgd": 78832,
+       "units": 5980
       },
       {
        "month": "2026-04",
-       "sgd": 59497,
-       "units": 1417
+       "sgd": 36770,
+       "units": 3165
       },
       {
        "month": "2026-05",
-       "sgd": 70309,
-       "units": 1674
+       "sgd": 72539,
+       "units": 4921
       },
       {
        "month": "2026-06",
-       "sgd": 87821,
-       "units": 2091
+       "sgd": 76646,
+       "units": 6145
       },
       {
        "month": "2026-07",
-       "sgd": 81433,
-       "units": 1939
+       "sgd": 76480,
+       "units": 5938
       },
       {
        "month": "2026-08",
-       "sgd": 93771,
-       "units": 2233
+       "sgd": 61210,
+       "units": 5203
       },
       {
        "month": "2026-09",
-       "sgd": 75718,
-       "units": 1803
+       "sgd": 61987,
+       "units": 5072
       }
      ],
-     "deltaVsRaw": 0,
-     "changedByCleaning": false
+     "deltaVsRaw": -8777,
+     "changedByCleaning": true
     },
     {
      "country": "MM",
      "product": "C",
-     "sgd12m": 494653,
-     "sgdPrior12m": 600293,
-     "yoy": -0.176,
-     "units12m": 14,
-     "unitsPrior12m": 17,
-     "unitsYoy": -0.176,
-     "sgd3m": 118508,
-     "sgdPrior3m": 151269,
-     "momentum": -0.2166,
-     "momentumUnits": -0.2166,
+     "sgd12m": 552328,
+     "sgdPrior12m": 621438,
+     "yoy": -0.1112,
+     "units12m": 30,
+     "unitsPrior12m": 33,
+     "unitsYoy": -0.0909,
+     "sgd3m": 160960,
+     "sgdPrior3m": 117757,
+     "momentum": 0.3669,
+     "momentumUnits": 0.5,
      "series": [
       {
        "month": "2024-10",
-       "sgd": 21815,
-       "units": 1
+       "sgd": 65879,
+       "units": 2
       },
       {
        "month": "2024-11",
-       "sgd": 34954,
-       "units": 1
+       "sgd": 71308,
+       "units": 4
       },
       {
        "month": "2024-12",
-       "sgd": 13570,
-       "units": 0
+       "sgd": 8686,
+       "units": 1
       },
       {
        "month": "2025-01",
-       "sgd": 42052,
-       "units": 1
+       "sgd": 91137,
+       "units": 5
       },
       {
        "month": "2025-02",
-       "sgd": 82348,
-       "units": 2
+       "sgd": 100493,
+       "units": 6
       },
       {
        "month": "2025-03",
-       "sgd": 58039,
-       "units": 2
+       "sgd": 80378,
+       "units": 5
       },
       {
        "month": "2025-04",
-       "sgd": 47001,
-       "units": 1
+       "sgd": 51177,
+       "units": 2
       },
       {
        "month": "2025-05",
-       "sgd": 104346,
-       "units": 3
+       "sgd": 12621,
+       "units": 1
       },
       {
        "month": "2025-06",
-       "sgd": 44899,
+       "sgd": 22002,
        "units": 1
       },
       {
        "month": "2025-07",
-       "sgd": 55089,
-       "units": 2
-      },
-      {
-       "month": "2025-08",
-       "sgd": 66898,
-       "units": 2
-      },
-      {
-       "month": "2025-09",
-       "sgd": 29282,
+       "sgd": 21767,
        "units": 1
       },
       {
+       "month": "2025-08",
+       "sgd": 0,
+       "units": 0
+      },
+      {
+       "month": "2025-09",
+       "sgd": 95990,
+       "units": 5
+      },
+      {
        "month": "2025-10",
-       "sgd": 54708,
-       "units": 2
+       "sgd": 8419,
+       "units": 1
       },
       {
        "month": "2025-11",
-       "sgd": 28992,
+       "sgd": 10039,
        "units": 1
       },
       {
        "month": "2025-12",
-       "sgd": 43732,
+       "sgd": 11847,
        "units": 1
       },
       {
        "month": "2026-01",
-       "sgd": 90465,
+       "sgd": 26338,
        "units": 3
       },
       {
        "month": "2026-02",
-       "sgd": 35889,
-       "units": 1
+       "sgd": 35197,
+       "units": 5
       },
       {
        "month": "2026-03",
-       "sgd": 18669,
-       "units": 1
+       "sgd": 77968,
+       "units": 4
       },
       {
        "month": "2026-04",
-       "sgd": 18951,
+       "sgd": 10097,
        "units": 1
       },
       {
        "month": "2026-05",
-       "sgd": 63938,
-       "units": 2
+       "sgd": 194719,
+       "units": 3
       },
       {
        "month": "2026-06",
-       "sgd": 20801,
-       "units": 1
+       "sgd": 16745,
+       "units": 2
       },
       {
        "month": "2026-07",
-       "sgd": 62376,
+       "sgd": 43757,
        "units": 2
       },
       {
        "month": "2026-08",
-       "sgd": 22507,
-       "units": 1
+       "sgd": 73490,
+       "units": 4
       },
       {
        "month": "2026-09",
-       "sgd": 33625,
-       "units": 1
+       "sgd": 43713,
+       "units": 3
       }
      ],
      "deltaVsRaw": 0,
@@ -5145,526 +5145,526 @@
    "countryTotals": [
     {
      "key": "SG",
-     "sgd12m": 18267050,
-     "sgdPrior12m": 18212403,
-     "yoy": 0.003,
-     "momentum": -0.0353,
+     "sgd12m": 17107599,
+     "sgdPrior12m": 16694788,
+     "yoy": 0.0247,
+     "momentum": 0.0055,
      "series": [
       {
        "month": "2024-10",
-       "sgd": 2062520
+       "sgd": 1469462
       },
       {
        "month": "2024-11",
-       "sgd": 1399272
+       "sgd": 1218175
       },
       {
        "month": "2024-12",
-       "sgd": 1292540
+       "sgd": 1232176
       },
       {
        "month": "2025-01",
-       "sgd": 1171747
+       "sgd": 1269885
       },
       {
        "month": "2025-02",
-       "sgd": 1044539
+       "sgd": 1123297
       },
       {
        "month": "2025-03",
-       "sgd": 1458452
+       "sgd": 1716010
       },
       {
        "month": "2025-04",
-       "sgd": 1441063
+       "sgd": 1153600
       },
       {
        "month": "2025-05",
-       "sgd": 1626568
+       "sgd": 1448090
       },
       {
        "month": "2025-06",
-       "sgd": 1530849
+       "sgd": 1460149
       },
       {
        "month": "2025-07",
-       "sgd": 1619492
+       "sgd": 1768617
       },
       {
        "month": "2025-08",
-       "sgd": 1708322
+       "sgd": 1433322
       },
       {
        "month": "2025-09",
-       "sgd": 1857039
+       "sgd": 1402006
       },
       {
        "month": "2025-10",
-       "sgd": 1445617
+       "sgd": 1253422
       },
       {
        "month": "2025-11",
-       "sgd": 1321563
+       "sgd": 1178369
       },
       {
        "month": "2025-12",
-       "sgd": 1468613
+       "sgd": 1253072
       },
       {
        "month": "2026-01",
-       "sgd": 1507204
+       "sgd": 1447505
       },
       {
        "month": "2026-02",
-       "sgd": 1163506
+       "sgd": 1611436
       },
       {
        "month": "2026-03",
-       "sgd": 1755297
+       "sgd": 1530499
       },
       {
        "month": "2026-04",
-       "sgd": 1538047
+       "sgd": 1200361
       },
       {
        "month": "2026-05",
-       "sgd": 1436003
+       "sgd": 1334236
       },
       {
        "month": "2026-06",
-       "sgd": 1629441
+       "sgd": 1669651
       },
       {
        "month": "2026-07",
-       "sgd": 1826506
+       "sgd": 1729493
       },
       {
        "month": "2026-08",
-       "sgd": 1661176
+       "sgd": 1336269
       },
       {
        "month": "2026-09",
-       "sgd": 1514076
+       "sgd": 1563286
       }
      ]
     },
     {
      "key": "MY",
-     "sgd12m": 15186873,
-     "sgdPrior12m": 14813017,
-     "yoy": 0.0252,
-     "momentum": 0.1304,
+     "sgd12m": 13700761,
+     "sgdPrior12m": 12823480,
+     "yoy": 0.0684,
+     "momentum": 0.1273,
      "series": [
       {
        "month": "2024-10",
-       "sgd": 1307817
+       "sgd": 1095185
       },
       {
        "month": "2024-11",
-       "sgd": 1429755
+       "sgd": 1134511
       },
       {
        "month": "2024-12",
-       "sgd": 1346508
+       "sgd": 957554
       },
       {
        "month": "2025-01",
-       "sgd": 1304041
+       "sgd": 1063930
       },
       {
        "month": "2025-02",
-       "sgd": 931640
+       "sgd": 1139411
       },
       {
        "month": "2025-03",
-       "sgd": 1537500
+       "sgd": 1142066
       },
       {
        "month": "2025-04",
-       "sgd": 1163219
+       "sgd": 1007052
       },
       {
        "month": "2025-05",
-       "sgd": 1242315
+       "sgd": 1130510
       },
       {
        "month": "2025-06",
-       "sgd": 1129991
+       "sgd": 963137
       },
       {
        "month": "2025-07",
-       "sgd": 1135362
+       "sgd": 1132501
       },
       {
        "month": "2025-08",
-       "sgd": 1150270
+       "sgd": 1060188
       },
       {
        "month": "2025-09",
-       "sgd": 1134598
+       "sgd": 997433
       },
       {
        "month": "2025-10",
-       "sgd": 1085048
+       "sgd": 1070437
       },
       {
        "month": "2025-11",
-       "sgd": 1410245
+       "sgd": 1073397
       },
       {
        "month": "2025-12",
-       "sgd": 1577671
+       "sgd": 1323088
       },
       {
        "month": "2026-01",
-       "sgd": 1278477
+       "sgd": 1008162
       },
       {
        "month": "2026-02",
-       "sgd": 1053512
+       "sgd": 1021579
       },
       {
        "month": "2026-03",
-       "sgd": 1244587
+       "sgd": 1096217
       },
       {
        "month": "2026-04",
-       "sgd": 1299081
+       "sgd": 1050344
       },
       {
        "month": "2026-05",
-       "sgd": 1085118
+       "sgd": 1091136
       },
       {
        "month": "2026-06",
-       "sgd": 1286736
+       "sgd": 1370097
       },
       {
        "month": "2026-07",
-       "sgd": 1308602
+       "sgd": 1158385
       },
       {
        "month": "2026-08",
-       "sgd": 1221124
+       "sgd": 1174679
       },
       {
        "month": "2026-09",
-       "sgd": 1336673
+       "sgd": 1263240
       }
      ]
     },
     {
      "key": "TH",
-     "sgd12m": 9780571,
-     "sgdPrior12m": 8878509,
-     "yoy": 0.1016,
-     "momentum": 0.0138,
+     "sgd12m": 10034548,
+     "sgdPrior12m": 9690774,
+     "yoy": 0.0355,
+     "momentum": 0.0336,
      "series": [
       {
        "month": "2024-10",
-       "sgd": 667340
+       "sgd": 898019
       },
       {
        "month": "2024-11",
-       "sgd": 568356
+       "sgd": 627497
       },
       {
        "month": "2024-12",
-       "sgd": 545203
+       "sgd": 711298
       },
       {
        "month": "2025-01",
-       "sgd": 664648
+       "sgd": 835150
       },
       {
        "month": "2025-02",
-       "sgd": 706773
+       "sgd": 664595
       },
       {
        "month": "2025-03",
-       "sgd": 530588
+       "sgd": 799697
       },
       {
        "month": "2025-04",
-       "sgd": 579999
+       "sgd": 605940
       },
       {
        "month": "2025-05",
-       "sgd": 700120
+       "sgd": 838482
       },
       {
        "month": "2025-06",
-       "sgd": 797702
+       "sgd": 760724
       },
       {
        "month": "2025-07",
-       "sgd": 979399
+       "sgd": 850913
       },
       {
        "month": "2025-08",
-       "sgd": 1002043
+       "sgd": 1003551
       },
       {
        "month": "2025-09",
-       "sgd": 1136338
+       "sgd": 1094907
       },
       {
        "month": "2025-10",
-       "sgd": 806382
+       "sgd": 716306
       },
       {
        "month": "2025-11",
-       "sgd": 786884
+       "sgd": 734951
       },
       {
        "month": "2025-12",
-       "sgd": 741340
+       "sgd": 700197
       },
       {
        "month": "2026-01",
-       "sgd": 627639
+       "sgd": 687612
       },
       {
        "month": "2026-02",
-       "sgd": 652766
+       "sgd": 935981
       },
       {
        "month": "2026-03",
-       "sgd": 690263
+       "sgd": 815522
       },
       {
        "month": "2026-04",
-       "sgd": 608440
+       "sgd": 697774
       },
       {
        "month": "2026-05",
-       "sgd": 771055
+       "sgd": 835306
       },
       {
        "month": "2026-06",
-       "sgd": 935022
+       "sgd": 862424
       },
       {
        "month": "2026-07",
-       "sgd": 992613
+       "sgd": 931660
       },
       {
        "month": "2026-08",
-       "sgd": 1115740
+       "sgd": 1223810
       },
       {
        "month": "2026-09",
-       "sgd": 1052427
+       "sgd": 893005
       }
      ]
     },
     {
      "key": "VN",
-     "sgd12m": 8928958,
-     "sgdPrior12m": 7684121,
-     "yoy": 0.162,
-     "momentum": 0.3882,
+     "sgd12m": 9275531,
+     "sgdPrior12m": 8515272,
+     "yoy": 0.0893,
+     "momentum": 0.2406,
      "series": [
       {
        "month": "2024-10",
-       "sgd": 795718
+       "sgd": 890170
       },
       {
        "month": "2024-11",
-       "sgd": 791820
+       "sgd": 810787
       },
       {
        "month": "2024-12",
-       "sgd": 880395
+       "sgd": 981169
       },
       {
        "month": "2025-01",
-       "sgd": 579885
+       "sgd": 514934
       },
       {
        "month": "2025-02",
-       "sgd": 351376
+       "sgd": 622861
       },
       {
        "month": "2025-03",
-       "sgd": 515762
+       "sgd": 596068
       },
       {
        "month": "2025-04",
-       "sgd": 503124
+       "sgd": 677777
       },
       {
        "month": "2025-05",
-       "sgd": 591565
+       "sgd": 702895
       },
       {
        "month": "2025-06",
-       "sgd": 481159
+       "sgd": 603160
       },
       {
        "month": "2025-07",
-       "sgd": 654277
+       "sgd": 718698
       },
       {
        "month": "2025-08",
-       "sgd": 800300
+       "sgd": 794359
       },
       {
        "month": "2025-09",
-       "sgd": 738740
+       "sgd": 602393
       },
       {
        "month": "2025-10",
-       "sgd": 810746
+       "sgd": 824484
       },
       {
        "month": "2025-11",
-       "sgd": 811948
+       "sgd": 740547
       },
       {
        "month": "2025-12",
-       "sgd": 786744
+       "sgd": 804298
       },
       {
        "month": "2026-01",
-       "sgd": 645268
+       "sgd": 715814
       },
       {
        "month": "2026-02",
-       "sgd": 414545
+       "sgd": 474984
       },
       {
        "month": "2026-03",
-       "sgd": 628293
+       "sgd": 771099
       },
       {
        "month": "2026-04",
-       "sgd": 568491
+       "sgd": 693343
       },
       {
        "month": "2026-05",
-       "sgd": 589344
+       "sgd": 693434
       },
       {
        "month": "2026-06",
-       "sgd": 628926
+       "sgd": 933099
       },
       {
        "month": "2026-07",
-       "sgd": 960392
+       "sgd": 1013854
       },
       {
        "month": "2026-08",
-       "sgd": 1063418
+       "sgd": 823770
       },
       {
        "month": "2026-09",
-       "sgd": 1020843
+       "sgd": 786805
       }
      ]
     },
     {
      "key": "MM",
-     "sgd12m": 3499311,
-     "sgdPrior12m": 3494491,
-     "yoy": 0.0014,
-     "momentum": 0.0035,
+     "sgd12m": 3323549,
+     "sgdPrior12m": 3677064,
+     "yoy": -0.0961,
+     "momentum": 0.0145,
      "series": [
       {
        "month": "2024-10",
-       "sgd": 213331
+       "sgd": 336254
       },
       {
        "month": "2024-11",
-       "sgd": 239262
+       "sgd": 308769
       },
       {
        "month": "2024-12",
-       "sgd": 224001
+       "sgd": 232911
       },
       {
        "month": "2025-01",
-       "sgd": 255283
+       "sgd": 397916
       },
       {
        "month": "2025-02",
-       "sgd": 307053
+       "sgd": 326663
       },
       {
        "month": "2025-03",
-       "sgd": 318849
+       "sgd": 334034
       },
       {
        "month": "2025-04",
-       "sgd": 223203
+       "sgd": 281681
       },
       {
        "month": "2025-05",
-       "sgd": 311387
+       "sgd": 274388
       },
       {
        "month": "2025-06",
-       "sgd": 372755
+       "sgd": 256289
       },
       {
        "month": "2025-07",
-       "sgd": 402918
+       "sgd": 322002
       },
       {
        "month": "2025-08",
-       "sgd": 363153
+       "sgd": 242344
       },
       {
        "month": "2025-09",
-       "sgd": 263295
+       "sgd": 363813
       },
       {
        "month": "2025-10",
-       "sgd": 295099
+       "sgd": 274762
       },
       {
        "month": "2025-11",
-       "sgd": 219622
+       "sgd": 216892
       },
       {
        "month": "2025-12",
-       "sgd": 262393
+       "sgd": 215242
       },
       {
        "month": "2026-01",
-       "sgd": 325741
+       "sgd": 253703
       },
       {
        "month": "2026-02",
-       "sgd": 253778
+       "sgd": 214242
       },
       {
        "month": "2026-03",
-       "sgd": 260181
+       "sgd": 326315
       },
       {
        "month": "2026-04",
-       "sgd": 213838
+       "sgd": 159405
       },
       {
        "month": "2026-05",
-       "sgd": 268759
+       "sgd": 429891
       },
       {
        "month": "2026-06",
-       "sgd": 366971
+       "sgd": 291494
       },
       {
        "month": "2026-07",
-       "sgd": 381239
+       "sgd": 327595
       },
       {
        "month": "2026-08",
-       "sgd": 391488
+       "sgd": 313932
       },
       {
        "month": "2026-09",
-       "sgd": 260204
+       "sgd": 300078
       }
      ]
     }
@@ -5672,429 +5672,429 @@
    "productTotals": [
     {
      "key": "A",
-     "sgd12m": 32106414,
-     "sgdPrior12m": 30239133,
-     "yoy": 0.0618,
-     "momentum": 0.1055,
-     "units12m": 173548,
+     "sgd12m": 31438154,
+     "sgdPrior12m": 30238331,
+     "yoy": 0.0397,
+     "momentum": 0.0747,
+     "units12m": 261047,
      "series": [
       {
        "month": "2024-10",
-       "sgd": 2988217
+       "sgd": 2816198
       },
       {
        "month": "2024-11",
-       "sgd": 2623015
+       "sgd": 2485339
       },
       {
        "month": "2024-12",
-       "sgd": 2296233
+       "sgd": 2063546
       },
       {
        "month": "2025-01",
-       "sgd": 2142367
+       "sgd": 2604348
       },
       {
        "month": "2025-02",
-       "sgd": 1982518
+       "sgd": 2270680
       },
       {
        "month": "2025-03",
-       "sgd": 2163552
+       "sgd": 2348926
       },
       {
        "month": "2025-04",
-       "sgd": 2284982
+       "sgd": 2350300
       },
       {
        "month": "2025-05",
-       "sgd": 2407470
+       "sgd": 2520357
       },
       {
        "month": "2025-06",
-       "sgd": 2730035
+       "sgd": 2548958
       },
       {
        "month": "2025-07",
-       "sgd": 2705626
+       "sgd": 2986410
       },
       {
        "month": "2025-08",
-       "sgd": 3037707
+       "sgd": 2642989
       },
       {
        "month": "2025-09",
-       "sgd": 2877409
+       "sgd": 2600281
       },
       {
        "month": "2025-10",
-       "sgd": 2697710
+       "sgd": 2618472
       },
       {
        "month": "2025-11",
-       "sgd": 2552784
+       "sgd": 2363496
       },
       {
        "month": "2025-12",
-       "sgd": 2388841
+       "sgd": 2177940
       },
       {
        "month": "2026-01",
-       "sgd": 2505015
+       "sgd": 2652263
       },
       {
        "month": "2026-02",
-       "sgd": 2193839
+       "sgd": 2182204
       },
       {
        "month": "2026-03",
-       "sgd": 2488083
+       "sgd": 2716337
       },
       {
        "month": "2026-04",
-       "sgd": 2327243
+       "sgd": 2368958
       },
       {
        "month": "2026-05",
-       "sgd": 2486147
+       "sgd": 2597265
       },
       {
        "month": "2026-06",
-       "sgd": 2936506
+       "sgd": 2916656
       },
       {
        "month": "2026-07",
-       "sgd": 3037295
+       "sgd": 3127328
       },
       {
        "month": "2026-08",
-       "sgd": 3332849
+       "sgd": 2794842
       },
       {
        "month": "2026-09",
-       "sgd": 3160102
+       "sgd": 2922392
       }
      ]
     },
     {
      "key": "B",
-     "sgd12m": 14448514,
-     "sgdPrior12m": 14075611,
-     "yoy": 0.0265,
-     "momentum": 0.0233,
-     "units12m": 344012,
+     "sgd12m": 12196111,
+     "sgdPrior12m": 11302777,
+     "yoy": 0.079,
+     "momentum": 0.0877,
+     "units12m": 997889,
      "series": [
       {
        "month": "2024-10",
-       "sgd": 1238296
+       "sgd": 1007249
       },
       {
        "month": "2024-11",
-       "sgd": 1186702
+       "sgd": 918884
       },
       {
        "month": "2024-12",
-       "sgd": 1243377
+       "sgd": 733572
       },
       {
        "month": "2025-01",
-       "sgd": 959900
+       "sgd": 942416
       },
       {
        "month": "2025-02",
-       "sgd": 924615
+       "sgd": 853082
       },
       {
        "month": "2025-03",
-       "sgd": 1205027
+       "sgd": 1065236
       },
       {
        "month": "2025-04",
-       "sgd": 1055621
+       "sgd": 864582
       },
       {
        "month": "2025-05",
-       "sgd": 1157512
+       "sgd": 951119
       },
       {
        "month": "2025-06",
-       "sgd": 1167291
+       "sgd": 878871
       },
       {
        "month": "2025-07",
-       "sgd": 1348126
+       "sgd": 1032638
       },
       {
        "month": "2025-08",
-       "sgd": 1214911
+       "sgd": 1008187
       },
       {
        "month": "2025-09",
-       "sgd": 1374233
+       "sgd": 1046940
       },
       {
        "month": "2025-10",
-       "sgd": 1083552
+       "sgd": 1029881
       },
       {
        "month": "2025-11",
-       "sgd": 1118392
+       "sgd": 922854
       },
       {
        "month": "2025-12",
-       "sgd": 1263822
+       "sgd": 861251
       },
       {
        "month": "2026-01",
-       "sgd": 1051053
+       "sgd": 984894
       },
       {
        "month": "2026-02",
-       "sgd": 971565
+       "sgd": 883463
       },
       {
        "month": "2026-03",
-       "sgd": 1350717
+       "sgd": 1123911
       },
       {
        "month": "2026-04",
-       "sgd": 1141947
+       "sgd": 964690
       },
       {
        "month": "2026-05",
-       "sgd": 1162451
+       "sgd": 995647
       },
       {
        "month": "2026-06",
-       "sgd": 1275910
+       "sgd": 1070897
       },
       {
        "month": "2026-07",
-       "sgd": 1324478
+       "sgd": 1125968
       },
       {
        "month": "2026-08",
-       "sgd": 1298605
+       "sgd": 1080836
       },
       {
        "month": "2026-09",
-       "sgd": 1406023
+       "sgd": 1151819
       }
      ]
     },
     {
      "key": "C",
-     "sgd12m": 9107836,
-     "sgdPrior12m": 8767797,
-     "yoy": 0.0388,
-     "momentum": 0.0669,
-     "units12m": 253,
+     "sgd12m": 9807724,
+     "sgdPrior12m": 9860269,
+     "yoy": -0.0053,
+     "momentum": 0.0677,
+     "units12m": 514,
      "series": [
       {
        "month": "2024-10",
-       "sgd": 820214
+       "sgd": 865644
       },
       {
        "month": "2024-11",
-       "sgd": 618748
+       "sgd": 695516
       },
       {
        "month": "2024-12",
-       "sgd": 749036
+       "sgd": 1317991
       },
       {
        "month": "2025-01",
-       "sgd": 873337
+       "sgd": 535051
       },
       {
        "month": "2025-02",
-       "sgd": 434247
+       "sgd": 753066
       },
       {
        "month": "2025-03",
-       "sgd": 992574
+       "sgd": 1173714
       },
       {
        "month": "2025-04",
-       "sgd": 570004
+       "sgd": 511168
       },
       {
        "month": "2025-05",
-       "sgd": 906972
+       "sgd": 922889
       },
       {
        "month": "2025-06",
-       "sgd": 415131
+       "sgd": 615630
       },
       {
        "month": "2025-07",
-       "sgd": 737695
+       "sgd": 773684
       },
       {
        "month": "2025-08",
-       "sgd": 771470
+       "sgd": 882588
       },
       {
        "month": "2025-09",
-       "sgd": 878369
+       "sgd": 813330
       },
       {
        "month": "2025-10",
-       "sgd": 661631
+       "sgd": 491059
       },
       {
        "month": "2025-11",
-       "sgd": 879086
+       "sgd": 657806
       },
       {
        "month": "2025-12",
-       "sgd": 1184098
+       "sgd": 1256705
       },
       {
        "month": "2026-01",
-       "sgd": 828261
+       "sgd": 475640
       },
       {
        "month": "2026-02",
-       "sgd": 372703
+       "sgd": 1192554
       },
       {
        "month": "2026-03",
-       "sgd": 739820
+       "sgd": 699404
       },
       {
        "month": "2026-04",
-       "sgd": 758707
+       "sgd": 467579
       },
       {
        "month": "2026-05",
-       "sgd": 501681
+       "sgd": 791091
       },
       {
        "month": "2026-06",
-       "sgd": 634680
+       "sgd": 1139212
       },
       {
        "month": "2026-07",
-       "sgd": 1107579
+       "sgd": 907691
       },
       {
        "month": "2026-08",
-       "sgd": 821492
+       "sgd": 996781
       },
       {
        "month": "2026-09",
-       "sgd": 618097
+       "sgd": 732202
       }
      ]
     }
    ],
    "group": {
     "key": "ALL",
-    "sgd12m": 55662764,
-    "sgdPrior12m": 53082541,
-    "yoy": 0.0486,
-    "momentum": 0.0777,
+    "sgd12m": 53441989,
+    "sgdPrior12m": 51401377,
+    "yoy": 0.0397,
+    "momentum": 0.0764,
     "series": [
      {
       "month": "2024-10",
-      "sgd": 5046727
+      "sgd": 4689090
      },
      {
       "month": "2024-11",
-      "sgd": 4428465
+      "sgd": 4099739
      },
      {
       "month": "2024-12",
-      "sgd": 4288646
+      "sgd": 4115108
      },
      {
       "month": "2025-01",
-      "sgd": 3975604
+      "sgd": 4081814
      },
      {
       "month": "2025-02",
-      "sgd": 3341380
+      "sgd": 3876829
      },
      {
       "month": "2025-03",
-      "sgd": 4361152
+      "sgd": 4587876
      },
      {
       "month": "2025-04",
-      "sgd": 3910608
+      "sgd": 3726050
      },
      {
       "month": "2025-05",
-      "sgd": 4471955
+      "sgd": 4394365
      },
      {
       "month": "2025-06",
-      "sgd": 4312457
+      "sgd": 4043460
      },
      {
       "month": "2025-07",
-      "sgd": 4791448
+      "sgd": 4792732
      },
      {
       "month": "2025-08",
-      "sgd": 5024088
+      "sgd": 4533763
      },
      {
       "month": "2025-09",
-      "sgd": 5130010
+      "sgd": 4460551
      },
      {
       "month": "2025-10",
-      "sgd": 4442893
+      "sgd": 4139412
      },
      {
       "month": "2025-11",
-      "sgd": 4550262
+      "sgd": 3944157
      },
      {
       "month": "2025-12",
-      "sgd": 4836761
+      "sgd": 4295897
      },
      {
       "month": "2026-01",
-      "sgd": 4384328
+      "sgd": 4112796
      },
      {
       "month": "2026-02",
-      "sgd": 3538107
+      "sgd": 4258221
      },
      {
       "month": "2026-03",
-      "sgd": 4578620
+      "sgd": 4539652
      },
      {
       "month": "2026-04",
-      "sgd": 4227898
+      "sgd": 3801227
      },
      {
       "month": "2026-05",
-      "sgd": 4150279
+      "sgd": 4384003
      },
      {
       "month": "2026-06",
-      "sgd": 4847096
+      "sgd": 5126765
      },
      {
       "month": "2026-07",
-      "sgd": 5469352
+      "sgd": 5160987
      },
      {
       "month": "2026-08",
-      "sgd": 5452946
+      "sgd": 4872460
      },
      {
       "month": "2026-09",
-      "sgd": 5184222
+      "sgd": 4806413
      }
     ]
    }
   }
  },
- "cleaningNote": "Merging duplicate customers alone does not change country × product totals. Only the misattributed (SG-coded records for MY/VN hospitals, from Jan 2026) and miscategorised (TH reagent kits coded as consumables) volume moves between cells."
+ "cleaningNote": "Merging duplicate customers alone does not change country × product totals: the group's 12-month PO value is S$53.4M in both views (raw 53,441,989 vs de-duplicated 53,441,989). Only two things move value between cells: misattribution (S$1.1M of MY and VN hospitals' POs booked to SG-coded duplicate records from Jan 2026) and miscategorisation (S$350k of reagent test kits coded as Product B, mostly in TH). Cells changed by cleaning carry a Δ badge: SG·A, SG·B, MY·A, MY·B, TH·A, TH·B, VN·A, VN·B, MM·A, MM·B. The de-duplicated view uses the synthetic data's ground-truth golden IDs; the matcher that would build them in production is scored separately on held-out countries."
 }

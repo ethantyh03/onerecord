@@ -1577,7 +1577,9 @@ class Generator:
         assert start >= 1, "too many PRs for 4-digit ids"
         nxt, ids = start, []
         for v in prs["pr_id"]:
-            if v:
+            # Pinned rows keep their id; every other row ("" or NaN for the extra blocked PRs) gets the next one.
+            # (NaN is truthy, so a bare `if v:` left the 10 extra blocked PRs without an id.)
+            if isinstance(v, str) and v:
                 ids.append(v)
                 continue
             while nxt in (5521, 5527):

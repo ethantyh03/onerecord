@@ -6,13 +6,10 @@
   {
    "id": "T01",
    "kind": "true_duplicate",
-   "note": "abbreviation;blank_tax_id;address_format (MY/MY)",
+   "note": "abbreviation;blank_tax_id;address_format (MY/MY); name + tax ID only",
    "input": {
     "name": "Taman Mahkota Med Ctr",
-    "country": "MY",
-    "zipCode": "33167",
-    "phone": "+60389429802",
-    "email": "lab.tamanmahkota@tamanmahkota.example"
+    "country": "MY"
    },
    "record": {
     "cardCode": "C-MY-00001",
@@ -30,12 +27,9 @@
    },
    "expected": {
     "score": 1.0,
-    "nameScore": 1.0,
+    "nameSimilarity": 1.0,
     "reasons": [
-     "100% name match after expanding Med → Medical, Ctr → Centre",
-     "Same postcode",
-     "Same phone number",
-     "Same email domain (tamanmahkota.example)"
+     "100% name match after expanding Med → Medical, Ctr → Centre"
     ],
     "normalizedInput": "taman mahkota medical centre",
     "normalizedRecord": "taman mahkota medical centre"
@@ -44,13 +38,10 @@
   {
    "id": "T02",
    "kind": "true_duplicate",
-   "note": "typo;blank_tax_id;cross_entity (MM/MM)",
+   "note": "typo;blank_tax_id;cross_entity (MM/MM); name + tax ID only",
    "input": {
     "name": "Mya Pharma C., Ltd.",
-    "country": "MM",
-    "zipCode": "11974",
-    "phone": "+95 9 581 161",
-    "email": "lab.mya@mya.example"
+    "country": "MM"
    },
    "record": {
     "cardCode": "C-MM-00013",
@@ -67,13 +58,10 @@
     "hasTransactions": true
    },
    "expected": {
-    "score": 1.0,
-    "nameScore": 0.95,
+    "score": 0.95,
+    "nameSimilarity": 0.95,
     "reasons": [
-     "95% name match",
-     "Same postcode",
-     "Same phone number",
-     "Same email domain (mya.example)"
+     "95% name match"
     ],
     "normalizedInput": "mya pharma c",
     "normalizedRecord": "mya pharma"
@@ -82,12 +70,10 @@
   {
    "id": "T03",
    "kind": "true_duplicate",
-   "note": "word_reorder;blank_tax_id;address_format (MM/MM)",
+   "note": "word_reorder;blank_tax_id;address_format (MM/MM); name + tax ID only",
    "input": {
     "name": "Township Hospital, Sabe Mo",
-    "country": "MM",
-    "phone": "+954580749",
-    "email": "procurement@sabemo.example"
+    "country": "MM"
    },
    "record": {
     "cardCode": "C-MM-00029",
@@ -105,11 +91,9 @@
    },
    "expected": {
     "score": 1.0,
-    "nameScore": 1.0,
+    "nameSimilarity": 1.0,
     "reasons": [
-     "100% name match",
-     "Same phone number",
-     "Same email domain (sabemo.example)"
+     "100% name match"
     ],
     "normalizedInput": "township hospital sabe mo",
     "normalizedRecord": "sabe mo township hospital"
@@ -118,14 +102,11 @@
   {
    "id": "T04",
    "kind": "true_duplicate",
-   "note": "romanisation;typo (MM/MM)",
+   "note": "romanisation;typo (MM/MM); name + tax ID only",
    "input": {
     "name": "Thuak Yeit Specialist Hospital",
     "country": "MM",
-    "taxId": "265409776",
-    "zipCode": "11097",
-    "phone": "+95 3 130 277",
-    "email": "lab.thukhayeik@thukhayeik.example"
+    "taxId": "265409776"
    },
    "record": {
     "cardCode": "C-MM-00016",
@@ -142,14 +123,11 @@
     "hasTransactions": true
    },
    "expected": {
-    "score": 1.0,
-    "nameScore": 0.9013,
+    "score": 0.97,
+    "nameSimilarity": 0.901309,
     "reasons": [
      "Same tax ID",
-     "90% name match",
-     "Same postcode",
-     "Same phone number",
-     "Same email domain (thukhayeik.example)"
+     "90% name match"
     ],
     "normalizedInput": "thuak yeit specialist hospital",
     "normalizedRecord": "thukha yeik specialist hospital"
@@ -158,90 +136,11 @@
   {
    "id": "T05",
    "kind": "true_duplicate",
-   "note": "abbreviation;blank_tax_id (SG/MY)",
-   "input": {
-    "name": "Hosp Permatang Sutera",
-    "country": "SG",
-    "zipCode": "28263",
-    "phone": "+60 7-7738 8216",
-    "email": "procurement@permatangsutera.example"
-   },
-   "record": {
-    "cardCode": "C-MY-00004",
-    "cardName": "Hospital Permatang Sutera",
-    "entity": "SPD",
-    "country": "MY",
-    "licTradNum": "199801109693",
-    "street": "No. 218, Jalan Permatang 7, Taman Hijau",
-    "zipCode": "28263",
-    "phone1": "+60 7-7738 8216",
-    "email": "procurement@permatangsutera.example",
-    "goldenId": "G-MY-0006",
-    "segment": "Public hospital",
-    "hasTransactions": true
-   },
-   "expected": {
-    "score": 1.0,
-    "nameScore": 1.0,
-    "reasons": [
-     "100% name match after expanding Hosp → Hospital",
-     "Same postcode",
-     "Same phone number",
-     "Same email domain (permatangsutera.example)"
-    ],
-    "normalizedInput": "hospital permatang sutera",
-    "normalizedRecord": "hospital permatang sutera"
-   }
-  },
-  {
-   "id": "T06",
-   "kind": "true_duplicate",
-   "note": "abbreviation;address_format (SG/SG)",
-   "input": {
-    "name": "Tanjong Rhu Crest Med Ctr",
-    "country": "SG",
-    "taxId": "201980270A",
-    "phone": "+6568999694",
-    "email": "procurement@tanjongrhucrest.example"
-   },
-   "record": {
-    "cardCode": "C-SG-00033",
-    "cardName": "Tanjong Rhu Crest Medical Centre",
-    "entity": "SPD",
-    "country": "SG",
-    "licTradNum": "201980270A",
-    "street": "298 Tanjong Drive",
-    "zipCode": "821828",
-    "phone1": "+65 6899 9694",
-    "email": "procurement@tanjongrhucrest.example",
-    "goldenId": "G-SG-0007",
-    "segment": "Private hospital",
-    "hasTransactions": true
-   },
-   "expected": {
-    "score": 1.0,
-    "nameScore": 1.0,
-    "reasons": [
-     "Same tax ID",
-     "100% name match after expanding Med → Medical, Ctr → Centre",
-     "Same phone number",
-     "Same email domain (tanjongrhucrest.example)"
-    ],
-    "normalizedInput": "tanjong rhu crest medical centre",
-    "normalizedRecord": "tanjong rhu crest medical centre"
-   }
-  },
-  {
-   "id": "T07",
-   "kind": "true_duplicate",
-   "note": "romanisation;cross_entity (MM/MM)",
+   "note": "romanisation;cross_entity (MM/MM); name + tax ID only",
    "input": {
     "name": "Aong Myitta Hospital",
     "country": "MM",
-    "taxId": "790862022",
-    "zipCode": "11031",
-    "phone": "+95 8 803 436",
-    "email": "procurement@aungmyittar.example"
+    "taxId": "790862022"
    },
    "record": {
     "cardCode": "C-MM-00023",
@@ -258,67 +157,23 @@
     "hasTransactions": true
    },
    "expected": {
-    "score": 1.0,
-    "nameScore": 0.6005,
+    "score": 0.97,
+    "nameSimilarity": 0.600519,
     "reasons": [
      "Same tax ID",
-     "60% name match",
-     "Same postcode",
-     "Same phone number",
-     "Same email domain (aungmyittar.example)"
+     "60% name match"
     ],
     "normalizedInput": "aong myitta hospital",
     "normalizedRecord": "aung myittar hospital"
    }
   },
   {
-   "id": "T08",
+   "id": "T06",
    "kind": "true_duplicate",
-   "note": "abbreviation;blank_tax_id (SG/MY)",
-   "input": {
-    "name": "Hosp Taman Seri",
-    "country": "SG",
-    "zipCode": "36308",
-    "phone": "+60 9-6519 6247",
-    "email": "lab.tamanseri@tamanseri.example"
-   },
-   "record": {
-    "cardCode": "C-MY-00066",
-    "cardName": "Hospital Taman Seri",
-    "entity": "SPD",
-    "country": "MY",
-    "licTradNum": "201701049056",
-    "street": "No. 338, Jalan Taman 10, Taman Kesuma",
-    "zipCode": "36308",
-    "phone1": "+60 9-6519 6247",
-    "email": "procurement@tamanseri.example",
-    "goldenId": "G-MY-0003",
-    "segment": "Public hospital",
-    "hasTransactions": true
-   },
-   "expected": {
-    "score": 1.0,
-    "nameScore": 1.0,
-    "reasons": [
-     "100% name match after expanding Hosp → Hospital",
-     "Same postcode",
-     "Same phone number",
-     "Same email domain (tamanseri.example)"
-    ],
-    "normalizedInput": "hospital taman seri",
-    "normalizedRecord": "hospital taman seri"
-   }
-  },
-  {
-   "id": "T09",
-   "kind": "true_duplicate",
-   "note": "abbreviation;blank_tax_id;cross_entity (VN/VN)",
+   "note": "abbreviation;blank_tax_id;cross_entity (VN/VN); name + tax ID only",
    "input": {
     "name": "Cty TNHH XN Việt Tín",
-    "country": "VN",
-    "zipCode": "104575",
-    "phone": "+84 28 4429 4157",
-    "email": "lab.viettin@viettin.example"
+    "country": "VN"
    },
    "record": {
     "cardCode": "C-VN-00011",
@@ -335,22 +190,19 @@
     "hasTransactions": true
    },
    "expected": {
-    "score": 0.932,
-    "nameScore": 0.8421,
+    "score": 0.842,
+    "nameSimilarity": 0.842105,
     "reasons": [
-     "84% name match",
-     "Same postcode",
-     "Same phone number",
-     "Same email domain (viettin.example)"
+     "84% name match"
     ],
     "normalizedInput": "xn viet tin",
     "normalizedRecord": "viet tin laboratory"
    }
   },
   {
-   "id": "T10",
+   "id": "T07",
    "kind": "true_duplicate",
-   "note": "romanisation;blank_tax_id (VN/VN)",
+   "note": "romanisation;blank_tax_id (VN/VN); all signals",
    "input": {
     "name": "Benh vien Da khoa Hong Lac",
     "country": "VN",
@@ -374,7 +226,7 @@
    },
    "expected": {
     "score": 0.971,
-    "nameScore": 0.8814,
+    "nameSimilarity": 0.88141,
     "reasons": [
      "88% name match",
      "Same postcode",
@@ -386,9 +238,47 @@
    }
   },
   {
+   "id": "T08",
+   "kind": "true_duplicate",
+   "note": "abbreviation;blank_tax_id (SG/MY); all signals",
+   "input": {
+    "name": "Hosp Permatang Sutera",
+    "country": "SG",
+    "zipCode": "28263",
+    "phone": "+60 7-7738 8216",
+    "email": "procurement@permatangsutera.example"
+   },
+   "record": {
+    "cardCode": "C-MY-00004",
+    "cardName": "Hospital Permatang Sutera",
+    "entity": "SPD",
+    "country": "MY",
+    "licTradNum": "199801109693",
+    "street": "No. 218, Jalan Permatang 7, Taman Hijau",
+    "zipCode": "28263",
+    "phone1": "+60 7-7738 8216",
+    "email": "procurement@permatangsutera.example",
+    "goldenId": "G-MY-0006",
+    "segment": "Public hospital",
+    "hasTransactions": true
+   },
+   "expected": {
+    "score": 1.0,
+    "nameSimilarity": 1.0,
+    "reasons": [
+     "100% name match after expanding Hosp → Hospital",
+     "Same postcode",
+     "Same phone number",
+     "Same email domain (permatangsutera.example)"
+    ],
+    "normalizedInput": "hospital permatang sutera",
+    "normalizedRecord": "hospital permatang sutera"
+   }
+  },
+  {
    "id": "N01",
    "kind": "non_duplicate",
-   "note": "highest-scoring non-duplicate pairs",
+   "note": "hardest non-duplicates (all signals)",
    "input": {
     "name": "Seri Mutiara Family Clinic Ipoh",
     "country": "MY",
@@ -413,7 +303,7 @@
    },
    "expected": {
     "score": 1.0,
-    "nameScore": 0.7911,
+    "nameSimilarity": 0.791126,
     "reasons": [
      "Same tax ID",
      "79% name match",
@@ -426,7 +316,7 @@
   {
    "id": "N02",
    "kind": "non_duplicate",
-   "note": "highest-scoring non-duplicate pairs",
+   "note": "hardest non-duplicates (all signals)",
    "input": {
     "name": "Thiri Mingalar Hospital",
     "country": "MM",
@@ -451,7 +341,7 @@
    },
    "expected": {
     "score": 0.928,
-    "nameScore": 0.898,
+    "nameSimilarity": 0.897966,
     "reasons": [
      "90% name match",
      "Same email domain (thirimingalar.example)"
@@ -463,7 +353,7 @@
   {
    "id": "N03",
    "kind": "non_duplicate",
-   "note": "highest-scoring non-duplicate pairs",
+   "note": "hardest non-duplicates (all signals)",
    "input": {
     "name": "Wun Khaing Hospital",
     "country": "MM",
@@ -488,7 +378,7 @@
    },
    "expected": {
     "score": 0.852,
-    "nameScore": 0.8521,
+    "nameSimilarity": 0.85213,
     "reasons": [
      "85% name match"
     ],
@@ -499,7 +389,7 @@
   {
    "id": "N04",
    "kind": "non_duplicate",
-   "note": "highest-scoring non-duplicate pairs",
+   "note": "hardest non-duplicates (all signals)",
    "input": {
     "name": "Phòng khám Đa khoa Phương Hạnh",
     "country": "VN",
@@ -524,7 +414,7 @@
    },
    "expected": {
     "score": 0.85,
-    "nameScore": 0.85,
+    "nameSimilarity": 0.85,
     "reasons": [
      "85% name match"
     ],
@@ -533,50 +423,13 @@
    }
   },
   {
-   "id": "N05",
-   "kind": "non_duplicate",
-   "note": "highest-scoring non-duplicate pairs",
-   "input": {
-    "name": "Phòng khám Đa khoa Thái Sang",
-    "country": "VN",
-    "zipCode": "700130",
-    "phone": "+84 24 1309 2145",
-    "email": "procurement@thaisang.example"
-   },
-   "record": {
-    "cardCode": "C-VN-00023",
-    "cardName": "Phòng khám Đa khoa Hải Vân",
-    "entity": "SPD",
-    "country": "VN",
-    "street": "266 Đường Hải Vân, Phường 18, Quận 1",
-    "zipCode": "553578",
-    "phone1": "+84 24 2950 1142",
-    "email": "procurement@haivan.example",
-    "goldenId": "G-VN-0019",
-    "segment": "Clinic",
-    "hasTransactions": true
-   },
-   "expected": {
-    "score": 0.82,
-    "nameScore": 0.8203,
-    "reasons": [
-     "82% name match"
-    ],
-    "normalizedInput": "phong kham a khoa thai sang",
-    "normalizedRecord": "phong kham a khoa hai van"
-   }
-  },
-  {
    "id": "M01",
    "kind": "non_duplicate",
-   "note": "mid-range non-duplicate",
+   "note": "mid-range non-duplicate (name only)",
    "input": {
     "name": "Phòng khám Đa khoa Hoàng Khôi",
     "country": "VN",
-    "taxId": "0582797917",
-    "zipCode": "104196",
-    "phone": "+84 236 3798 5153",
-    "email": "procurement@hoangkhoi.example"
+    "taxId": "0582797917"
    },
    "record": {
     "cardCode": "C-VN-00010",
@@ -594,7 +447,7 @@
    },
    "expected": {
     "score": 0.792,
-    "nameScore": 0.7923,
+    "nameSimilarity": 0.792271,
     "reasons": [
      "79% name match"
     ],
@@ -605,12 +458,10 @@
   {
    "id": "M02",
    "kind": "non_duplicate",
-   "note": "mid-range non-duplicate",
+   "note": "mid-range non-duplicate (name only)",
    "input": {
     "name": "Bệnh viện Đa khoa Kếin Lộc",
-    "country": "VN",
-    "phone": "+842893377118",
-    "email": "lab.kienloc@kienloc.example"
+    "country": "VN"
    },
    "record": {
     "cardCode": "C-VN-00053",
@@ -627,7 +478,7 @@
    },
    "expected": {
     "score": 0.515,
-    "nameScore": 0.5152,
+    "nameSimilarity": 0.515152,
     "reasons": [],
     "normalizedInput": "benh vien a khoa kein loc",
     "normalizedRecord": "phong kham a khoa tuong loc"
@@ -636,13 +487,10 @@
   {
    "id": "M03",
    "kind": "non_duplicate",
-   "note": "mid-range non-duplicate",
+   "note": "mid-range non-duplicate (name only)",
    "input": {
     "name": "Taman Mahkota Med Ctr",
-    "country": "MY",
-    "zipCode": "33167",
-    "phone": "+60389429802",
-    "email": "lab.tamanmahkota@tamanmahkota.example"
+    "country": "MY"
    },
    "record": {
     "cardCode": "C-MY-00021",
@@ -660,7 +508,7 @@
    },
    "expected": {
     "score": 0.421,
-    "nameScore": 0.4213,
+    "nameSimilarity": 0.421296,
     "reasons": [],
     "normalizedInput": "taman mahkota medical centre",
     "normalizedRecord": "pusat perubatan sungai mahkota"
@@ -669,14 +517,11 @@
   {
    "id": "M04",
    "kind": "non_duplicate",
-   "note": "mid-range non-duplicate",
+   "note": "mid-range non-duplicate (name only)",
    "input": {
     "name": "Makmal Patologi Kuala Bestari",
     "country": "MY",
-    "taxId": "201202375495",
-    "zipCode": "77015",
-    "phone": "+60 7-7978 6015",
-    "email": "procurement@kualabestari.example"
+    "taxId": "201202375495"
    },
    "record": {
     "cardCode": "C-MY-00017",
@@ -694,7 +539,7 @@
    },
    "expected": {
     "score": 0.352,
-    "nameScore": 0.3523,
+    "nameSimilarity": 0.352273,
     "reasons": [],
     "normalizedInput": "makmal patologi kuala bestari",
     "normalizedRecord": "klinik kuala seroja"
@@ -723,7 +568,7 @@
    },
    "expected": {
     "score": 1.0,
-    "nameScore": 1.0,
+    "nameSimilarity": 1.0,
     "reasons": [
      "100% name match after expanding Natl → National, Univ → University, Hosp → Hospital"
     ],
@@ -755,7 +600,7 @@
    },
    "expected": {
     "score": 1.0,
-    "nameScore": 1.0,
+    "nameSimilarity": 1.0,
     "reasons": [
      "Same tax ID",
      "100% name match after expanding Natl → National, Univ → University, Hosp → Hospital"
@@ -787,7 +632,7 @@
    },
    "expected": {
     "score": 0.5,
-    "nameScore": 0.5,
+    "nameSimilarity": 0.5,
     "reasons": [],
     "normalizedInput": "hospital",
     "normalizedRecord": "national university hospital"
@@ -816,7 +661,7 @@
    },
    "expected": {
     "score": 0.0,
-    "nameScore": 0.0,
+    "nameSimilarity": 0.0,
     "reasons": [],
     "normalizedInput": "mount elizabeth hospital",
     "normalizedRecord": "national university hospital"
@@ -845,7 +690,7 @@
    },
    "expected": {
     "score": 0.88,
-    "nameScore": 0.88,
+    "nameSimilarity": 0.0,
     "reasons": [
      "Initials match (NUH = National University Hospital)"
     ],
@@ -856,7 +701,7 @@
   {
    "id": "E06",
    "kind": "edge_case",
-   "note": "Apostrophe, leading St, Gen, ampersand",
+   "note": "Apostrophe, leading St, Gen, ampersand, postcode with letters",
    "input": {
     "name": "St. Luke's Gen Hosp & Lab",
     "country": "SG",
@@ -877,13 +722,103 @@
    },
    "expected": {
     "score": 1.0,
-    "nameScore": 1.0,
+    "nameSimilarity": 1.0,
     "reasons": [
      "100% name match after expanding St → Saint, Gen → General, Hosp → Hospital, Lab → Laboratory",
      "Same postcode"
     ],
     "normalizedInput": "saint lukes general hospital and laboratory",
     "normalizedRecord": "saint lukes general hospital and laboratory"
+   }
+  },
+  {
+   "id": "E07",
+   "kind": "edge_case",
+   "note": "Vietnamese: Cong ty / TNHH / diacritics incl. D-stroke (TS drops the D-stroke letter)",
+   "input": {
+    "name": "Công ty TNHH Bệnh viện Đa khoa Hòa Bình",
+    "country": "VN",
+    "phone": "+84 28 1234 5678"
+   },
+   "record": {
+    "cardCode": "C-VN-99001",
+    "cardName": "Benh vien Da khoa Hoa Binh",
+    "entity": "SPD",
+    "country": "VN",
+    "phone1": "+84 28 1234 5678",
+    "goldenId": "G-VN-9001",
+    "segment": "Private hospital",
+    "hasTransactions": true
+   },
+   "expected": {
+    "score": 0.911,
+    "nameSimilarity": 0.88141,
+    "reasons": [
+     "88% name match",
+     "Same phone number"
+    ],
+    "normalizedInput": "benh vien a khoa hoa binh",
+    "normalizedRecord": "benh vien da khoa hoa binh"
+   }
+  },
+  {
+   "id": "E08",
+   "kind": "edge_case",
+   "note": "Thai company suffix, free-mail domain ignored",
+   "input": {
+    "name": "Bangkok Central Lab Co., Ltd.",
+    "country": "TH",
+    "email": "buyer@gmail.com"
+   },
+   "record": {
+    "cardCode": "C-TH-99001",
+    "cardName": "Bangkok Central Laboratory Public Company Limited",
+    "entity": "QTG",
+    "country": "TH",
+    "email": "lab@gmail.com",
+    "goldenId": "G-TH-9001",
+    "segment": "Diagnostic lab",
+    "hasTransactions": true
+   },
+   "expected": {
+    "score": 1.0,
+    "nameSimilarity": 1.0,
+    "reasons": [
+     "100% name match after expanding Lab → Laboratory"
+    ],
+    "normalizedInput": "bangkok central laboratory",
+    "normalizedRecord": "bangkok central laboratory"
+   }
+  },
+  {
+   "id": "L01",
+   "kind": "non_duplicate",
+   "note": "low-scoring non-duplicate (name only)",
+   "input": {
+    "name": "Hong Ha Pharmaceutical JSC",
+    "country": "VN",
+    "taxId": "0497622520"
+   },
+   "record": {
+    "cardCode": "C-VN-00016",
+    "cardName": "Phòng khám Đa khoa Hoàng Khôi",
+    "entity": "SPD",
+    "country": "VN",
+    "licTradNum": "0582797917",
+    "street": "262 Đường Hoàng Khôi, Phường 16, Quận 8",
+    "zipCode": "104196",
+    "phone1": "+84 236 3798 5153",
+    "email": "procurement@hoangkhoi.example",
+    "goldenId": "G-VN-0051",
+    "segment": "Clinic",
+    "hasTransactions": true
+   },
+   "expected": {
+    "score": 0.299,
+    "nameSimilarity": 0.299014,
+    "reasons": [],
+    "normalizedInput": "hong ha pharmaceutical",
+    "normalizedRecord": "phong kham a khoa hoang khoi"
    }
   }
  ]

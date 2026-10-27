@@ -1,41 +1,116 @@
 {
- "isMock": true,
+ "isMock": false,
  "title": "Our method doesn't invent signal",
- "scope": "Products A + B, all countries; identical pipeline per scenario",
+ "scope": "Products A + B, all 5 countries, golden IDs, S$-weighted WAPE; the identical pre-registered backtest (6 origins, horizons 1–3, refit at every origin) rerun on each dataset.",
  "scenarios": [
   {
    "id": "base",
    "label": "Base dataset",
    "description": "The dataset used everywhere in the app.",
    "seed": 42,
-   "baselineWape": 0.1465,
-   "oursWape": 0.1211,
-   "advantagePts": 2.5,
+   "baselineWape": 0.1133,
+   "oursWape": 0.0855,
+   "advantagePts": 2.8,
    "expected": "Ours ahead",
    "passed": true
   },
   {
    "id": "no_signal",
    "label": "Seasonality and trend switched off",
-   "description": "Same generator and pipeline; seasonal, holiday, fiscal-flush and trend effects removed, noise kept.",
+   "description": "Same generator, seed and pipeline; seasonal, dengue, holiday, fiscal-flush and trend effects removed, noise and data-quality problems kept.",
    "seed": 42,
-   "baselineWape": 0.0582,
-   "oursWape": 0.0746,
-   "advantagePts": -1.6,
-   "expected": "Advantage ≈ 0 (|Δ| ≤ 2 pts)",
+   "baselineWape": 0.0446,
+   "oursWape": 0.0505,
+   "advantagePts": -0.6,
+   "expected": "Advantage ≈ 0 (|Δ| ≤ 2 points)",
    "passed": true
   },
   {
    "id": "half_dengue",
    "label": "Different seed, dengue amplitude halved",
-   "description": "Seed 7; dengue season half as strong; everything else identical.",
+   "description": "Seed 7 instead of 42 and a dengue season half as strong; everything else identical.",
    "seed": 7,
-   "baselineWape": 0.1284,
-   "oursWape": 0.1017,
-   "advantagePts": 2.7,
-   "expected": "Advantage persists, smaller",
+   "baselineWape": 0.1146,
+   "oursWape": 0.092,
+   "advantagePts": 2.3,
+   "expected": "Advantage persists",
    "passed": true
   }
  ],
- "verdict": "With no seasonality or trend in the data our advantage is -1.6 pts (≈ 0), so the method is not finding patterns that aren't there. With a different seed and half the dengue effect it still wins by 2.7 pts."
+ "verdict": "With seasonality and trend switched off our advantage is -0.6 points (within ±2, i.e. ≈ 0), so the method is not finding patterns that are not there. With a different seed and half the dengue effect it still wins by 2.3 points (smaller than the base 2.8, as expected with less seasonality).",
+ "realSeriesCheck": {
+  "title": "Real-series check",
+  "series": {
+   "name": "Singapore weekly dengue cases (Dengue Fever + Dengue Haemorrhagic Fever), summed to months",
+   "publisher": "Ministry of Health via data.gov.sg (Weekly Infectious Disease Bulletin)",
+   "url": "https://data.gov.sg/api/action/datastore_search?resource_id=d_ca168b2cb763640d72c4600a68f9909e&q=Dengue",
+   "retrieved": "2026-10-28",
+   "weekToMonth": "each epi-week is assigned to the month containing its 4th day"
+  },
+  "months": {
+   "start": "2012-01",
+   "end": "2022-12",
+   "n": 132
+  },
+  "sameDesign": {
+   "description": "Identical design: last 36 months (2020-01–2022-12), 6 origins (2022-06–2022-11), horizons 1–3, refit at every origin.",
+   "scores": {
+    "rolling6": {
+     "wape": 0.9839,
+     "bias": 0.856,
+     "n": 15
+    },
+    "rolling12": {
+     "wape": 0.5399,
+     "bias": 0.0961,
+     "n": 15
+    },
+    "seasonalNaive": {
+     "wape": 0.8443,
+     "bias": -0.8443,
+     "n": 15
+    },
+    "etsDamped": {
+     "wape": 0.3647,
+     "bias": 0.1873,
+     "n": 15
+    }
+   },
+   "baselineWape": 0.5399,
+   "oursWape": 0.3647,
+   "advantagePts": 17.5,
+   "plainBaseline": "Rolling 12-month average is off by 54 cases per 100 reported",
+   "plainOurs": "Ours is off by 36 cases per 100 reported"
+  },
+  "longerReplay": {
+   "description": "Same methods, 96 monthly origins (2014-12–2022-11), each trained on the 36 months up to the origin, horizons 1–3.",
+   "scores": {
+    "rolling6": {
+     "wape": 0.7076,
+     "bias": -0.0368,
+     "n": 285
+    },
+    "rolling12": {
+     "wape": 0.7597,
+     "bias": -0.0774,
+     "n": 285
+    },
+    "seasonalNaive": {
+     "wape": 0.9918,
+     "bias": -0.1223,
+     "n": 285
+    },
+    "etsDamped": {
+     "wape": 0.6416,
+     "bias": 0.0978,
+     "n": 285
+    }
+   },
+   "baselineWape": 0.7597,
+   "oursWape": 0.6416,
+   "advantagePts": 11.8,
+   "bestMethod": "etsDamped"
+  },
+  "reading": "On a real, outbreak-driven series ours also beats the rolling 12-month average, by 11.8 points over 285 scored forecasts (15 in the identical 6-origin design: +17.5 points), so the advantage is not only a property of our synthetic data. But every method is far off on epidemic data (ours off by 64 cases per 100 reported). Dengue case counts are not orders: this checks the method on real seasonal data, it does not validate the synthetic order data."
+ }
 }

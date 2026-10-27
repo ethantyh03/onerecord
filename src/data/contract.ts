@@ -28,6 +28,7 @@ import triageEvalJson from "./triage_eval.json";
 import inboxJson from "./inbox.json";
 import summaryJson from "./summary.json";
 import dedupJson from "./dedup.json";
+import impactJson from "./impact.json";
 
 export type Month = string; // "2026-09"
 export type ViewKey = "raw" | "dedup";
@@ -545,6 +546,169 @@ export interface Summary {
   headlines: Headline[]; // exactly 5, in this order: growth, forecast, duplicates, cycle_time, payback
 }
 
+// ---------------------------------------------------------------- impact.json (business case, final model §6)
+/** One traceable number. value null = not finite (e.g. "never pays back"); `display` is ready to print. */
+export interface ImpactNumber {
+  value: number | null;
+  unit: string;
+  formula: string;
+  source: string;
+  display: string;
+}
+export interface ImpactLabelled extends ImpactNumber {
+  label: string;
+}
+export interface ImpactInput extends ImpactLabelled {
+  id: string; // "rate", "A19", …
+  tag: "research" | "assumption" | "team-estimate";
+  confidence: "high" | "medium" | "low";
+}
+export interface ImpactHardRow {
+  requestsPerMonth: number;
+  isBase: boolean;
+  hoursSavedPerRequest: ImpactNumber;
+  duplicatesStoppedPerYear: ImpactNumber;
+  workflowHoursPerMonth: ImpactNumber;
+  regionalHoursPerMonth: ImpactNumber;
+  hoursPerYear: ImpactNumber;
+  fte: ImpactNumber;
+  grossSgdPerYear: ImpactNumber;
+  runCostSgdPerYear: ImpactNumber;
+  netSgdPerYear: ImpactNumber;
+}
+export interface ImpactPaybackRow {
+  requestsPerMonth: number;
+  isBase: boolean;
+  paybackMonths: ImpactNumber;
+  paybackWorkflowOnlyMonths: ImpactNumber;
+  threeYearNetSgd: ImpactNumber;
+}
+export interface ImpactPhase2Row {
+  requestsPerMonth: number;
+  isBase: boolean;
+  hoursSavedPerMonth: ImpactNumber;
+  savingSgdPerYear: ImpactNumber;
+  netWithProcessSgdPerYear: ImpactNumber;
+  paybackYearsProcess: ImpactNumber;
+  paygSgdPerYear: ImpactNumber;
+  netWithPaygSgdPerYear: ImpactNumber;
+  paybackYearsPayg: ImpactNumber;
+}
+export interface ImpactWaterfallSlice {
+  id: string;
+  label: string;
+  kind: "tooling" | "process";
+  fix: string;
+  beforeDays: ImpactNumber;
+  afterDays: ImpactNumber;
+  savedDays: ImpactNumber;
+}
+export type ImpactMark = "yes" | "partly" | "no" | "na";
+export interface ImpactAlternative {
+  option: string;
+  oneOff: string;
+  stopsIncomplete: ImpactMark;
+  stopsDuplicates: ImpactMark;
+  fastVisibleApprovals: ImpactMark;
+  mdmChangesWithoutIt: ImpactMark;
+  regionalAnalytics: ImpactMark;
+  verdict: string;
+  chosen: boolean;
+}
+export interface Impact {
+  isMock: boolean;
+  generatedAt: string;
+  generator: string;
+  spec: string;
+  synthetic: true;
+  conventions: string;
+  baseVolume: number; // 80
+  volumes: number[]; // [40, 80, 120]
+  headline: {
+    paybackMonths: ImpactNumber;
+    phase1OneOffSgd: ImpactNumber;
+    hoursPerYear: ImpactNumber;
+    netSgdPerYear: ImpactNumber;
+    threeYearNetSgd: ImpactNumber;
+    newLicences: string;
+    sentence: string;
+  };
+  /** §6.1 */
+  inputs: ImpactInput[];
+  /** §6.2 hard benefit (the only column payback counts) */
+  hardBenefit: { title: string; note: string; rows: ImpactHardRow[] };
+  /** §6.3 cost */
+  costs: {
+    title: string;
+    phase1: {
+      label: string;
+      oneOff: ImpactNumber;
+      components: ImpactLabelled[];
+      runPerYear: ImpactNumber;
+      cashCost: ImpactNumber;
+      newLicences: ImpactNumber;
+    };
+    phase2: { label: string; oneOff: ImpactNumber; licencesPerYear: ImpactNumber; maintenancePerYear: ImpactNumber };
+  };
+  /** §6.3 payback + upside not in the base case */
+  payback: { title: string; rows: ImpactPaybackRow[]; upside: ImpactLabelled[] };
+  /** §6.4 */
+  soft: {
+    title: string;
+    requestDaysReturnedPerMonth: ImpactNumber;
+    cycleTime: { amy: ImpactNumber; baselineMedian: ImpactNumber; target: ImpactNumber; benchmark: ImpactNumber };
+    note: string;
+  };
+  /** §6.5: its own column, never summed into payback or into one revenue number */
+  opportunity: {
+    title: string;
+    stuckDemandNow: ImpactLabelled & { live: boolean; syntheticHistoryCheck: ImpactNumber };
+    blockedDuringWindow: ImpactLabelled & { avgDaysBlocked: ImpactNumber };
+    revenueAtRiskPerYear: ImpactLabelled & { note: string };
+    dropOff: ImpactLabelled & { assumedRate: ImpactNumber; expectedIfRateHolds: ImpactNumber };
+    crossSell: ImpactLabelled & { assumedRate: ImpactNumber; expectedIfRateHolds: ImpactNumber };
+    rule: string;
+  };
+  /** §6.6 */
+  phase2Case: { title: string; rows: ImpactPhase2Row[]; conclusion: string };
+  /** §6.7 */
+  waterfall: {
+    title: string;
+    slices: ImpactWaterfallSlice[];
+    totals: {
+      beforeDays: ImpactNumber;
+      afterDays: ImpactNumber;
+      savedDays: ImpactNumber;
+      processSavedDays: ImpactNumber;
+      processShare: ImpactNumber;
+    };
+  };
+  /** §6.8 */
+  adoption: {
+    pilot: { weeks: number; scope: string; cash: string; summary: string };
+    kpis: { kpi: string; target: string; baseline: string }[];
+    killScale: { kill: string; scale: string };
+    adoption: string[];
+  };
+  /** §6.9 */
+  alternatives: {
+    title: string;
+    columns: Record<"stopsIncomplete" | "stopsDuplicates" | "fastVisibleApprovals" | "mdmChangesWithoutIt" | "regionalAnalytics", string>;
+    rows: ImpactAlternative[];
+    sources: Record<string, string>;
+  };
+  syntheticHistoryCheck: {
+    note: string;
+    requestsPerMonth: ImpactNumber;
+    medianCycleDays: ImpactNumber;
+    bounceRate: ImpactNumber;
+    duplicateShareOfCustomerRequests: ImpactNumber;
+  };
+  /** business_case.py reproduces every final-model §6 figure; a mismatch fails the pipeline */
+  checks: { name: string; expected: number; computed: number | null; tolerance: number; ok: boolean }[];
+  checksPassed: boolean;
+}
+
 // ---------------------------------------------------------------- typed exports
 export const meta = metaJson as Meta;
 export const master = masterJson as MasterData;
@@ -561,6 +725,7 @@ export const triageEval = triageEvalJson as TriageEval;
 export const inbox = inboxJson as Inbox;
 export const summary = summaryJson as Summary;
 export const dedup = dedupJson as Dedup;
+export const impact = impactJson as Impact;
 
 // ---------------------------------------------------------------- small helpers (pure)
 export function matrixCell(view: ViewKey, country: CountryCode, product: ProductGroup): MatrixCell | undefined {

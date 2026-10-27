@@ -10612,7 +10612,7 @@ ENQ-10610,2026-09-11T14:54:00+08:00,G-MM-0029,Wun Hlaing Polyclinic,MM,C,phone,
 ENQ-10611,2026-09-11T15:11:00+08:00,G-SG-0001,Jalan Kayu Vale General Hospital,SG,B,email,
 ENQ-10612,2026-09-11T16:30:00+08:00,G-MY-0018,Institut Penyelidikan Rimba,MY,B,email,
 ENQ-10613,2026-09-11T18:06:00+08:00,G-SG-0051,Tanjong Rhu Vista Polyclinic,SG,A,web,
-ENQ-10614,2026-09-11T18:31:00+08:00,G-SG-0031,Kranji Park College of Life Sciences,SG,C,email,PR-5496
+ENQ-10614,2026-09-11T18:31:00+08:00,G-SG-0031,Kranji Park College of Life Sciences,SG,C,email,PR-5499
 ENQ-10615,2026-09-12T10:38:00+08:00,G-TH-0006,Yupha Sombun Hospital,TH,A,phone,PR-5468
 ENQ-10616,2026-09-12T16:29:00+08:00,,Tengah Health Centre,SG,A,web,
 ENQ-10617,2026-09-12T18:22:00+08:00,G-SG-0022,Boon Lay Grove Medical Centre,SG,B,phone,
@@ -10623,7 +10623,7 @@ ENQ-10621,2026-09-14T09:55:00+08:00,,Bayan Lepas Health Centre,MY,A,email,
 ENQ-10622,2026-09-14T10:46:00+08:00,G-TH-0053,"Saeng Prida Lab Co., Ltd.",TH,A,email,
 ENQ-10623,2026-09-14T10:50:00+08:00,G-MY-0011,Hospital Ulu Cemerlang,MY,A,web,
 ENQ-10624,2026-09-14T11:56:00+08:00,,Rivervale Hospital,SG,A,phone,
-ENQ-10625,2026-09-14T12:53:00+08:00,G-VN-0019,Phòng khám Đa khoa Hải Vân,VN,A,phone,PR-5493
+ENQ-10625,2026-09-14T12:53:00+08:00,G-VN-0019,Phòng khám Đa khoa Hải Vân,VN,A,phone,PR-5495
 ENQ-10626,2026-09-14T12:53:00+08:00,G-SG-0033,Punggol Grove College of Life Sciences,SG,A,email,
 ENQ-10627,2026-09-14T13:22:00+08:00,G-VN-0002,Bệnh viện Quốc tế Vĩnh Long,VN,B,phone,
 ENQ-10628,2026-09-14T13:31:00+08:00,G-TH-0005,Mani Kit General Hospital,TH,A,email,PR-5447
@@ -10666,7 +10666,7 @@ ENQ-10664,2026-09-17T08:55:00+08:00,G-SG-0021,Rochor Gardens Family Clinic,SG,A,
 ENQ-10665,2026-09-17T09:24:00+08:00,G-TH-0003,Mongkhon Sukkasem Hospital,TH,B,email,PR-5480
 ENQ-10666,2026-09-17T10:13:00+08:00,G-MY-0001,Bandar Suria Specialist Hospital,MY,B,email,
 ENQ-10667,2026-09-17T10:16:00+08:00,G-TH-0011,Isan Health Research Center,TH,A,email,
-ENQ-10668,2026-09-17T10:44:00+08:00,G-MY-0010,Ulu Mutiara Medical Centre,MY,A,email,PR-5511
+ENQ-10668,2026-09-17T10:44:00+08:00,G-MY-0010,Ulu Mutiara Medical Centre,MY,A,email,PR-5518
 ENQ-10669,2026-09-17T11:48:00+08:00,G-MM-0004,Thukha Yeik Specialist Hospital,MM,B,email,
 ENQ-10670,2026-09-17T11:53:00+08:00,G-TH-0004,Chai Arun Hospital,TH,C,web,PR-5460
 ENQ-10671,2026-09-17T13:42:00+08:00,G-MM-0005,Aung Myittar Hospital,MM,A,email,
@@ -10689,16 +10689,16 @@ ENQ-10687,2026-09-18T16:43:00+08:00,G-MY-0031,Hospital Bukit Mutiara,MY,B,email,
 ENQ-10688,2026-09-18T17:37:00+08:00,G-MY-0025,Hospital Daerah Ulu Mawar,MY,A,phone,
 ENQ-10689,2026-09-18T18:27:00+08:00,G-VN-0009,"Viet Tin Laboratory Co., Ltd.",VN,C,phone,
 ENQ-10690,2026-09-19T08:45:00+08:00,G-VN-0052,Viện Nghiên cứu Tường Khôi,VN,B,email,
-ENQ-10691,2026-09-19T13:05:00+08:00,G-VN-0040,Công ty CP Dược Sen Vàng,VN,B,email,PR-5512
+ENQ-10691,2026-09-19T13:05:00+08:00,G-VN-0040,Công ty CP Dược Sen Vàng,VN,B,email,PR-5519
 ENQ-10692,2026-09-19T16:31:00+08:00,G-VN-0014,Công ty TNHH Xét nghiệm Trường Thịnh,VN,A,email,
-ENQ-10693,2026-09-20T10:29:00+08:00,G-MY-0010,Ulu Mutiara Medical Centre,MY,A,email,PR-5499
+ENQ-10693,2026-09-20T10:29:00+08:00,G-MY-0010,Ulu Mutiara Medical Centre,MY,A,email,PR-5502
 ENQ-10694,2026-09-20T15:47:00+08:00,G-MY-0044,Hospital Desa Permai,MY,C,rep,PR-5470
 ENQ-10695,2026-09-21T11:48:00+08:00,G-MY-0006,Hospital Permatang Sutera,MY,A,phone,
 ENQ-10696,2026-09-21T11:51:00+08:00,G-TH-0025,Thanya Thong Hospital,TH,B,email,
 ENQ-10697,2026-09-21T12:50:00+08:00,G-SG-0044,Angsana Research Institute,SG,B,email,
 ENQ-10698,2026-09-21T13:04:00+08:00,G-VN-0032,Bệnh viện Đa khoa Hải Định,VN,B,phone,
 ENQ-10699,2026-09-21T13:21:00+08:00,G-MM-0009,Phyo Soe Hospital,MM,B,email,
-ENQ-10700,2026-09-21T17:42:00+08:00,G-MM-0022,Wun Zaw Medical Centre,MM,B,email,PR-5518
+ENQ-10700,2026-09-21T17:42:00+08:00,G-MM-0022,Wun Zaw Medical Centre,MM,B,email,PR-5528
 ENQ-10701,2026-09-21T17:50:00+08:00,G-SG-0021,Rochor Gardens Family Clinic,SG,A,email,
 ENQ-10702,2026-09-21T17:53:00+08:00,G-MY-0065,Hospital Tanjung Kenanga,MY,A,email,PR-5464
 ENQ-10703,2026-09-21T18:05:00+08:00,,Biên Hòa Hospital,VN,A,web,
@@ -10709,7 +10709,7 @@ ENQ-10707,2026-09-22T09:55:00+08:00,G-SG-0007,Tanjong Rhu Crest Medical Centre,S
 ENQ-10708,2026-09-22T10:18:00+08:00,G-VN-0001,Bệnh viện Quốc tế Phú Ngân,VN,A,rep,
 ENQ-10709,2026-09-22T11:31:00+08:00,,Long Biên Hospital,VN,A,email,
 ENQ-10710,2026-09-22T12:17:00+08:00,G-MM-0014,"Thazin Pharma Co., Ltd.",MM,B,email,
-ENQ-10711,2026-09-22T13:00:00+08:00,G-VN-0046,Bệnh viện Cẩm Nhân,VN,A,rep,PR-5497
+ENQ-10711,2026-09-22T13:00:00+08:00,G-VN-0046,Bệnh viện Cẩm Nhân,VN,A,rep,PR-5500
 ENQ-10712,2026-09-22T13:07:00+08:00,G-MY-0011,Hospital Ulu Cemerlang,MY,A,rep,
 ENQ-10713,2026-09-22T15:07:00+08:00,G-VN-0026,Bệnh viện Đa khoa Kim Châu,VN,B,rep,
 ENQ-10714,2026-09-22T15:24:00+08:00,,Canberra Clinic,SG,A,email,
@@ -10720,7 +10720,7 @@ ENQ-10718,2026-09-22T17:16:00+08:00,G-SG-0020,Jalan Kayu Crest Pathology Lab,SG,
 ENQ-10719,2026-09-22T17:22:00+08:00,G-MM-0013,Ngwe Lin Specialist Hospital,MM,A,email,
 ENQ-10720,2026-09-23T08:45:00+08:00,,Batu Maung Medical Lab,MY,B,email,
 ENQ-10721,2026-09-23T09:42:00+08:00,G-SG-0032,Pandan Institute of Molecular Medicine,SG,A,email,
-ENQ-10722,2026-09-23T10:24:00+08:00,G-MY-0034,Kuala Bahagia Medical Centre,MY,A,rep,PR-5514
+ENQ-10722,2026-09-23T10:24:00+08:00,G-MY-0034,Kuala Bahagia Medical Centre,MY,A,rep,PR-5523
 ENQ-10723,2026-09-23T10:56:00+08:00,G-MY-0015,Seri Puteri Medical Centre,MY,C,email,
 ENQ-10724,2026-09-23T11:01:00+08:00,G-VN-0056,Thuan Son Laboratory Centre,VN,B,email,
 ENQ-10725,2026-09-23T13:36:00+08:00,G-MY-0061,Hospital Daerah Bukit Cempaka,MY,C,email,
@@ -10754,25 +10754,25 @@ ENQ-10752,2026-09-24T17:30:00+08:00,G-MM-0010,Hninn Maung Institute of Medicine,
 ENQ-10753,2026-09-24T17:31:00+08:00,,Biên Hòa Clinic,VN,B,web,
 ENQ-10754,2026-09-25T10:09:00+08:00,G-TH-0030,Kanchana Sawang Hospital,TH,A,rep,
 ENQ-10755,2026-09-25T10:43:00+08:00,G-SG-0005,Simei Vista Specialist Hospital,SG,A,web,
-ENQ-10756,2026-09-25T11:08:00+08:00,G-TH-0014,Boon Thada Hospital,TH,A,web,PR-5507
-ENQ-10757,2026-09-25T13:26:00+08:00,G-MY-0014,Pusat Perubatan Seri Kenanga,MY,B,web,PR-5517
-ENQ-10758,2026-09-25T15:43:00+08:00,G-VN-0035,Phuc Phat Hospital,VN,A,phone,PR-5506
+ENQ-10756,2026-09-25T11:08:00+08:00,G-TH-0014,Boon Thada Hospital,TH,A,web,PR-5514
+ENQ-10757,2026-09-25T13:26:00+08:00,G-MY-0014,Pusat Perubatan Seri Kenanga,MY,B,web,PR-5526
+ENQ-10758,2026-09-25T15:43:00+08:00,G-VN-0035,Phuc Phat Hospital,VN,A,phone,PR-5511
 ENQ-10759,2026-09-25T16:59:00+08:00,G-MY-0003,Hospital Taman Seri,MY,A,phone,PR-5476
 ENQ-10760,2026-09-25T17:09:00+08:00,,Canberra Clinic,SG,B,email,
 ENQ-10761,2026-09-25T18:28:00+08:00,G-MM-0035,"Golden Lotus Pharma Co., Ltd.",MM,A,rep,
 ENQ-10762,2026-09-25T18:58:00+08:00,G-SG-0021,Rochor Gardens Family Clinic,SG,A,email,
 ENQ-10763,2026-09-26T12:05:00+08:00,G-TH-0014,Boon Thada Hospital,TH,B,web,
-ENQ-10764,2026-09-26T12:44:00+08:00,G-TH-0004,Chai Arun Hospital,TH,C,phone,PR-5528
+ENQ-10764,2026-09-26T12:44:00+08:00,G-TH-0004,Chai Arun Hospital,TH,C,phone,PR-5538
 ENQ-10765,2026-09-26T15:20:00+08:00,G-SG-0011,Bedok Hill Polyclinic,SG,C,email,
-ENQ-10766,2026-09-27T11:06:00+08:00,G-SG-0031,Kranji Park College of Life Sciences,SG,C,phone,PR-5530
+ENQ-10766,2026-09-27T11:06:00+08:00,G-SG-0031,Kranji Park College of Life Sciences,SG,C,phone,PR-5540
 ENQ-10767,2026-09-27T11:56:00+08:00,G-MM-0022,Wun Zaw Medical Centre,MM,B,email,PR-5488
-ENQ-10768,2026-09-27T18:12:00+08:00,G-SG-0020,Jalan Kayu Crest Pathology Lab,SG,A,email,PR-5526
+ENQ-10768,2026-09-27T18:12:00+08:00,G-SG-0020,Jalan Kayu Crest Pathology Lab,SG,A,email,PR-5537
 ENQ-10769,2026-09-28T08:14:00+08:00,G-SG-0062,Lavender Bay Pathology Lab (Bedok),SG,B,email,
 ENQ-10770,2026-09-28T09:16:00+08:00,G-TH-0017,Siam Riverside Hospital Chiang Mai,TH,A,phone,
 ENQ-10771,2026-09-28T09:27:00+08:00,G-SG-0028,Tiong Bahru Crest Specialist Hospital,SG,A,phone,
 ENQ-10772,2026-09-28T09:33:00+08:00,G-SG-0007,Tanjong Rhu Crest Medical Centre,SG,A,rep,
 ENQ-10773,2026-09-28T09:33:00+08:00,G-MY-0015,Seri Puteri Medical Centre,MY,A,email,
-ENQ-10774,2026-09-28T09:51:00+08:00,G-MY-0016,Hospital Daerah Sungai Zamrud,MY,A,rep,PR-5516
+ENQ-10774,2026-09-28T09:51:00+08:00,G-MY-0016,Hospital Daerah Sungai Zamrud,MY,A,rep,PR-5525
 ENQ-10775,2026-09-28T11:02:00+08:00,G-TH-0007,Chao Phraya Rim Hospital,TH,A,email,
 ENQ-10776,2026-09-28T11:30:00+08:00,G-MY-0001,Bandar Suria Specialist Hospital,MY,C,email,
 ENQ-10777,2026-09-28T11:47:00+08:00,G-MY-0010,Ulu Mutiara Medical Centre,MY,B,email,
@@ -10790,7 +10790,7 @@ ENQ-10788,2026-09-29T08:48:00+08:00,G-MY-0063,Belian Diagnostic Laboratories Sdn
 ENQ-10789,2026-09-29T09:30:00+08:00,,Canberra Hospital,SG,A,email,
 ENQ-10790,2026-09-29T13:29:00+08:00,G-MY-0079,Bandar Melati Family Clinic,MY,A,email,
 ENQ-10791,2026-09-29T13:33:00+08:00,,Hua Hin Clinic,TH,C,email,
-ENQ-10792,2026-09-29T14:40:00+08:00,G-SG-0008,Saffron Food Testing Pte Ltd,SG,B,email,PR-5532
+ENQ-10792,2026-09-29T14:40:00+08:00,G-SG-0008,Saffron Food Testing Pte Ltd,SG,B,email,PR-5542
 ENQ-10793,2026-09-29T16:17:00+08:00,,Rivervale Medical Lab,SG,A,phone,
 ENQ-10794,2026-09-29T17:39:00+08:00,G-MY-0021,Meranti Pharma Sdn Bhd,MY,A,email,
 ENQ-10795,2026-09-29T18:25:00+08:00,,Bago Medical Lab,MM,A,rep,
@@ -10807,13 +10807,13 @@ ENQ-10805,2026-09-30T15:46:00+08:00,G-VN-0006,Hung Tin International Hospital,VN
 ENQ-10806,2026-09-30T17:35:00+08:00,,Long Biên Hospital,VN,C,phone,
 ENQ-10807,2026-09-30T17:38:00+08:00,G-VN-0004,Bệnh viện Quốc tế Sông Sen,VN,A,email,
 ENQ-10808,2026-09-30T18:46:00+08:00,G-MM-0010,Hninn Maung Institute of Medicine,MM,A,phone,
-ENQ-10809,2026-10-02T12:06:00+08:00,G-SG-0003,Sembawang Park Pathology Lab,SG,C,web,PR-5525
-ENQ-10810,2026-10-02T17:53:00+08:00,G-MY-0010,Ulu Mutiara Medical Centre,MY,A,email,PR-5519
-ENQ-10811,2026-10-03T08:29:00+08:00,G-SG-0003,Sembawang Park Pathology Lab,SG,C,email,PR-5513
-ENQ-10812,2026-10-03T11:07:00+08:00,G-TH-0002,"Mali Medical Laboratory Co., Ltd.",TH,A,email,PR-5515
-ENQ-10813,2026-10-05T08:46:00+08:00,G-SG-0001,Jalan Kayu Vale General Hospital,SG,C,phone,PR-5531
-ENQ-10814,2026-10-10T16:12:00+08:00,G-SG-0020,Jalan Kayu Crest Pathology Lab,SG,C,email,PR-5539
-ENQ-10815,2026-10-12T15:39:00+08:00,G-TH-0006,Yupha Sombun Hospital,TH,C,email,PR-5536
-ENQ-10816,2026-10-15T08:43:00+08:00,G-TH-0010,"Lanna Gene Food Lab Co., Ltd.",TH,C,email,PR-5538
-ENQ-10817,2026-10-15T12:14:00+08:00,G-SG-0001,Jalan Kayu Vale General Hospital,SG,C,web,PR-5537
-ENQ-10818,2026-10-17T12:15:00+08:00,G-SG-0033,Punggol Grove College of Life Sciences,SG,C,rep,PR-5535
+ENQ-10809,2026-10-02T12:06:00+08:00,G-SG-0003,Sembawang Park Pathology Lab,SG,C,web,PR-5536
+ENQ-10810,2026-10-02T17:53:00+08:00,G-MY-0010,Ulu Mutiara Medical Centre,MY,A,email,PR-5530
+ENQ-10811,2026-10-03T08:29:00+08:00,G-SG-0003,Sembawang Park Pathology Lab,SG,C,email,PR-5520
+ENQ-10812,2026-10-03T11:07:00+08:00,G-TH-0002,"Mali Medical Laboratory Co., Ltd.",TH,A,email,PR-5524
+ENQ-10813,2026-10-05T08:46:00+08:00,G-SG-0001,Jalan Kayu Vale General Hospital,SG,C,phone,PR-5541
+ENQ-10814,2026-10-10T16:12:00+08:00,G-SG-0020,Jalan Kayu Crest Pathology Lab,SG,C,email,PR-5549
+ENQ-10815,2026-10-12T15:39:00+08:00,G-TH-0006,Yupha Sombun Hospital,TH,C,email,PR-5546
+ENQ-10816,2026-10-15T08:43:00+08:00,G-TH-0010,"Lanna Gene Food Lab Co., Ltd.",TH,C,email,PR-5548
+ENQ-10817,2026-10-15T12:14:00+08:00,G-SG-0001,Jalan Kayu Vale General Hospital,SG,C,web,PR-5547
+ENQ-10818,2026-10-17T12:15:00+08:00,G-SG-0033,Punggol Grove College of Life Sciences,SG,C,rep,PR-5545

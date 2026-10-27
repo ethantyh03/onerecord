@@ -1,6 +1,6 @@
 {
- "isMock": true,
- "scope": "Headline scope (Products A + B, all 5 countries), same backtest as backtest.json, run on raw SAP records vs golden IDs. Raw differs where misattribution (SG/MY/VN from Jan 2026) and miscategorisation (TH) shift the series.",
+ "isMock": false,
+ "scope": "Headline scope (Products A + B, all 5 countries, S$-weighted), the same pre-registered backtest as backtest.json. Rows change only the series the model is trained on: raw SAP records (recorded country × recorded product) or golden IDs (true country × true product). Both rows are scored against the same de-duplicated actuals, i.e. what each country really ordered. Raw differs from golden where misattribution (SG-coded duplicates of MY/VN hospitals from Jan 2026) and miscategorisation (reagent kits coded as Product B) shift the series.",
  "rows": [
   "raw",
   "golden"
@@ -19,26 +19,26 @@
  },
  "table": {
   "raw": {
-   "rolling": 0.1601,
-   "ours": 0.1185
+   "rolling": 0.1301,
+   "ours": 0.1499
   },
   "golden": {
-   "rolling": 0.1465,
-   "ours": 0.1211
+   "rolling": 0.1133,
+   "ours": 0.0855
   }
  },
- "fromCleaningPts": 1.4,
- "fromModellingPts": 2.5,
- "totalImprovementPts": 3.9,
- "sentence": "Cleaning master data alone cuts the error by 1.4 points before any modelling; the better method adds another 2.5 points. Part of the improvement comes from clean data, not the model.",
+ "fromCleaningPts": 1.7,
+ "fromModellingPts": 2.8,
+ "totalImprovementPts": 4.5,
+ "sentence": "On raw records our method is worse than today's (15 vs 13 per 100 ordered): it faithfully learns the fake level shifts; in SG Product A it tends to over-forecast by 22.8% because the SG-coded duplicates of MY/VN hospitals add a fake jump from Jan 2026. A better model on dirty data makes things worse. Cleaning master data alone cuts today's error by 1.7 points per 100 ordered; on clean data ours cuts a further 2.8, 4.5 points in all. Clean the data first, then model.",
  "plain": {
   "raw": {
-   "rolling": "off by 16 per 100 ordered",
-   "ours": "off by 12 per 100 ordered"
+   "rolling": "off by 13 units per 100 ordered",
+   "ours": "off by 15 units per 100 ordered"
   },
   "golden": {
-   "rolling": "off by 15 per 100 ordered",
-   "ours": "off by 12 per 100 ordered"
+   "rolling": "off by 11 units per 100 ordered",
+   "ours": "off by 9 units per 100 ordered"
   }
  }
 }

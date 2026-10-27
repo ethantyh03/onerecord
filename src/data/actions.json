@@ -1,114 +1,150 @@
 {
- "isMock": true,
- "note": "S$ addressable is before conversion; see signals.json assumptions.",
+ "isMock": false,
+ "scenario": "base",
+ "note": "S$ addressable is before conversion: drop-off S$ is the account's last-12-month value at risk (assumed save rate 25%); cross-sell S$ is the yearly gap to similar customers (assumed conversion 15%); blocked requests are delayed, not new, revenue. Never summed into a revenue headline. Signals run on merged customers: on raw SAP records the same rules would miss 7 real drop-offs and raise 12 false alarms.",
  "cards": [
   {
    "country": "SG",
-   "implication": "Product A is −2.7% YoY mainly because of a weaker dengue season, not lost customers; SG's raw total was also inflated by two records that belong to MY and VN.",
-   "signalSource": "matrix + dedup",
-   "kpi": "Product A fill rate during the Oct–Dec peak",
+   "implication": "Singapore grew +2.5% to S$17.1M (+0.5% in Jul–Sep), but test kits are flat (−0.4%) because of a weak dengue season (dengue kits −13%, other kits +2.9%), not lost customers. Raw SAP overstates Singapore by S$1.06M (6.2%): three Singapore-coded billing records hold Malaysian and Vietnamese hospitals' orders.",
+   "signalSource": "matrix + backtest + dedup + signals.dropOff",
+   "kpi": "Dengue-kit stock-outs in the Oct–Dec peak (target 0) and value booked to the wrong country (target S$0)",
    "actions": [
     {
-     "ownerRole": "Supply planner (SPD)",
-     "action": "Hold dengue reagent safety stock at the ETS P90 for Oct–Dec 2026; watch the DENV-3 upside.",
-     "byWhen": "2026-11-15",
+     "ownerRole": "Supply planner, SPD Singapore",
+     "action": "Set Oct–Dec test-kit safety stock at the forecast's P90 band (18,710 units for Oct–Dec vs a 15,413-unit median), so a late dengue upswing does not cause stock-outs; review again in January.",
+     "byWhen": "2026-11-13",
      "sgdAddressable": null,
-     "kpi": "Stock-outs on dengue SKUs = 0"
+     "kpi": "Forecast off by ≤5 units per 100 ordered; 0 dengue stock-outs"
+    },
+    {
+     "ownerRole": "Key account manager, Singapore",
+     "action": "Meet Tanjong Rhu Crest Medical Centre: merged, it is down 34% on last year (test kits −35% in Apr–Sep) since its orders moved to a second record (C-SG-00077). Agree one account plan and ask MDM to merge the records.",
+     "byWhen": "2026-11-20",
+     "sgdAddressable": 450411,
+     "kpi": "Account back within −10% of last year by Mar 2027"
     },
     {
      "ownerRole": "MDM team",
-     "action": "Re-code the two SG billing records to their MY and VN golden IDs.",
+     "action": "Re-code the three SG billing records (C-SG-00074, C-SG-00075, C-SG-00076) to their Malaysian and Vietnamese customers, moving S$644k back to Malaysia and S$414k to Vietnam. Merging duplicates alone changes no country total; this re-coding does.",
      "byWhen": "2026-11-06",
      "sgdAddressable": null,
-     "kpi": "Misattributed value = S$0"
+     "kpi": "Value booked to the wrong country = S$0"
     }
    ]
   },
   {
    "country": "MY",
-   "implication": "Growth sits in a few hospitals; a top-3 account (Bukit Damai) is down 35% once its three records are merged.",
-   "signalSource": "signals.dropOff + bridge",
-   "kpi": "Hero account 3-month value vs prior year",
+   "implication": "Malaysia grew +6.8% to S$13.7M (+13% in Jul–Sep), and three customers delivered 67% of the S$877k increase. Merged, Bukit Damai Specialist Hospital, the #2 account, is down 32%; on raw SAP records it looks like one lost customer and one new one. Three reagent-rental contracts worth S$462k a year expire in Feb–Mar 2027.",
+   "signalSource": "bridge + dedup + signals.dropOff + matrix",
+   "kpi": "Bukit Damai Specialist Hospital quarterly value vs last year, and all three Feb–Mar 2027 renewals signed",
    "actions": [
     {
-     "ownerRole": "BU Head (SPD)",
-     "action": "Call Bukit Damai Specialist Hospital this month; one account plan across SPD and QTS.",
-     "byWhen": "2026-11-20",
-     "sgdAddressable": 1053000,
-     "kpi": "Account back to flat YoY by Q1 2027"
+     "ownerRole": "BU Head, SPD Malaysia",
+     "action": "Call Bukit Damai Specialist Hospital this month with one account plan across SPD and QTS. Its test-kit orders moved from C-MY-00029 to a new record (C-MY-00091) in April; Apr–Sep orders were 59% below the same months last year.",
+     "byWhen": "2026-11-13",
+     "sgdAddressable": 619629,
+     "kpi": "Test-kit orders back within −10% of last year by Q1 2027"
     },
     {
-     "ownerRole": "Key account manager",
-     "action": "Renewal plan for the 2 reagent-rental contracts expiring in Q1 2027.",
+     "ownerRole": "Key account manager, Malaysia",
+     "action": "Renewal plan for Kuala Bahagia Medical Centre, Hospital Daerah Lembah Indah and Hospital Desa Permai before their contracts expire in Feb–Mar 2027; Hospital Desa Permai is already ordering less. The two contracts lost at expiry earlier this year cost S$253k of test kits a year.",
      "byWhen": "2026-12-31",
-     "sgdAddressable": 412000,
-     "kpi": "Both renewed before expiry"
+     "sgdAddressable": 461665,
+     "kpi": "All three contracts renewed before expiry"
+    },
+    {
+     "ownerRole": "MDM team",
+     "action": "Finish REQ-1042 (Dengue IgG/IgM Combo 30T) so PR-5521 (Sunway Medical Centre, S$49k) and PR-5527 (Penang General Hospital, S$21k) can become orders. This is delayed revenue, not new revenue.",
+     "byWhen": "2026-10-30",
+     "sgdAddressable": 70000,
+     "kpi": "Stuck demand in Malaysia = S$0; item setups in ≤4 business days"
     }
    ]
   },
   {
    "country": "TH",
-   "implication": "Instrument (C) orders flush in Jul–Sep because the Thai fiscal year ends in September; one hospital's real gap is lab consumables.",
-   "signalSource": "matrix seasonality + signals.crossSell",
-   "kpi": "FY2027 tender pipeline S$ by end Q1",
+   "implication": "Thailand grew +3.5% to S$10.0M (+3.4% in Jul–Sep). Instrument (C) orders bunch up in Jul–Sep (38% of the year) because the Thai fiscal year ends in September, so FY2027 tenders are won now. 4.6% of test-kit value is booked as consumables through five duplicate item codes, and merged, Chao Phraya Rim Hospital is down 26%.",
+   "signalSource": "matrix + signals.crossSell + dedup",
+   "kpi": "FY2027 instrument tenders submitted by end-Dec vs last year",
    "actions": [
     {
-     "ownerRole": "Sales manager (QTS)",
-     "action": "Line up FY2027 tenders in Q1 (Oct–Dec) when new contracts are signed.",
-     "byWhen": "2026-12-31",
-     "sgdAddressable": null,
-     "kpi": "Tenders submitted vs last year"
+     "ownerRole": "Sales manager, QTS Thailand",
+     "action": "Line up FY2027 instrument tenders in Oct–Dec, while new budgets are released; start with the 11 open instrument requests worth S$318k.",
+     "byWhen": "2026-12-15",
+     "sgdAddressable": 317617,
+     "kpi": "Tenders submitted and won vs FY2026"
     },
     {
-     "ownerRole": "Account manager (QTG)",
-     "action": "Offer Siam Lotus Hospital a consumables (B) bundle.",
+     "ownerRole": "Account manager, QTG Thailand",
+     "action": "Offer Sri Chaloem Hospital a consumables (B) bundle. Its SPD record buys only A and its QTS record only C, so SAP suggests gaps in both; merged, it already buys A and C and the real gap is B.",
      "byWhen": "2026-11-30",
-     "sgdAddressable": 186000,
-     "kpi": "First B order placed"
+     "sgdAddressable": 37668,
+     "kpi": "First consumables order by Q1 2027"
+    },
+    {
+     "ownerRole": "MDM team",
+     "action": "Retire the five duplicate item codes (I-B-000901, I-B-000906, I-B-000910, I-B-000912, I-B-000917) that book test kits as consumables and map them to their Product A codes, so A is not understated.",
+     "byWhen": "2026-11-20",
+     "sgdAddressable": null,
+     "kpi": "Test-kit value booked under B = S$0"
     }
    ]
   },
   {
    "country": "VN",
-   "implication": "Four hospitals buy reagents (A) but never consumables (B); VN growth was understated because one hospital's orders were coded to SG.",
-   "signalSource": "signals.crossSell + dedup",
-   "kpi": "B orders from the 4 named hospitals",
+   "implication": "Vietnam is the fastest-growing market, +8.9% to S$9.28M (test kits +21%; +24% in Jul–Sep). Yet four public hospitals buy test kits but no consumables (B), and merged, Bệnh viện Đa khoa Hồng Lạc is down 29% after its orders moved to an unaccented duplicate record. Expect the Tet dip: February orders were 36% below January and March this year.",
+   "signalSource": "matrix + signals.crossSell + signals.dropOff + dedup",
+   "kpi": "Consumables orders from the four hospitals, and no stock-outs after Tet",
    "actions": [
     {
-     "ownerRole": "Account manager (QTG)",
-     "action": "B bundle offer to the 4 A-only hospitals; plan around the Tet dip in Feb.",
-     "byWhen": "2027-01-15",
-     "sgdAddressable": 382765,
-     "kpi": "2 of 4 placing B orders by Mar 2027"
+     "ownerRole": "Account manager, QTG Vietnam",
+     "action": "Offer a consumables (B) bundle to the four hospitals that buy test kits but never B: Bệnh viện Đa khoa Ngọc Thành, Bệnh viện Đức Nghĩa, Bệnh viện Thuận Phong and Bệnh viện Đa khoa Đông Khang.",
+     "byWhen": "2026-12-11",
+     "sgdAddressable": 135319,
+     "kpi": "At least two of the four placing B orders by Mar 2027"
     },
     {
-     "ownerRole": "Supply planner (SPD)",
-     "action": "Pre-position dengue reagents for the Aug–Nov peak (cases ~2.5× last year).",
-     "byWhen": "2026-11-01",
+     "ownerRole": "Key account manager, Vietnam",
+     "action": "Visit Bệnh viện Đa khoa Hồng Lạc: since its orders moved to C-VN-00076, Apr–Sep test-kit orders were 27% below last year. Agree one account plan and merge the two records.",
+     "byWhen": "2026-11-27",
+     "sgdAddressable": 322751,
+     "kpi": "Account back within −10% of last year by Q1 2027"
+    },
+    {
+     "ownerRole": "Supply planner, SPD Vietnam",
+     "action": "Build stock in early January for the Tet holiday (from 6 Feb 2027), when orders drop, and for the restock that follows in March.",
+     "byWhen": "2027-01-08",
      "sgdAddressable": null,
-     "kpi": "Fill rate ≥ 98%"
+     "kpi": "0 stock-outs in Feb–Mar 2027"
     }
    ]
   },
   {
    "country": "MM",
-   "implication": "Enquiries are rising but PR → PO conversion is low (31% vs ~58% elsewhere).",
-   "signalSource": "streams",
-   "kpi": "PR → PO conversion",
+   "implication": "Myanmar is shrinking, −9.6% to S$3.32M (+1.4% in Jul–Sep), even though enquiries are up 15%: only 41% of purchase requests become orders against 65–73% elsewhere, so demand is lost between quote and order. Merged, Thukha Yeik Specialist Hospital is down 31%.",
+   "signalSource": "streams + signals.dropOff + dedup",
+   "kpi": "Purchase-request-to-order conversion, from 41% towards 55% by Mar 2027",
    "actions": [
     {
-     "ownerRole": "Country lead (MM)",
-     "action": "Review quote turnaround time and pricing approvals for MM quotes.",
-     "byWhen": "2026-11-30",
-     "sgdAddressable": null,
-     "kpi": "Conversion ≥ 40% by Q1 2027"
+     "ownerRole": "Country lead, Myanmar",
+     "action": "Review why requests are lost: quote turnaround, pricing and stock for the S$1.10M of purchase requests lost in the last 12 months; answer every enquiry within 1 business day.",
+     "byWhen": "2026-11-20",
+     "sgdAddressable": 1098516,
+     "kpi": "Conversion up 10 points by Q1 2027"
     },
     {
-     "ownerRole": "Business support (MM)",
-     "action": "Merge the Yangon/Rangoon Lakeside records so the account isn't flagged lost.",
-     "byWhen": "2026-11-06",
-     "sgdAddressable": null,
-     "kpi": "0 false 'lost' flags"
+     "ownerRole": "Key account manager, Myanmar",
+     "action": "Win back Thukha Yeik Specialist Hospital: its orders moved to a misspelt second record (C-MM-00046) and fell 31%. Agree an account plan and merge the records.",
+     "byWhen": "2026-11-27",
+     "sgdAddressable": 151515,
+     "kpi": "Account back within −10% of last year by Q1 2027"
+    },
+    {
+     "ownerRole": "Sales representative, Myanmar",
+     "action": "Call Hninn Win Specialist Hospital and Hla Aye Hospital: both are ordering less than a year ago and are overdue on their usual reorder.",
+     "byWhen": "2026-11-13",
+     "sgdAddressable": 211521,
+     "kpi": "Both reordering within their usual interval"
     }
    ]
   }

@@ -1,39 +1,39 @@
 {
- "isMock": true,
+ "isMock": false,
  "customers": {
-  "rawRecords": 301,
-  "goldenCustomers": 284,
-  "duplicateRecords": 17,
-  "duplicateRate": 0.0565,
-  "clustersOf2": 13,
-  "clustersOf3Plus": 2
+  "rawRecords": 388,
+  "goldenCustomers": 363,
+  "duplicateRecords": 25,
+  "duplicateRate": 0.0644,
+  "clustersOf2": 23,
+  "clustersOf3Plus": 1
  },
  "byCountry": [
   {
    "country": "SG",
-   "rawRecords": 86,
-   "goldenCustomers": 81,
+   "rawRecords": 79,
+   "goldenCustomers": 73,
    "duplicateRecords": 3,
-   "sgdMisattributedIn12m": 1040989,
+   "sgdMisattributedIn12m": 1057625,
    "sgdMisattributedOut12m": 0,
-   "netCorrectionSgd12m": -1040989,
-   "pctOfCountry12m": -0.057
+   "netCorrectionSgd12m": -1057625,
+   "pctOfCountry12m": -0.0618
   },
   {
    "country": "MY",
-   "rawRecords": 76,
-   "goldenCustomers": 72,
-   "duplicateRecords": 5,
+   "rawRecords": 95,
+   "goldenCustomers": 90,
+   "duplicateRecords": 7,
    "sgdMisattributedIn12m": 0,
-   "sgdMisattributedOut12m": 693347,
-   "netCorrectionSgd12m": 693347,
-   "pctOfCountry12m": 0.0457
+   "sgdMisattributedOut12m": 643559,
+   "netCorrectionSgd12m": 643559,
+   "pctOfCountry12m": 0.047
   },
   {
    "country": "TH",
-   "rawRecords": 58,
-   "goldenCustomers": 55,
-   "duplicateRecords": 3,
+   "rawRecords": 88,
+   "goldenCustomers": 82,
+   "duplicateRecords": 6,
    "sgdMisattributedIn12m": 0,
    "sgdMisattributedOut12m": 0,
    "netCorrectionSgd12m": 0,
@@ -41,19 +41,19 @@
   },
   {
    "country": "VN",
-   "rawRecords": 51,
-   "goldenCustomers": 48,
-   "duplicateRecords": 4,
+   "rawRecords": 78,
+   "goldenCustomers": 74,
+   "duplicateRecords": 5,
    "sgdMisattributedIn12m": 0,
-   "sgdMisattributedOut12m": 347642,
-   "netCorrectionSgd12m": 347642,
-   "pctOfCountry12m": 0.0389
+   "sgdMisattributedOut12m": 414066,
+   "netCorrectionSgd12m": 414066,
+   "pctOfCountry12m": 0.0446
   },
   {
    "country": "MM",
-   "rawRecords": 30,
-   "goldenCustomers": 28,
-   "duplicateRecords": 2,
+   "rawRecords": 48,
+   "goldenCustomers": 44,
+   "duplicateRecords": 4,
    "sgdMisattributedIn12m": 0,
    "sgdMisattributedOut12m": 0,
    "netCorrectionSgd12m": 0,
@@ -62,27 +62,51 @@
  ],
  "misattribution": {
   "startedMonth": "2026-01",
-  "totalSgdMoved12m": 1040989,
-  "description": "From Jan 2026 two SG-coded duplicate records (created by SG staff for regional billing) captured POs of a MY hospital and a VN hospital, so the raw SG series gains a level and the MY/VN series lose one."
+  "totalSgdMoved12m": 1057625,
+  "description": "From Jan 2026, 3 SG-coded duplicate records (created by SG staff, blank tax ID) captured POs of 2 Malaysian and 1 Vietnamese hospitals: C-SG-00074 “Hosp Taman Seri” is really Hospital Taman Seri (C-MY-00066); C-SG-00075 “Hosp Permatang Sutera” is really Hospital Permatang Sutera (C-MY-00004); C-SG-00076 “Song Sen International Hospital” is really Bệnh viện Quốc tế Sông Sen (C-VN-00035). Raw SG gains a level of S$1.1M over the 12 months; MY loses 4.7% and VN 4.5% of their 12-month value. This is the level shift the clean × method test detects."
  },
  "miscategorisation": {
-  "units12m": 921,
-  "sgd12m": 170391,
   "country": "TH",
   "fromProduct": "A",
   "toProduct": "B",
+  "units12m": 4002,
+  "sgd12m": 275994,
   "items": [
    {
-    "itemCode": "I-B-000875",
-    "itemName": "Influenza A/B Ag Rapid Test 25T",
+    "itemCode": "I-B-000901",
+    "itemName": "Influenza A/B Rapid Test Kit 25T",
     "recordedProduct": "B",
     "trueProduct": "A",
     "recordedCategory": "Lab consumable",
     "trueCategory": "IVD reagent"
    },
    {
-    "itemCode": "I-B-000882",
-    "itemName": "Chikungunya IgM Rapid Test 20T",
+    "itemCode": "I-B-000906",
+    "itemName": "Chikungunya IgM Test Strip 20T",
+    "recordedProduct": "B",
+    "trueProduct": "A",
+    "recordedCategory": "Lab consumable",
+    "trueCategory": "IVD reagent"
+   },
+   {
+    "itemCode": "I-B-000910",
+    "itemName": "Malaria Pf/Pan Rapid Cassette 25T",
+    "recordedProduct": "B",
+    "trueProduct": "A",
+    "recordedCategory": "Lab consumable",
+    "trueCategory": "IVD reagent"
+   },
+   {
+    "itemCode": "I-B-000912",
+    "itemName": "Urine Test Strips 10P 100s",
+    "recordedProduct": "B",
+    "trueProduct": "A",
+    "recordedCategory": "Lab consumable",
+    "trueCategory": "IVD reagent"
+   },
+   {
+    "itemCode": "I-B-000917",
+    "itemName": "Typhoid IgG/IgM Cassette 25T",
     "recordedProduct": "B",
     "trueProduct": "A",
     "recordedCategory": "Lab consumable",
@@ -93,121 +117,115 @@
  "examples": [
   {
    "country": "SG",
-   "goldenId": "G-MY-0002",
-   "title": "Two 'SG customers' are really a MY and a VN hospital",
+   "goldenId": "G-MY-0003",
+   "title": "An SG-coded customer is really a Malaysian hospital",
    "records": [
     {
-     "cardCode": "C-SG-00082",
-     "cardName": "Taman Seri Medical Ctr (SG billing)",
+     "cardCode": "C-MY-00066",
+     "cardName": "Hospital Taman Seri",
      "entity": "SPD",
-     "country": "SG"
+     "country": "MY"
     },
     {
-     "cardCode": "C-SG-00083",
-     "cardName": "Benh vien Da khoa Song Sen",
-     "entity": "QTG",
+     "cardCode": "C-SG-00074",
+     "cardName": "Hosp Taman Seri",
+     "entity": "SPD",
      "country": "SG"
     }
    ],
-   "rawStory": "Raw: two new SG customers from Jan 2026 worth S$1.04M in the last 12 months.",
-   "dedupStory": "De-duplicated: they are Taman Seri Medical Centre (MY) and Song Sen General Hospital (VN). SG's 12M value falls by 5.7%."
+   "rawStory": "Raw: C-SG-00074 “Hosp Taman Seri” was created in SG on 2026-01-07 with a blank tax ID; from Jan 2026 it books S$481k of POs a year to Singapore, which looks like SG growth.",
+   "dedupStory": "De-duplicated: it is Hospital Taman Seri (C-MY-00066), a Malaysian hospital. SG gives back S$481k; MY gets 3.5% of its 12-month value back."
   },
   {
    "country": "MY",
-   "goldenId": "G-MY-0001",
-   "title": "A top-3 account is shrinking, hidden behind a 'new' customer",
+   "goldenId": "G-MY-0002",
+   "title": "A top-2 account is shrinking, hidden behind a 'new' customer",
    "records": [
     {
-     "cardCode": "C-MY-00001",
+     "cardCode": "C-MY-00029",
      "cardName": "Bukit Damai Specialist Hospital",
      "entity": "SPD",
      "country": "MY"
     },
     {
-     "cardCode": "C-MY-00073",
-     "cardName": "Bukit Damai Specialist Hosp. Sdn Bhd",
-     "entity": "SPD",
+     "cardCode": "C-MY-00061",
+     "cardName": "Specialist Hospital Bukit Damai",
+     "entity": "QTS",
      "country": "MY"
     },
     {
-     "cardCode": "C-MY-00074",
-     "cardName": "BDSH - Bukit Damai Spec. Hospital",
-     "entity": "QTS",
+     "cardCode": "C-MY-00091",
+     "cardName": "Bukit Damai Spec Hospital",
+     "entity": "SPD",
      "country": "MY"
     }
    ],
-   "rawStory": "Raw: one customer lost (no POs after Mar 2026), one new customer (first PO Apr 2026), one flat.",
-   "dedupStory": "De-duplicated: one hospital, a top-3 MY account, down 35% year on year."
+   "rawStory": "Raw SAP records: C-MY-00029 “Bukit Damai Specialist Hospital” (SPD) stops ordering after Mar 2026, so it looks lost; C-MY-00061 “Specialist Hospital Bukit Damai” (QTS) looks flat; C-MY-00091 “Bukit Damai Spec Hospital” (SPD) first orders in Apr 2026, so it looks like a new customer.",
+   "dedupStory": "De-duplicated: 3 records are one customer, Bukit Damai Specialist Hospital, #2 in Malaysia by 12-month PO value (S$1.1M), down 32% year on year (S$1.6M → S$1.1M)."
   },
   {
    "country": "TH",
-   "goldenId": "G-TH-0001",
-   "title": "The real cross-sell gap is consumables, not instruments",
+   "goldenId": "G-TH-0009",
+   "title": "A hospital that looks like two half-customers",
    "records": [
     {
      "cardCode": "C-TH-00001",
-     "cardName": "Siam Lotus Hospital",
+     "cardName": "Sri Chaloem Hospital",
      "entity": "SPD",
      "country": "TH"
     },
     {
-     "cardCode": "C-TH-00056",
-     "cardName": "Siamlotus Hosp. Co., Ltd.",
+     "cardCode": "C-TH-00063",
+     "cardName": "Si Chalerm Hosp",
      "entity": "QTS",
      "country": "TH"
     }
    ],
-   "rawStory": "Raw: an 'A-only' SPD customer and a separate 'C-only' QTS customer, two false cross-sell gaps.",
-   "dedupStory": "De-duplicated: one hospital that buys reagents (A) and instruments (C) but no lab consumables (B)."
+   "rawStory": "Raw: C-TH-00001 “Sri Chaloem Hospital” (SPD) buys only Product A from SPD and C-TH-00063 “Si Chalerm Hosp” (QTS) buys only Product C from QTS, so it looks like an A-only and a C-only customer, each a cross-sell lead.",
+   "dedupStory": "De-duplicated: one hospital, Sri Chaloem Hospital, already buys A and C; the real gap is Product B (lab consumables), which it buys from nobody in the group."
   },
   {
    "country": "VN",
-   "goldenId": "G-VN-0001",
-   "title": "VN's growth is understated",
+   "goldenId": "G-VN-0004",
+   "title": "A Vietnamese hospital's orders were booked to Singapore",
    "records": [
     {
-     "cardCode": "C-VN-00001",
-     "cardName": "Song Sen General Hospital",
-     "entity": "QTG",
-     "country": "VN"
+     "cardCode": "C-SG-00076",
+     "cardName": "Song Sen International Hospital",
+     "entity": "SPD",
+     "country": "SG"
     },
     {
-     "cardCode": "C-VN-00049",
-     "cardName": "Bệnh viện Đa khoa Sông Sen",
+     "cardCode": "C-VN-00035",
+     "cardName": "Bệnh viện Quốc tế Sông Sen",
      "entity": "SPD",
      "country": "VN"
-    },
-    {
-     "cardCode": "C-SG-00083",
-     "cardName": "Benh vien Da khoa Song Sen",
-     "entity": "QTG",
-     "country": "SG"
     }
    ],
-   "rawStory": "Raw: Song Sen General Hospital appears under three spellings, one of them coded to SG.",
-   "dedupStory": "De-duplicated: S$348k of VN orders move back from SG (3.9% of VN's 12M value)."
+   "rawStory": "Raw: from Jan 2026 most of Bệnh viện Quốc tế Sông Sen's orders go to SG-coded C-SG-00076 “Song Sen International Hospital”, so C-VN-00035 looks like a declining VN account and VN loses S$414k in the 12 months.",
+   "dedupStory": "De-duplicated: one hospital, Bệnh viện Quốc tế Sông Sen, in Vietnam. VN gets back 4.5% of its 12-month value; the romanised name and blank tax ID are why a name match alone would miss it."
   },
   {
    "country": "MM",
-   "goldenId": "G-MM-0001",
-   "title": "A 'lost' customer that never left",
+   "goldenId": "G-MM-0005",
+   "title": "Two spellings of one Myanmar hospital",
    "records": [
     {
-     "cardCode": "C-MM-00001",
-     "cardName": "Yangon Lakeside Hospital",
+     "cardCode": "C-MM-00023",
+     "cardName": "Aung Myittar Hospital",
      "entity": "SPD",
      "country": "MM"
     },
     {
-     "cardCode": "C-MM-00029",
-     "cardName": "Rangoon Lakeside Hosp",
-     "entity": "SPD",
+     "cardCode": "C-MM-00038",
+     "cardName": "Aong Myitta Hospital",
+     "entity": "QTG",
      "country": "MM"
     }
    ],
-   "rawStory": "Raw: Yangon Lakeside Hospital looks lost and 'Rangoon Lakeside Hosp' looks new.",
-   "dedupStory": "De-duplicated: the same hospital (Rangoon is the old romanisation of Yangon), ordering steadily."
+   "rawStory": "Raw: C-MM-00023 “Aung Myittar Hospital” (SPD), S$162k over 12 months, and C-MM-00038 “Aong Myitta Hospital” (QTG), S$50k, are two separate customers on two entities.",
+   "dedupStory": "De-duplicated: one hospital, Aung Myittar Hospital, worth S$212k over 12 months across SPD and QTG; Burmese names have no single romanisation, so spelling alone cannot find it."
   }
  ],
- "note": "Merging duplicate customers alone does not change country × product totals. Only misattribution (wrong country) and miscategorisation (wrong product) move value between cells, and those are the only changes the de-duplicated view shows."
+ "note": "Merging duplicate customers alone does not change country × product totals. Only the misattributed value (SG-coded records for MY/VN hospitals, from Jan 2026: S$1.1M in the 12 months) and the miscategorised value (reagent test kits coded as Product B: S$350k, of which TH S$276k, MM S$9k, VN S$65k) move between cells. SG's raw record count includes the 3 SG-coded records that belong to MY/VN customers. Duplicates do change customer counts, account rankings and the growth bridge (a 'lost' plus a 'new' customer becomes one shrinking account). The de-duplicated view uses the synthetic data's ground-truth golden IDs; the matcher that would build them in production is scored separately on held-out countries."
 }

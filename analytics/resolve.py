@@ -31,7 +31,7 @@ from pathlib import Path
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from common import ANALYTICS, COUNTRIES, SRC_DATA, read_csv, read_json, scenario_dir, write_csv, write_json  # noqa: E402
+from common import ANALYTICS, SRC_DATA, read_csv, scenario_dir, write_csv, write_json  # noqa: E402
 
 TUNE = ["SG", "MY"]
 HOLDOUT = ["TH", "VN", "MM"]
@@ -785,7 +785,7 @@ def write_app_files(res: dict, recs: list[dict], label: dict, cw_df: pd.DataFram
              "recallSGMY": a["tuneRecall"], "precisionSGMY": a["tunePrecision"]}
             for a in res["ablation"]],
         "notes": [
-            f"{hold['tp']} of {res['truthHold']} held-out duplicate pairs found; {hold['fp']} false warning(s) among {tp_fp}.",
+            f"{hold['tp']} of {res['truthHold']} held-out duplicate pairs found; {hold['fp']} of {tp_fp} warnings was a false alarm.",
             "Small sample: one pair moves recall by about 7 points on the held-out countries.",
             "Merging duplicate records alone does not change any country x product total; only records booked "
             "under the wrong country or product do.",
@@ -812,62 +812,57 @@ def write_app_files(res: dict, recs: list[dict], label: dict, cw_df: pd.DataFram
 # =====================================================================================================
 
 def _fixture_entry(pid: str, kind: str, note: str, inp: dict, rec: dict) -> dict:
-    s, reasons, name = score_pair(inp, rec)
+    s, reasons, _ = score_pair(inp, rec)
+    n_in, n_rec = normalize_name(inp.get("name") or ""), normalize_name(rec.get("cardName") or "")
     return {"id": pid, "kind": kind, "note": note, "input": inp, "record": rec,
-            "expected": {"score": s, "nameScore": round(name, 4), "reasons": reasons,
-                         "normalizedInput": normalize_name(inp.get("name") or ""),
-                         "normalizedRecord": normalize_name(rec.get("cardName") or "")}}
+            "expected": {"score": s, "nameSimilarity": round(name_similarity_normalized(n_in, n_rec), 6),
+                         "reasons": reasons, "normalizedInput": n_in, "normalizedRecord": n_rec}}
 
 
 def write_fixture(recs, by_code, truth, details) -> None:
-    def inp_of(code):
+    """25 pairs: 8 true duplicates (6 scored on name + tax ID only so the name score is visible, 2 with every
+    signal), 4 hardest non-duplicates, 4 mid-range non-duplicates, 8 hand-written edge cases, 1 low pair."""
+    def inp_of(code, name_only=False):
         i = as_input(by_code[code])
-        return {k: v for k, v in i.items() if v}
+        keep = ("name", "country", "taxId") if name_only else tuple(i)
+        return {k: v for k, v in i.items() if v and k in keep}
 
-    def rec_of(code, gid=""):
-        return as_master(by_code[code], gid or by_code[code]["golden_id"])
+    def rec_of(code):
+        return as_master(by_code[code], by_code[code]["golden_id"])
 
     entries = []
-    # (a) true duplicates: one per perturbation flavour, deterministic (sorted by code)
+    # (a) true duplicates: one per perturbation flavour, then a misattributed and two Vietnamese pairs
     tp_sorted = sorted(truth)
-    want = ["abbreviation", "typo", "word_reorder", "romanisation", "blank_tax_id", "address_format",
-            "cross_entity"]
+    pert = {p: by_code[p[1]]["perturbation"] or by_code[p[0]]["perturbation"] for p in tp_sorted}
     picked = []
-    truth_df_pert = {}
-    for (a, b) in tp_sorted:
-        truth_df_pert[(a, b)] = by_code[b]["perturbation"] or by_code[a]["perturbation"]
-    for w in want:
-        for p in tp_sorted:
-            if p not in picked and w in truth_df_pert[p].split(";"):
-                picked.append(p)
-                break
-    # cross-country (misattributed) pairs and Vietnamese pairs
-    for p in tp_sorted:
-        if p not in picked and by_code[p[0]]["recorded_country"] != by_code[p[1]]["recorded_country"]:
+    for w in ["abbreviation", "typo", "word_reorder", "romanisation", "cross_entity"]:
+        p = next((q for q in tp_sorted if q not in picked and w in pert[q].split(";")), None)
+        if p:
             picked.append(p)
-            break
-    for p in tp_sorted:
-        if p not in picked and by_code[p[0]]["recorded_country"] == "VN":
-            picked.append(p)
-        if sum(1 for q in picked if by_code[q[0]]["recorded_country"] == "VN") >= 2:
-            break
-    picked = picked[:10]
+    vn = [q for q in tp_sorted if q not in picked and by_code[q[0]]["recorded_country"] == "VN"
+          and by_code[q[1]]["recorded_country"] == "VN"][:2]
+    cross = [q for q in tp_sorted if q not in picked
+             and by_code[q[0]]["recorded_country"] != by_code[q[1]]["recorded_country"]][:1]
+    picked = (picked[:5] + vn + cross)[:8]
     for k, (a, b) in enumerate(picked):
         older, newer = sorted([by_code[a], by_code[b]], key=lambda r: (r["created_at"] or "9999", r["card_code"]))
-        entries.append(_fixture_entry(f"T{k + 1:02d}", "true_duplicate",
-                                      f"{newer['perturbation'] or older['perturbation']} ({newer['recorded_country']}/{older['recorded_country']})",
-                                      inp_of(newer["card_code"]), rec_of(older["card_code"])))
-    # (b) hard non-duplicates: highest-scoring pairs that are NOT duplicates
+        name_only = k < 6
+        entries.append(_fixture_entry(
+            f"T{k + 1:02d}", "true_duplicate",
+            f"{pert[(a, b)]} ({newer['recorded_country']}/{older['recorded_country']})"
+            + ("; name + tax ID only" if name_only else "; all signals"),
+            inp_of(newer["card_code"], name_only), rec_of(older["card_code"])))
+    # (b) hard non-duplicates: highest-scoring pairs that are NOT duplicates (all signals)
     nondup = sorted(((v[0], p) for p, v in details.items() if p not in truth), reverse=True)
-    for k, (_, (a, b)) in enumerate(nondup[:5]):
-        entries.append(_fixture_entry(f"N{k + 1:02d}", "non_duplicate", "highest-scoring non-duplicate pairs",
+    for k, (_, (a, b)) in enumerate(nondup[:4]):
+        entries.append(_fixture_entry(f"N{k + 1:02d}", "non_duplicate", "hardest non-duplicates (all signals)",
                                       inp_of(b), rec_of(a)))
-    # (c) ordinary non-duplicates across the score range
+    # (c) ordinary non-duplicates across the score range (name only)
     mid = [x for x in nondup if 0.3 <= x[0] < 0.8]
     step = max(1, len(mid) // 4)
     for k, (_, (a, b)) in enumerate(mid[::step][:4]):
-        entries.append(_fixture_entry(f"M{k + 1:02d}", "non_duplicate", "mid-range non-duplicate",
-                                      inp_of(b), rec_of(a)))
+        entries.append(_fixture_entry(f"M{k + 1:02d}", "non_duplicate", "mid-range non-duplicate (name only)",
+                                      inp_of(b, True), rec_of(a)))
     # (d) hand-written edge cases (pinned demo facts and normaliser corners)
     nuh = dict(NUH_PINNED)
     edge = [
@@ -876,10 +871,10 @@ def write_fixture(recs, by_code, truth, details) -> None:
         ("Generic word only must stay <= 0.5", {"name": "Hospital", "country": "SG"}, nuh),
         ("Different hospital must stay < 0.75", {"name": "Mount Elizabeth Hospital", "country": "SG"}, nuh),
         ("Initials", {"name": "NUH", "country": "SG"}, nuh),
-        ("Apostrophe, leading St, Gen, ampersand",
+        ("Apostrophe, leading St, Gen, ampersand, postcode with letters",
          {"name": "St. Luke's Gen Hosp & Lab", "country": "SG", "zipCode": "S(119074)"},
          {**nuh, "cardCode": "C-SG-99001", "cardName": "Saint Lukes General Hospital and Laboratory", "goldenId": "G-SG-9001"}),
-        ("Vietnamese: Cong ty / TNHH / diacritics incl. D-stroke",
+        ("Vietnamese: Cong ty / TNHH / diacritics incl. D-stroke (TS drops the D-stroke letter)",
          {"name": "Công ty TNHH Bệnh viện Đa khoa Hòa Bình", "country": "VN", "phone": "+84 28 1234 5678"},
          {"cardCode": "C-VN-99001", "cardName": "Benh vien Da khoa Hoa Binh", "entity": "SPD", "country": "VN",
           "phone1": "+84 28 1234 5678", "goldenId": "G-VN-9001", "segment": "Private hospital", "hasTransactions": True}),
@@ -891,12 +886,13 @@ def write_fixture(recs, by_code, truth, details) -> None:
     ]
     for k, (note, inp, rec) in enumerate(edge):
         entries.append(_fixture_entry(f"E{k + 1:02d}", "edge_case", note, inp, rec))
-    # top up / trim to exactly 25
+    # top up to exactly 25 with low-scoring pairs
     extra = [x for x in nondup if x[0] < 0.3]
     k = 0
     while len(entries) < 25 and k < len(extra):
-        _, (a, b) = extra[k * 7 % len(extra)]
-        entries.append(_fixture_entry(f"L{k + 1:02d}", "non_duplicate", "low-scoring non-duplicate", inp_of(b), rec_of(a)))
+        _, (a, b) = extra[(k * 7) % len(extra)]
+        entries.append(_fixture_entry(f"L{k + 1:02d}", "non_duplicate", "low-scoring non-duplicate (name only)",
+                                      inp_of(b, True), rec_of(a)))
         k += 1
     entries = entries[:25]
     fixture = {

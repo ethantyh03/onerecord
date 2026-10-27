@@ -1,5 +1,6 @@
 {
- "isMock": true,
+ "isMock": false,
+ "scenario": "base",
  "window": {
   "label": "Oct 2025 – Sep 2026",
   "start": "2025-10",
@@ -15,923 +16,940 @@
  },
  "legend": "Orders, open requests and enquiries are customer demand; MDM setups are our internal work, connected only where a setup blocks an order.",
  "definitions": {
-  "po": "Purchase order: confirmed customer order. This is volume.",
-  "pr": "Purchase request: quote accepted / stated intent. Pipeline, not counted as volume.",
-  "enquiry": "Price/availability/spec question. Leading indicator (count).",
-  "followup": "Message about an existing PO. Excluded.",
-  "mdm": "Internal master-data setup request. Not demand; separate axis."
+  "po": "Purchase order: a confirmed customer order. This is volume, counted on merged customers.",
+  "pr": "Purchase request: quote accepted or stated intent to buy, no PO yet. Pipeline, not counted as volume.",
+  "enquiry": "Price, stock or spec question with no commitment. A leading indicator (count).",
+  "followup": "Message about an existing PO: delivery, invoice, return or credit note. Excluded from demand.",
+  "mdm": "Internal master-data setup request (customer, item, vendor, cost centre). Our work, not demand; own axis."
  },
- "stuckDemandNote": "prPipelineOpenSgd excludes PRs blocked by a pending MDM request. The app adds live stuck demand from the store.",
+ "stuckDemandNote": "prPipelineOpenSgd counts open PRs only. PRs blocked by a pending MDM request are stuck demand, shown live from the app's store with their count and days blocked.",
+ "conversionNote": "prToPoConversion = PRs raised Oct 2025–Sep 2026 that became a PO ÷ those that became a PO or were lost (still-open PRs excluded).",
+ "mdmHistoryNote": "MDM setup history starts 2025-10; earlier months show 0 because no history was generated, not because there were no requests.",
  "countries": [
   {
    "country": "SG",
-   "enquiries12m": 1896,
-   "enquiriesPrior12m": 1799,
-   "prSgd12m": 20638122,
-   "prPipelineOpenSgd": 1976645,
-   "prOpenCount": 62,
-   "poSgd12m": 18267049,
-   "mdmRequests12m": 322,
-   "prToPoConversion": 0.62,
-   "enquiryYoy": 0.0539,
+   "enquiries12m": 949,
+   "enquiriesPrior12m": 1024,
+   "enquiryYoy": -0.0732,
+   "prSgd12m": 4812151,
+   "prPipelineOpenSgd": 584242,
+   "prOpenCount": 42,
+   "poSgd12m": 17107599,
+   "mdmRequests12m": 326,
+   "prToPoConversion": 0.7331,
    "series": [
     {
      "month": "2024-10",
-     "enquiries": 131,
-     "prSgd": 2200880,
-     "poSgd": 2062520,
-     "mdmRequests": 24
+     "enquiries": 80,
+     "prSgd": 78951,
+     "poSgd": 1469462,
+     "mdmRequests": 0
     },
     {
      "month": "2024-11",
-     "enquiries": 136,
-     "prSgd": 1643603,
-     "poSgd": 1399272,
-     "mdmRequests": 24
+     "enquiries": 71,
+     "prSgd": 374901,
+     "poSgd": 1218175,
+     "mdmRequests": 0
     },
     {
      "month": "2024-12",
-     "enquiries": 180,
-     "prSgd": 1351658,
-     "poSgd": 1292540,
-     "mdmRequests": 27
+     "enquiries": 81,
+     "prSgd": 531085,
+     "poSgd": 1232176,
+     "mdmRequests": 0
     },
     {
      "month": "2025-01",
-     "enquiries": 138,
-     "prSgd": 1312820,
-     "poSgd": 1171747,
-     "mdmRequests": 27
+     "enquiries": 74,
+     "prSgd": 220174,
+     "poSgd": 1269885,
+     "mdmRequests": 0
     },
     {
      "month": "2025-02",
-     "enquiries": 124,
-     "prSgd": 1216062,
-     "poSgd": 1044539,
-     "mdmRequests": 33
+     "enquiries": 84,
+     "prSgd": 509529,
+     "poSgd": 1123297,
+     "mdmRequests": 0
     },
     {
      "month": "2025-03",
-     "enquiries": 147,
-     "prSgd": 1699955,
-     "poSgd": 1458452,
-     "mdmRequests": 30
+     "enquiries": 84,
+     "prSgd": 687076,
+     "poSgd": 1716010,
+     "mdmRequests": 0
     },
     {
      "month": "2025-04",
-     "enquiries": 152,
-     "prSgd": 1606990,
-     "poSgd": 1441063,
-     "mdmRequests": 17
+     "enquiries": 77,
+     "prSgd": 242226,
+     "poSgd": 1153600,
+     "mdmRequests": 0
     },
     {
      "month": "2025-05",
-     "enquiries": 162,
-     "prSgd": 1859508,
-     "poSgd": 1626568,
-     "mdmRequests": 22
+     "enquiries": 97,
+     "prSgd": 313229,
+     "poSgd": 1448090,
+     "mdmRequests": 0
     },
     {
      "month": "2025-06",
-     "enquiries": 156,
-     "prSgd": 1706865,
-     "poSgd": 1530849,
-     "mdmRequests": 24
+     "enquiries": 116,
+     "prSgd": 423662,
+     "poSgd": 1460149,
+     "mdmRequests": 0
     },
     {
      "month": "2025-07",
-     "enquiries": 163,
-     "prSgd": 1732366,
-     "poSgd": 1619492,
-     "mdmRequests": 30
+     "enquiries": 77,
+     "prSgd": 625815,
+     "poSgd": 1768617,
+     "mdmRequests": 0
     },
     {
      "month": "2025-08",
-     "enquiries": 139,
-     "prSgd": 1896644,
-     "poSgd": 1708322,
-     "mdmRequests": 33
+     "enquiries": 102,
+     "prSgd": 450110,
+     "poSgd": 1433322,
+     "mdmRequests": 0
     },
     {
      "month": "2025-09",
-     "enquiries": 171,
-     "prSgd": 2146471,
-     "poSgd": 1857039,
-     "mdmRequests": 22
+     "enquiries": 81,
+     "prSgd": 553488,
+     "poSgd": 1402006,
+     "mdmRequests": 0
     },
     {
      "month": "2025-10",
-     "enquiries": 151,
-     "prSgd": 1668816,
-     "poSgd": 1445617,
-     "mdmRequests": 26
-    },
-    {
-     "month": "2025-11",
-     "enquiries": 157,
-     "prSgd": 1517352,
-     "poSgd": 1321563,
-     "mdmRequests": 25
-    },
-    {
-     "month": "2025-12",
-     "enquiries": 140,
-     "prSgd": 1643392,
-     "poSgd": 1468613,
-     "mdmRequests": 30
-    },
-    {
-     "month": "2026-01",
-     "enquiries": 142,
-     "prSgd": 1716142,
-     "poSgd": 1507204,
-     "mdmRequests": 23
-    },
-    {
-     "month": "2026-02",
-     "enquiries": 161,
-     "prSgd": 1310902,
-     "poSgd": 1163506,
+     "enquiries": 56,
+     "prSgd": 239375,
+     "poSgd": 1253422,
      "mdmRequests": 32
     },
     {
-     "month": "2026-03",
-     "enquiries": 167,
-     "prSgd": 1880435,
-     "poSgd": 1755297,
-     "mdmRequests": 29
-    },
-    {
-     "month": "2026-04",
-     "enquiries": 151,
-     "prSgd": 1715507,
-     "poSgd": 1538047,
-     "mdmRequests": 27
-    },
-    {
-     "month": "2026-05",
-     "enquiries": 155,
-     "prSgd": 1728332,
-     "poSgd": 1436003,
+     "month": "2025-11",
+     "enquiries": 64,
+     "prSgd": 435399,
+     "poSgd": 1178369,
      "mdmRequests": 23
     },
     {
-     "month": "2026-06",
-     "enquiries": 154,
-     "prSgd": 1809686,
-     "poSgd": 1629441,
-     "mdmRequests": 24
+     "month": "2025-12",
+     "enquiries": 94,
+     "prSgd": 440413,
+     "poSgd": 1253072,
+     "mdmRequests": 26
     },
     {
-     "month": "2026-07",
-     "enquiries": 177,
-     "prSgd": 2169392,
-     "poSgd": 1826506,
+     "month": "2026-01",
+     "enquiries": 52,
+     "prSgd": 656050,
+     "poSgd": 1447505,
+     "mdmRequests": 32
+    },
+    {
+     "month": "2026-02",
+     "enquiries": 96,
+     "prSgd": 250638,
+     "poSgd": 1611436,
+     "mdmRequests": 21
+    },
+    {
+     "month": "2026-03",
+     "enquiries": 95,
+     "prSgd": 351051,
+     "poSgd": 1530499,
+     "mdmRequests": 21
+    },
+    {
+     "month": "2026-04",
+     "enquiries": 81,
+     "prSgd": 303599,
+     "poSgd": 1200361,
      "mdmRequests": 33
     },
     {
-     "month": "2026-08",
-     "enquiries": 193,
-     "prSgd": 1807620,
-     "poSgd": 1661176,
+     "month": "2026-05",
+     "enquiries": 83,
+     "prSgd": 470602,
+     "poSgd": 1334236,
      "mdmRequests": 26
     },
     {
-     "month": "2026-09",
-     "enquiries": 148,
-     "prSgd": 1670546,
-     "poSgd": 1514076,
+     "month": "2026-06",
+     "enquiries": 87,
+     "prSgd": 405648,
+     "poSgd": 1669651,
      "mdmRequests": 24
+    },
+    {
+     "month": "2026-07",
+     "enquiries": 73,
+     "prSgd": 315084,
+     "poSgd": 1729493,
+     "mdmRequests": 28
+    },
+    {
+     "month": "2026-08",
+     "enquiries": 90,
+     "prSgd": 628524,
+     "poSgd": 1336269,
+     "mdmRequests": 29
+    },
+    {
+     "month": "2026-09",
+     "enquiries": 78,
+     "prSgd": 315768,
+     "poSgd": 1563286,
+     "mdmRequests": 31
     }
-   ]
+   ],
+   "followups12m": 359,
+   "prResolved12m": 341,
+   "prBlockedInCsv": 2
   },
   {
    "country": "MY",
-   "enquiries12m": 1547,
-   "enquiriesPrior12m": 1484,
-   "prSgd12m": 17759599,
-   "prPipelineOpenSgd": 1629864,
-   "prOpenCount": 48,
-   "poSgd12m": 15186874,
-   "mdmRequests12m": 265,
-   "prToPoConversion": 0.58,
-   "enquiryYoy": 0.0425,
+   "enquiries12m": 926,
+   "enquiriesPrior12m": 904,
+   "enquiryYoy": 0.0243,
+   "prSgd12m": 4131265,
+   "prPipelineOpenSgd": 558016,
+   "prOpenCount": 44,
+   "poSgd12m": 13700761,
+   "mdmRequests12m": 254,
+   "prToPoConversion": 0.7126,
    "series": [
     {
      "month": "2024-10",
-     "enquiries": 114,
-     "prSgd": 1421449,
-     "poSgd": 1307817,
-     "mdmRequests": 22
+     "enquiries": 91,
+     "prSgd": 419817,
+     "poSgd": 1095185,
+     "mdmRequests": 0
     },
     {
      "month": "2024-11",
-     "enquiries": 113,
-     "prSgd": 1716460,
-     "poSgd": 1429755,
-     "mdmRequests": 19
+     "enquiries": 60,
+     "prSgd": 335478,
+     "poSgd": 1134511,
+     "mdmRequests": 0
     },
     {
      "month": "2024-12",
-     "enquiries": 154,
-     "prSgd": 1512016,
-     "poSgd": 1346508,
-     "mdmRequests": 22
+     "enquiries": 76,
+     "prSgd": 167392,
+     "poSgd": 957554,
+     "mdmRequests": 0
     },
     {
      "month": "2025-01",
-     "enquiries": 113,
-     "prSgd": 1633136,
-     "poSgd": 1304041,
-     "mdmRequests": 26
+     "enquiries": 65,
+     "prSgd": 414904,
+     "poSgd": 1063930,
+     "mdmRequests": 0
     },
     {
      "month": "2025-02",
-     "enquiries": 130,
-     "prSgd": 996102,
-     "poSgd": 931640,
-     "mdmRequests": 23
-    },
-    {
-     "month": "2025-03",
-     "enquiries": 116,
-     "prSgd": 1903027,
-     "poSgd": 1537500,
-     "mdmRequests": 25
-    },
-    {
-     "month": "2025-04",
-     "enquiries": 129,
-     "prSgd": 1167659,
-     "poSgd": 1163219,
-     "mdmRequests": 19
-    },
-    {
-     "month": "2025-05",
-     "enquiries": 136,
-     "prSgd": 1519070,
-     "poSgd": 1242315,
-     "mdmRequests": 26
-    },
-    {
-     "month": "2025-06",
-     "enquiries": 113,
-     "prSgd": 1319935,
-     "poSgd": 1129991,
-     "mdmRequests": 25
-    },
-    {
-     "month": "2025-07",
-     "enquiries": 112,
-     "prSgd": 1305128,
-     "poSgd": 1135362,
-     "mdmRequests": 23
-    },
-    {
-     "month": "2025-08",
-     "enquiries": 127,
-     "prSgd": 1194982,
-     "poSgd": 1150270,
-     "mdmRequests": 21
-    },
-    {
-     "month": "2025-09",
-     "enquiries": 127,
-     "prSgd": 1294708,
-     "poSgd": 1134598,
-     "mdmRequests": 20
-    },
-    {
-     "month": "2025-10",
-     "enquiries": 126,
-     "prSgd": 1245221,
-     "poSgd": 1085048,
-     "mdmRequests": 23
-    },
-    {
-     "month": "2025-11",
-     "enquiries": 128,
-     "prSgd": 1587120,
-     "poSgd": 1410245,
-     "mdmRequests": 22
-    },
-    {
-     "month": "2025-12",
-     "enquiries": 112,
-     "prSgd": 1859478,
-     "poSgd": 1577671,
-     "mdmRequests": 22
-    },
-    {
-     "month": "2026-01",
-     "enquiries": 133,
-     "prSgd": 1543945,
-     "poSgd": 1278477,
-     "mdmRequests": 16
-    },
-    {
-     "month": "2026-02",
-     "enquiries": 112,
-     "prSgd": 1228846,
-     "poSgd": 1053512,
-     "mdmRequests": 22
-    },
-    {
-     "month": "2026-03",
-     "enquiries": 135,
-     "prSgd": 1396765,
-     "poSgd": 1244587,
-     "mdmRequests": 24
-    },
-    {
-     "month": "2026-04",
-     "enquiries": 144,
-     "prSgd": 1531668,
-     "poSgd": 1299081,
-     "mdmRequests": 21
-    },
-    {
-     "month": "2026-05",
-     "enquiries": 112,
-     "prSgd": 1297968,
-     "poSgd": 1085118,
-     "mdmRequests": 26
-    },
-    {
-     "month": "2026-06",
-     "enquiries": 142,
-     "prSgd": 1411834,
-     "poSgd": 1286736,
-     "mdmRequests": 24
-    },
-    {
-     "month": "2026-07",
-     "enquiries": 145,
-     "prSgd": 1627285,
-     "poSgd": 1308602,
-     "mdmRequests": 19
-    },
-    {
-     "month": "2026-08",
-     "enquiries": 134,
-     "prSgd": 1459043,
-     "poSgd": 1221124,
-     "mdmRequests": 22
-    },
-    {
-     "month": "2026-09",
-     "enquiries": 124,
-     "prSgd": 1570426,
-     "poSgd": 1336673,
-     "mdmRequests": 24
-    }
-   ]
-  },
-  {
-   "country": "TH",
-   "enquiries12m": 1027,
-   "enquiriesPrior12m": 972,
-   "prSgd12m": 10931731,
-   "prPipelineOpenSgd": 1238260,
-   "prOpenCount": 32,
-   "poSgd12m": 9780571,
-   "mdmRequests12m": 158,
-   "prToPoConversion": 0.55,
-   "enquiryYoy": 0.0566,
-   "series": [
-    {
-     "month": "2024-10",
-     "enquiries": 81,
-     "prSgd": 776234,
-     "poSgd": 667340,
-     "mdmRequests": 13
-    },
-    {
-     "month": "2024-11",
-     "enquiries": 90,
-     "prSgd": 622894,
-     "poSgd": 568356,
-     "mdmRequests": 13
-    },
-    {
-     "month": "2024-12",
-     "enquiries": 81,
-     "prSgd": 655736,
-     "poSgd": 545203,
-     "mdmRequests": 11
-    },
-    {
-     "month": "2025-01",
      "enquiries": 72,
-     "prSgd": 683083,
-     "poSgd": 664648,
-     "mdmRequests": 14
-    },
-    {
-     "month": "2025-02",
-     "enquiries": 74,
-     "prSgd": 796481,
-     "poSgd": 706773,
-     "mdmRequests": 15
+     "prSgd": 275043,
+     "poSgd": 1139411,
+     "mdmRequests": 0
     },
     {
      "month": "2025-03",
-     "enquiries": 77,
-     "prSgd": 617540,
-     "poSgd": 530588,
-     "mdmRequests": 13
+     "enquiries": 84,
+     "prSgd": 215922,
+     "poSgd": 1142066,
+     "mdmRequests": 0
     },
     {
      "month": "2025-04",
-     "enquiries": 86,
-     "prSgd": 683533,
-     "poSgd": 579999,
-     "mdmRequests": 13
-    },
-    {
-     "month": "2025-05",
-     "enquiries": 81,
-     "prSgd": 848983,
-     "poSgd": 700120,
-     "mdmRequests": 15
-    },
-    {
-     "month": "2025-06",
-     "enquiries": 73,
-     "prSgd": 948737,
-     "poSgd": 797702,
-     "mdmRequests": 12
-    },
-    {
-     "month": "2025-07",
-     "enquiries": 92,
-     "prSgd": 1186488,
-     "poSgd": 979399,
-     "mdmRequests": 15
-    },
-    {
-     "month": "2025-08",
-     "enquiries": 84,
-     "prSgd": 1139781,
-     "poSgd": 1002043,
-     "mdmRequests": 15
-    },
-    {
-     "month": "2025-09",
-     "enquiries": 81,
-     "prSgd": 1322850,
-     "poSgd": 1136338,
-     "mdmRequests": 16
-    },
-    {
-     "month": "2025-10",
      "enquiries": 80,
-     "prSgd": 897526,
-     "poSgd": 806382,
-     "mdmRequests": 11
-    },
-    {
-     "month": "2025-11",
-     "enquiries": 77,
-     "prSgd": 818593,
-     "poSgd": 786884,
-     "mdmRequests": 16
-    },
-    {
-     "month": "2025-12",
-     "enquiries": 97,
-     "prSgd": 915940,
-     "poSgd": 741340,
-     "mdmRequests": 11
-    },
-    {
-     "month": "2026-01",
-     "enquiries": 90,
-     "prSgd": 775339,
-     "poSgd": 627639,
-     "mdmRequests": 13
-    },
-    {
-     "month": "2026-02",
-     "enquiries": 86,
-     "prSgd": 672040,
-     "poSgd": 652766,
-     "mdmRequests": 15
-    },
-    {
-     "month": "2026-03",
-     "enquiries": 78,
-     "prSgd": 802070,
-     "poSgd": 690263,
-     "mdmRequests": 11
-    },
-    {
-     "month": "2026-04",
-     "enquiries": 89,
-     "prSgd": 737108,
-     "poSgd": 608440,
-     "mdmRequests": 12
-    },
-    {
-     "month": "2026-05",
-     "enquiries": 78,
-     "prSgd": 786968,
-     "poSgd": 771055,
-     "mdmRequests": 13
-    },
-    {
-     "month": "2026-06",
-     "enquiries": 82,
-     "prSgd": 988261,
-     "poSgd": 935022,
-     "mdmRequests": 15
-    },
-    {
-     "month": "2026-07",
-     "enquiries": 84,
-     "prSgd": 1077437,
-     "poSgd": 992613,
-     "mdmRequests": 13
-    },
-    {
-     "month": "2026-08",
-     "enquiries": 94,
-     "prSgd": 1323465,
-     "poSgd": 1115740,
-     "mdmRequests": 14
-    },
-    {
-     "month": "2026-09",
-     "enquiries": 92,
-     "prSgd": 1136984,
-     "poSgd": 1052427,
-     "mdmRequests": 14
-    }
-   ]
-  },
-  {
-   "country": "VN",
-   "enquiries12m": 863,
-   "enquiriesPrior12m": 790,
-   "prSgd12m": 10085164,
-   "prPipelineOpenSgd": 1194013,
-   "prOpenCount": 27,
-   "poSgd12m": 8928958,
-   "mdmRequests12m": 142,
-   "prToPoConversion": 0.57,
-   "enquiryYoy": 0.0924,
-   "series": [
-    {
-     "month": "2024-10",
-     "enquiries": 71,
-     "prSgd": 892645,
-     "poSgd": 795718,
-     "mdmRequests": 13
-    },
-    {
-     "month": "2024-11",
-     "enquiries": 66,
-     "prSgd": 934814,
-     "poSgd": 791820,
-     "mdmRequests": 13
-    },
-    {
-     "month": "2024-12",
-     "enquiries": 54,
-     "prSgd": 1075330,
-     "poSgd": 880395,
-     "mdmRequests": 7
-    },
-    {
-     "month": "2025-01",
-     "enquiries": 67,
-     "prSgd": 702543,
-     "poSgd": 579885,
-     "mdmRequests": 11
-    },
-    {
-     "month": "2025-02",
-     "enquiries": 63,
-     "prSgd": 381023,
-     "poSgd": 351376,
-     "mdmRequests": 14
-    },
-    {
-     "month": "2025-03",
-     "enquiries": 60,
-     "prSgd": 628064,
-     "poSgd": 515762,
-     "mdmRequests": 12
-    },
-    {
-     "month": "2025-04",
-     "enquiries": 65,
-     "prSgd": 560990,
-     "poSgd": 503124,
-     "mdmRequests": 10
+     "prSgd": 334288,
+     "poSgd": 1007052,
+     "mdmRequests": 0
     },
     {
      "month": "2025-05",
-     "enquiries": 77,
-     "prSgd": 706296,
-     "poSgd": 591565,
-     "mdmRequests": 9
-    },
-    {
-     "month": "2025-06",
-     "enquiries": 70,
-     "prSgd": 528413,
-     "poSgd": 481159,
-     "mdmRequests": 14
-    },
-    {
-     "month": "2025-07",
-     "enquiries": 65,
-     "prSgd": 815395,
-     "poSgd": 654277,
-     "mdmRequests": 12
-    },
-    {
-     "month": "2025-08",
-     "enquiries": 66,
-     "prSgd": 887824,
-     "poSgd": 800300,
-     "mdmRequests": 11
-    },
-    {
-     "month": "2025-09",
-     "enquiries": 66,
-     "prSgd": 853754,
-     "poSgd": 738740,
-     "mdmRequests": 10
-    },
-    {
-     "month": "2025-10",
-     "enquiries": 61,
-     "prSgd": 913889,
-     "poSgd": 810746,
-     "mdmRequests": 9
-    },
-    {
-     "month": "2025-11",
-     "enquiries": 69,
-     "prSgd": 889451,
-     "poSgd": 811948,
-     "mdmRequests": 10
-    },
-    {
-     "month": "2025-12",
-     "enquiries": 86,
-     "prSgd": 907418,
-     "poSgd": 786744,
-     "mdmRequests": 12
-    },
-    {
-     "month": "2026-01",
      "enquiries": 64,
-     "prSgd": 716739,
-     "poSgd": 645268,
-     "mdmRequests": 12
-    },
-    {
-     "month": "2026-02",
-     "enquiries": 68,
-     "prSgd": 499312,
-     "poSgd": 414545,
-     "mdmRequests": 10
-    },
-    {
-     "month": "2026-03",
-     "enquiries": 73,
-     "prSgd": 700445,
-     "poSgd": 628293,
-     "mdmRequests": 12
-    },
-    {
-     "month": "2026-04",
-     "enquiries": 71,
-     "prSgd": 644525,
-     "poSgd": 568491,
-     "mdmRequests": 12
-    },
-    {
-     "month": "2026-05",
-     "enquiries": 71,
-     "prSgd": 694899,
-     "poSgd": 589344,
-     "mdmRequests": 12
-    },
-    {
-     "month": "2026-06",
-     "enquiries": 75,
-     "prSgd": 707021,
-     "poSgd": 628926,
-     "mdmRequests": 13
-    },
-    {
-     "month": "2026-07",
-     "enquiries": 74,
-     "prSgd": 1086778,
-     "poSgd": 960392,
-     "mdmRequests": 12
-    },
-    {
-     "month": "2026-08",
-     "enquiries": 86,
-     "prSgd": 1137409,
-     "poSgd": 1063418,
-     "mdmRequests": 13
-    },
-    {
-     "month": "2026-09",
-     "enquiries": 65,
-     "prSgd": 1187278,
-     "poSgd": 1020843,
-     "mdmRequests": 15
-    }
-   ]
-  },
-  {
-   "country": "MM",
-   "enquiries12m": 764,
-   "enquiriesPrior12m": 618,
-   "prSgd12m": 9081415,
-   "prPipelineOpenSgd": 979821,
-   "prOpenCount": 26,
-   "poSgd12m": 3499313,
-   "mdmRequests12m": 74,
-   "prToPoConversion": 0.31,
-   "enquiryYoy": 0.2362,
-   "series": [
-    {
-     "month": "2024-10",
-     "enquiries": 47,
-     "prSgd": 412525,
-     "poSgd": 213331,
-     "mdmRequests": 5
-    },
-    {
-     "month": "2024-11",
-     "enquiries": 46,
-     "prSgd": 461605,
-     "poSgd": 239262,
-     "mdmRequests": 5
-    },
-    {
-     "month": "2024-12",
-     "enquiries": 46,
-     "prSgd": 451129,
-     "poSgd": 224001,
-     "mdmRequests": 5
-    },
-    {
-     "month": "2025-01",
-     "enquiries": 45,
-     "prSgd": 481841,
-     "poSgd": 255283,
-     "mdmRequests": 6
-    },
-    {
-     "month": "2025-02",
-     "enquiries": 52,
-     "prSgd": 643283,
-     "poSgd": 307053,
-     "mdmRequests": 7
-    },
-    {
-     "month": "2025-03",
-     "enquiries": 51,
-     "prSgd": 685989,
-     "poSgd": 318849,
-     "mdmRequests": 6
-    },
-    {
-     "month": "2025-04",
-     "enquiries": 51,
-     "prSgd": 465873,
-     "poSgd": 223203,
-     "mdmRequests": 8
-    },
-    {
-     "month": "2025-05",
-     "enquiries": 51,
-     "prSgd": 656744,
-     "poSgd": 311387,
-     "mdmRequests": 6
+     "prSgd": 252581,
+     "poSgd": 1130510,
+     "mdmRequests": 0
     },
     {
      "month": "2025-06",
-     "enquiries": 55,
-     "prSgd": 768017,
-     "poSgd": 372755,
-     "mdmRequests": 7
+     "enquiries": 74,
+     "prSgd": 171464,
+     "poSgd": 963137,
+     "mdmRequests": 0
     },
     {
      "month": "2025-07",
-     "enquiries": 55,
-     "prSgd": 858448,
-     "poSgd": 402918,
-     "mdmRequests": 7
+     "enquiries": 84,
+     "prSgd": 182205,
+     "poSgd": 1132501,
+     "mdmRequests": 0
     },
     {
      "month": "2025-08",
-     "enquiries": 59,
-     "prSgd": 780145,
-     "poSgd": 363153,
-     "mdmRequests": 8
+     "enquiries": 68,
+     "prSgd": 258758,
+     "poSgd": 1060188,
+     "mdmRequests": 0
     },
     {
      "month": "2025-09",
-     "enquiries": 60,
-     "prSgd": 615344,
-     "poSgd": 263295,
-     "mdmRequests": 7
+     "enquiries": 86,
+     "prSgd": 184910,
+     "poSgd": 997433,
+     "mdmRequests": 0
     },
     {
      "month": "2025-10",
-     "enquiries": 59,
-     "prSgd": 700325,
-     "poSgd": 295099,
-     "mdmRequests": 5
+     "enquiries": 77,
+     "prSgd": 337139,
+     "poSgd": 1070437,
+     "mdmRequests": 19
     },
     {
      "month": "2025-11",
      "enquiries": 62,
-     "prSgd": 543575,
-     "poSgd": 219622,
-     "mdmRequests": 6
+     "prSgd": 559690,
+     "poSgd": 1073397,
+     "mdmRequests": 22
     },
     {
      "month": "2025-12",
-     "enquiries": 57,
-     "prSgd": 648101,
-     "poSgd": 262393,
-     "mdmRequests": 6
+     "enquiries": 79,
+     "prSgd": 368809,
+     "poSgd": 1323088,
+     "mdmRequests": 23
     },
     {
      "month": "2026-01",
-     "enquiries": 55,
-     "prSgd": 749311,
-     "poSgd": 325741,
-     "mdmRequests": 7
+     "enquiries": 84,
+     "prSgd": 287291,
+     "poSgd": 1008162,
+     "mdmRequests": 20
     },
     {
      "month": "2026-02",
-     "enquiries": 50,
-     "prSgd": 648939,
-     "poSgd": 253778,
-     "mdmRequests": 6
+     "enquiries": 74,
+     "prSgd": 204517,
+     "poSgd": 1021579,
+     "mdmRequests": 24
     },
     {
      "month": "2026-03",
-     "enquiries": 71,
-     "prSgd": 651026,
-     "poSgd": 260181,
-     "mdmRequests": 7
+     "enquiries": 75,
+     "prSgd": 203195,
+     "poSgd": 1096217,
+     "mdmRequests": 17
     },
     {
      "month": "2026-04",
      "enquiries": 63,
-     "prSgd": 560714,
-     "poSgd": 213838,
-     "mdmRequests": 7
+     "prSgd": 275289,
+     "poSgd": 1050344,
+     "mdmRequests": 18
     },
     {
      "month": "2026-05",
-     "enquiries": 64,
-     "prSgd": 747828,
-     "poSgd": 268759,
-     "mdmRequests": 5
+     "enquiries": 83,
+     "prSgd": 487019,
+     "poSgd": 1091136,
+     "mdmRequests": 18
     },
     {
      "month": "2026-06",
      "enquiries": 69,
-     "prSgd": 1032106,
-     "poSgd": 366971,
-     "mdmRequests": 7
+     "prSgd": 271790,
+     "poSgd": 1370097,
+     "mdmRequests": 16
     },
     {
      "month": "2026-07",
-     "enquiries": 79,
-     "prSgd": 996275,
-     "poSgd": 381239,
-     "mdmRequests": 5
+     "enquiries": 95,
+     "prSgd": 198132,
+     "poSgd": 1158385,
+     "mdmRequests": 21
     },
     {
      "month": "2026-08",
-     "enquiries": 64,
-     "prSgd": 1117738,
-     "poSgd": 391488,
-     "mdmRequests": 6
+     "enquiries": 84,
+     "prSgd": 420043,
+     "poSgd": 1174679,
+     "mdmRequests": 30
     },
     {
      "month": "2026-09",
-     "enquiries": 71,
-     "prSgd": 685477,
-     "poSgd": 260204,
-     "mdmRequests": 7
+     "enquiries": 81,
+     "prSgd": 518350,
+     "poSgd": 1263240,
+     "mdmRequests": 26
     }
-   ]
+   ],
+   "followups12m": 319,
+   "prResolved12m": 334,
+   "prBlockedInCsv": 4
+  },
+  {
+   "country": "TH",
+   "enquiries12m": 698,
+   "enquiriesPrior12m": 704,
+   "enquiryYoy": -0.0085,
+   "prSgd12m": 2777580,
+   "prPipelineOpenSgd": 337979,
+   "prOpenCount": 22,
+   "poSgd12m": 10034548,
+   "mdmRequests12m": 187,
+   "prToPoConversion": 0.6534,
+   "series": [
+    {
+     "month": "2024-10",
+     "enquiries": 73,
+     "prSgd": 133901,
+     "poSgd": 898019,
+     "mdmRequests": 0
+    },
+    {
+     "month": "2024-11",
+     "enquiries": 51,
+     "prSgd": 171057,
+     "poSgd": 627497,
+     "mdmRequests": 0
+    },
+    {
+     "month": "2024-12",
+     "enquiries": 66,
+     "prSgd": 272293,
+     "poSgd": 711298,
+     "mdmRequests": 0
+    },
+    {
+     "month": "2025-01",
+     "enquiries": 41,
+     "prSgd": 228420,
+     "poSgd": 835150,
+     "mdmRequests": 0
+    },
+    {
+     "month": "2025-02",
+     "enquiries": 53,
+     "prSgd": 172359,
+     "poSgd": 664595,
+     "mdmRequests": 0
+    },
+    {
+     "month": "2025-03",
+     "enquiries": 50,
+     "prSgd": 95677,
+     "poSgd": 799697,
+     "mdmRequests": 0
+    },
+    {
+     "month": "2025-04",
+     "enquiries": 58,
+     "prSgd": 162716,
+     "poSgd": 605940,
+     "mdmRequests": 0
+    },
+    {
+     "month": "2025-05",
+     "enquiries": 66,
+     "prSgd": 183910,
+     "poSgd": 838482,
+     "mdmRequests": 0
+    },
+    {
+     "month": "2025-06",
+     "enquiries": 57,
+     "prSgd": 149682,
+     "poSgd": 760724,
+     "mdmRequests": 0
+    },
+    {
+     "month": "2025-07",
+     "enquiries": 62,
+     "prSgd": 291876,
+     "poSgd": 850913,
+     "mdmRequests": 0
+    },
+    {
+     "month": "2025-08",
+     "enquiries": 71,
+     "prSgd": 725969,
+     "poSgd": 1003551,
+     "mdmRequests": 0
+    },
+    {
+     "month": "2025-09",
+     "enquiries": 56,
+     "prSgd": 231896,
+     "poSgd": 1094907,
+     "mdmRequests": 0
+    },
+    {
+     "month": "2025-10",
+     "enquiries": 48,
+     "prSgd": 232885,
+     "poSgd": 716306,
+     "mdmRequests": 12
+    },
+    {
+     "month": "2025-11",
+     "enquiries": 47,
+     "prSgd": 176539,
+     "poSgd": 734951,
+     "mdmRequests": 17
+    },
+    {
+     "month": "2025-12",
+     "enquiries": 56,
+     "prSgd": 95024,
+     "poSgd": 700197,
+     "mdmRequests": 15
+    },
+    {
+     "month": "2026-01",
+     "enquiries": 59,
+     "prSgd": 209977,
+     "poSgd": 687612,
+     "mdmRequests": 21
+    },
+    {
+     "month": "2026-02",
+     "enquiries": 54,
+     "prSgd": 353876,
+     "poSgd": 935981,
+     "mdmRequests": 14
+    },
+    {
+     "month": "2026-03",
+     "enquiries": 58,
+     "prSgd": 124580,
+     "poSgd": 815522,
+     "mdmRequests": 17
+    },
+    {
+     "month": "2026-04",
+     "enquiries": 48,
+     "prSgd": 332598,
+     "poSgd": 697774,
+     "mdmRequests": 10
+    },
+    {
+     "month": "2026-05",
+     "enquiries": 60,
+     "prSgd": 142638,
+     "poSgd": 835306,
+     "mdmRequests": 16
+    },
+    {
+     "month": "2026-06",
+     "enquiries": 73,
+     "prSgd": 168942,
+     "poSgd": 862424,
+     "mdmRequests": 14
+    },
+    {
+     "month": "2026-07",
+     "enquiries": 70,
+     "prSgd": 280900,
+     "poSgd": 931660,
+     "mdmRequests": 19
+    },
+    {
+     "month": "2026-08",
+     "enquiries": 73,
+     "prSgd": 489565,
+     "poSgd": 1223810,
+     "mdmRequests": 20
+    },
+    {
+     "month": "2026-09",
+     "enquiries": 52,
+     "prSgd": 170056,
+     "poSgd": 893005,
+     "mdmRequests": 12
+    }
+   ],
+   "followups12m": 292,
+   "prResolved12m": 277,
+   "prBlockedInCsv": 2
+  },
+  {
+   "country": "VN",
+   "enquiries12m": 717,
+   "enquiriesPrior12m": 635,
+   "enquiryYoy": 0.1291,
+   "prSgd12m": 2192659,
+   "prPipelineOpenSgd": 77479,
+   "prOpenCount": 25,
+   "poSgd12m": 9275531,
+   "mdmRequests12m": 150,
+   "prToPoConversion": 0.7251,
+   "series": [
+    {
+     "month": "2024-10",
+     "enquiries": 50,
+     "prSgd": 468090,
+     "poSgd": 890170,
+     "mdmRequests": 0
+    },
+    {
+     "month": "2024-11",
+     "enquiries": 49,
+     "prSgd": 485337,
+     "poSgd": 810787,
+     "mdmRequests": 0
+    },
+    {
+     "month": "2024-12",
+     "enquiries": 46,
+     "prSgd": 297880,
+     "poSgd": 981169,
+     "mdmRequests": 0
+    },
+    {
+     "month": "2025-01",
+     "enquiries": 46,
+     "prSgd": 214607,
+     "poSgd": 514934,
+     "mdmRequests": 0
+    },
+    {
+     "month": "2025-02",
+     "enquiries": 46,
+     "prSgd": 84133,
+     "poSgd": 622861,
+     "mdmRequests": 0
+    },
+    {
+     "month": "2025-03",
+     "enquiries": 43,
+     "prSgd": 145782,
+     "poSgd": 596068,
+     "mdmRequests": 0
+    },
+    {
+     "month": "2025-04",
+     "enquiries": 54,
+     "prSgd": 520182,
+     "poSgd": 677777,
+     "mdmRequests": 0
+    },
+    {
+     "month": "2025-05",
+     "enquiries": 67,
+     "prSgd": 334428,
+     "poSgd": 702895,
+     "mdmRequests": 0
+    },
+    {
+     "month": "2025-06",
+     "enquiries": 60,
+     "prSgd": 115115,
+     "poSgd": 603160,
+     "mdmRequests": 0
+    },
+    {
+     "month": "2025-07",
+     "enquiries": 64,
+     "prSgd": 343252,
+     "poSgd": 718698,
+     "mdmRequests": 0
+    },
+    {
+     "month": "2025-08",
+     "enquiries": 45,
+     "prSgd": 61009,
+     "poSgd": 794359,
+     "mdmRequests": 0
+    },
+    {
+     "month": "2025-09",
+     "enquiries": 65,
+     "prSgd": 150011,
+     "poSgd": 602393,
+     "mdmRequests": 0
+    },
+    {
+     "month": "2025-10",
+     "enquiries": 63,
+     "prSgd": 206640,
+     "poSgd": 824484,
+     "mdmRequests": 11
+    },
+    {
+     "month": "2025-11",
+     "enquiries": 54,
+     "prSgd": 620184,
+     "poSgd": 740547,
+     "mdmRequests": 14
+    },
+    {
+     "month": "2025-12",
+     "enquiries": 58,
+     "prSgd": 72937,
+     "poSgd": 804298,
+     "mdmRequests": 13
+    },
+    {
+     "month": "2026-01",
+     "enquiries": 33,
+     "prSgd": 75542,
+     "poSgd": 715814,
+     "mdmRequests": 13
+    },
+    {
+     "month": "2026-02",
+     "enquiries": 61,
+     "prSgd": 126625,
+     "poSgd": 474984,
+     "mdmRequests": 9
+    },
+    {
+     "month": "2026-03",
+     "enquiries": 75,
+     "prSgd": 157157,
+     "poSgd": 771099,
+     "mdmRequests": 10
+    },
+    {
+     "month": "2026-04",
+     "enquiries": 64,
+     "prSgd": 79909,
+     "poSgd": 693343,
+     "mdmRequests": 19
+    },
+    {
+     "month": "2026-05",
+     "enquiries": 64,
+     "prSgd": 189702,
+     "poSgd": 693434,
+     "mdmRequests": 11
+    },
+    {
+     "month": "2026-06",
+     "enquiries": 50,
+     "prSgd": 421277,
+     "poSgd": 933099,
+     "mdmRequests": 15
+    },
+    {
+     "month": "2026-07",
+     "enquiries": 78,
+     "prSgd": 56040,
+     "poSgd": 1013854,
+     "mdmRequests": 12
+    },
+    {
+     "month": "2026-08",
+     "enquiries": 53,
+     "prSgd": 139025,
+     "poSgd": 823770,
+     "mdmRequests": 12
+    },
+    {
+     "month": "2026-09",
+     "enquiries": 64,
+     "prSgd": 47622,
+     "poSgd": 786805,
+     "mdmRequests": 11
+    }
+   ],
+   "followups12m": 244,
+   "prResolved12m": 211,
+   "prBlockedInCsv": 2
+  },
+  {
+   "country": "MM",
+   "enquiries12m": 486,
+   "enquiriesPrior12m": 424,
+   "enquiryYoy": 0.1462,
+   "prSgd12m": 1715883,
+   "prPipelineOpenSgd": 58491,
+   "prOpenCount": 16,
+   "poSgd12m": 3323549,
+   "mdmRequests12m": 73,
+   "prToPoConversion": 0.4074,
+   "series": [
+    {
+     "month": "2024-10",
+     "enquiries": 28,
+     "prSgd": 154954,
+     "poSgd": 336254,
+     "mdmRequests": 0
+    },
+    {
+     "month": "2024-11",
+     "enquiries": 30,
+     "prSgd": 150392,
+     "poSgd": 308769,
+     "mdmRequests": 0
+    },
+    {
+     "month": "2024-12",
+     "enquiries": 31,
+     "prSgd": 128548,
+     "poSgd": 232911,
+     "mdmRequests": 0
+    },
+    {
+     "month": "2025-01",
+     "enquiries": 39,
+     "prSgd": 161153,
+     "poSgd": 397916,
+     "mdmRequests": 0
+    },
+    {
+     "month": "2025-02",
+     "enquiries": 31,
+     "prSgd": 194487,
+     "poSgd": 326663,
+     "mdmRequests": 0
+    },
+    {
+     "month": "2025-03",
+     "enquiries": 37,
+     "prSgd": 120020,
+     "poSgd": 334034,
+     "mdmRequests": 0
+    },
+    {
+     "month": "2025-04",
+     "enquiries": 39,
+     "prSgd": 18765,
+     "poSgd": 281681,
+     "mdmRequests": 0
+    },
+    {
+     "month": "2025-05",
+     "enquiries": 37,
+     "prSgd": 104150,
+     "poSgd": 274388,
+     "mdmRequests": 0
+    },
+    {
+     "month": "2025-06",
+     "enquiries": 44,
+     "prSgd": 67029,
+     "poSgd": 256289,
+     "mdmRequests": 0
+    },
+    {
+     "month": "2025-07",
+     "enquiries": 32,
+     "prSgd": 21866,
+     "poSgd": 322002,
+     "mdmRequests": 0
+    },
+    {
+     "month": "2025-08",
+     "enquiries": 41,
+     "prSgd": 91536,
+     "poSgd": 242344,
+     "mdmRequests": 0
+    },
+    {
+     "month": "2025-09",
+     "enquiries": 35,
+     "prSgd": 260865,
+     "poSgd": 363813,
+     "mdmRequests": 0
+    },
+    {
+     "month": "2025-10",
+     "enquiries": 34,
+     "prSgd": 16519,
+     "poSgd": 274762,
+     "mdmRequests": 7
+    },
+    {
+     "month": "2025-11",
+     "enquiries": 34,
+     "prSgd": 52079,
+     "poSgd": 216892,
+     "mdmRequests": 12
+    },
+    {
+     "month": "2025-12",
+     "enquiries": 41,
+     "prSgd": 97551,
+     "poSgd": 215242,
+     "mdmRequests": 8
+    },
+    {
+     "month": "2026-01",
+     "enquiries": 26,
+     "prSgd": 40236,
+     "poSgd": 253703,
+     "mdmRequests": 3
+    },
+    {
+     "month": "2026-02",
+     "enquiries": 26,
+     "prSgd": 113584,
+     "poSgd": 214242,
+     "mdmRequests": 5
+    },
+    {
+     "month": "2026-03",
+     "enquiries": 34,
+     "prSgd": 178228,
+     "poSgd": 326315,
+     "mdmRequests": 5
+    },
+    {
+     "month": "2026-04",
+     "enquiries": 42,
+     "prSgd": 510279,
+     "poSgd": 159405,
+     "mdmRequests": 7
+    },
+    {
+     "month": "2026-05",
+     "enquiries": 47,
+     "prSgd": 154049,
+     "poSgd": 429891,
+     "mdmRequests": 5
+    },
+    {
+     "month": "2026-06",
+     "enquiries": 49,
+     "prSgd": 196083,
+     "poSgd": 291494,
+     "mdmRequests": 3
+    },
+    {
+     "month": "2026-07",
+     "enquiries": 59,
+     "prSgd": 61307,
+     "poSgd": 327595,
+     "mdmRequests": 8
+    },
+    {
+     "month": "2026-08",
+     "enquiries": 47,
+     "prSgd": 239585,
+     "poSgd": 313932,
+     "mdmRequests": 5
+    },
+    {
+     "month": "2026-09",
+     "enquiries": 47,
+     "prSgd": 56383,
+     "poSgd": 300078,
+     "mdmRequests": 5
+    }
+   ],
+   "followups12m": 129,
+   "prResolved12m": 189,
+   "prBlockedInCsv": 2
   }
  ]
 }

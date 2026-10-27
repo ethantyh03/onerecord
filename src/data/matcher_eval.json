@@ -225,7 +225,7 @@
   }
  ],
  "notes": [
-  "13 of 15 held-out duplicate pairs found; 1 false warning(s) among 14.",
+  "13 of 15 held-out duplicate pairs found; 1 of 14 warnings was a false alarm.",
   "Small sample: one pair moves recall by about 7 points on the held-out countries.",
   "Merging duplicate records alone does not change any country x product total; only records booked under the wrong country or product do."
  ]

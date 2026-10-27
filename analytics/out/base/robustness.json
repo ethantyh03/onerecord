@@ -1,0 +1,43 @@
+{
+ "note": "Not pre-registered: a robustness diagnostic. Same methods, horizons 1-3, refit at every origin, A + B, S$-weighted, golden IDs; only the origins differ.",
+ "offSeason": {
+  "origins": [
+   "2025-09",
+   "2025-10",
+   "2025-11",
+   "2025-12",
+   "2026-01",
+   "2026-02"
+  ],
+  "baselineWape": 0.0966,
+  "oursWape": 0.0947,
+  "baselineBias": 0.0141,
+  "oursBias": -0.0376,
+  "advantagePts": 0.2,
+  "oursWins": 6,
+  "cells": 10
+ },
+ "all12": {
+  "origins": [
+   "2025-09",
+   "2025-10",
+   "2025-11",
+   "2025-12",
+   "2026-01",
+   "2026-02",
+   "2026-03",
+   "2026-04",
+   "2026-05",
+   "2026-06",
+   "2026-07",
+   "2026-08"
+  ],
+  "baselineWape": 0.1048,
+  "oursWape": 0.0902,
+  "baselineBias": -0.0418,
+  "oursBias": -0.041,
+  "advantagePts": 1.5,
+  "oursWins": 6,
+  "cells": 10
+ }
+}

@@ -1,38 +1,56 @@
 {
- "isMock": true,
- "generatedAt": "2026-10-28T02:00:00+08:00",
+ "isMock": false,
+ "generatedAt": "2026-10-28T03:00:04+08:00",
  "window": "Oct 2025 – Sep 2026",
  "headlines": [
   {
    "id": "growth",
-   "label": "Group PO value, last 12 months",
-   "value": 55662764,
-   "display": "S$55.7M (+4.9% YoY)",
+   "label": "Group PO value, Oct 2025 – Sep 2026",
+   "value": 53441989,
+   "baseline": 51401377,
+   "display": "S$53.4M (+4.0% YoY)",
    "unit": "SGD",
-   "sentence": "Confirmed customer orders were S$55.7M in Oct 2025–Sep 2026, +4.9% on the year before, counted on de-duplicated customers.",
+   "sentence": "Confirmed customer orders were S$53.4M in Oct 2025 – Sep 2026, +4.0% on the 12 months before (+7.6% in Jul–Sep), counted on de-duplicated customers. Synthetic, illustrative data.",
    "sourceFile": "matrix.json",
-   "sourcePath": "views.dedup.group"
+   "sourcePath": "views.dedup.group.sgd12m",
+   "useIn": [
+    "app",
+    "video",
+    "slides"
+   ]
   },
   {
    "id": "forecast",
-   "label": "Forecast error, today's method vs ours (A+B)",
-   "value": 0.1211,
-   "baseline": 0.1465,
-   "display": "15 → 12 per 100",
+   "label": "Forecast error, today's method vs ours (Products A + B)",
+   "value": 0.0855,
+   "baseline": 0.1133,
+   "display": "11 → 9 per 100",
    "unit": "WAPE",
-   "sentence": "Today's rolling average is off by 15 units per 100 ordered; our seasonal model is off by 12 (backtested on 6 months it never saw).",
+   "sentence": "Today's rolling 12-month average is off by 11 units per 100 ordered; our seasonal model is off by 9, on 6 backtest months it never saw. It wins 7 of 10 country × product cells and loses 3, which we show. Illustrative, synthetic data.",
    "sourceFile": "backtest.json",
-   "sourcePath": "headline"
+   "sourcePath": "headline.oursWape",
+   "useIn": [
+    "app (Pulse)",
+    "video (VO only)"
+   ],
+   "note": "Final model decision 7: shown on Pulse with the stress test; never in the close or the slide headline tiles.",
+   "caveat": "The 6 pre-registered backtest months (Apr–Sep 2026) cover the rise of the dengue season, where a rolling average lags most. Not pre-registered: at six off-season origins the gain is +0.2 points (9.7 vs 9.5 per 100); over all 12 origins 10.5 vs 9.0 per 100."
   },
   {
    "id": "duplicates",
    "label": "Duplicate customer records found",
-   "value": 17,
-   "display": "17 of 301 (5.7%)",
+   "value": 25,
+   "baseline": 388,
+   "display": "25 of 388 (6.4%)",
    "unit": "records",
-   "sentence": "17 of 301 customer records are duplicates; merging them, and re-coding two records to the right country, moves S$1.04M of orders back to MY and VN.",
+   "sentence": "25 of 388 customer records are duplicates of 363 real customers. Merging them changes no country total, but it shows that Bukit Damai Specialist Hospital, Malaysia's #2 account, is down 32%; re-coding three Singapore records moves S$1.06M of orders back to Malaysia and Vietnam.",
    "sourceFile": "dedup.json",
-   "sourcePath": "customers"
+   "sourcePath": "customers.duplicateRecords",
+   "useIn": [
+    "app",
+    "video",
+    "slides"
+   ]
   },
   {
    "id": "cycle_time",
@@ -41,9 +59,14 @@
    "baseline": 18,
    "display": "18 days → ≤4 business days",
    "unit": "days",
-   "sentence": "Amy's item took 18 days; with one form, parallel approvals in Teams and a 2-day SLA the target median is 4 business days or less.",
-   "sourceFile": "final-model §6.7",
-   "sourcePath": ""
+   "sentence": "Amy's item took 18 days. One form, parallel approvals in Teams with a 2-business-day SLA, and an SAP import file bring the target median to 4 business days or less; about 43% of the time saved is a process change that needs no new software.",
+   "sourceFile": "impact.json",
+   "sourcePath": "soft.cycleTime.target.value",
+   "useIn": [
+    "app",
+    "video",
+    "slides"
+   ]
   },
   {
    "id": "payback",
@@ -51,9 +74,88 @@
    "value": 5.9,
    "display": "5.9 months on S$39.9k",
    "unit": "months",
-   "sentence": "Phase 1 costs about S$39.9k with no new licences and releases ~1,751 hours a year (≈0.94 FTE), paying back in about 6 months at 80 requests a month.",
-   "sourceFile": "final-model §6.3",
-   "sourcePath": ""
+   "sentence": "Phase 1 costs about S$39.9k with no new licences and releases ~1,751 hours a year (≈0.94 FTE), paying back in about 5.9 months at 80 requests a month.",
+   "sourceFile": "impact.json",
+   "sourcePath": "headline.paybackMonths.value",
+   "useIn": [
+    "app",
+    "video",
+    "slides"
+   ]
   }
- ]
+ ],
+ "supporting": [
+  {
+   "id": "clean_first",
+   "label": "Forecast gain from cleaning master data first (points per 100 ordered)",
+   "value": 1.7,
+   "share": 0.378,
+   "display": "1.7 of 4.5 points (38%)",
+   "sentence": "Cleaning master data alone cuts today's forecast error by 1.7 points per 100 ordered; on clean data our model cuts a further 2.8. On uncleaned records our model is worse than today's (15 vs 13 per 100): clean first, then model.",
+   "sourceFile": "cleanxmethod.json",
+   "sourcePath": "fromCleaningPts"
+  },
+  {
+   "id": "matcher",
+   "label": "Duplicate matcher on countries it was not tuned on (TH, VN, MM)",
+   "value": 0.867,
+   "precision": 0.929,
+   "display": "catches 87 of 100 · 93 of 100 warnings real",
+   "sentence": "On Thailand, Vietnam and Myanmar, which it was never tuned on, the matcher catches 87 of every 100 real duplicates, and of 100 duplicate warnings 93 are real (13 found, 2 missed, 1 false alarm).",
+   "sourceFile": "matcher_eval.json",
+   "sourcePath": "heldOutMetrics.recall"
+  },
+  {
+   "id": "hero_my",
+   "label": "Malaysia key account revealed by merging duplicates",
+   "value": -0.3199,
+   "display": "Bukit Damai Specialist Hospital: −32% YoY (#2 in MY)",
+   "sentence": "On raw SAP records Bukit Damai Specialist Hospital looks like one lost customer, one new one and one flat one (3 records); merged, it is Malaysia's #2 account and down 32% on last year.",
+   "sourceFile": "bridge.json",
+   "sourcePath": "countries[MY].topAccounts.dedup[hero].yoy",
+   "goldenId": "G-MY-0002",
+   "records": [
+    "C-MY-00029",
+    "C-MY-00061",
+    "C-MY-00091"
+   ]
+  },
+  {
+   "id": "stress",
+   "label": "Falsification test: our advantage with the signal switched off",
+   "value": -0.6,
+   "display": "Base dataset: +2.8 pts · Seasonality and trend switched off: -0.6 pts · Different seed, dengue amplitude halved: +2.3 pts",
+   "sentence": "With seasonality and trend switched off our advantage is -0.6 points (within ±2, i.e. ≈ 0), so the method is not finding patterns that are not there. With a different seed and half the dengue effect it still wins by 2.3 points (smaller than the base 2.8, as expected with less seasonality).",
+   "sourceFile": "stress.json",
+   "sourcePath": "scenarios[no_signal].advantagePts"
+  },
+  {
+   "id": "triage",
+   "label": "Inbox sorting accuracy on a blind test set",
+   "value": 0.917,
+   "display": "92 of 100 sorted correctly (60 messages)",
+   "sentence": "On 60 messages written without seeing the rules, the rules put 92 of every 100 in the right stream (88 of 100 on the 33 deliberately tricky ones). A person still confirms every routing.",
+   "sourceFile": "triage_eval.json",
+   "sourcePath": "accuracy"
+  },
+  {
+   "id": "hours",
+   "label": "Hard benefit: capacity released at 80 requests a month",
+   "value": 1751.0,
+   "display": "1,751 h a year (≈0.94 FTE)",
+   "sentence": "1,751 h a year (≈0.94 FTE) of analyst, requestor and MDM time at S$50/h = S$81,543 a year after run cost; 3-year net S$205k.",
+   "sourceFile": "impact.json",
+   "sourcePath": "headline.hoursPerYear.value"
+  },
+  {
+   "id": "opportunity",
+   "label": "Opportunity (illustrative, before conversion; never summed)",
+   "value": 2636495,
+   "display": "drop-off S$2.64M at risk · cross-sell S$1.02M addressable",
+   "sentence": "S$2.64M of last-year orders sit with accounts showing drop-off (before a 25% assumed save rate) and S$1.02M of cross-sell is addressable (before a 15% assumed conversion). Synthetic data; never added to payback or to each other.",
+   "sourceFile": "signals.json",
+   "sourcePath": "totals.dropOffAddressableSgd"
+  }
+ ],
+ "rule": "One source of truth: every number here is copied from the file and path named next to it; the app, video script and slides quote these sentences verbatim. Forecast accuracy stays on Pulse, not in the close."
 }

@@ -1,0 +1,1443 @@
+{
+ "isMock": false,
+ "generatedAt": "2026-10-28T02:59:51+08:00",
+ "generator": "analytics/business_case.py",
+ "spec": "final model §6 (docs/superpowers/specs/2026-10-28-final-model.md)",
+ "synthetic": true,
+ "conventions": "Every number is {value, unit, formula, source, display}. value null = not finite (e.g. never pays back). Hard, soft and opportunity are separate columns: payback counts hard hours only.",
+ "baseVolume": 80,
+ "volumes": [
+  40,
+  80,
+  120
+ ],
+ "headline": {
+  "paybackMonths": {
+   "value": 5.9,
+   "unit": "months",
+   "formula": "S$39,900 ÷ (S$81,543 ÷ 12)",
+   "source": "this file, payback.rows[80]",
+   "display": "5.9 months"
+  },
+  "phase1OneOffSgd": {
+   "value": 39900.0,
+   "unit": "SGD",
+   "formula": "A22",
+   "source": "this file, costs.phase1",
+   "display": "S$39.9k"
+  },
+  "hoursPerYear": {
+   "value": 1751.0,
+   "unit": "hours/year",
+   "formula": "(105.9 + 40) × 12",
+   "source": "this file, hardBenefit.rows[80]",
+   "display": "1,751 h a year (≈0.94 FTE)"
+  },
+  "netSgdPerYear": {
+   "value": 81543,
+   "unit": "SGD",
+   "formula": "gross − run",
+   "source": "this file, hardBenefit.rows[80]",
+   "display": "S$81,543"
+  },
+  "threeYearNetSgd": {
+   "value": 204729,
+   "unit": "SGD",
+   "formula": "3 × net − one-off",
+   "source": "this file",
+   "display": "S$205k"
+  },
+  "newLicences": "none in phase 1",
+  "sentence": "Phase 1 costs about S$39.9k with no new licences and releases ~1,751 hours a year (≈0.94 FTE), paying back in about 5.9 months at 80 requests a month."
+ },
+ "inputs": [
+  {
+   "id": "rate",
+   "label": "Loaded cost, analyst / requestor / MDM",
+   "tag": "research",
+   "confidence": "medium",
+   "value": 50.0,
+   "unit": "S$/hour",
+   "formula": "(12 × S$5,869 MOM OWS 2025 median + 1.8 months AVC × S$5,694 + 17% CPF S$13,715 + SDL S$135) ≈ S$94.5k ÷ 1,872 h",
+   "source": "research log (docs/research/2026-10-23-business-case-facts.md): 'Working time and derived loaded hourly cost' + verifier check (derived, not published). All hours are valued at this rate; approver time is not counted.",
+   "display": "S$50/h"
+  },
+  {
+   "id": "volume",
+   "label": "MDM requests per month (sensitivity 40 / 80 / 120)",
+   "tag": "assumption",
+   "confidence": "low",
+   "value": 80,
+   "unit": "requests/month",
+   "formula": "customer 30 + extend 5 + item 30 + vendor 10 + cost centre 5 (params.yaml mdm_history.per_month)",
+   "source": "A12 (illustrative); analytics/params.yaml",
+   "display": "80 a month"
+  },
+  {
+   "id": "customers",
+   "label": "Customer requests (new + extend) per month",
+   "tag": "assumption",
+   "confidence": "low",
+   "value": 35,
+   "unit": "requests/month",
+   "formula": "customer 30 + extend 5",
+   "source": "A12; analytics/params.yaml",
+   "display": "35 of 80"
+  },
+  {
+   "id": "bounce",
+   "label": "Requests bounced at least once for missing information",
+   "tag": "assumption",
+   "confidence": "low",
+   "value": 0.4,
+   "unit": "fraction",
+   "formula": "params.yaml mdm_history.bounce_p",
+   "source": "A13 (illustrative)",
+   "display": "40%"
+  },
+  {
+   "id": "dupRate",
+   "label": "New customer records that duplicate an existing one",
+   "tag": "assumption",
+   "confidence": "low",
+   "value": 0.06,
+   "unit": "fraction",
+   "formula": "params.yaml mdm_history.duplicate_p",
+   "source": "A13 (illustrative); the synthetic master data plants the same ≈6% (dedup.json)",
+   "display": "6%"
+  },
+  {
+   "id": "A19",
+   "label": "Hours saved per request",
+   "tag": "team-estimate",
+   "confidence": "low",
+   "value": 1.25,
+   "unit": "hours/request",
+   "formula": "rework 40% × 1.0 h = 0.40 + forwarding/chasing 0.50 + manual keying vs import file 0.35",
+   "source": "A19 (team estimate)",
+   "display": "1.25 h"
+  },
+  {
+   "id": "A20",
+   "label": "Duplicate rework avoided",
+   "tag": "team-estimate",
+   "confidence": "low",
+   "value": 4.0,
+   "unit": "hours/duplicate",
+   "formula": "4 h rework per duplicate customer; 70% intercepted at intake",
+   "source": "A20 (team estimate); 1-10-100 heuristic, research log (docs/research/2026-10-23-business-case-facts.md): 'Cost of poor data quality'",
+   "display": "4 h each, 70% caught"
+  },
+  {
+   "id": "A21",
+   "label": "Regional consolidation released",
+   "tag": "team-estimate",
+   "confidence": "low",
+   "value": 40.0,
+   "unit": "hours/month",
+   "formula": "5 country analysts × 1 day (8 h) a month",
+   "source": "A21 (team estimate)",
+   "display": "40 h/month"
+  },
+  {
+   "id": "A22",
+   "label": "Phase-1 build, one-off",
+   "tag": "team-estimate",
+   "confidence": "low",
+   "value": 39900.0,
+   "unit": "SGD",
+   "formula": "lean team 2 × 6 weeks × 40 h × S$50 = S$24,000 + contractor 15 days × S$650 = S$9,750 + MDM config 48 h × S$50 = S$2,400 + onboarding 150 people × 0.5 h × S$50 = S$3,750",
+   "source": "A22; day rate = upper end of the research-derived S$450–650/day (research log (docs/research/2026-10-23-business-case-facts.md): 'Day rates: Power Platform', low confidence)",
+   "display": "S$39,900"
+  },
+  {
+   "id": "run",
+   "label": "Phase-1 run cost",
+   "tag": "research",
+   "confidence": "low",
+   "value": 0.15,
+   "unit": "fraction of one-off per year",
+   "formula": "15% × S$39,900 = S$5,985/yr",
+   "source": "research log (docs/research/2026-10-23-business-case-facts.md): 'Project cost: Power Platform engagement' (maintenance 15–25%/yr); we use the low end",
+   "display": "15%/yr"
+  },
+  {
+   "id": "A23",
+   "label": "Phase-2 SAP partner (Service Layer posting)",
+   "tag": "team-estimate",
+   "confidence": "low",
+   "value": 22500.0,
+   "unit": "SGD",
+   "formula": "15 days × S$1,500/day",
+   "source": "A23; derived from a US$150–350/h global proxy (research log (docs/research/2026-10-23-business-case-facts.md): 'SAP B1 consulting day rates', low confidence)",
+   "display": "S$22,500"
+  },
+  {
+   "id": "licences",
+   "label": "Phase-2 licences",
+   "tag": "research",
+   "confidence": "high",
+   "value": 2633.4,
+   "unit": "SGD/year",
+   "formula": "(Process USD 150/month + 1 Premium maker USD 15/month) × 12 = USD 1,980 × 1.33",
+   "source": "Microsoft list prices (research log (docs/research/2026-10-23-business-case-facts.md): 'Power Automate Process' and 'Premium price', high confidence); before 9% GST (reclaimable if GST-registered)",
+   "display": "≈S$2,633/yr"
+  },
+  {
+   "id": "payg",
+   "label": "Phase-2 pay-as-you-go alternative",
+   "tag": "research",
+   "confidence": "high",
+   "value": 0.6,
+   "unit": "USD/run",
+   "formula": "USD 0.60 per premium cloud-flow run (preview); cheaper than Process below 250 runs/month",
+   "source": "research log (docs/research/2026-10-23-business-case-facts.md): 'Pay-as-you-go meters' (high confidence; meter in preview)",
+   "display": "USD 0.60/run"
+  },
+  {
+   "id": "A24",
+   "label": "Leak rate on stuck demand",
+   "tag": "assumption",
+   "confidence": "low",
+   "value": 0.1,
+   "unit": "fraction",
+   "formula": "10% of blocked-PR value assumed lost for good",
+   "source": "A24 (team assumption, CFO lens). Opportunity column only, never in payback",
+   "display": "10%"
+  },
+  {
+   "id": "A25",
+   "label": "FX",
+   "tag": "research",
+   "confidence": "medium",
+   "value": 1.33,
+   "unit": "SGD per USD",
+   "formula": "USD 1 = S$1.33",
+   "source": "research log (docs/research/2026-10-23-business-case-facts.md): 'SGD pricing & GST' (range 1.30–1.35)",
+   "display": "S$1.33"
+  },
+  {
+   "id": "A26",
+   "label": "Baseline median cycle time",
+   "tag": "assumption",
+   "confidence": "medium",
+   "value": 14.0,
+   "unit": "calendar days",
+   "formula": "between the brief's '2–3 weeks' (S4) and Amy's 18 days (App C)",
+   "source": "A26 (assumption)",
+   "display": "14 calendar days"
+  },
+  {
+   "id": "fte",
+   "label": "Productive hours per FTE-year",
+   "tag": "research",
+   "confidence": "medium",
+   "value": 1872.0,
+   "unit": "hours/year",
+   "formula": "2,080 h − 11 public holidays (88 h) − 15 leave days (120 h)",
+   "source": "research log (docs/research/2026-10-23-business-case-facts.md): 'Working time and derived loaded hourly cost' (derived)",
+   "display": "1,872 h"
+  }
+ ],
+ "hardBenefit": {
+  "title": "Hard benefit: capacity released (hours × S$50)",
+  "note": "Capacity released, not cash saved: no headcount cut is assumed; the hours go back to customer work. Approver time (S$85–110/h) is not counted.",
+  "rows": [
+   {
+    "requestsPerMonth": 40,
+    "isBase": false,
+    "hoursSavedPerRequest": {
+     "value": 1.25,
+     "unit": "hours/request",
+     "formula": "A19: 0.40 + 0.50 + 0.35",
+     "source": "A19",
+     "display": "1.25 hours/request"
+    },
+    "duplicatesStoppedPerYear": {
+     "value": 8.8,
+     "unit": "duplicates/year",
+     "formula": "40 requests × 35/80 customers × 6% duplicates × 70% intercepted × 12 = 8.8",
+     "source": "A12, A13, A20",
+     "display": "≈9 a year"
+    },
+    "workflowHoursPerMonth": {
+     "value": 52.9,
+     "unit": "hours/month",
+     "formula": "40 × 1.25 h + 0.73 duplicates stopped × 4 h = 52.9 h",
+     "source": "A19, A20",
+     "display": "52.9 h/month"
+    },
+    "regionalHoursPerMonth": {
+     "value": 40.0,
+     "unit": "hours/month",
+     "formula": "5 analysts × 8 h",
+     "source": "A21",
+     "display": "40 h/month"
+    },
+    "hoursPerYear": {
+     "value": 1115.0,
+     "unit": "hours/year",
+     "formula": "(52.9 + 40) × 12",
+     "source": "A19–A21",
+     "display": "1,115 h/year"
+    },
+    "fte": {
+     "value": 0.6,
+     "unit": "FTE",
+     "formula": "1,115 h ÷ 1,872 h",
+     "source": "research log (docs/research/2026-10-23-business-case-facts.md) (1,872 h/FTE)",
+     "display": "≈0.60 FTE"
+    },
+    "grossSgdPerYear": {
+     "value": 55764,
+     "unit": "SGD",
+     "formula": "1,115.3 h × S$50",
+     "source": "hours × loaded rate",
+     "display": "S$55,764"
+    },
+    "runCostSgdPerYear": {
+     "value": 5985,
+     "unit": "SGD",
+     "formula": "15% × S$39,900",
+     "source": "A22 run cost",
+     "display": "S$5,985"
+    },
+    "netSgdPerYear": {
+     "value": 49779,
+     "unit": "SGD",
+     "formula": "S$55,764 − S$5,985",
+     "source": "hard benefit after run cost",
+     "display": "S$49,779"
+    }
+   },
+   {
+    "requestsPerMonth": 80,
+    "isBase": true,
+    "hoursSavedPerRequest": {
+     "value": 1.25,
+     "unit": "hours/request",
+     "formula": "A19: 0.40 + 0.50 + 0.35",
+     "source": "A19",
+     "display": "1.25 hours/request"
+    },
+    "duplicatesStoppedPerYear": {
+     "value": 17.6,
+     "unit": "duplicates/year",
+     "formula": "80 requests × 35/80 customers × 6% duplicates × 70% intercepted × 12 = 17.6",
+     "source": "A12, A13, A20",
+     "display": "≈18 a year"
+    },
+    "workflowHoursPerMonth": {
+     "value": 105.9,
+     "unit": "hours/month",
+     "formula": "80 × 1.25 h + 1.47 duplicates stopped × 4 h = 105.9 h",
+     "source": "A19, A20",
+     "display": "105.9 h/month"
+    },
+    "regionalHoursPerMonth": {
+     "value": 40.0,
+     "unit": "hours/month",
+     "formula": "5 analysts × 8 h",
+     "source": "A21",
+     "display": "40 h/month"
+    },
+    "hoursPerYear": {
+     "value": 1751.0,
+     "unit": "hours/year",
+     "formula": "(105.9 + 40) × 12",
+     "source": "A19–A21",
+     "display": "1,751 h/year"
+    },
+    "fte": {
+     "value": 0.94,
+     "unit": "FTE",
+     "formula": "1,751 h ÷ 1,872 h",
+     "source": "research log (docs/research/2026-10-23-business-case-facts.md) (1,872 h/FTE)",
+     "display": "≈0.94 FTE"
+    },
+    "grossSgdPerYear": {
+     "value": 87528,
+     "unit": "SGD",
+     "formula": "1,750.6 h × S$50",
+     "source": "hours × loaded rate",
+     "display": "S$87,528"
+    },
+    "runCostSgdPerYear": {
+     "value": 5985,
+     "unit": "SGD",
+     "formula": "15% × S$39,900",
+     "source": "A22 run cost",
+     "display": "S$5,985"
+    },
+    "netSgdPerYear": {
+     "value": 81543,
+     "unit": "SGD",
+     "formula": "S$87,528 − S$5,985",
+     "source": "hard benefit after run cost",
+     "display": "S$81,543"
+    }
+   },
+   {
+    "requestsPerMonth": 120,
+    "isBase": false,
+    "hoursSavedPerRequest": {
+     "value": 1.25,
+     "unit": "hours/request",
+     "formula": "A19: 0.40 + 0.50 + 0.35",
+     "source": "A19",
+     "display": "1.25 hours/request"
+    },
+    "duplicatesStoppedPerYear": {
+     "value": 26.5,
+     "unit": "duplicates/year",
+     "formula": "120 requests × 35/80 customers × 6% duplicates × 70% intercepted × 12 = 26.5",
+     "source": "A12, A13, A20",
+     "display": "≈26 a year"
+    },
+    "workflowHoursPerMonth": {
+     "value": 158.8,
+     "unit": "hours/month",
+     "formula": "120 × 1.25 h + 2.20 duplicates stopped × 4 h = 158.8 h",
+     "source": "A19, A20",
+     "display": "158.8 h/month"
+    },
+    "regionalHoursPerMonth": {
+     "value": 40.0,
+     "unit": "hours/month",
+     "formula": "5 analysts × 8 h",
+     "source": "A21",
+     "display": "40 h/month"
+    },
+    "hoursPerYear": {
+     "value": 2386.0,
+     "unit": "hours/year",
+     "formula": "(158.8 + 40) × 12",
+     "source": "A19–A21",
+     "display": "2,386 h/year"
+    },
+    "fte": {
+     "value": 1.27,
+     "unit": "FTE",
+     "formula": "2,386 h ÷ 1,872 h",
+     "source": "research log (docs/research/2026-10-23-business-case-facts.md) (1,872 h/FTE)",
+     "display": "≈1.27 FTE"
+    },
+    "grossSgdPerYear": {
+     "value": 119292,
+     "unit": "SGD",
+     "formula": "2,385.8 h × S$50",
+     "source": "hours × loaded rate",
+     "display": "S$119,292"
+    },
+    "runCostSgdPerYear": {
+     "value": 5985,
+     "unit": "SGD",
+     "formula": "15% × S$39,900",
+     "source": "A22 run cost",
+     "display": "S$5,985"
+    },
+    "netSgdPerYear": {
+     "value": 113307,
+     "unit": "SGD",
+     "formula": "S$119,292 − S$5,985",
+     "source": "hard benefit after run cost",
+     "display": "S$113,307"
+    }
+   }
+  ]
+ },
+ "costs": {
+  "title": "Cost (phase 1 needs no new licences: standard connectors, SharePoint, Teams Approvals, SAP import files)",
+  "phase1": {
+   "label": "Phase 1 (pilot → rollout)",
+   "oneOff": {
+    "value": 39900.0,
+    "unit": "SGD",
+    "formula": "S$24,000 + S$9,750 + S$2,400 + S$3,750",
+    "source": "A22",
+    "display": "S$39,900"
+   },
+   "components": [
+    {
+     "label": "Lean team (2 people × 6 weeks)",
+     "value": 24000.0,
+     "unit": "SGD",
+     "formula": "2 × 6 × 40 h × S$50",
+     "source": "A22",
+     "display": "S$24,000"
+    },
+    {
+     "label": "Data-science / Power Platform contractor",
+     "value": 9750.0,
+     "unit": "SGD",
+     "formula": "15 days × S$650",
+     "source": "A22 (low confidence)",
+     "display": "S$9,750"
+    },
+    {
+     "label": "MDM team configuration",
+     "value": 2400.0,
+     "unit": "SGD",
+     "formula": "48 h × S$50",
+     "source": "A22",
+     "display": "S$2,400"
+    },
+    {
+     "label": "Onboarding",
+     "value": 3750.0,
+     "unit": "SGD",
+     "formula": "150 people × 0.5 h × S$50",
+     "source": "A22",
+     "display": "S$3,750"
+    }
+   ],
+   "runPerYear": {
+    "value": 5985.0,
+    "unit": "SGD/year",
+    "formula": "15% × S$39,900",
+    "source": "A22",
+    "display": "S$5,985/yr"
+   },
+   "cashCost": {
+    "value": 9750.0,
+    "unit": "SGD",
+    "formula": "contractor only; the rest is internal time",
+    "source": "final model §6.8 (pilot)",
+    "display": "≈S$9,750 cash"
+   },
+   "newLicences": {
+    "value": 0,
+    "unit": "SGD",
+    "formula": "standard connectors, SharePoint, Teams Approvals, DTW import files",
+    "source": "research log (docs/research/2026-10-23-business-case-facts.md): 'Power Automate rights included in M365', 'Approvals connector = standard'",
+    "display": "S$0"
+   }
+  },
+  "phase2": {
+   "label": "Phase 2 (only after the pilot proves the KPI)",
+   "oneOff": {
+    "value": 22500.0,
+    "unit": "SGD",
+    "formula": "15 days × S$1,500",
+    "source": "A23 (low confidence)",
+    "display": "S$22,500"
+   },
+   "licencesPerYear": {
+    "value": 2633.0,
+    "unit": "SGD/year",
+    "formula": "USD 1,980 × 1.33",
+    "source": "Microsoft list price (research log)",
+    "display": "≤S$2,633/yr"
+   },
+   "maintenancePerYear": {
+    "value": 3375.0,
+    "unit": "SGD/year",
+    "formula": "15% × S$22,500",
+    "source": "research log (maintenance 15–25%)",
+    "display": "S$3,375/yr"
+   }
+  }
+ },
+ "payback": {
+  "title": "Payback (hard hours only)",
+  "rows": [
+   {
+    "requestsPerMonth": 40,
+    "isBase": false,
+    "paybackMonths": {
+     "value": 9.6,
+     "unit": "months",
+     "formula": "S$39,900 ÷ (S$49,779 ÷ 12)",
+     "source": "phase-1 one-off ÷ monthly net hard benefit",
+     "display": "9.6 months"
+    },
+    "paybackWorkflowOnlyMonths": {
+     "value": 18.6,
+     "unit": "months",
+     "formula": "S$39,900 ÷ ((S$31,764 − S$5,985) ÷ 12)",
+     "source": "same, counting workflow hours only (no regional consolidation A21)",
+     "display": "18.6 months"
+    },
+    "threeYearNetSgd": {
+     "value": 109437,
+     "unit": "SGD",
+     "formula": "3 × S$49,779 − S$39,900",
+     "source": "hard benefit only",
+     "display": "S$109k"
+    }
+   },
+   {
+    "requestsPerMonth": 80,
+    "isBase": true,
+    "paybackMonths": {
+     "value": 5.9,
+     "unit": "months",
+     "formula": "S$39,900 ÷ (S$81,543 ÷ 12)",
+     "source": "phase-1 one-off ÷ monthly net hard benefit",
+     "display": "5.9 months"
+    },
+    "paybackWorkflowOnlyMonths": {
+     "value": 8.3,
+     "unit": "months",
+     "formula": "S$39,900 ÷ ((S$63,528 − S$5,985) ÷ 12)",
+     "source": "same, counting workflow hours only (no regional consolidation A21)",
+     "display": "8.3 months"
+    },
+    "threeYearNetSgd": {
+     "value": 204729,
+     "unit": "SGD",
+     "formula": "3 × S$81,543 − S$39,900",
+     "source": "hard benefit only",
+     "display": "S$205k"
+    }
+   },
+   {
+    "requestsPerMonth": 120,
+    "isBase": false,
+    "paybackMonths": {
+     "value": 4.2,
+     "unit": "months",
+     "formula": "S$39,900 ÷ (S$113,307 ÷ 12)",
+     "source": "phase-1 one-off ÷ monthly net hard benefit",
+     "display": "4.2 months"
+    },
+    "paybackWorkflowOnlyMonths": {
+     "value": 5.4,
+     "unit": "months",
+     "formula": "S$39,900 ÷ ((S$95,292 − S$5,985) ÷ 12)",
+     "source": "same, counting workflow hours only (no regional consolidation A21)",
+     "display": "5.4 months"
+    },
+    "threeYearNetSgd": {
+     "value": 300021,
+     "unit": "SGD",
+     "formula": "3 × S$113,307 − S$39,900",
+     "source": "hard benefit only",
+     "display": "S$300k"
+    }
+   }
+  ],
+  "upside": [
+   {
+    "label": "EDGE grant (not in the base case)",
+    "value": 16125.0,
+    "unit": "SGD",
+    "formula": "50% × (S$9,750 contractor + S$22,500 SAP partner) = S$16,125, under the S$30k digital sub-cap",
+    "source": "Enterprise Singapore EDGE, from 30 Sep 2026 (research log (docs/research/2026-10-23-business-case-facts.md): 'Grants: EDG/PSG have been replaced by EDGE'). Applies only if Lives qualifies as an SME on the turnover test (≤S$100m). PSG is closed; not cited.",
+    "display": "≈S$16k"
+   },
+   {
+    "label": "EIS 400% tax deduction (not in the base case)",
+    "value": 50000,
+    "unit": "SGD",
+    "formula": "400% deduction on up to S$50,000 of qualifying AI spend per YA, YA2027–2028",
+    "source": "Budget 2026 (research log (docs/research/2026-10-23-business-case-facts.md): 'Grants and tax: 2026 AI adoption schemes'); IRAS definition pending",
+    "display": "up to S$50k qualifying spend"
+   },
+   {
+    "label": "Approver time (not counted)",
+    "value": null,
+    "unit": "S$/hour",
+    "formula": "approvers at S$85–110/h spend less time chasing; excluded to stay conservative",
+    "source": "research log (docs/research/2026-10-23-business-case-facts.md): derived loaded cost, GM ≈ S$110/h",
+    "display": "not counted"
+   }
+  ]
+ },
+ "soft": {
+  "title": "Soft benefit (not in payback)",
+  "requestDaysReturnedPerMonth": {
+   "value": 640.0,
+   "unit": "request-days/month",
+   "formula": "80 requests × (14 − ~6 calendar days)",
+   "source": "A12, A26; target ≤4 business days ≈ 6 calendar days",
+   "display": "≈640 request-days a month"
+  },
+  "cycleTime": {
+   "amy": {
+    "value": 18.0,
+    "unit": "calendar days",
+    "formula": "App C: Amy's item",
+    "source": "Brief, App C",
+    "display": "18 days"
+   },
+   "baselineMedian": {
+    "value": 14.0,
+    "unit": "calendar days",
+    "formula": "A26",
+    "source": "A26",
+    "display": "14 days"
+   },
+   "target": {
+    "value": 4.0,
+    "unit": "business days",
+    "formula": "parallel stage 1 + 2-business-day SLA + import file",
+    "source": "final model §6.7 (median target)",
+    "display": "≤4 business days"
+   },
+   "benchmark": {
+    "value": 3.0,
+    "unit": "calendar days",
+    "formula": "APQC median time to set up a supplier (3,047 organisations)",
+    "source": "research log (docs/research/2026-10-23-business-case-facts.md): APQC Open Standards Benchmarking (system setup only)",
+    "display": "3.0 days"
+   }
+  },
+  "note": "Customers can be invoiced sooner; this is timing, not new revenue."
+ },
+ "opportunity": {
+  "title": "Opportunity (illustrative, synthetic data; its own column, never summed into payback or into one revenue number)",
+  "stuckDemandNow": {
+   "label": "Stuck demand now",
+   "value": null,
+   "unit": "SGD",
+   "formula": "Σ value of open PRs whose blockedByRequestId points to a pending MDM request",
+   "source": "live from the demo store (the Pulse tile and /mdm); drops when Priya creates the record",
+   "display": "live tile",
+   "live": true,
+   "syntheticHistoryCheck": {
+    "value": 335110,
+    "unit": "SGD",
+    "formula": "12 PRs blocked on 28 Oct 2026 in analytics/out/base/prs.csv",
+    "source": "synthetic generator (final model §5.6 #6 target S$150–450k)",
+    "display": "S$335k"
+   }
+  },
+  "blockedDuringWindow": {
+   "label": "PRs blocked by an MDM setup during Oct 2025 – Sep 2026",
+   "value": 1341860,
+   "unit": "SGD",
+   "formula": "Σ value of the 117 PRs referenced by the 84 setup requests in the window that had an order waiting (avg 15.4 calendar days blocked)",
+   "source": "synthetic MDM history (mdm_requests_hist.csv × prs.csv)",
+   "display": "S$1.34M",
+   "avgDaysBlocked": {
+    "value": 15.4,
+    "unit": "calendar days",
+    "formula": "mean cycle time of those setup requests",
+    "source": "synthetic MDM history",
+    "display": "15.4 calendar days"
+   }
+  },
+  "revenueAtRiskPerYear": {
+   "label": "Revenue at risk per year (leak on blocked PRs)",
+   "value": 134186,
+   "unit": "SGD",
+   "formula": "S$1.34M blocked in the window × 10% leak (A24)",
+   "source": "A24 (team assumption) on synthetic history",
+   "display": "≈S$134k a year",
+   "note": "Stuck demand is mostly delayed revenue, not lost revenue; only the 10% leak is counted as at risk."
+  },
+  "dropOff": {
+   "label": "Drop-off accounts: last-12-month value at risk",
+   "value": 2636495,
+   "unit": "SGD",
+   "formula": "Σ trailing-12M value of the 23 flagged accounts (signals.json)",
+   "source": "signals.json (synthetic)",
+   "display": "S$2.64M at risk, before save rate",
+   "assumedRate": {
+    "value": 0.25,
+    "unit": "fraction",
+    "formula": "assumed save rate",
+    "source": "team assumption (signals.json)",
+    "display": "25% save rate"
+   },
+   "expectedIfRateHolds": {
+    "value": 659124,
+    "unit": "SGD",
+    "formula": "S$2.64M × 25%",
+    "source": "illustrative",
+    "display": "S$659k"
+   }
+  },
+  "crossSell": {
+   "label": "Cross-sell: yearly gap to similar customers",
+   "value": 1019835,
+   "unit": "SGD",
+   "formula": "Σ peer-gap value of the 18 flagged customers (signals.json)",
+   "source": "signals.json (synthetic)",
+   "display": "S$1.02M addressable, before conversion",
+   "assumedRate": {
+    "value": 0.15,
+    "unit": "fraction",
+    "formula": "assumed conversion",
+    "source": "team assumption (signals.json)",
+    "display": "15% conversion"
+   },
+   "expectedIfRateHolds": {
+    "value": 152975,
+    "unit": "SGD",
+    "formula": "S$1.02M × 15%",
+    "source": "illustrative",
+    "display": "S$153k"
+   }
+  },
+  "rule": "These figures are never added to each other, to the hard benefit or to payback."
+ },
+ "phase2Case": {
+  "title": "Why automatic SAP posting (Service Layer) is not in v1",
+  "rows": [
+   {
+    "requestsPerMonth": 40,
+    "isBase": false,
+    "hoursSavedPerMonth": {
+     "value": 6.0,
+     "unit": "hours/month",
+     "formula": "40 × 0.15 h (the DTW load step only)",
+     "source": "final model §6.6",
+     "display": "6 hours/month"
+    },
+    "savingSgdPerYear": {
+     "value": 3600,
+     "unit": "SGD",
+     "formula": "6.0 h × 12 × S$50",
+     "source": "hours × loaded rate",
+     "display": "S$3,600"
+    },
+    "netWithProcessSgdPerYear": {
+     "value": -2408,
+     "unit": "SGD",
+     "formula": "S$3,600 − S$2,633 licences − S$3,375 maintenance",
+     "source": "Process licence route",
+     "display": "−S$2,408"
+    },
+    "paybackYearsProcess": {
+     "value": null,
+     "unit": "years",
+     "formula": "S$22,500 ÷ S$-2,408",
+     "source": "Process licence route",
+     "display": "never pays back"
+    },
+    "paygSgdPerYear": {
+     "value": 383,
+     "unit": "SGD",
+     "formula": "40 × 12 runs × USD 0.60 × 1.33",
+     "source": "pay-as-you-go (preview)",
+     "display": "S$383"
+    },
+    "netWithPaygSgdPerYear": {
+     "value": -158,
+     "unit": "SGD",
+     "formula": "S$3,600 − S$383 PAYG − S$3,375 maintenance",
+     "source": "pay-as-you-go route",
+     "display": "−S$158"
+    },
+    "paybackYearsPayg": {
+     "value": null,
+     "unit": "years",
+     "formula": "S$22,500 ÷ S$-158",
+     "source": "pay-as-you-go route",
+     "display": "never pays back"
+    }
+   },
+   {
+    "requestsPerMonth": 80,
+    "isBase": true,
+    "hoursSavedPerMonth": {
+     "value": 12.0,
+     "unit": "hours/month",
+     "formula": "80 × 0.15 h (the DTW load step only)",
+     "source": "final model §6.6",
+     "display": "12 hours/month"
+    },
+    "savingSgdPerYear": {
+     "value": 7200,
+     "unit": "SGD",
+     "formula": "12.0 h × 12 × S$50",
+     "source": "hours × loaded rate",
+     "display": "S$7,200"
+    },
+    "netWithProcessSgdPerYear": {
+     "value": 1192,
+     "unit": "SGD",
+     "formula": "S$7,200 − S$2,633 licences − S$3,375 maintenance",
+     "source": "Process licence route",
+     "display": "S$1,192"
+    },
+    "paybackYearsProcess": {
+     "value": 18.9,
+     "unit": "years",
+     "formula": "S$22,500 ÷ S$1,192",
+     "source": "Process licence route",
+     "display": "~18.9 years"
+    },
+    "paygSgdPerYear": {
+     "value": 766,
+     "unit": "SGD",
+     "formula": "80 × 12 runs × USD 0.60 × 1.33",
+     "source": "pay-as-you-go (preview)",
+     "display": "S$766"
+    },
+    "netWithPaygSgdPerYear": {
+     "value": 3059,
+     "unit": "SGD",
+     "formula": "S$7,200 − S$766 PAYG − S$3,375 maintenance",
+     "source": "pay-as-you-go route",
+     "display": "S$3,059"
+    },
+    "paybackYearsPayg": {
+     "value": 7.4,
+     "unit": "years",
+     "formula": "S$22,500 ÷ S$3,059",
+     "source": "pay-as-you-go route",
+     "display": "~7.4 years"
+    }
+   },
+   {
+    "requestsPerMonth": 120,
+    "isBase": false,
+    "hoursSavedPerMonth": {
+     "value": 18.0,
+     "unit": "hours/month",
+     "formula": "120 × 0.15 h (the DTW load step only)",
+     "source": "final model §6.6",
+     "display": "18 hours/month"
+    },
+    "savingSgdPerYear": {
+     "value": 10800,
+     "unit": "SGD",
+     "formula": "18.0 h × 12 × S$50",
+     "source": "hours × loaded rate",
+     "display": "S$11k"
+    },
+    "netWithProcessSgdPerYear": {
+     "value": 4792,
+     "unit": "SGD",
+     "formula": "S$10,800 − S$2,633 licences − S$3,375 maintenance",
+     "source": "Process licence route",
+     "display": "S$4,792"
+    },
+    "paybackYearsProcess": {
+     "value": 4.7,
+     "unit": "years",
+     "formula": "S$22,500 ÷ S$4,792",
+     "source": "Process licence route",
+     "display": "~4.7 years"
+    },
+    "paygSgdPerYear": {
+     "value": 1149,
+     "unit": "SGD",
+     "formula": "120 × 12 runs × USD 0.60 × 1.33",
+     "source": "pay-as-you-go (preview)",
+     "display": "S$1,149"
+    },
+    "netWithPaygSgdPerYear": {
+     "value": 6276,
+     "unit": "SGD",
+     "formula": "S$10,800 − S$1,149 PAYG − S$3,375 maintenance",
+     "source": "pay-as-you-go route",
+     "display": "S$6,276"
+    },
+    "paybackYearsPayg": {
+     "value": 3.6,
+     "unit": "years",
+     "formula": "S$22,500 ÷ S$6,276",
+     "source": "pay-as-you-go route",
+     "display": "~3.6 years"
+    }
+   }
+  ],
+  "conclusion": "At 80 requests a month automatic posting saves only the DTW load step, ≈12 h a month (S$7,200 a year). After licences and maintenance it nets ≈S$1,192 a year, so the S$22,500 build pays back in ~18.9 years (~7.4 years on pay-as-you-go). Phase 2 is justified by speed (same-day posting) or scale, not hours: we decide after the pilot."
+ },
+ "waterfall": {
+  "title": "Where Amy's 18 days go, and what fixes them",
+  "slices": [
+   {
+    "id": "notice",
+    "label": "Waiting for MDM to notice the email",
+    "kind": "tooling",
+    "fix": "Form goes straight into routing",
+    "beforeDays": {
+     "value": 2,
+     "unit": "calendar days",
+     "formula": "App C breakdown",
+     "source": "final model §6.7 (our reading of App C)",
+     "display": "2 calendar days"
+    },
+    "afterDays": {
+     "value": 0,
+     "unit": "calendar days",
+     "formula": "target",
+     "source": "final model §6.7",
+     "display": "0 calendar days"
+    },
+    "savedDays": {
+     "value": 2,
+     "unit": "calendar days",
+     "formula": "2 − 0",
+     "source": "final model §6.7",
+     "display": "2 calendar days"
+    }
+   },
+   {
+    "id": "bounce",
+    "label": "Bounce for the missing QA/RA field + travel delay",
+    "kind": "tooling",
+    "fix": "Completeness gate + IVD rule",
+    "beforeDays": {
+     "value": 5,
+     "unit": "calendar days",
+     "formula": "App C breakdown",
+     "source": "final model §6.7 (our reading of App C)",
+     "display": "5 calendar days"
+    },
+    "afterDays": {
+     "value": 0,
+     "unit": "calendar days",
+     "formula": "target",
+     "source": "final model §6.7",
+     "display": "0 calendar days"
+    },
+    "savedDays": {
+     "value": 5,
+     "unit": "calendar days",
+     "formula": "5 − 0",
+     "source": "final model §6.7",
+     "display": "5 calendar days"
+    }
+   },
+   {
+    "id": "sequential",
+    "label": "Sequential hand-offs (3 approvers × ~3 days)",
+    "kind": "process",
+    "fix": "Parallel stage 1 + 2-business-day SLA + reminders",
+    "beforeDays": {
+     "value": 9,
+     "unit": "calendar days",
+     "formula": "App C breakdown",
+     "source": "final model §6.7 (our reading of App C)",
+     "display": "9 calendar days"
+    },
+    "afterDays": {
+     "value": 3,
+     "unit": "calendar days",
+     "formula": "target",
+     "source": "final model §6.7",
+     "display": "3 calendar days"
+    },
+    "savedDays": {
+     "value": 6,
+     "unit": "calendar days",
+     "formula": "9 − 3",
+     "source": "final model §6.7",
+     "display": "6 calendar days"
+    }
+   },
+   {
+    "id": "keying",
+    "label": "MDM queue + manual keying",
+    "kind": "tooling",
+    "fix": "DTW file from the approved request",
+    "beforeDays": {
+     "value": 2,
+     "unit": "calendar days",
+     "formula": "App C breakdown",
+     "source": "final model §6.7 (our reading of App C)",
+     "display": "2 calendar days"
+    },
+    "afterDays": {
+     "value": 1,
+     "unit": "calendar days",
+     "formula": "target",
+     "source": "final model §6.7",
+     "display": "1 calendar days"
+    },
+    "savedDays": {
+     "value": 1,
+     "unit": "calendar days",
+     "formula": "2 − 1",
+     "source": "final model §6.7",
+     "display": "1 calendar days"
+    }
+   }
+  ],
+  "totals": {
+   "beforeDays": {
+    "value": 18,
+    "unit": "calendar days",
+    "formula": "2 + 5 + 9 + 2",
+    "source": "App C",
+    "display": "18 days"
+   },
+   "afterDays": {
+    "value": 4,
+    "unit": "calendar days",
+    "formula": "0 + 0 + 3 + 1",
+    "source": "final model §6.7",
+    "display": "~4 calendar days (≈3 business days)"
+   },
+   "savedDays": {
+    "value": 14,
+    "unit": "calendar days",
+    "formula": "18 − 4",
+    "source": "final model §6.7",
+    "display": "14 days"
+   },
+   "processSavedDays": {
+    "value": 6,
+    "unit": "calendar days",
+    "formula": "sequential 9 → 3",
+    "source": "process change only (no software)",
+    "display": "≈6 days"
+   },
+   "processShare": {
+    "value": 0.429,
+    "unit": "fraction",
+    "formula": "6 ÷ 14",
+    "source": "final model §6.7",
+    "display": "≈43% of the saving needs no new software"
+   }
+  }
+ },
+ "adoption": {
+  "pilot": {
+   "weeks": 6,
+   "scope": "SG + MY · Customer + Item domains · SPD + QTS",
+   "cash": "Phase-1 cash cost ≈ the contractor (S$9,750); the rest is internal time",
+   "summary": "6-week pilot in SG + MY on the Customer and Item domains for SPD and QTS; rerun the analytics on SAP B1 extracts in week 1."
+  },
+  "kpis": [
+   {
+    "kpi": "Requests through OneRecord",
+    "target": "≥90% by week 6 (month 2 at rollout)",
+    "baseline": "0% (email)"
+   },
+   {
+    "kpi": "Median setup time",
+    "target": "≤4 business days",
+    "baseline": "14 calendar days (A26); Amy 18"
+   },
+   {
+    "kpi": "Bounce rate (sent back for missing info)",
+    "target": "<15%",
+    "baseline": "40% (A13)"
+   },
+   {
+    "kpi": "Duplicates intercepted at intake",
+    "target": "count, reported weekly",
+    "baseline": "not measured"
+   },
+   {
+    "kpi": "Stuck demand (S$ of orders waiting on a setup)",
+    "target": "falling trend",
+    "baseline": "live tile"
+   }
+  ],
+  "killScale": {
+   "kill": "At week 6, if the median is above 6 business days or adoption is below 70%: fix or stop.",
+   "scale": "If the KPIs are met: TH / VN / MM, then the Vendor and Cost-centre domains."
+  },
+  "adoption": [
+   "One front door: the MDM mailbox auto-replies with the form link after 4 weeks",
+   "One-click approvals inside Teams",
+   "Visible status ends chasing",
+   "A champion per entity and country",
+   "30-minute onboarding",
+   "A weekly SLA scoreboard"
+  ]
+ },
+ "alternatives": {
+  "title": "Why this, not…",
+  "columns": {
+   "stopsIncomplete": "Stops incomplete",
+   "stopsDuplicates": "Stops duplicates",
+   "fastVisibleApprovals": "Fast + visible approvals",
+   "mdmChangesWithoutIt": "MDM changes it without IT",
+   "regionalAnalytics": "Regional analytics"
+  },
+  "rows": [
+   {
+    "option": "Status quo + better email template + shared tracker",
+    "oneOff": "~S$0",
+    "stopsIncomplete": "partly",
+    "stopsDuplicates": "no",
+    "fastVisibleApprovals": "no",
+    "mdmChangesWithoutIt": "yes",
+    "regionalAnalytics": "no",
+    "verdict": "Doesn't fix noticing or chasing",
+    "chosen": false
+   },
+   {
+    "option": "SAP B1 approval procedures",
+    "oneOff": "S$0",
+    "stopsIncomplete": "no",
+    "stopsDuplicates": "no",
+    "fastVisibleApprovals": "na",
+    "mdmChangesWithoutIt": "na",
+    "regionalAnalytics": "no",
+    "verdict": "Not possible: B1 approval templates cover documents only",
+    "chosen": false
+   },
+   {
+    "option": "Teams Approvals templates only",
+    "oneOff": "~S$0",
+    "stopsIncomplete": "partly",
+    "stopsDuplicates": "no",
+    "fastVisibleApprovals": "yes",
+    "mdmChangesWithoutIt": "yes",
+    "regionalAnalytics": "no",
+    "verdict": "A good zero-build first step; no duplicate check, no SAP-ready output",
+    "chosen": false
+   },
+   {
+    "option": "Forms / Power Apps + SharePoint + Power Automate only",
+    "oneOff": "~S$30k",
+    "stopsIncomplete": "yes",
+    "stopsDuplicates": "partly",
+    "fastVisibleApprovals": "yes",
+    "mdmChangesWithoutIt": "yes",
+    "regionalAnalytics": "no",
+    "verdict": "Fixes the workflow (exact-match duplicates only), but the regional numbers stay dirty",
+    "chosen": false
+   },
+   {
+    "option": "Buy an MDM suite / B1 add-on",
+    "oneOff": "High (enterprise pricing; not verified) + IT",
+    "stopsIncomplete": "yes",
+    "stopsDuplicates": "yes",
+    "fastVisibleApprovals": "yes",
+    "mdmChangesWithoutIt": "partly",
+    "regionalAnalytics": "partly",
+    "verdict": "Over-sized for ~80 requests a month",
+    "chosen": false
+   },
+   {
+    "option": "OneRecord (M365 workflow + small DS layer + DTW)",
+    "oneOff": "~S$40k, no new licences",
+    "stopsIncomplete": "yes",
+    "stopsDuplicates": "yes",
+    "fastVisibleApprovals": "yes",
+    "mdmChangesWithoutIt": "yes",
+    "regionalAnalytics": "yes",
+    "verdict": "Chosen: fuzzy + tax-ID duplicate check, parallel approvals with SLA, stuck demand, de-duplicated forecast",
+    "chosen": true
+   }
+  ],
+  "sources": {
+   "SAP B1 approval procedures": "research log (docs/research/2026-10-23-business-case-facts.md): verified top fact (SAP Learning, 'Implementing the approval processes')",
+   "OneRecord": "phase-1 one-off S$39,900 (this file, costs.phase1)"
+  }
+ },
+ "syntheticHistoryCheck": {
+  "note": "Consistency check only: the synthetic MDM history was generated from these assumptions, so it is not evidence for them.",
+  "requestsPerMonth": {
+   "value": 82.5,
+   "unit": "requests/month",
+   "formula": "990 requests ÷ 12 months",
+   "source": "mdm_requests_hist.csv",
+   "display": "82.5 requests/month"
+  },
+  "medianCycleDays": {
+   "value": 14.1,
+   "unit": "calendar days",
+   "formula": "median of created requests",
+   "source": "mdm_requests_hist.csv",
+   "display": "14.1 calendar days"
+  },
+  "bounceRate": {
+   "value": 0.401,
+   "unit": "fraction",
+   "formula": "share with ≥1 bounce",
+   "source": "mdm_requests_hist.csv",
+   "display": "40%"
+  },
+  "duplicateShareOfCustomerRequests": {
+   "value": 0.047,
+   "unit": "fraction",
+   "formula": "share of customer requests flagged as duplicates",
+   "source": "mdm_requests_hist.csv",
+   "display": "5%"
+  }
+ },
+ "checks": [
+  {
+   "name": "hours/yr at 40",
+   "expected": 1115,
+   "computed": 1115.28,
+   "tolerance": 0.5,
+   "ok": true
+  },
+  {
+   "name": "net S$/yr at 40",
+   "expected": 49779,
+   "computed": 49779.0,
+   "tolerance": 0.5,
+   "ok": true
+  },
+  {
+   "name": "duplicates stopped/yr at 40",
+   "expected": 9,
+   "computed": 8.82,
+   "tolerance": 0.5,
+   "ok": true
+  },
+  {
+   "name": "payback months at 40",
+   "expected": 9.6,
+   "computed": 9.619,
+   "tolerance": 0.05,
+   "ok": true
+  },
+  {
+   "name": "payback (workflow only) at 40",
+   "expected": 18.6,
+   "computed": 18.573,
+   "tolerance": 0.05,
+   "ok": true
+  },
+  {
+   "name": "3-year net S$k at 40",
+   "expected": 109,
+   "computed": 109.437,
+   "tolerance": 0.5,
+   "ok": true
+  },
+  {
+   "name": "hours/yr at 80",
+   "expected": 1751,
+   "computed": 1750.56,
+   "tolerance": 0.5,
+   "ok": true
+  },
+  {
+   "name": "net S$/yr at 80",
+   "expected": 81543,
+   "computed": 81543.0,
+   "tolerance": 0.5,
+   "ok": true
+  },
+  {
+   "name": "duplicates stopped/yr at 80",
+   "expected": 18,
+   "computed": 17.64,
+   "tolerance": 0.5,
+   "ok": true
+  },
+  {
+   "name": "payback months at 80",
+   "expected": 5.9,
+   "computed": 5.872,
+   "tolerance": 0.05,
+   "ok": true
+  },
+  {
+   "name": "payback (workflow only) at 80",
+   "expected": 8.3,
+   "computed": 8.321,
+   "tolerance": 0.05,
+   "ok": true
+  },
+  {
+   "name": "3-year net S$k at 80",
+   "expected": 205,
+   "computed": 204.729,
+   "tolerance": 0.5,
+   "ok": true
+  },
+  {
+   "name": "hours/yr at 120",
+   "expected": 2386,
+   "computed": 2385.84,
+   "tolerance": 0.5,
+   "ok": true
+  },
+  {
+   "name": "net S$/yr at 120",
+   "expected": 113307,
+   "computed": 113307.0,
+   "tolerance": 0.5,
+   "ok": true
+  },
+  {
+   "name": "duplicates stopped/yr at 120",
+   "expected": 26,
+   "computed": 26.46,
+   "tolerance": 0.5,
+   "ok": true
+  },
+  {
+   "name": "payback months at 120",
+   "expected": 4.2,
+   "computed": 4.226,
+   "tolerance": 0.05,
+   "ok": true
+  },
+  {
+   "name": "payback (workflow only) at 120",
+   "expected": 5.4,
+   "computed": 5.361,
+   "tolerance": 0.05,
+   "ok": true
+  },
+  {
+   "name": "3-year net S$k at 120",
+   "expected": 300,
+   "computed": 300.021,
+   "tolerance": 0.5,
+   "ok": true
+  },
+  {
+   "name": "phase-1 one-off",
+   "expected": 39900,
+   "computed": 39900.0,
+   "tolerance": 0.5,
+   "ok": true
+  },
+  {
+   "name": "phase-1 run/yr",
+   "expected": 5985,
+   "computed": 5985.0,
+   "tolerance": 0.5,
+   "ok": true
+  },
+  {
+   "name": "FTE at 80",
+   "expected": 0.94,
+   "computed": 0.935,
+   "tolerance": 0.005,
+   "ok": true
+  },
+  {
+   "name": "phase-2 payback yrs (Process) at 80",
+   "expected": 19,
+   "computed": 18.882,
+   "tolerance": 0.5,
+   "ok": true
+  },
+  {
+   "name": "phase-2 payback yrs (PAYG) at 80",
+   "expected": 7,
+   "computed": 7.356,
+   "tolerance": 0.5,
+   "ok": true
+  },
+  {
+   "name": "phase-2 payback yrs (Process) at 120",
+   "expected": 4.7,
+   "computed": 4.696,
+   "tolerance": 0.05,
+   "ok": true
+  },
+  {
+   "name": "request-days returned at 80",
+   "expected": 640,
+   "computed": 640.0,
+   "tolerance": 0.5,
+   "ok": true
+  },
+  {
+   "name": "process-only share of the 14 days saved",
+   "expected": 0.43,
+   "computed": 0.429,
+   "tolerance": 0.005,
+   "ok": true
+  },
+  {
+   "name": "EDGE grant S$k",
+   "expected": 16,
+   "computed": 16.125,
+   "tolerance": 0.5,
+   "ok": true
+  }
+ ],
+ "checksPassed": true
+}
