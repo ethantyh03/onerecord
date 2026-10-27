@@ -54,6 +54,11 @@ Deadline: **12:00 SGT Wed 28 Oct 2026**. The user is asleep until ~07:30 and has
 | 06:55 | REQ-1101 fix: Marcus's extension now has its own id; video weijie beat re-recorded; slides re-exported. tsc 0, vitest 289, golden 24/24 |
 | 06:58 | Deliverables committed (6cd241a) and copied to OneDrive …/Data Case Competition 2026/Submission/. Final secrets scan clean. Hourly heartbeat cron deleted |
 
+| 07:30 | Vercel: logged in (ethantay2003-5612); project onerecord-lives-dsa26; vercel.json framework=nextjs; LIVE https://onerecord-lives-dsa26.vercel.app; golden e2e 24/24 against the live URL |
+| 07:34 | Team name CTFudders on the slides + README; PDF re-exported |
+| 07:43 | Caption-free narrator cut (REC_OUT/NO_CAPTIONS) → Submission/OneRecord-demo-silent-nocaptions.mp4; FOR-THE-NARRATOR.md written |
+| 07:50 | Repo PUBLIC (user OK). Branch renamed master → main (in-app links use blob/main). Form = 1 file upload (≤10 MB): name it CTFudders.pdf; the YouTube + GitHub links must be inside the PDF |
+
 ## Waves
 - [x] Wave 1: foundation (engine, store, shell, mocks) + integration
 - [x] W1-E: Python data + DS → src/data JSON
