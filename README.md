@@ -11,7 +11,7 @@ Built by **Team CTFudders** for the SMU Data Science & Analytics case competitio
 | | |
 |---|---|
 | Live prototype | https://onerecord-lives-dsa26.vercel.app |
-| Demo video (2:45) | https://youtu.be/REPLACE_ME |
+| Demo video (2:54) | https://youtu.be/5tieuSmd2Aw |
 | Repository | https://github.com/ethantyh03/onerecord |
 
 > The app reads these links from `src/lib/links.ts` and nowhere else.

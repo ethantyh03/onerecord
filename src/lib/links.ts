@@ -8,5 +8,5 @@
 export const LINKS = {
   liveUrl: "https://onerecord-lives-dsa26.vercel.app",
   github: "https://github.com/ethantyh03/onerecord",
-  youtube: "https://youtu.be/REPLACE_ME",
+  youtube: "https://youtu.be/5tieuSmd2Aw",
 };
