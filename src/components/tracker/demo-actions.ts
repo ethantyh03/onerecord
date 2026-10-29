@@ -28,7 +28,7 @@ export function approveAllAsAssignees(requestId: string): { approved: string[]; 
           continue;
         }
         store().setPersona(step.assigneeId);
-        const res = store().approveStep(requestId, step.id, "Approved (demo control)");
+        const res = store().approveStep(requestId, step.id, "Approved via sandbox tools");
         if (res.ok) approved.push(name);
         else blocked.push(`${name}: ${res.reason ?? "not allowed"}`);
       }

@@ -3,7 +3,8 @@
 import { useMemo, useState, type ReactNode } from "react";
 import { toast } from "sonner";
 import { Copy, KeyRound, LogIn, LogOut, Send } from "lucide-react";
-import { Phase2Badge, SapCode } from "@/components/common";
+import { SapCode } from "@/components/common";
+import { PlannedBadge } from "@/components/mdm/PlannedBadge";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { assignSapCode } from "@/lib/engine/codes";
 import { knownSapCodes } from "@/lib/seed";
@@ -129,10 +130,10 @@ export function ServiceLayerView({
   return (
     <div className="space-y-4 p-4">
       <div className="flex flex-wrap items-center gap-2">
-        <Phase2Badge label="Service Layer API" />
+        <PlannedBadge label="Service Layer API" />
         <p className="min-w-0 flex-1 text-[11.5px] text-[#4a5d70]">
-          Phase 2 replaces the manual DTW load with a direct REST call, built with an SAP partner. This is the exact request the flow
-          would send for the selected record. Nothing is sent from the prototype.
+          Direct posting is planned to replace the manual DTW load. This is the request that would be sent for the selected record;
+          nothing is sent.
         </p>
       </div>
 
@@ -220,7 +221,7 @@ export function ServiceLayerView({
                   Send to Service Layer
                 </SapButton>
               </TooltipTrigger>
-              <TooltipContent>Phase 2 — built with an SAP partner</TooltipContent>
+              <TooltipContent>Planned — not enabled</TooltipContent>
             </Tooltip>
           </div>
         </>

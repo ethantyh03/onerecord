@@ -5,7 +5,7 @@ import { IntakeWorkspace } from "@/components/intake/intake-workspace";
 
 export const metadata: Metadata = {
   title: "New request",
-  description: "Smart intake: paste-to-fill, live duplicate check, approval route preview and expected live date in SAP B1.",
+  description: "Raise a master-data request: paste to fill, duplicate check, approval route and expected live date in SAP B1.",
 };
 
 function IntakeLoading() {

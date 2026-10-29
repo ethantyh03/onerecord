@@ -56,7 +56,7 @@ export function AdminWorkspace() {
     <div className="space-y-5">
       <PageHeader
         title="Admin settings"
-        subtitle="Change who approves what, which fields are required and how long approvers have. The MDM team does it here, with no IT ticket and no code change."
+        subtitle="Change who approves what, which fields are required and how long approvers have. Every change is saved as a new config version."
         meta={
           <StatusText tone="ok" data-testid="admin-config-version">
             Config v{config.version} live
@@ -80,7 +80,7 @@ export function AdminWorkspace() {
           }
         >
           You&rsquo;re viewing as <span className="font-medium text-foreground">{me.name}</span>. Only the MDM team
-          {admins.length ? ` (${admins.map((a) => a.name).join(", ")})` : ""} changes these settings in production; in this prototype you can still try them.
+          {admins.length ? ` (${admins.map((a) => a.name).join(", ")})` : ""} can change these settings; in the sandbox you can still try them.
         </Notice>
       ) : null}
 
@@ -117,8 +117,8 @@ export function AdminWorkspace() {
 
         <aside className="space-y-3 xl:sticky xl:top-20">
           <RouteTestPanel state={routeTest} onChange={setRouteTest} />
-          <Notice size="sm" tone="neutral" lead="In production:" className="pt-1" data-testid="admin-production-note">
-            these settings live in a SharePoint config list that the MDM team edits; Power Automate reads them at run time.
+          <Notice size="sm" tone="neutral" lead="Storage:" className="pt-1" data-testid="admin-production-note">
+            Settings are kept in a SharePoint config list; Power Automate reads them at run time.
           </Notice>
         </aside>
       </div>

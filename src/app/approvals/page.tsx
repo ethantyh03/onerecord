@@ -4,7 +4,7 @@ import { ApprovalsLoading, ApprovalsWorkspace } from "@/components/approvals/App
 
 export const metadata: Metadata = {
   title: "Approvals",
-  description: "Waiting on me, the Teams approval card, the Outlook actionable message and the card JSON, with a simulated clock.",
+  description: "Waiting on me, the Teams approval card, the Outlook actionable message and the card JSON.",
 };
 
 export default function ApprovalsPage() {

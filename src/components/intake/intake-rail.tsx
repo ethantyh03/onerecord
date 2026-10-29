@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { SectionTitle, StateGlyph, type StateTone } from "@/components/common";
 import { cn } from "@/lib/utils";
 import { RoutePreview } from "./route-preview";
-import { EMAIL_BASELINE_DAYS, formatLiveDate } from "./intake-logic";
+import { formatLiveDate } from "./intake-logic";
 
 /** The submit block is sticky, so keep it short: the full list is in Completeness above. */
 const MAX_BLOCKERS = 3;
@@ -145,12 +145,11 @@ export function IntakeRail({
             "Expected live date appears here"
           )}
         </p>
-        <p
-          className="mt-0.5 text-xs text-muted-foreground"
-          title={`Mon–Fri business days on the simulated clock, ${slaDays} per approval stage. Today's median by email is 14 calendar days (A26); Amy's item in the case brief took ${EMAIL_BASELINE_DAYS}.`}
-        >
-          Today by email: median 14 days (Amy&apos;s took {EMAIL_BASELINE_DAYS})
-        </p>
+        {liveIso ? (
+          <p className="mt-0.5 text-xs text-muted-foreground" title={`Mon–Fri business days, ${slaDays} per approval stage.`}>
+            If submitted now · {slaDays} business day{slaDays === 1 ? "" : "s"} per approval stage
+          </p>
+        ) : null}
 
         <Button
           type="button"
@@ -175,7 +174,7 @@ export function IntakeRail({
             ) : null}
           </ul>
         ) : ready ? (
-          <p className="mt-2 text-center text-xs text-muted-foreground">Approvers get a Teams card and an Outlook email (simulated).</p>
+          <p className="mt-2 text-center text-xs text-muted-foreground">Approvers get a Teams card and an Outlook email.</p>
         ) : null}
         {submitError ? <p className="mt-2 text-xs text-destructive">{submitError}</p> : null}
       </div>

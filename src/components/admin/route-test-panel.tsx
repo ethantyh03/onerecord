@@ -171,7 +171,7 @@ export function RouteTestPanel({ state, onChange }: { state: RouteTestState; onC
 
         {!bu ? (
           <Notice size="sm" tone="warn" lead="BU not configured yet — ask MDM to add it." data-testid="admin-route-test-unconfigured">
-            Until then each step goes to the first person who holds the role, which is how Marcus&rsquo;s requests got misrouted.
+            Until then each step goes to the first person who holds the role.
           </Notice>
         ) : null}
       </div>

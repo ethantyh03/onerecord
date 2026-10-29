@@ -13,7 +13,7 @@ function valueText(v: FieldReviewRow["value"]): string {
   return typeof v === "number" ? v.toLocaleString("en-SG") : String(v);
 }
 
-/** Paste-to-fill provenance: the value came from the requestor's pasted text and they confirmed it. No model runs in phase 1. */
+/** Paste-to-fill provenance: the value came from the requestor's pasted text and they confirmed it. */
 function AutoFilledTag() {
   return (
     <span
@@ -47,8 +47,7 @@ export function FieldReview({ req, rows }: { req: MdmRequest; rows: FieldReviewR
       footer={
         <span className="flex items-start gap-1.5">
           <Lock aria-hidden className="mt-0.5 size-3 shrink-0" />
-          Credit terms and bank details are masked for everyone outside Finance and MDM, and every reveal is logged. Role-enforced
-          in the prototype; production: restricted SharePoint list + Entra ID.
+          Credit terms and bank details are masked for everyone outside Finance and MDM, and every reveal is logged.
         </span>
       }
     >

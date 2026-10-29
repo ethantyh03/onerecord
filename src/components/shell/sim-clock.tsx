@@ -65,7 +65,7 @@ function summariseSlaEvents(fresh: AppNotification[]): string {
   return `${parts.join(" and ")} sent to approvers.`;
 }
 
-/** Simulated clock in SGT with a fast-forward menu that drives SLA reminders and escalations. */
+/** The sandbox clock in SGT, with a fast-forward menu that drives SLA reminders and escalations. */
 export function SimClock({ className }: { className?: string }) {
   const now = useSimNow();
   const offset = useSandbox((s) => s.clockOffsetMs);
@@ -89,7 +89,7 @@ export function SimClock({ className }: { className?: string }) {
 
   return (
     <div className={cn("flex items-center", className)}>
-      <div className="relative hidden h-full items-center gap-2.5 px-4 md:flex" data-testid="sim-clock">
+      <div className="relative hidden h-full items-center gap-2.5 px-4 lg:flex" data-testid="sim-clock">
         {pulse > 0 && !reduceMotion ? (
           <motion.span
             key={pulse}
@@ -111,7 +111,7 @@ export function SimClock({ className }: { className?: string }) {
         </motion.span>
         <span className="flex flex-col leading-none">
           <span className="text-xs text-subtle">
-            Simulated clock
+            Sandbox clock
             {offsetLabel ? <span className="ml-1.5 font-mono text-xs font-medium text-primary">{offsetLabel}</span> : null}
           </span>
           <motion.span
@@ -127,19 +127,20 @@ export function SimClock({ className }: { className?: string }) {
       </div>
       <DropdownMenu>
         <DropdownMenuTrigger
+          aria-label="Fast-forward the sandbox clock"
           className={cn(
-            "mx-3 inline-flex h-8 items-center gap-1.5 rounded-md border border-border-strong px-2.5 text-sm font-medium text-foreground outline-none transition-colors md:ml-0",
+            "mx-3 inline-flex h-8 shrink-0 items-center gap-1.5 rounded-md border border-border-strong px-2.5 text-sm font-medium whitespace-nowrap text-foreground outline-none transition-colors lg:ml-0",
             "hover:bg-secondary focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-ring data-popup-open:bg-secondary",
           )}
         >
           <FastForward aria-hidden className="size-4 text-primary" />
-          <span className="hidden md:inline">Fast-forward</span>
+          <span className="hidden xl:inline">Fast-forward</span>
           <ChevronDown aria-hidden className="size-3.5 text-muted-foreground" />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start" sideOffset={8} className="w-72 p-1.5">
           <DropdownMenuGroup>
             <DropdownMenuLabel className="px-2 pt-1 pb-1.5 text-[0.8125rem] leading-snug text-muted-foreground">
-              Move the demo clock to see SLA reminders and escalations fire.
+              Move the sandbox clock forward to trigger SLA reminders and escalations.
             </DropdownMenuLabel>
             {JUMPS.map((j) => {
               const hours = j.hours(now);

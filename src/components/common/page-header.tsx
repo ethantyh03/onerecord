@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
+import { isBlankMarker } from "./badges";
 
 export interface PageHeaderProps {
   title: ReactNode;
@@ -7,9 +8,9 @@ export interface PageHeaderProps {
   /** Buttons aligned right on wide screens, below the title on narrow ones */
   actions?: ReactNode;
   /**
-   * Quiet text beside the title, after a hairline: provenance ("Synthetic, illustrative data"), a
-   * production note, an ID + status. Rendered as plain 12px subtle text: any chip passed here loses
-   * its border, fill and padding, so pass plain text or an <IllustrativeMarker />.
+   * Quiet text beside the title, after a hairline: a source note, an ID + status. Rendered as plain
+   * 12px subtle text: any chip passed here loses its border, fill and padding, so pass plain text or an
+   * <IllustrativeMarker label="…" />. A marker without a label renders nothing, and so does the hairline.
    */
   meta?: ReactNode;
   className?: string;
@@ -31,7 +32,7 @@ export function PageHeader({ title, subtitle, actions, meta, className }: PageHe
       <div className="min-w-0 space-y-1.5">
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
           <h1 className="font-wide text-[1.75rem] leading-8 font-semibold text-foreground">{title}</h1>
-          {meta ? (
+          {!isBlankMarker(meta) ? (
             <div
               className={cn(
                 "flex min-h-5 flex-wrap items-center gap-x-3 gap-y-1 border-l border-border-strong pl-4 text-xs leading-4 text-subtle",

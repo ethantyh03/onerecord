@@ -1,10 +1,13 @@
-import type { ReactNode } from "react";
+import { isValidElement, type ReactNode } from "react";
 import { FlaskConical } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { StateGlyph } from "./glyph";
 
 export interface IllustrativeMarkerProps {
-  /** Keep the page's exact wording, e.g. "Fictional sample messages" */
+  /**
+   * The page's own wording, e.g. "Fictional sample messages". Without a label the marker renders nothing:
+   * the top bar's environment tag ("Sandbox · synthetic data") already covers every screen.
+   */
   label?: ReactNode;
   /** Lead with the small flask icon (default true) */
   icon?: boolean;
@@ -12,11 +15,12 @@ export interface IllustrativeMarkerProps {
 }
 
 /**
- * The one quiet provenance marker per section (a page header, a panel header, or a readout strip's
+ * A quiet provenance note for one section (a page header, a panel header, or a readout strip's
  * footnote): plain 12px subtle text, optionally led by a bare flask icon. Never a chip, never one per
- * card or per number.
+ * card or per number. Renders only when a page passes its own `label`.
  */
-export function IllustrativeMarker({ label = "Synthetic, illustrative data", icon = true, className }: IllustrativeMarkerProps) {
+export function IllustrativeMarker({ label, icon = true, className }: IllustrativeMarkerProps) {
+  if (!label) return null;
   return (
     <span className={cn("inline-flex shrink-0 items-center gap-1.5 text-xs leading-4 whitespace-nowrap text-subtle", className)}>
       {icon ? <FlaskConical aria-hidden className="size-3.5 shrink-0" strokeWidth={2} /> : null}
@@ -26,22 +30,36 @@ export function IllustrativeMarker({ label = "Synthetic, illustrative data", ico
 }
 
 export interface SyntheticBadgeProps {
+  /** Shown only when passed: the generic "synthetic data" note now lives once, in the top bar. */
   label?: string;
   className?: string;
 }
 
-/** Required on every analytics label: the numbers are synthetic and illustrative. Renders as the quiet IllustrativeMarker. */
-export function SyntheticBadge({ label = "Synthetic, illustrative data", className }: SyntheticBadgeProps) {
+/** A page-specific provenance note. Renders nothing without a `label` (the top bar's environment tag covers the rest). */
+export function SyntheticBadge({ label, className }: SyntheticBadgeProps) {
   return <IllustrativeMarker label={label} className={className} />;
 }
 
+/**
+ * True when `node` would render nothing: empty values, or a provenance marker with no label of its own.
+ * Wrappers (page-header meta, panel markers, strip footnotes) use it so they never leave a bare hairline.
+ */
+export function isBlankMarker(node: ReactNode): boolean {
+  // Anything falsy rendered nothing before markers could be blank (`{meta ? … : null}`): keep that.
+  if (!node || node === true) return true;
+  if (isValidElement(node) && (node.type === SyntheticBadge || node.type === IllustrativeMarker)) {
+    return !(node.props as { label?: ReactNode }).label;
+  }
+  return false;
+}
+
 export interface Phase2BadgeProps {
-  /** What is deferred, e.g. "Service Layer API". Renders as "Phase 2" alone when omitted. */
+  /** What is planned, e.g. "Service Layer API". Renders as "Planned" alone when omitted. */
   label?: string;
   className?: string;
 }
 
-/** Marks anything not built in the prototype: a hollow violet square, then "Phase 2" and what is deferred. No box. */
+/** Marks a capability that is planned but not enabled yet: a hollow violet square, then "Planned" and what. No box. */
 export function Phase2Badge({ label, className }: Phase2BadgeProps) {
   return (
     <span
@@ -51,7 +69,7 @@ export function Phase2Badge({ label, className }: Phase2BadgeProps) {
       )}
     >
       <StateGlyph tone="phase2" />
-      <span className="font-semibold">Phase 2</span>
+      <span className="font-semibold">Planned</span>
       {label ? <span className="font-normal">{label}</span> : null}
     </span>
   );

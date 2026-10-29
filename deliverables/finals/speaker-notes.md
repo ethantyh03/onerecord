@@ -42,7 +42,7 @@ All data is synthetic and illustrative; every figure is in the numbers ledger of
 
 1. **Freeze `src` by 14:00** and present from a production build (Vercel after commit + push, or `npm run build` then
    `npm run start -- -p 3200`). From `next dev`, a teammate's save can reload the page mid-demo.
-2. Chrome, **zoom 125%** on the deck's address (Ctrl + `+` twice). Pre-warm every scene once, then **Reset demo**.
+2. Chrome, **zoom 125%** on the deck's address (Ctrl + `+` twice). Pre-warm every scene once, then **Reset sandbox**.
 3. **Tab 1:** `/deck?standby=1` (the return tab). **Tab 2:** `/deck` (present from here). Then **F11**.
 4. Do not press **N** on stage (mirrored screen: the notes would go on the projector). Use this card.
 5. Rehearse the return twice: on slide 8 press →, click around the app, then **Ctrl+1**: tab 1 is on slide 9.
@@ -137,8 +137,8 @@ hold; → shrinks them). The [→] in the script below marks the press.
 | 1 · Amy | 0:00–1:10 | Clean in: Amy raises a new item (the deck loads it) | Paste to fill → Amy's old email → Fill the form. IVD → licence + QA/RA. Optional: Category = Instrument, then back. HSA-DE-0012345, sample certificate, Ambient. Submit → REQ-1100, 3 orders (S$36,000) linked. |
 | 2 · Marcus | 1:10–2:05 | Admin adds Marcus's business unit, then Clean in: Marcus is stopped from creating a duplicate | Add business unit (MLS) → Save → “Config v2 live”. FIRST CUT if behind: skip the admin scene, just say “MDM added the business unit itself, no IT ticket.” Amber card: 100% match, C-SG-00017, same tax ID → Extend to my entity. Don't say the hospital's name. |
 | 3 · Wei Jie | 2:05–2:50 | Clean in: Wei Jie approves in Teams | REQ-1101: payment terms 🔒, “Why you're seeing this”, due in 2 business days. Approve → Priya next. Optional (second cut): Open details → show values (logged). |
-| 4 · Priya | 2:50–3:50 | Lands in SAP B1: Priya imports Amy's item | S$36,000 · 3 orders. Generate SAP B1 import (oItems.csv). Point at Service Layer (Phase 2), don't open. Mark created → I-B-000535. Regional Pulse: S$345,800 → S$309,800. |
-| 5 · Pulse | 3:50–4:45 | Stay on /pulse (don't reload: it resets stuck demand) | Synthetic badge. Raw SAP records → Bukit Damai #7 / #10 / #11. Merge the duplicates → #2, −32%. “What we do about it”: BU Head, SPD Malaysia, by 13 Nov, S$620k. |
+| 4 · Priya | 2:50–3:50 | Lands in SAP B1: Priya imports Amy's item | S$36,000 · 3 orders. Generate SAP B1 import (oItems.csv). Point at Service Layer (planned), don't open. Mark created → I-B-000535. Regional Pulse: S$345,800 → S$309,800. |
+| 5 · Pulse | 3:50–4:45 | Stay on /pulse (don't reload: it resets stuck demand) | Top-bar tag “Sandbox · synthetic data”. Raw SAP records → Bukit Damai #7 / #10 / #11. Merge the duplicates → #2, −32%. “Recommended action”: BU Head, SPD Malaysia, by 13 Nov, S$620k. |
 | Return | 4:45–5:00 | Ctrl+1 to the return tab (tab 1, already on slide 9) | “What does that mean for the region?” Never the Back button. |
 
 If the live demo breaks: play `deliverables/video/OneRecord-demo.mp4` (2:54), then slide 9.
@@ -201,9 +201,9 @@ If the live demo breaks: play `deliverables/video/OneRecord-demo.mp4` (2:54), th
 | A2 Who builds it, and licences | No dev team: why custom? What does it cost in licences? | Ethan | /architecture |
 | A3 What sits behind the payback | What sits behind “payback in about 6 months”? | Joash | /impact → 40 / 80 / 120 buttons |
 | A4 How the duplicate check works | How does the duplicate check work, and how accurate is it? | Ethan | New request → New Customer → MY · “Bukit Damai Spec Hosp” |
-| A5 Is this real data? | Would these numbers hold on Lives's real SAP data? | Ethan | Pulse → “What's real here?” |
+| A5 Is this real data? | Would these numbers hold on Lives's real SAP data? | Ethan | Pulse → “About this data” |
 | A6 Why believe the forecast? | Why believe the forecast improvement? | Ethan | Pulse → Forecast check → Replay |
-| A7 Bank data, duties, escalation | Bank and credit data? Segregation of duties? Approver on leave or not responding? | Ethan | Approvals → Simulated time → +1 / +3 business days; audit trail → Verify chain |
+| A7 Bank data, duties, escalation | Bank and credit data? Segregation of duties? Approver on leave or not responding? | Ethan | Approvals → Sandbox clock → +1 / +3 business days; audit trail → Verify chain |
 | A8 Import file now, and what we left out | Why an import file, not the Service Layer? What did you deliberately not build? | Joash | /scope |
 
 ### A1 · Why not SAP's own approvals? (Ethan)

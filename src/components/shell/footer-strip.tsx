@@ -1,10 +1,13 @@
 import { cn } from "@/lib/utils";
-import { FOOTER_TEXT } from "./copy";
+import { FOOTER_TEXT, footerText } from "./copy";
 
 export { FOOTER_TEXT };
 
-/** The production-framing line under every screen, set as a quiet console footer. */
-export function FooterStrip({ className }: { className?: string }) {
+/**
+ * The environment line under every screen, set as a quiet console footer. `configVersion` is the live
+ * config version; the loading skeleton leaves it out (the sandbox has not loaded yet).
+ */
+export function FooterStrip({ className, configVersion }: { className?: string; configVersion?: number }) {
   return (
     <footer
       className={cn(
@@ -12,7 +15,7 @@ export function FooterStrip({ className }: { className?: string }) {
         className,
       )}
     >
-      <p className="w-full max-w-[1600px]">{FOOTER_TEXT}</p>
+      <p className="w-full max-w-[1600px]">{footerText(configVersion)}</p>
     </footer>
   );
 }

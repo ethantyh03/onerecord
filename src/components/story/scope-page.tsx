@@ -32,8 +32,8 @@ export function ScopePage() {
       why: "That is a separate data-stewardship project. Version 1 stops new duplicates and uses a read-only golden-ID crosswalk so reports count each customer once. The handful of high-value merges Regional Pulse flags are done by hand in SAP by the MDM team; v1 doesn't automate them.",
     },
     {
-      title: "A security model of our own",
-      why: "Single sign-on, encryption and data-loss prevention already come from Microsoft 365 and Entra ID. We add role masking and a restricted list for bank and credit fields.",
+      title: "A separate security model",
+      why: "Single sign-on, encryption and data-loss prevention already come from Microsoft 365 and Entra ID. OneRecord adds role masking and a restricted list for bank and credit fields.",
     },
     {
       title: "A drag-and-drop workflow designer",
@@ -42,7 +42,7 @@ export function ScopePage() {
     },
     {
       title: "Deep-learning forecasting",
-      why: "It cannot be justified on monthly data at this scale. A seasonal model that beats today's rolling average, and admits where it doesn't, is more useful.",
+      why: "Monthly data at this scale cannot support it. A seasonal model that beats the rolling average in most cells is enough.",
       link: { href: "/pulse", label: "Open Regional Pulse" },
     },
     {
@@ -81,15 +81,14 @@ export function ScopePage() {
   return (
     <div className="w-full space-y-6 pb-10">
       <PageHeader
-        title="Scope: what we built, and what we left out"
-        subtitle="Version 1 fixes how master data gets in and makes the regional numbers trustworthy. First, where each part of the brief is answered; then what we left out on purpose, each a choice and not a time cut, with the reason."
-        meta={<NoteChip>Answers the brief&apos;s “what you will not build”</NoteChip>}
+        title="Scope & roadmap"
+        subtitle="Version 1 covers how master data gets in and how the regional numbers are counted. Below: the screen that handles each problem, what version 1 leaves out and why, and the roadmap."
       />
 
       <BriefMap />
 
       <div className="grid items-start gap-6 lg:grid-cols-2">
-        <Panel titleId="not-v1-title" title="Deliberately not in v1, and why" className="scroll-mt-24" flush>
+        <Panel titleId="not-v1-title" title="Not in version 1, and why" className="scroll-mt-24" flush>
           <ul className="divide-y divide-border" data-testid="scope-not-in-v1">
             {notInV1.map((n) => (
               <li key={n.title} className="px-4 py-3.5">
@@ -110,9 +109,9 @@ export function ScopePage() {
 
         <Panel titleId="roadmap-title" title="Roadmap, in order" flush>
           <div data-testid="scope-roadmap">
-            <RoadmapGroup label={<NoteChip tone="ok">Phase 1 · next</NoteChip>} items={roadmap.filter((r) => r.next)} start={1} />
+            <RoadmapGroup label={<NoteChip tone="ok">Next</NoteChip>} items={roadmap.filter((r) => r.next)} start={1} />
             <RoadmapGroup
-              label={<Phase2Badge label="not built" />}
+              label={<Phase2Badge />}
               items={roadmap.filter((r) => !r.next)}
               start={roadmap.filter((r) => r.next).length + 1}
             />

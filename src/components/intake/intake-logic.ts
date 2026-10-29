@@ -23,8 +23,6 @@ import { entitiesOf } from "@/lib/seed";
 export const DUP_DECISION_THRESHOLD = 0.85;
 /** Minimum length of an override justification. */
 export const OVERRIDE_MIN_CHARS = 20;
-/** Cycle time today for the same request by email (case brief, App C). */
-export const EMAIL_BASELINE_DAYS = 18;
 
 const COUNTRY_SET = new Set<string>(COUNTRIES.map((c) => c.code));
 
@@ -199,5 +197,5 @@ export function formatLiveDate(iso: string): string {
       .formatToParts(d)
       .map((p) => [p.type, p.value]),
   );
-  return `${parts.weekday} ${parts.day} ${parts.month}`;
+  return `${parts.weekday} ${parts.day} ${parts.month === "Sept" ? "Sep" : parts.month}`;
 }

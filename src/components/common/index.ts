@@ -16,6 +16,7 @@ export {
   SyntheticBadge,
   Phase2Badge,
   IllustrativeMarker,
+  isBlankMarker,
   Tag,
   Count,
   type SyntheticBadgeProps,

@@ -67,10 +67,8 @@ const BEATS: Beat[] = [
     resetAs: "amy",
     description: "Resets the sandbox, selects Amy and opens Home.",
     checklist: [
-      "Hold on the headline: “Messy master data hides money. One hospital, one record.”",
-      "Point at the badge above it: Runs on Microsoft 365 · lands in SAP Business One.",
-      "Point at the three spellings (Natl Univ Hosp · National University Hosp. · Nat'l University Hospital) merging into National University Hospital, C-SG-00017.",
-      "Let the process strip below run to step 6, Regional Pulse.",
+      "Hold on the headline: “One record for every customer, item and vendor.”",
+      "Point at the status line above it: Connected · Microsoft 365 · SAP Business One (LIVES_SANDBOX).",
     ],
     voiceover:
       "Lives Group's master data is created by email. Records arrive incomplete and duplicated, so the regional numbers built on them can't be trusted. OneRecord fixes both ends.",
@@ -147,7 +145,7 @@ export default function DemoConsolePage() {
       router.push(route);
     } catch (err) {
       toast.error("Couldn't load the scene", {
-        description: err instanceof Error ? err.message : "Reset the demo and try again.",
+        description: err instanceof Error ? err.message : "Reset the sandbox and try again.",
       });
       setBusy(null);
     }
@@ -170,7 +168,7 @@ export default function DemoConsolePage() {
     const previousOffsetMs = useSandbox.getState().clockOffsetMs;
     resetSandbox();
     nudgeClock(previousOffsetMs);
-    toast.success("Demo reset", { description: "Back to the starting scenario: Wed 28 Oct, 09:00 SGT, Amy selected." });
+    toast.success("Sandbox reset", { description: "Back to the starting scenario: Wed 28 Oct, 09:00 SGT, Amy selected." });
   }
 
   return (
@@ -185,7 +183,7 @@ export default function DemoConsolePage() {
             </a>
             <Button variant="outline" onClick={onReset} data-testid="demo-reset">
               <RotateCcw aria-hidden />
-              Reset demo
+              Reset sandbox
             </Button>
           </>
         }
@@ -200,7 +198,7 @@ export default function DemoConsolePage() {
             "Screen 1920×1080, browser zoom 125%",
             "Load every scene once first, so nothing shows a loading state on camera",
             "Hard ceiling 2:55 for the cut",
-            "The clock, Teams, Outlook and SAP B1 are simulated",
+            "The clock, Teams, Outlook and SAP B1 run in the sandbox",
           ].map((item) => (
             <li key={item} className="flex flex-1 items-center px-4 py-2.5">
               {item}
@@ -291,7 +289,7 @@ export default function DemoConsolePage() {
                   <span className="text-sm">
                     <code className="mono-id text-foreground">{route}</code>
                   </span>
-                  {isScene ? <span>Clock: Wed 28 Oct, {beat.scene.clock} SGT (simulated)</span> : null}
+                  {isScene ? <span>Sandbox clock: Wed 28 Oct, {beat.scene.clock} SGT</span> : null}
                 </div>
                 <p className="mt-2 max-w-[80ch] text-sm text-muted-foreground">{description}</p>
 

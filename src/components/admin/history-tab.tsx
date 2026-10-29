@@ -61,7 +61,7 @@ export function HistoryTab() {
       </ol>
       {history.length === 1 ? (
         <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
-          <History className="size-3.5" aria-hidden /> Only the go-live version so far. Add a business unit or toggle a field to see a new version appear.
+          <History className="size-3.5" aria-hidden /> Only the go-live version so far. Each change adds a new version here.
         </p>
       ) : null}
     </div>

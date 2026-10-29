@@ -75,7 +75,7 @@ export function CardJsonView({ request, step }: { request: MdmRequest; step: App
         <div className="min-w-0 flex-1">
           <p className="mono-id text-sm font-medium text-foreground">integrations/teams/approval-card.json</p>
           <p className="text-[0.8125rem] leading-5 text-muted-foreground">
-            Adaptive Card 1.5, bound with {request.id}&apos;s values · the same template the production flow posts to Teams
+            Adaptive Card 1.5, bound with {request.id}&apos;s values · the same template the approval flow posts to Teams
           </p>
         </div>
         <Button variant="outline" size="sm" onClick={copy} data-testid="json-copy">

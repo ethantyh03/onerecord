@@ -100,7 +100,7 @@ export function RequestDetail() {
         <EmptyState
           icon={FileSearch}
           title={id ? `${id} isn't in this sandbox` : "Pick a request to track"}
-          description="Requests live in this browser's demo sandbox. A reset or another browser starts from the seeded set."
+          description="Requests live in this browser's sandbox. Resetting the sandbox restores the starting set."
           action={
             <Link href="/requests" className={buttonVariants({ variant: "default" })}>
               See all requests
@@ -148,7 +148,7 @@ export function RequestDetail() {
               </Link>
             ) : created && req.sapCode ? (
               <Link href={`/sap?code=${encodeURIComponent(req.sapCode)}`} className={buttonVariants({ variant: "outline" })}>
-                View {req.sapCode} in SAP B1 (simulated)
+                View {req.sapCode} in SAP B1
               </Link>
             ) : null}
           </>

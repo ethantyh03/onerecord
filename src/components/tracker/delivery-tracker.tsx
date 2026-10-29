@@ -484,7 +484,6 @@ export function DeliveryTracker({ request: req, domain, demand }: DeliveryTracke
         testid="tracker-sap"
         state={state}
         title={isExtend ? "Updated in SAP B1" : "Created in SAP B1"}
-        meta="Simulated SAP B1"
         time={req.sapCreatedAt ? formatSgtDateTime(req.sapCreatedAt) : undefined}
       >
         {created ? (
@@ -530,7 +529,7 @@ export function DeliveryTracker({ request: req, domain, demand }: DeliveryTracke
       {created ? (
         <p className="flex items-center gap-2 text-sm text-secondary-foreground">
           <Send aria-hidden className="size-4 text-muted-foreground" />
-          {requestor?.name ?? "The requestor"} was told in Teams and Outlook (simulated) with the new code.
+          {requestor?.name ?? "The requestor"} was told in Teams and Outlook with the new code.
         </p>
       ) : (
         <p className="text-sm text-muted-foreground">

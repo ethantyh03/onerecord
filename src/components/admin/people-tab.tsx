@@ -186,7 +186,7 @@ export function PeopleTab() {
         </Table>
       </div>
       <p className="text-xs text-muted-foreground">
-        Out-of-office changes take effect immediately and are logged in the audit trail. In production, people and roles come from Entra ID groups.
+        Out-of-office changes take effect immediately and are logged in the audit trail. People and roles are managed in Entra ID groups.
       </p>
     </div>
   );

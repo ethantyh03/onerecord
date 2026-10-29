@@ -5,7 +5,7 @@ import { ArrowDown, ArrowDownRight, ArrowRight, ArrowUpRight } from "lucide-reac
 import { matrix, type MatrixCell, type MatrixTotal, type MonthValueUnits } from "@/data/contract";
 import type { CountryCode, ProductGroup } from "@/lib/types";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { MATCHER_CAVEAT } from "@/components/pulse/analytics/caveats";
+import { CLEANING_NOTE } from "@/components/pulse/analytics/copy";
 import { cn } from "@/lib/utils";
 import { usePulse, type PulseMeasure } from "./PulseContext";
 import { Sparkline } from "./Sparkline";
@@ -358,10 +358,7 @@ export function CountryProductMatrix() {
             <>
               <span className="font-semibold text-foreground">Δ</span> marks the {changedCount} boxes that change once
               customers are cleaned{measure === "units" ? " (in units; S$ in the tooltip)" : ""}.{" "}
-              {matrix.cleaningNote.replace(/\bSept\b/g, "Sep")}{" "}
-              <span className="font-medium text-secondary-foreground" data-testid="pulse-matrix-matcher-caveat">
-                {MATCHER_CAVEAT}
-              </span>
+              {CLEANING_NOTE}
             </>
           ) : (
             "Raw view: every SAP record counted as recorded, including orders booked under the wrong country or product. Switch to merged customers to see what cleaning changes."

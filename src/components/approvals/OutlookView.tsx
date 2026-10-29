@@ -44,7 +44,7 @@ export function OutlookView({ request, step, me }: { request: MdmRequest; step: 
         <Inbox className="size-4" aria-hidden="true" />
         <span className="text-[14px] font-semibold tracking-tight">Outlook</span>
         <span className="text-[12px] opacity-85">Inbox · {me.email}</span>
-        <span className="ml-auto rounded-full bg-white/90 px-2 py-px text-[11px] font-semibold text-[#5c4300]">Simulated</span>
+        <span className="ml-auto rounded-full bg-white/90 px-2 py-px text-[11px] font-semibold text-[#5c4300]">Preview</span>
       </div>
       <OutlookMessage key={message.id} notification={message} markReadOnView={Boolean(stored)} className="min-h-[520px]" />
     </LightScope>

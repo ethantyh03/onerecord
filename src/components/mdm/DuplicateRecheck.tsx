@@ -152,8 +152,8 @@ export function DuplicateRecheck({ req, domain, now }: { req: MdmRequest; domain
       </p>
       {result.kind === "clear" ? (
         <p className="text-secondary-foreground">
-          Compared with <span className="num">{result.compared.toLocaleString("en-SG")}</span> records in the SAP B1 master
-          extract and the sandbox.
+          Compared with <span className="num">{result.compared.toLocaleString("en-SG")}</span> records in SAP B1, including records
+          created since the last extract.
         </p>
       ) : null}
     </ResultLine>

@@ -15,7 +15,7 @@ let lastShown: number | null = null;
 const DURATION_MS = 1_800;
 const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
 
-/** Counts down to `target` when it drops; jumps straight up when it rises (e.g. after Reset demo). */
+/** Counts down to `target` when it drops; jumps straight up when it rises (e.g. after Reset sandbox). */
 function useCountDown(target: number): { shown: number; dropping: boolean } {
   const [shown, setShown] = useState<number>(() => lastShown ?? target);
   const [dropping, setDropping] = useState(false);
@@ -115,7 +115,7 @@ export function StuckDemandTile({ className }: { className?: string }) {
             went live in SAP B1.
           </>
         ) : (
-          "Live from the sandbox: drops the moment MDM marks a record created in SAP B1."
+          "Drops the moment MDM marks a record created in SAP B1."
         )
       }
     />

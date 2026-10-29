@@ -46,7 +46,7 @@ function MdmHome() {
       <ReadoutStrip className="mb-9">
         <StuckDemandTile />
         <Readout
-          label={mdm ? "Waiting for your final check" : "Waiting for MDM's final check"}
+          label="Ready for final check"
           value={queueCount}
           caption="Fully approved by the business; MDM checks and imports them."
         />

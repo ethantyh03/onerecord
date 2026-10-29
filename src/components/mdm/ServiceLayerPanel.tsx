@@ -2,13 +2,13 @@
 
 import { useMemo } from "react";
 import { Check, Send, X } from "lucide-react";
-import { Phase2Badge } from "@/components/common";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { maskPayload, validateServiceLayer } from "./mdm-helpers";
+import { PlannedBadge } from "./PlannedBadge";
 
-/** (5) Phase 2 reference: the Service Layer call that would create the record directly. Never sent. */
+/** (5) Planned direct posting: the Service Layer call that would create the record. Never sent. */
 export function ServiceLayerPanel({
   payload,
   sensitive,
@@ -31,7 +31,7 @@ export function ServiceLayerPanel({
         <div className="flex min-w-0 flex-wrap items-center gap-2 text-sm">
           <code className="mono-id font-semibold text-foreground">{payload.method}</code>
           <code className="mono-id truncate text-foreground">{payload.path}</code>
-          <Phase2Badge label="— not sent" />
+          <PlannedBadge label="not sent" />
         </div>
         <Tooltip>
           <TooltipTrigger
@@ -48,8 +48,7 @@ export function ServiceLayerPanel({
             </Button>
           </TooltipTrigger>
           <TooltipContent id="sl-send-why" className="max-w-[300px]">
-            Phase 2. At about 80 requests a month, posting directly saves too few hours to pay back yet, so phase 1 imports
-            through DTW after the MDM check. Nothing is sent from this prototype.
+            Not enabled. Records are imported through DTW after the MDM check; direct posting is planned.
           </TooltipContent>
         </Tooltip>
       </div>
@@ -89,7 +88,7 @@ export function ServiceLayerPanel({
         </div>
       </div>
       <p className="text-xs text-muted-foreground">
-        In phase 2, a business partner and its child rows go in one <code className="mono-id text-secondary-foreground">$batch</code>{" "}
+        When enabled, a business partner and its child rows go in one <code className="mono-id text-secondary-foreground">$batch</code>{" "}
         request so they are created together or not at all.
       </p>
     </div>

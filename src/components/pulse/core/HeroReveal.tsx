@@ -8,6 +8,7 @@ import { StatusText } from "@/components/common/status-text";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { usePulse } from "./PulseContext";
+import { duplicateExampleTitle } from "@/components/pulse/analytics/copy";
 import { formatIsoDate, formatPct, sgdCompact } from "./pulse-format";
 
 const HERO_COUNTRY = "MY";
@@ -116,9 +117,9 @@ export function HeroReveal() {
       <div className="flex flex-col gap-3 border-b border-border px-4 py-3 lg:flex-row lg:items-center lg:justify-between">
         <div className="min-w-0 space-y-1">
           <h2 id="pulse-hero-title" className="panel-title flex min-h-7 items-center">
-            Duplicates hide the truth: Malaysia&apos;s top accounts
+            Malaysia&apos;s top accounts: raw vs merged
           </h2>
-          <p className="max-w-[80ch] text-sm text-muted-foreground">{cb.example.title}.</p>
+          <p className="max-w-[80ch] text-sm text-muted-foreground">{duplicateExampleTitle(cb)}</p>
         </div>
         <Button
           variant={merged ? "outline" : "default"}
@@ -137,7 +138,7 @@ export function HeroReveal() {
           <div className="mb-2 flex items-baseline justify-between border-b border-border pb-2 text-xs text-muted-foreground">
             <span>
               {merged ? "Top 10 customers, merged (one row per hospital)" : "Top 10 customers, raw (one row per SAP record)"}
-              {extra > 0 ? ` + the other ${heroShort} record${extra === 1 ? "" : "s"}` : ""}
+              {extra > 0 ? `, plus ${extra} more ${heroShort} record${extra === 1 ? "" : "s"}` : ""}
             </span>
             <span>Last 12 months · YoY</span>
           </div>
@@ -194,8 +195,8 @@ export function HeroReveal() {
           </ol>
           <p className="mt-3 border-t border-border pt-2.5 text-sm text-muted-foreground">
             {merged
-              ? `Merged, the three records are one hospital ranked #${heroRank}, and its decline is visible.`
-              : "Highlighted rows are the same hospital, recorded three times by different teams and entities. Each looks harmless on its own."}
+              ? `Merged, the three records are one hospital, ranked #${heroRank} in Malaysia.`
+              : "Highlighted rows are the same hospital, recorded three times by different teams and entities."}
           </p>
         </div>
 
@@ -289,7 +290,7 @@ export function HeroReveal() {
               )}
             >
               <div className="text-xs font-medium text-muted-foreground">
-                {merged ? "What we do about it" : "Hidden until the records are merged"}
+                {merged ? "Recommended action" : "Recommended action · shown once the records are merged"}
               </div>
               <p className="mt-1 text-sm font-medium text-foreground">{heroAction.action}</p>
               {/* Owner, date and value as ruled meta columns: no icons, no chips. */}

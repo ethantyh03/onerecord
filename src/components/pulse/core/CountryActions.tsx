@@ -2,6 +2,7 @@
 
 import { Gauge } from "lucide-react";
 import { actions, signals } from "@/data/contract";
+import { ACTIONS_NOTE } from "@/components/pulse/analytics/copy";
 import { RowNumber } from "@/components/common/data-rows";
 import { cn } from "@/lib/utils";
 import { usePulse } from "./PulseContext";
@@ -52,7 +53,7 @@ export function CountryActions() {
           What each country should do next
         </h2>
         <p className="max-w-[96ch] text-sm leading-snug text-muted-foreground">
-          Who does what, by when, and the measure to watch next quarter. S$ are addressable before conversion: we assume{" "}
+          Who does what, by when, and the measure to watch next quarter. S$ are addressable before conversion, assuming{" "}
           {Math.round(conv.dropOffSaveRate * 100)}% of at-risk accounts are saved and{" "}
           {Math.round(conv.crossSellConversion * 100)}% of cross-sell offers convert.
         </p>
@@ -173,7 +174,7 @@ export function CountryActions() {
         })}
       </div>
       <p className="border-t border-border px-4 py-3 text-xs text-muted-foreground">
-        {conv.label} {actions.note}
+        {ACTIONS_NOTE}
       </p>
     </section>
   );

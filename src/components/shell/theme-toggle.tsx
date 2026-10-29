@@ -5,11 +5,11 @@ import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { setTheme, useTheme } from "@/components/common/use-theme";
 
-/** Dark console by default; one click to the light theme when the room or projector is bright. */
+/** Dark console by default; one click to the light theme. */
 export function ThemeToggle({ className }: { className?: string }) {
   const theme = useTheme();
   const toLight = theme === "dark";
-  const label = toLight ? "Light theme for bright rooms" : "Dark theme";
+  const label = toLight ? "Switch to light theme" : "Switch to dark theme";
 
   return (
     <Tooltip>

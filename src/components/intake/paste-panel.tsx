@@ -66,10 +66,8 @@ export function PastePanel({
           <h2 id="paste-title" className="panel-title">
             Paste to fill
           </h2>
-          {/* How the fill works today vs. later, as quiet meta after a hairline: violet is the phase-2 part. */}
-          <span className="border-l border-border-strong pl-3 text-xs leading-4 text-subtle">
-            Rules + cached example<span className="text-phase2-ink"> · in-tenant LLM in phase 2</span>
-          </span>
+          {/* How the fill works, as quiet meta after a hairline. */}
+          <span className="border-l border-border-strong pl-3 text-xs leading-4 text-subtle">Rules-based extraction</span>
         </div>
         {collapsed ? (
           <Button type="button" variant="ghost" size="sm" className="shrink-0" data-testid="paste-expand" aria-expanded={false} onClick={onExpand}>
@@ -82,7 +80,7 @@ export function PastePanel({
       {collapsed ? null : (
         <div className="px-4 pt-3 pb-4">
           <p className="text-sm text-muted-foreground">
-            Paste the email or spreadsheet row you would have sent to MDM. OneRecord fills what it can and shows what is still missing.
+            Paste an email or spreadsheet row. OneRecord fills what it can and shows what is still missing.
           </p>
           <Textarea
             data-testid="paste-input"
@@ -94,7 +92,7 @@ export function PastePanel({
             className="mt-3 max-h-44 min-h-24 text-sm leading-relaxed"
           />
           <div className="mt-3 flex flex-wrap items-center gap-2">
-            {examples.length ? <span className="text-[0.8125rem] text-muted-foreground">Try an example:</span> : null}
+            {examples.length ? <span className="text-[0.8125rem] text-muted-foreground">Sandbox samples:</span> : null}
             {examples.map((k) => {
               const Icon = EXAMPLE_ICON[k];
               return (
@@ -135,11 +133,6 @@ export function PastePanel({
                     {result.redactions} sensitive value{result.redactions === 1 ? "" : "s"} removed before extraction
                   </StatusText>
                 </span>
-                {result.source === "rules" ? (
-                  <span className="border-l border-border-strong pl-4 text-[0.8125rem] text-muted-foreground">
-                    Rules extraction (offline): not one of the cached demo inputs
-                  </span>
-                ) : null}
               </div>
               {missingLabels.length ? (
                 <Notice tone="warn" size="sm" lead="Still needed:" className="mt-2">

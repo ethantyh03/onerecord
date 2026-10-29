@@ -40,6 +40,7 @@ import {
 } from "./shared";
 import { productCPlan } from "./productC";
 import { SEASON_CAVEAT } from "./caveats";
+import { HEADLINE_ERROR, PRODUCT_C_NOTE } from "./copy";
 
 type Row = {
   month: string;
@@ -55,8 +56,8 @@ const STEP_MS = 850;
 
 const SERIES: { key: "r6" | "r12" | "ets"; method: MethodId; label: string; color: string; width: number; r: number }[] = [
   { key: "r6", method: "rolling6", label: "Rolling 6-month average", color: VIZ.context, width: 1.5, r: 3 },
-  { key: "r12", method: "rolling12", label: "Rolling 12-month average (today's method)", color: VIZ.today, width: 3, r: 4 },
-  { key: "ets", method: "etsDamped", label: "Seasonal model (ours)", color: VIZ.ours, width: 3, r: 4.5 },
+  { key: "r12", method: "rolling12", label: "Rolling 12-month average (current method)", color: VIZ.today, width: 3, r: 4 },
+  { key: "ets", method: "etsDamped", label: "Seasonal model", color: VIZ.ours, width: 3, r: 4.5 },
 ];
 
 const ETS_HINT = "Damped Holt-Winters exponential smoothing (ETS): learns each month's usual seasonal swing.";
@@ -208,8 +209,8 @@ export function ForecastPanel() {
       title={`Forecast check · ${COUNTRY_NAME[country]} × Product ${product}`}
       subtitle={
         <>
-          36 months of confirmed orders (units). At six points in 2026 we pretended it was that month, forecast the next
-          month using only data up to then, and compared each method with what really happened.
+          36 months of confirmed orders (units). Backtest: at six points in 2026, each method forecast the next month using
+          only the data available then, and was compared with actual orders.
         </>
       }
       actions={controls}
@@ -349,7 +350,7 @@ export function ForecastPanel() {
                       strokeDasharray="5 4"
                       dot={{ r: 3, fill: VIZ.ours, stroke: VIZ.surface, strokeWidth: 2 }}
                       isAnimationActive={false}
-                      name="Our forecast"
+                      name="Seasonal forecast"
                     />
                   ) : null}
                   {SERIES.map((s) => (
@@ -379,14 +380,14 @@ export function ForecastPanel() {
                               <TipRow
                                 key={s.key}
                                 color={s.color}
-                                label={s.key === "ets" ? "Ours (seasonal model)" : s.key === "r12" ? "Today's (rolling 12)" : "Rolling 6"}
+                                label={s.key === "ets" ? "Seasonal model" : s.key === "r12" ? "Rolling 12 (current)" : "Rolling 6"}
                                 value={units(r[s.key] as number)}
                               />
                             ) : null,
                           )}
                           {r.band && r.actual == null ? (
                             <>
-                              <TipRow color={VIZ.ours} dashed label="Our forecast" value={units(r.p50 ?? 0)} />
+                              <TipRow color={VIZ.ours} dashed label="Seasonal forecast" value={units(r.p50 ?? 0)} />
                               <TipRow label="Likely range" value={`${units(r.band[0])}–${units(r.band[1])}`} />
                             </>
                           ) : null}
@@ -405,7 +406,7 @@ export function ForecastPanel() {
                   for {monthLong(currentTarget)}
                   {currentActual != null ? (
                     <>
-                      : actual {units(currentActual)}, today&apos;s method {units(h1(current.forecasts.rolling12) ?? 0)}, ours{" "}
+                      : actual {units(currentActual)}, rolling average {units(h1(current.forecasts.rolling12) ?? 0)}, seasonal model{" "}
                       {units(h1(current.forecasts.etsDamped) ?? 0)}.
                     </>
                   ) : (
@@ -420,7 +421,7 @@ export function ForecastPanel() {
             {!isC ? (
               <p className="mt-1 text-sm font-medium text-secondary-foreground" data-testid="forecast-season-caveat">
                 {product === "A" && oursWins
-                  ? "In the dengue-season rise ours follows the turn; the rolling average lags behind it. "
+                  ? "In the dengue-season rise the seasonal model follows the turn; the rolling average lags behind it. "
                   : ""}
                 {SEASON_CAVEAT}
               </p>
@@ -431,11 +432,12 @@ export function ForecastPanel() {
             {isC ? (
               <div className="space-y-3">
                 <Notice tone="warn" lead="Neither method is good for instruments." className="leading-snug">
-                  <span className="mt-1.5 block">{backtest.productC.note}</span>
+                  <span className="mt-1.5 block">{PRODUCT_C_NOTE}</span>
                 </Notice>
                 <PlainLine>
-                  In this cell today&apos;s method is off by <strong className="num">{per100(baseW)}</strong> units per 100
-                  ordered; ours by <strong className="num">{per100(oursW)}</strong>. Shown so you can see it, not used.
+                  In this cell the rolling average is off by <strong className="num">{per100(baseW)}</strong> units per 100
+                  ordered; the seasonal model by <strong className="num">{per100(oursW)}</strong>. Shown for reference, not used
+                  for planning.
                 </PlainLine>
                 {plan ? (
                   <div className="border-t border-border pt-3">
@@ -455,8 +457,8 @@ export function ForecastPanel() {
                 <div>
                   <div className="text-xs font-medium text-muted-foreground">In this cell</div>
                   <PlainLine className="mt-1">
-                    Today&apos;s method is off by <strong className="num text-foreground">{per100(baseW)}</strong> units per 100
-                    ordered; ours by <strong className="num text-foreground">{per100(oursW)}</strong>.
+                    The rolling average is off by <strong className="num text-foreground">{per100(baseW)}</strong> units per
+                    100 ordered; the seasonal model by <strong className="num text-foreground">{per100(oursW)}</strong>.
                   </PlainLine>
                   <p
                     className={
@@ -466,15 +468,15 @@ export function ForecastPanel() {
                     }
                   >
                     {oursWins
-                      ? "Ours is closer here."
-                      : "Today's method is closer here. This is one of the cells we lose, and it stays on the scorecard."}
+                      ? "The seasonal model is closer here."
+                      : "The rolling average is closer in this cell."}
                   </p>
                   <p className="mt-1.5 text-sm text-muted-foreground">
-                    Today&apos;s method {biasWords(cell.scores.rolling12.bias)}; ours {biasWords(cell.scores.etsDamped.bias)}.
+                    Rolling average {biasWords(cell.scores.rolling12.bias)}; seasonal model {biasWords(cell.scores.etsDamped.bias)}.
                   </p>
                 </div>
                 <div className="border-t pt-3">
-                  <div className="text-xs font-medium text-muted-foreground">Next 3 months (ours, with likely range)</div>
+                  <div className="text-xs font-medium text-muted-foreground">Next 3 months (seasonal model, with likely range)</div>
                   <ul className="mt-1.5 space-y-1 text-sm">
                     {cell.next3.map((p) => (
                       <li key={p.month} className="flex items-baseline justify-between gap-3">
@@ -495,9 +497,7 @@ export function ForecastPanel() {
                 </div>
                 <div className="border-t pt-3">
                   <div className="text-xs font-medium text-muted-foreground">Across Products A and B, all countries</div>
-                  <PlainLine className="mt-1 text-sm">
-                    {backtest.headline.plainBaseline}. {backtest.headline.plainOurs}.
-                  </PlainLine>
+                  <PlainLine className="mt-1 text-sm">{HEADLINE_ERROR}.</PlainLine>
                 </div>
               </div>
             )}

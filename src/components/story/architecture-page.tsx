@@ -15,7 +15,7 @@ type Builder = keyof typeof BUILDER_META;
 
 interface MappingRow {
   part: string;
-  prototype: string;
+  sandbox: string;
   href?: string;
   production: string;
   who: { b: Builder; text: string }[];
@@ -25,7 +25,7 @@ interface MappingRow {
 const MAPPING: MappingRow[] = [
   {
     part: "Request form",
-    prototype: "New request",
+    sandbox: "New request",
     href: "/requests/new",
     production: "Power Apps canvas app (or Microsoft Forms) in the default environment. No Dataverse or model-driven app, so no premium licence. Paste-to-fill uses rules in phase 1; an in-tenant LLM is phase 2.",
     who: [
@@ -35,13 +35,13 @@ const MAPPING: MappingRow[] = [
   },
   {
     part: "Where requests are stored",
-    prototype: "Your browser (a private sandbox per visitor)",
+    sandbox: "Your browser (a private sandbox per visitor)",
     production: "SharePoint List. Bank and credit fields go in a separate restricted list with item-level permissions; SharePoint has no column-level security.",
     who: [{ b: "lean", text: "Lean team" }],
   },
   {
     part: "Duplicate check",
-    prototype: "Live check while typing",
+    sandbox: "Live check while typing",
     href: "/requests/new?domain=customer",
     production:
       "A nightly job writes normalised match keys to a SharePoint list through Microsoft Graph (app registration); the canvas app does a delegable key and tax-ID lookup. No premium HTTP connector.",
@@ -49,7 +49,7 @@ const MAPPING: MappingRow[] = [
   },
   {
     part: "Routing and approvals",
-    prototype: "Approvals, Teams and Outlook panels (simulated)",
+    sandbox: "Approvals with Teams and Outlook previews",
     href: "/approvals",
     production: "Power Automate standard Approvals connector → Teams Adaptive Cards and Outlook actionable messages. Parallel steps, SLA, reminders.",
     who: [
@@ -59,21 +59,21 @@ const MAPPING: MappingRow[] = [
   },
   {
     part: "Audit trail",
-    prototype: "Timeline with a tamper-evident hash chain",
+    sandbox: "Timeline with a tamper-evident hash chain",
     href: "/mdm",
     production: "SharePoint version history + Microsoft Purview approval logs + a hash column.",
     who: [{ b: "lean", text: "Lean team" }],
   },
   {
     part: "SAP landing, phase 1",
-    prototype: "Data Transfer Workbench import wizard (simulated SAP B1)",
+    sandbox: "DTW import wizard (SAP B1 sandbox)",
     href: "/sap",
     production: "DTW import file, daily batch, loaded by MDM after the final check.",
     who: [{ b: "mdm", text: "MDM team, no build" }],
   },
   {
     part: "SAP landing, phase 2",
-    prototype: "Service Layer payload preview, marked “not sent”",
+    sandbox: "Service Layer payload preview, marked “not sent”",
     href: "/sap",
     production:
       "Process-licensed flow → custom connector → on-premises data gateway → Service Layer POST /b1s/v2/BusinessPartners, /Items, /ProfitCenters (PATCH to extend an existing customer).",
@@ -82,7 +82,7 @@ const MAPPING: MappingRow[] = [
   },
   {
     part: "Regional Pulse",
-    prototype: "Regional Pulse on synthetic data",
+    sandbox: "Regional Pulse on sandbox data",
     href: "/pulse",
     production:
       "Power BI on SAP B1 extracts (ORDR/RDR1 → orders, OQUT → open requests, OCRD, OITM) + the golden-ID crosswalk. Power BI Pro for ~10 viewers (≈USD 14/user/month, approx.) only if not already owned; the pilot analytics run without it.",
@@ -93,14 +93,14 @@ const MAPPING: MappingRow[] = [
   },
   {
     part: "Forms, routes, business units",
-    prototype: "Admin",
+    sandbox: "Admin",
     href: "/admin",
     production: "A configuration list in SharePoint that the MDM team edits; every change is versioned.",
     who: [{ b: "mdm", text: "MDM team" }],
   },
   {
     part: "Sign-in",
-    prototype: "Persona switcher",
+    sandbox: "“Viewing as” switcher",
     production: "Microsoft Entra ID single sign-on, already in place.",
     who: [{ b: "mdm", text: "Nothing to build" }],
   },
@@ -120,7 +120,7 @@ function repoUrl(path: string, dir = false): string {
 }
 
 const KIT: { path: string; what: string; dir?: boolean }[] = [
-  { path: "integrations/teams/approval-card.json", what: "Teams approval card (real Adaptive Card JSON)" },
+  { path: "integrations/teams/approval-card.json", what: "Teams approval card (Adaptive Card JSON)" },
   { path: "integrations/teams/approval-card.data.json", what: "Sample data bound into the card" },
   { path: "integrations/power-automate/flow-spec.md", what: "Power Automate flow specification" },
   { path: "integrations/sap/dtw-templates", what: "DTW header templates for every SAP object", dir: true },
@@ -143,7 +143,7 @@ export function ArchitecturePage() {
     <div className="w-full space-y-6 pb-10">
       <PageHeader
         title="How it lands in SAP B1"
-        subtitle="Approvals live in Microsoft 365, where people already work. SAP Business One stays the system of record. Each box is coloured by who builds it, so a company without a development team can see exactly what it takes on."
+        subtitle="Approvals live in Microsoft 365, where people already work. SAP Business One stays the system of record. Each box is coloured by who builds and runs it."
         meta={<NoteChip tone="ok">No new licences for the workflow (phase 1)</NoteChip>}
       />
 
@@ -153,8 +153,8 @@ export function ArchitecturePage() {
 
       <Panel
         titleId="map-title"
-        title="Prototype → production"
-        description="What you click in this prototype, and what it becomes in the Microsoft 365 build."
+        title="Sandbox → production"
+        description="What runs in this sandbox, and what runs in the Microsoft 365 production environment."
         flush
       >
         <div className="scrollbar-thin relative overflow-x-auto">
@@ -162,7 +162,7 @@ export function ArchitecturePage() {
             <thead>
               <tr className={T.headRow}>
                 <th className={cn(T.head, "w-[15%]")}>Part</th>
-                <th className={cn(T.head, "w-[22%]")}>In this prototype</th>
+                <th className={cn(T.head, "w-[22%]")}>In this sandbox</th>
                 <th className={T.head}>In production</th>
                 <th className={cn(T.head, "w-[20%]")}>Who builds it</th>
               </tr>
@@ -179,11 +179,11 @@ export function ArchitecturePage() {
                   <td className={T.cell}>
                     {r.href ? (
                       <Link href={r.href} className={cn("inline-flex items-start gap-1", LINK)}>
-                        {r.prototype}
+                        {r.sandbox}
                         <ArrowUpRight aria-hidden className="mt-0.5 size-3.5 shrink-0" />
                       </Link>
                     ) : (
-                      <span className="text-secondary-foreground">{r.prototype}</span>
+                      <span className="text-secondary-foreground">{r.sandbox}</span>
                     )}
                   </td>
                   <td className={cn(T.cell, "text-foreground")}>{r.production}</td>
@@ -288,7 +288,7 @@ function FieldMapSection() {
           Finance-approved payment-terms or credit change. The import file is an update row keyed by <code className="mono-id text-foreground">CardCode</code>;
           in phase 2 the Service Layer call is{" "}
           <code className="mono-id whitespace-nowrap text-foreground">PATCH /b1s/v2/BusinessPartners(&apos;C-SG-00017&apos;)</code>
-          . <span className="text-muted-foreground">Assumption A28.</span>
+          .
         </p>
       ) : null}
       {!domain ? (
@@ -352,8 +352,8 @@ function ProductionKit() {
   return (
     <Panel
       titleId="kit-title"
-      title="The production kit"
-      description="Real artefacts in the repository, ready for the lean team to start from."
+      title="Integration kit"
+      description="Templates and specifications for the Microsoft 365 build."
       action={
         <a
           href={LINKS.github}

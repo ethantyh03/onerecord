@@ -2,15 +2,16 @@ import Link from "next/link";
 import type { HTMLAttributes, ReactNode } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { isBlankMarker } from "./badges";
 
 /*
  * Stats as readouts (pattern sheet A): the Gotham meta columns. Each figure is a cell with a hairline
  * rule on its left, a muted sentence-case label, a big semi-expanded figure and one line of meaning.
  * No box, no rail, no icon, no chip. State is the figure's colour.
  *
- *   <ReadoutStrip footnote={<IllustrativeMarker />}>
+ *   <ReadoutStrip footnote="Live from the sandbox">
  *     <Readout lead tone="stuck" label="Stuck demand" marker={<LiveMark />} value="S$345,800" caption="…" />
- *     <Readout label="Waiting for MDM's final check" value={2} caption="…" />
+ *     <Readout label="Ready for final check" value={2} caption="…" />
  *     <Readout label="Median time to SAP B1" value={<>3<ReadoutUnit>business days</ReadoutUnit></>} />
  *   </ReadoutStrip>
  */
@@ -46,7 +47,7 @@ const COLUMNS: Record<ReadoutColumns, string> = {
 export interface ReadoutStripProps extends HTMLAttributes<HTMLElement> {
   /** "auto" (default): one row at lg. A number: a ruled grid, e.g. 3 for six readouts in two rows. */
   columns?: ReadoutColumns;
-  /** The strip's one quiet line under the cells: source, provenance (<IllustrativeMarker />), caveat. */
+  /** The strip's one quiet line under the cells: source, caveat. */
   footnote?: ReactNode;
   /** Render as a <section> (give it an aria-label) or a plain <div> (default). */
   as?: "div" | "section";
@@ -70,7 +71,7 @@ export function ReadoutStrip({
   return (
     <Tag className={className} {...rest}>
       <div className={cn("grid grid-cols-1 gap-y-7", COLUMNS[columns], gridClassName)}>{children}</div>
-      {footnote ? <div className="mt-4 text-xs leading-4 text-subtle">{footnote}</div> : null}
+      {!isBlankMarker(footnote) ? <div className="mt-4 text-xs leading-4 text-subtle">{footnote}</div> : null}
     </Tag>
   );
 }

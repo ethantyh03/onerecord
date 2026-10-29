@@ -33,7 +33,7 @@ interface Lane {
 
 interface Box {
   lane: number;
-  /** The platform the part runs on, as named in the prototype → production table */
+  /** The platform the part runs on, as named in the sandbox → production table */
   system: string;
   /** Shorter form of `system` for when the map is narrow (a 1280-wide projector) */
   short?: string;
@@ -117,7 +117,7 @@ const PHASE2: Box = {
   system: "SAP B1",
   title: "Service Layer",
   who: "SAP partner, ~15 days",
-  lines: ["Approved records post", "straight into SAP B1", "through its API. Only", "if the pilot proves it."],
+  lines: ["Approved records post", "straight into SAP B1", "through its API. Only", "if volumes justify it."],
   cost: "≤USD 1,980/yr (phase 2)",
   builders: ["outside"],
 };
@@ -244,7 +244,7 @@ function Legend() {
         <li className="grid grid-cols-[2.25rem_1fr] gap-x-2.5">
           <span aria-hidden className="mt-2.5 block w-9 border-t-2 border-dashed border-phase2" />
           <span>
-            <span className="block text-sm leading-5 font-semibold text-foreground">Phase 2, not built</span>
+            <span className="block text-sm leading-5 font-semibold text-foreground">Phase 2, planned</span>
             <span className="block text-[0.8125rem] leading-[1.125rem] text-secondary-foreground">only if same-day posting is worth it</span>
           </span>
         </li>
@@ -292,7 +292,7 @@ function Phase2Branch() {
           <p className="mt-1 text-[0.8125rem] leading-5 text-muted-foreground">{PHASE2.who}</p>
           <span className="mt-2 inline-flex items-center gap-1.5 text-xs leading-4 font-semibold whitespace-nowrap text-phase2-ink">
             <StateGlyph tone="phase2" />
-            Phase 2 · not built
+            Phase 2 · planned
           </span>
           <p className="mt-2 text-sm leading-[1.45] text-secondary-foreground">{PHASE2.lines.join(" ")}</p>
         </div>
@@ -324,7 +324,7 @@ function Phase1Numbers() {
           <span className="num font-wide text-[1.0625rem] font-semibold text-foreground">≈6 months</span> payback
         </p>
       </div>
-      <p className="mt-auto pt-3 text-xs leading-4 text-subtle">At 80 requests a month (/impact)</p>
+      <p className="mt-auto pt-3 text-xs leading-4 text-subtle">At 80 requests a month (see Business case)</p>
     </div>
   );
 }
@@ -386,7 +386,7 @@ export function Swimlane() {
 
       <figcaption className="flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-border px-4 py-2.5 text-[0.8125rem] text-muted-foreground">
         <span>Production target on Microsoft 365 and SAP Business One.</span>
-        <span>In this prototype, Teams, Outlook, SAP B1 and the clock are simulated in your browser.</span>
+        <span>In this sandbox, Teams, Outlook, SAP B1 and the clock run in your browser.</span>
       </figcaption>
     </figure>
   );

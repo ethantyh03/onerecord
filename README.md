@@ -45,14 +45,15 @@ Amy needed one new item code. It took eighteen days, a bounced request and three
 
 ## Guided tour for judges (about 10 minutes)
 
-Open **https://onerecord-lives-dsa26.vercel.app** on a laptop. Your browser is your own private sandbox: nothing you do reaches anyone else. **Reset demo** (top right) puts everything back to the start at any time.
+Open **https://onerecord-lives-dsa26.vercel.app** on a laptop. Your browser is your own private sandbox: nothing you do reaches anyone else. The top bar says so on every screen ("Sandbox · synthetic data"), and **Reset sandbox** (top right) puts everything back to the start at any time.
 
-- **Who you are** is shown top left under "Viewing as". The **Start as …** buttons on Home switch it for you.
+- **Who you are** is shown top left under "Viewing as". You start as Amy Lim. To become someone else, click **Viewing as** and pick a name under "Sandbox personas"; you stay on the same page.
+- The left menu has three working groups (Requests, Master data, Insight), Admin under Configure, and an **About** group at the bottom with Business case, Architecture, Scope & roadmap and Assumptions.
 - Teams, Outlook, SAP B1 and the clock are look-alike screens inside the browser. The checks behind them are real code running in your browser.
 - Some steps could look scripted. For those, **How it really works** says what we actually built, and **Try it yourself** gives you an input that proves the check is real.
 - Optional shortcut: [`/demo`](https://onerecord-lives-dsa26.vercel.app/demo) is the console we used to record the video. Each scene resets the sandbox and replays our clicks up to that moment; the checks behind them still run live.
 
-**1. Home.** Read the headline and the "Three requests, three spellings, one record" card. Scroll to "Walk through it as one of the four people in the case" and click **Start as Amy**. The New request form opens.
+**1. Home.** The headline reads "One record for every customer, item and vendor." The map shows every customer record and the open requests, and the three numbers under the open-request list are live: orders waiting on master data, median time to SAP B1, and duplicate customer records (6.4% · 25 of 388). Try the **Raw / Merged** toggle on the map. Then click **New request**. The New request form opens.
 
 **2. Paste an old email (Amy).** Under "Paste to fill", click **Amy's old email**, then **Fill the form**. The form switches to New Item and shows:
 - "Filled 10 fields on New Item"
@@ -65,7 +66,7 @@ Open **https://onerecord-lives-dsa26.vercel.app** on a laptop. Your browser is y
 > ```
 > Hi MDM team, pls create item code for a new test kit. Item: Malaria Pf/Pv Ag Rapid Test 25T. Manufacturer: Acme Diagnostics. Category: IVD reagent. Cost SGD 40.00, selling SGD 65.00. Entity SPD, for SG and MY. Supplier bank account: 123-456789-001. Thanks
 > ```
-> You get "Filled 8 fields on New Item", "1 sensitive value removed before extraction" and "Rules extraction (offline): not one of the cached demo inputs". Item description becomes "Malaria Pf/Pv Ag Rapid Test 25T". Afterwards, click **Paste again** → **Amy's old email** → **Fill the form** to carry on with Amy's item.
+> You get "Filled 8 fields on New Item" and "1 sensitive value removed before extraction". Item description becomes "Malaria Pf/Pv Ag Rapid Test 25T". Afterwards, click **Paste again** → **Amy's old email** → **Fill the form** to carry on with Amy's item.
 
 **3. The rules change the form and the route.** On the right, **Who approves** shows three approvers in parallel, including **Dr Ploy Srisuk · QA/RA**, with the reason "QA/RA added · Category = Lab consumable – IVD medical device → regulatory (QA/RA) review required". "Regulatory licence no." is marked required, and the expected live date in SAP B1 is shown.
 
@@ -80,7 +81,7 @@ Open **https://onerecord-lives-dsa26.vercel.app** on a laptop. Your browser is y
 
 > **Try it yourself (segregation of duties):** click **Approvals** in the left menu. Under "Your requests, from the approver's side", click **Open approver card** next to REQ-1100 (your request), then **Approve** on the Teams card. It is refused: "Segregation of duties: you can't approve your own request … you raised REQ-1100, so someone else must approve it."
 
-Then click **Track** next to your request to open the step-by-step tracker. At the bottom, open **Demo control — simulates approvers acting** and click **Approve all pending steps as their assignees**. Each decision is recorded under the approver's own name, and the request moves on to the MDM final check.
+Then click **Track** next to your request to open the step-by-step tracker. At the bottom, open **Sandbox tools — simulate approver actions** and click **Approve all pending steps as their assignees**. Each decision is recorded under the approver's own name, and the request moves on to the MDM final check.
 
 **5. Duplicate check (still Amy).** Click **New request** in the left menu, then **New Customer**. Set **Country** to `SG · Singapore` and type `Natl Univ Hosp` as the **Customer name**. A panel appears: "This customer may already exist in SAP B1 · 100% match · National University Hospital · C-SG-00017", with the reason "100% name match after expanding Natl → National, Univ → University, Hosp → Hospital". Submit stays blocked until you choose **Use existing**, **Extend to my entity** or **Override**.
 
@@ -104,57 +105,57 @@ Then click **Track** next to your request to open the step-by-step tracker. At t
 - Type `1234` in **Postcode**: "5–6 digits, e.g. 119074 (SG) or 47500 (MY)". Completeness shows "SAP B1 field rules (length, format) · 2 to fix".
 - Click **Change type** → **New Cost Centre** and type `MY-QTS002` as **Proposed centre code**. The counter shows 9/8 and the hint "3–8 capital letters, digits or dashes, e.g. MY-QTS02", because SAP B1 profit-centre codes stop at 8 characters.
 
-**7. Approve in Teams (Wei Jie).** Go to **Home** → **Start as Wei Jie**. Approvals lists what is waiting on him, closest deadline first, with business days left. The Teams card for REQ-1038 (Bangkok Riverside Hospital) hides payment terms, credit limit and bank details as "••••". Click **Approve**. The confirmation reads "Next: Rachel Koh has the approval card in Teams". The Finance Director step was added because this customer's credit limit is above S$50,000 (the same rule as step 6).
+**7. Approve in Teams (Wei Jie).** Click **Viewing as** (top left) → **Tan Wei Jie**, then **Approvals** in the left menu. Approvals lists what is waiting on him, closest deadline first, with business days left. The Teams card for REQ-1038 (Bangkok Riverside Hospital) hides payment terms, credit limit and bank details as "••••". Click **Approve**. The confirmation reads "Next: Rachel Koh has the approval card in Teams". The Finance Director step was added because this customer's credit limit is above S$50,000 (the same rule as step 6).
 
-**8. Audit trail and the SAP import (Priya).** Go to **Home** → **Start as Priya** to open the MDM console. Click **Review** on REQ-1042 (Dengue IgG/IgM Combo 30T).
+**8. Audit trail and the SAP import (Priya).** Click **Viewing as** → **Priya Nair**, then **MDM console** in the left menu. Click **Review** on REQ-1042 (Dengue IgG/IgM Combo 30T).
 - In **Audit trail**, click **Verify chain**. You see "✓ Chain intact · … events".
-- Click **Simulate tamper**. You see "Integrity broken at event #278 — any edit after the fact is detectable".
+- Click **Tamper test (sandbox)** (shown to MDM and admins only). You see "Integrity broken at event #278 — any edit after the fact is detectable".
 - Click **Restore** to undo it.
 - Click **Generate SAP B1 import**. This previews `oItems.csv` and `Items_Prices.csv`, using SAP's own field names in row 1 and database column names in row 2.
 - Click **Mark created in SAP B1**. The confirmation reads "I-A-000813 created · Amy notified · S$70,000 of customer orders unblocked". The **Stuck demand** tile drops by exactly S$70,000 (S$345,800 → S$275,800 in a fresh sandbox).
 
-> **How it really works:** each audit entry stores a SHA-256 fingerprint of its own content plus the previous entry's fingerprint. **Verify chain** recalculates every fingerprint in your browser. **Simulate tamper** changes Daniel Ong's approval comment (event #278) in a copy of the log and runs the same check. The break is found by the maths, not shown from a script. The import file is built from the request's fields through the field-to-SAP mapping in the config. Stuck demand is the live sum of open customer orders waiting on records that do not exist yet.
+> **How it really works:** each audit entry stores a SHA-256 fingerprint of its own content plus the previous entry's fingerprint. **Verify chain** recalculates every fingerprint in your browser. **Tamper test (sandbox)** changes Daniel Ong's approval comment (event #278) in a copy of the log and runs the same check. The break is found by the maths, not shown from a script. The import file is built from the request's fields through the field-to-SAP mapping in the config. Stuck demand is the live sum of open customer orders waiting on records that do not exist yet.
 >
 > **Try it yourself:** go back to **MDM queue** and click **Review** on your own request from step 4. Click **Generate SAP B1 import**. The `oItems.csv` row carries exactly what you typed: your item description, `HSA-DE-0012345` and the storage condition you chose. **Mark created in SAP B1** then releases a further S$36,000.
 
-**9. Regional Pulse.** Click **Regional Pulse** in the left menu. The **Stuck demand** tile is marked "Live" and shows the lower figure from step 8 (lower again if you did the Try). Scroll down to "Duplicates hide the truth: Malaysia's top accounts" and click **Show raw SAP records**, then **Merge the duplicates**:
+**9. Regional Pulse.** Click **Regional Pulse** in the left menu. The **Stuck demand** tile is marked "Live" and shows the lower figure from step 8 (lower again if you did the Try). Scroll down to "Malaysia's top accounts: raw vs merged" and click **Show raw SAP records**, then **Merge the duplicates**:
 - Raw: Bukit Damai appears as three separate records: "Lost customer", "Flat" and "New customer".
-- Merged: it is one hospital, ranked #2 in Malaysia and down 32% year on year.
+- Merged: it is one hospital, ranked #2 in Malaysia and down 32% year on year. "Recommended action" names the owner (BU Head, SPD Malaysia), the date and the S$ at stake.
 
-> **How it really works:** growth, the forecast backtest and the duplicate figures were calculated in advance by our Python pipeline (`analytics/`) over 36 months of synthetic orders, and shipped with the app as data files. The merged view groups records by the synthetic data's known true identities. The matcher's accuracy is measured separately (open **What's real here?** on the page). Only **Stuck demand** and **Setup requests in flight** are live from your sandbox.
+> **How it really works:** growth, the forecast backtest and the duplicate figures were calculated in advance by our Python pipeline (`analytics/`) over 36 months of synthetic orders, and shipped with the app as data files. The merged view groups records by the synthetic data's known true identities. The matcher's accuracy is measured separately (open **About this data** on the page, or **Model quality** near the bottom). Only **Stuck demand** and **Setup requests in flight** are live from your sandbox.
 
-**10. Change the rules without IT (Marcus, Admin).** Go to **Home** → **Start as Marcus** to open Admin. A banner says MLS (the newly acquired business) "has people but no business-unit setup".
+**10. Change the rules without IT (Marcus, Admin).** Click **Viewing as** → **Marcus Wong**, then **Admin** in the left menu. A banner says MLS (the newly acquired business) "has people but no business-unit setup".
 1. In **Test a route**, set Request type `New Item` and Business unit `MLS — Meridian Life Sciences · not configured yet`. The request goes to SPD's Daniel Ong. This is how Marcus's requests got misrouted.
 2. Click **Set up MLS**, then **Save business unit**. You see "Config v2 live …".
 3. Choose MLS again in **Test a route**. It now goes to Henry Goh (MLS's BU Head) and adds a "Molecular regulatory pre-check" stage.
 
 > **Try it yourself:** open **Approval routes** → **New Customer**. In the Finance Director step, change the "Only when" value from `50000` to `100000` and click **Save route**. Then go to **New request** → **New Customer**: a credit limit of `80000` no longer adds the Finance Director, and `120000` does ("Credit limit 120,000 > 100,000 → Finance Director approval required"). In **Fields & rules**, switch **Customer bank** to Required, and the form now marks it "(required)". **Change history** lists every save as a new version, by who and when. (The hint under Credit limit, "Above S$50,000 adds a Finance Director approval.", and the step's name are fixed text, so they still say S$50,000.)
 
-**11. Fast-forward the clock.** Go to **Home** → **Start as Wei Jie**. On Approvals:
+**11. Fast-forward the clock.** Switch back to **Tan Wei Jie** (Viewing as) and open **Approvals**. Under "Sandbox clock":
 - Click **+1 business day**. The clock moves to Thu 29 Oct. His cards now say "A reminder went to the approver".
 - Click **+3 business days**. The clock jumps to Tue 3 Nov, because Saturday and Sunday don't count. His overdue approvals move to his delegate, Rachel Koh. A notice in the corner counts the reminders and escalations across all open requests.
 
 > **How it really works:** each step's clock is counted in business days from when the step opened. A reminder goes out after 1 business day and an escalation after 3. Every move is written to the audit trail: click **My requests** → **All requests** → REQ-1037, or go to `/requests/view?id=REQ-1037`, to see "Escalated to Rachel Koh after 3 business days with no decision from Tan Wei Jie".
 
-When you are done, click **Reset demo** → **Reset demo** to start again.
+When you are done, click **Reset sandbox** → **Reset sandbox** to start again. The sandbox clock goes back to Wed 28 Oct, 09:00 SGT.
 
 ### Screen map
 
-In production, people would sign in with Microsoft Entra ID single sign-on. In the prototype you pick who you are from the switcher at top left.
+In production, people would sign in with Microsoft Entra ID single sign-on. In the prototype you pick who you are from the "Viewing as" switcher at top left.
 
 | Route | What you see | Try it as |
 |---|---|---|
-| `/` | How OneRecord works, end to end | anyone |
+| `/` | Home: every customer record and open request on a map, three live numbers, and the way into New request and Regional Pulse | anyone |
 | `/requests/new` | The request form: paste an email to fill it, the IVD rule, the live duplicate check, and a route preview with the expected live date | Amy (Product Manager) |
 | `/requests`, `/requests/view?id=REQ-1042` | Where each request stands, step by step | Amy, Marcus |
 | `/approvals` | "Waiting on me", plus the look-alike Teams and Outlook cards | Wei Jie (Finance) |
 | `/mdm` | The MDM queue: masked sensitive fields, the audit trail, generating the SAP import, marking a record created | Priya (MDM) |
-| `/sap` | Look-alike SAP B1: the DTW import wizard, master-data forms, the phase-2 Service Layer payload | Priya |
-| `/pulse` | Regional Pulse: growth, demand streams, the duplicate reveal, the forecast, actions per country | management |
+| `/sap` | Look-alike SAP B1: the DTW import wizard, master-data forms, the planned Service Layer payload | Priya |
+| `/pulse` | Regional Pulse: key insights, growth, demand streams, the duplicate reveal, the forecast, recommended actions per country; "About this data" explains the method | management |
 | `/triage` | The shared mailbox sorted into orders, open requests, enquiries, follow-ups and setup requests | anyone |
-| `/architecture` | How a record lands in SAP B1: the swimlane, prototype → production, and the field-by-field SAP mapping | IT, finance |
-| `/impact` | The business case: hours, cost, payback at 40/80/120 requests a month, alternatives, the pilot | finance |
-| `/assumptions`, `/scope` | Every labelled assumption; what we left out on purpose, and the roadmap | anyone |
+| `/architecture` | How a record lands in SAP B1: the swimlane, sandbox → production, and the field-by-field SAP mapping (About group) | IT, finance |
+| `/impact` | Business case: hours, cost, payback at 40/80/120 requests a month, alternatives, the pilot (About group) | finance |
+| `/assumptions`, `/scope` | Every labelled assumption; Scope & roadmap: what version 1 covers, what it leaves out, and the roadmap (About group) | anyone |
 | `/admin` | Add a business unit, its approvers and an extra step, without IT | Marcus, Priya |
 
 Other approvers in the story include Daniel (BU Head, SPD), Siti (Business Support), Dr Ploy (QA/RA), Rachel (Finance Director), Henry (BU Head, MLS) and Aisha (BU Head, QTG).
@@ -172,7 +173,7 @@ python analytics/run_all.py   # regenerate the synthetic data and analytics JSON
 - Node 20+
 - Python 3.12+ with pandas, numpy, statsmodels, rapidfuzz, scikit-learn and pyyaml
 
-The app never calls Python at runtime: it imports the committed JSON. "Reset demo" in the top bar reseeds your browser's sandbox.
+The app never calls Python at runtime: it imports the committed JSON. "Reset sandbox" in the top bar reseeds your browser's sandbox.
 
 ## Architecture
 
@@ -266,7 +267,7 @@ In SAP B1, all entities share one business-partner record. Extending a customer 
 - So every result shows its reasons, and a person confirms the routing.
 - Phase 2 is in-tenant LLM triage.
 
-**Labels:** every chart is labelled "Synthetic, illustrative", and every simulated surface (Teams, Outlook, SAP B1, the clock) is labelled "Simulated".
+**Labels:** the app reads like the product it would be, with one honest environment tag in the top bar on every screen: "Sandbox · synthetic data". The footer reads "Sandbox environment · Config v1", the clock is the "Sandbox clock", the Teams and Outlook look-alikes are marked "Preview", and Regional Pulse's **About this data** drawer lists what is synthetic, assumed, validated or still needs live SAP B1 data.
 
 ## Assumptions
 

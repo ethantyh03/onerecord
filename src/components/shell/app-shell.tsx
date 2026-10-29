@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import { usePathname } from "next/navigation";
-import { useHasHydrated } from "@/lib/store";
+import { useHasHydrated, useSandbox } from "@/lib/store";
 import { cn } from "@/lib/utils";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { FooterStrip } from "./footer-strip";
@@ -23,9 +23,9 @@ import { TopBar } from "./top-bar";
 
 /**
  * The console frame every screen renders in: the rail (brand + navigation), the status bar
- * (☰, persona, simulated clock, notifications, theme, reset) and the prototype footer. Nothing below
- * renders until the per-browser sandbox has loaded from localStorage, so pages never flash
- * seed-vs-saved state.
+ * (☰, persona, sandbox clock, environment tag, notifications, theme, reset) and the environment
+ * footer. Nothing below renders until the per-browser sandbox has loaded from localStorage, so pages
+ * never flash seed-vs-saved state.
  */
 export function AppShell({ children }: { children: ReactNode }) {
   const hydrated = useHasHydrated();
@@ -64,6 +64,7 @@ function ConsoleFrame({ pathname, children }: { pathname: string; children: Reac
   const wide = useSyncExternalStore(subscribeWide, wideNow, wideOnServer);
   const [pref, setPref] = useState<SidebarPref>(readSidebarPref);
   const [drawer, setDrawer] = useState<DrawerState>(null);
+  const configVersion = useSandbox((s) => s.config.version);
 
   const mode = sidebarMode(pathname, wide);
   // The drawer belongs to one page at one width: it closes itself when either changes.
@@ -193,7 +194,7 @@ function ConsoleFrame({ pathname, children }: { pathname: string; children: Reac
           <main id="main" tabIndex={-1} className="flex-1 px-4 py-6 outline-none sm:px-6 lg:px-8 lg:py-7">
             <div className="w-full max-w-[1600px]">{children}</div>
           </main>
-          <FooterStrip />
+          <FooterStrip configVersion={configVersion} />
         </div>
       </div>
     </TooltipProvider>

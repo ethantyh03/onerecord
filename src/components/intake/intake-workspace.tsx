@@ -380,7 +380,7 @@ function IntakeForm({ domainParam, draftParam }: { domainParam: string | null; d
         return;
       }
       setSubmittedId(id);
-      toast.success(`${id} submitted`, { description: "Teams approval cards sent (simulated)." });
+      toast.success(`${id} submitted`, { description: "Teams approval cards sent." });
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (e) {
       setSubmitError(e instanceof Error ? e.message : "This request couldn't be submitted.");
@@ -411,17 +411,15 @@ function IntakeForm({ domainParam, draftParam }: { domainParam: string | null; d
   const header = (
     <PageHeader
       title="New request"
-      subtitle="One form for every master-data request. It checks for duplicates, shows who approves, and hands a clean record to SAP B1."
+      subtitle="One form for every master-data request. It checks for duplicates, shows who approves, and sends the approved record to MDM for SAP B1."
       meta={
-        <>
-          <span className="whitespace-nowrap">Production: Power Apps form in Microsoft 365</span>
-          {notice ? (
-            <span data-testid="intake-notice" className="inline-flex items-center gap-1.5 text-secondary-foreground">
-              <History aria-hidden className="size-3.5 text-subtle" />
-              {notice}
-            </span>
-          ) : null}
-        </>
+        // Only a resumed / restarted-draft notice goes beside the title; with none, no meta hairline is drawn.
+        notice ? (
+          <span data-testid="intake-notice" className="inline-flex items-center gap-1.5 text-secondary-foreground">
+            <History aria-hidden className="size-3.5 text-subtle" />
+            {notice}
+          </span>
+        ) : undefined
       }
       actions={
         <span className="inline-flex items-center gap-2 text-[0.8125rem] text-muted-foreground">

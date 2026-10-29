@@ -99,9 +99,6 @@ export function RequestDataCard({ request, domain }: { request: MdmRequest; doma
                 Credit &amp; bank values: Finance and MDM only
               </span>
             )}
-            <span className="w-full text-xs leading-4 text-subtle md:w-auto md:max-w-[34ch] md:text-right">
-              Role-enforced in prototype; production: restricted SharePoint list + Entra ID
-            </span>
           </div>
         ) : null}
       </div>

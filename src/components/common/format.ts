@@ -44,18 +44,23 @@ function valid(d: Date): boolean {
   return !Number.isNaN(d.getTime());
 }
 
+/** ICU's en-SG short month for September is "Sept"; every other month is three letters, so show "Sep". */
+function noSept(s: string): string {
+  return s.replace(/Sept(?![a-z])/g, "Sep");
+}
+
 /** "Wed 28 Oct, 10:42" in SGT */
 export function formatSgtDateTime(v: string | number | Date): string {
   const d = toDate(v);
   if (!valid(d)) return "—";
   const parts = Object.fromEntries(sgtDateTime.formatToParts(d).map((p) => [p.type, p.value]));
-  return `${parts.weekday} ${parts.day} ${parts.month}, ${parts.hour}:${parts.minute}`;
+  return noSept(`${parts.weekday} ${parts.day} ${parts.month}, ${parts.hour}:${parts.minute}`);
 }
 
 /** "28 Oct 2026" in SGT */
 export function formatSgtDate(v: string | number | Date): string {
   const d = toDate(v);
-  return valid(d) ? sgtDate.format(d) : "—";
+  return valid(d) ? noSept(sgtDate.format(d)) : "—";
 }
 
 /** "10:42" in SGT */
@@ -67,7 +72,7 @@ export function formatSgtTime(v: string | number | Date): string {
 /** "Wed 28 Oct" in SGT */
 export function formatSgtDay(v: string | number | Date): string {
   const d = toDate(v);
-  return valid(d) ? sgtWeekdayDate.format(d) : "—";
+  return valid(d) ? noSept(sgtWeekdayDate.format(d)) : "—";
 }
 
 /** S$310,400 (whole dollars) or, with compact, S$310k / S$1.2M */

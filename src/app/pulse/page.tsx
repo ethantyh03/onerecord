@@ -57,13 +57,13 @@ export default function PulsePage() {
           </section>
           <CountryActions />
           <section
-            aria-label="Can we trust it, growth bridge and signals"
+            aria-label="Model quality, growth bridge and signals"
             className="divide-y divide-border border-y border-border"
           >
             <MoreSection
               id="pulse-more-trust"
-              title="Can we trust it?"
-              summary="Duplicate finder tested on unseen countries, a no-signal stress test, clean data vs model, inbound sorting accuracy."
+              title="Model quality"
+              summary="Duplicate finder accuracy, forecast stability, the effect of clean data, and inbox sorting accuracy."
             >
               <TrustPanel />
             </MoreSection>

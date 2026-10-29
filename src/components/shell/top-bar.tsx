@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { RecordMark } from "./brand-mark";
+import { EnvironmentTag } from "./environment-tag";
 import { NotificationBell } from "./notification-bell";
 import { PersonaSwitcher } from "./persona-switcher";
 import { ResetDemoButton } from "./reset-demo-button";
@@ -30,8 +31,9 @@ export interface TopBarProps {
 }
 
 /**
- * The status bar: ☰ for the rail, whose seat you are in, the simulated clock that drives every SLA
- * (with its fast-forward), then alerts, theme and reset. Segments are separated like an instrument panel.
+ * The status bar: ☰ for the rail, whose seat you are in, the sandbox clock that drives every SLA
+ * (with its fast-forward), then the environment tag, alerts, theme and reset. Segments are separated
+ * like an instrument panel.
  */
 export function TopBar({ navOpen, onToggleNav, toggleRef, showBrand }: TopBarProps) {
   return (
@@ -71,9 +73,10 @@ export function TopBar({ navOpen, onToggleNav, toggleRef, showBrand }: TopBarPro
         <PersonaSwitcher />
         <Divider />
         <SimClock />
-        <Divider className="hidden md:block" />
+        <Divider className="hidden lg:block" />
 
         <div className="ml-auto flex items-center gap-1 pr-2 pl-2 sm:pr-4">
+          <EnvironmentTag className="mr-1.5 hidden md:inline-flex" />
           <NotificationBell />
           <ThemeToggle />
           <Divider className="mx-1.5 my-3.5" />

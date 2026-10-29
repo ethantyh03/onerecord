@@ -69,7 +69,7 @@ export function SlaTab() {
       </div>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className={errors.length ? "text-xs text-destructive" : "text-xs text-muted-foreground"}>
-          {errors[0] ?? "In production the clock runs in each approver's own time zone and public-holiday calendar."}
+          {errors[0] ?? "Business days run on Singapore time. Per-approver time zones and public-holiday calendars are planned."}
         </p>
         <Button size="sm" disabled={!dirty || errors.length > 0} onClick={onSave} data-testid="admin-sla-save">
           <Save /> Save service levels

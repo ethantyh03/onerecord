@@ -46,8 +46,8 @@ export function QuestionsForYou({ me, entries, people, now, onAnswered }: Questi
           <p className="text-[0.9375rem] leading-relaxed text-secondary-foreground">
             {open.length > 0 && approver ? (
               <>
-                {approver.name} needs one detail before deciding on {first.request.id}. {firstName(me.name)} is travelling, so the question
-                arrives on Teams mobile. The reply goes straight back to {firstName(approver.name)}.
+                {approver.name} needs one detail before deciding on {first.request.id}. Answer here or in Teams mobile; the reply goes
+                straight back to {firstName(approver.name)}.
               </>
             ) : (
               <>Every question on your requests has an answer. The approvals carried on with the same approvers.</>
@@ -66,16 +66,14 @@ export function QuestionsForYou({ me, entries, people, now, onAnswered }: Questi
               <span>
                 <span className="font-medium text-foreground">Nothing restarts.</span>{" "}
                 <span className="text-muted-foreground">
-                  Your answer returns the step to the same approver. Approvals already given stay given, unlike a bounced email that
-                  starts the chain again.
+                  Your answer returns the step to the same approver. Approvals already given stay given.
                 </span>
               </span>
             </li>
           </ul>
-          <p className="mt-4 text-xs text-subtle">Teams mobile is simulated. In production this is the same Adaptive Card in the Teams app.</p>
         </div>
 
-        <PhoneFrame height={600} className="justify-self-center" caption={`${me.name} · travelling, on Teams mobile (simulated)`}>
+        <PhoneFrame height={600} className="justify-self-center" caption={`${me.name} · Teams mobile preview`}>
           {/* The phone screen imitates Teams mobile, so it keeps its native light look; the caption stays on the console. */}
           <LightScope style={{ fontFamily: MS_FONT }} className="text-[#242424]">
             <div className="flex items-center gap-2.5 border-b border-[#ebebeb] px-4 pt-1 pb-2.5">

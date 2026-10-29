@@ -248,7 +248,7 @@ export const SLIDES: SlideMeta[] = [
     speaker: "Ethan",
     appendix: true,
     question: "Would these numbers hold on Lives's real SAP data?",
-    fallback: "Pulse → “What's real here?”",
+    fallback: "Pulse → “About this data”",
     say: "No. It's synthetic and labelled that way on every chart. One seeded script generates it, and every pattern we planted is listed, so a good score shows the pipeline can find these patterns, not that they exist at Lives. That's why week one of the pilot reruns the same scripts, unchanged, on SAP Business One extracts.",
   },
   {
@@ -268,7 +268,7 @@ export const SLIDES: SlideMeta[] = [
     speaker: "Ethan",
     appendix: true,
     question: "Bank and credit data? Segregation of duties? Approver on leave or not responding?",
-    fallback: "Approvals → Simulated time → +1 / +3 business days; audit trail → Verify chain",
+    fallback: "Approvals → Sandbox clock → +1 / +3 business days; audit trail → Verify chain",
     say: "Credit terms and bank details never appear in a message; the card links back to OneRecord, where only Finance and MDM can open them, and every view is logged. In production they sit in a restricted SharePoint list behind Entra ID. Nobody can approve their own request, and nobody can hold two steps of the same request. If an approver doesn't act, there's a reminder after one business day and an escalation after three, and the escalation follows the same rules.",
   },
   {
@@ -310,13 +310,13 @@ export const DEMO_BEATS: { beat: string; clock: string; scene: string; line: str
     beat: "4 · Priya",
     clock: "2:50–3:50",
     scene: "Lands in SAP B1: Priya imports Amy's item",
-    line: "S$36,000 · 3 orders. Generate SAP B1 import (oItems.csv). Point at Service Layer (Phase 2), don't open. Mark created → I-B-000535. Regional Pulse: S$345,800 → S$309,800.",
+    line: "S$36,000 · 3 orders. Generate SAP B1 import (oItems.csv). Point at Service Layer (planned), don't open. Mark created → I-B-000535. Regional Pulse: S$345,800 → S$309,800.",
   },
   {
     beat: "5 · Pulse",
     clock: "3:50–4:45",
     scene: "Stay on /pulse (don't reload: it resets stuck demand)",
-    line: "Synthetic badge. Raw SAP records → Bukit Damai #7 / #10 / #11. Merge the duplicates → #2, −32%. “What we do about it”: BU Head, SPD Malaysia, by 13 Nov, S$620k.",
+    line: "Top-bar tag “Sandbox · synthetic data”. Raw SAP records → Bukit Damai #7 / #10 / #11. Merge the duplicates → #2, −32%. “Recommended action”: BU Head, SPD Malaysia, by 13 Nov, S$620k.",
   },
   { beat: "Return", clock: "4:45–5:00", scene: "Ctrl+1 to the return tab (tab 1, already on slide 9)", line: "“What does that mean for the region?” Never the Back button." },
 ];

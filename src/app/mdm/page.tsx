@@ -5,7 +5,7 @@ import { MdmConsole } from "@/components/mdm/MdmConsole";
 
 export const metadata: Metadata = {
   title: "MDM console",
-  description: "MDM final check: duplicate re-check, field review against SAP B1 limits, DTW import and the Phase 2 Service Layer payload.",
+  description: "MDM final check: duplicate re-check, field review against SAP B1 limits, DTW import and the Service Layer payload preview.",
 };
 
 function MdmLoading() {

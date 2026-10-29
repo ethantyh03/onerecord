@@ -1,25 +1,34 @@
 "use client";
 
 import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from "react";
-import { ExternalLink, FlaskConical } from "lucide-react";
+import { ExternalLink, Info } from "lucide-react";
 import Link from "next/link";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { StatusText, SyntheticBadge, type StateTone } from "@/components/common";
+import { StatusText, type StateTone } from "@/components/common";
 import { meta, type DataHonestyItem } from "@/data/contract";
 import { LINKS } from "@/lib/links";
 import { MATCHER_CAVEAT, SEASON_CAVEAT } from "./caveats";
+import {
+  MODEL_LIMITS,
+  NEEDS_LIVE_DATA,
+  VALIDATED_HERE,
+  honestyItem,
+  patternDescription,
+  patternName,
+  patternSource,
+} from "./copy";
 
 type ShownStatus = DataHonestyItem["status"] | "limitation";
 type ShownItem = { item: string; status: ShownStatus; detail: string };
 
-/** Status as text (glyph + word in the state's ink), not a tinted chip. Phase-2 violet for what needs a pilot. */
+/** Status as text (glyph + word in the state's ink), not a tinted chip. Planned violet for what needs live data. */
 const STATUS: Record<ShownStatus, { label: string; tone: StateTone; hollow?: boolean }> = {
   synthetic: { label: "Synthetic", tone: "neutral" },
   assumption: { label: "Assumption", tone: "warn", hollow: true },
-  validated: { label: "Validated here", tone: "ok" },
+  validated: { label: "Validated", tone: "ok" },
   limitation: { label: "Limitation", tone: "warn" },
-  needs_pilot: { label: "Needs a pilot", tone: "phase2" },
+  needs_pilot: { label: "Needs live data", tone: "phase2" },
 };
 
 const ORDER: ShownStatus[] = ["synthetic", "assumption", "validated", "limitation", "needs_pilot"];
@@ -29,18 +38,18 @@ function shownItems(): ShownItem[] {
   const base: ShownItem[] = meta.dataHonesty.map((it) =>
     /season dependence/i.test(it.item)
       ? { item: "The forecast gain depends on the season", status: "limitation", detail: SEASON_CAVEAT }
-      : it,
+      : honestyItem(it),
   );
-  base.push({ item: "Merged customers in a pilot", status: "needs_pilot", detail: MATCHER_CAVEAT });
+  base.push({ item: "Merged customers on live data", status: "needs_pilot", detail: MATCHER_CAVEAT });
   return base.sort((a, b) => ORDER.indexOf(a.status) - ORDER.indexOf(b.status));
 }
 
-/** The planted stuck-demand check is measured on the synthetic history, not the live demo store. */
+/** The built-in stuck-demand check is measured on the synthetic history, not the live sandbox store. */
 function assertionText(name: string, assertion: string): string {
   if (!/stuck demand/i.test(name)) return assertion;
   const m = assertion.match(/Measured:\s*(\d+)/);
   const k = m ? `S$${Math.round(Number(m[1]) / 1000)}k` : "";
-  return `Synthetic-history check on 28 Oct (12 blocked PRs): ${k}, inside S$150–450k (pass). The live Stuck demand tile also counts the requests scripted for the demo, so it reads higher.`;
+  return `Synthetic-history check on 28 Oct (12 blocked PRs): ${k}, inside S$150–450k (pass). The live Stuck demand tile also counts the sandbox's open requests, so it reads higher.`;
 }
 
 interface HonestyCtx {
@@ -48,7 +57,7 @@ interface HonestyCtx {
 }
 const Ctx = createContext<HonestyCtx | null>(null);
 
-/** Opens the page's single "What's real here?" drawer from anywhere inside the provider. */
+/** Opens the page's single "About this data" drawer from anywhere inside the provider. */
 export function useHonestyDrawer(): HonestyCtx | null {
   return useContext(Ctx);
 }
@@ -82,7 +91,7 @@ export function DataHonestyProvider({ children }: { children: ReactNode }) {
 
 /** Button that opens the drawer. Rendered in the page header and the footer. */
 export function DataHonestyDrawer({
-  label = "What's real here?",
+  label = "About this data",
   testId = "honesty-drawer-open",
   variant = "outline",
   icon = true,
@@ -92,23 +101,23 @@ export function DataHonestyDrawer({
   testId?: string;
   /** "outline" (default) for the footer control; "ghost" where it sits in a line of quiet meta text */
   variant?: "outline" | "ghost";
-  /** Lead with the flask (off when a provenance marker with its own flask sits right before it) */
+  /** Lead with the info icon (off where the button sits in a line of quiet meta text) */
   icon?: boolean;
   className?: string;
 }) {
   const ctx = useHonestyDrawer();
   return (
     <Button variant={variant} size="sm" data-testid={testId} className={className} onClick={() => ctx?.open()}>
-      {icon ? <FlaskConical /> : null}
+      {icon ? <Info /> : null}
       {label}
     </Button>
   );
 }
 
-/** Sheet listing what is synthetic, the planted patterns and their sources, validated vs pilot, and the pilot plan. */
+/** Sheet listing what is synthetic, the built-in test patterns and their sources, what is validated, the SAP B1 source tables and model limits. */
 function HonestySheet({ open, onOpenChange }: { open: boolean; onOpenChange: (o: boolean) => void }) {
   const items = shownItems();
-  const pilot = meta.pilotPlan;
+  const sources = meta.pilotPlan.sapMapping;
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -118,14 +127,11 @@ function HonestySheet({ open, onOpenChange }: { open: boolean; onOpenChange: (o:
         data-testid="honesty-drawer"
       >
         <SheetHeader className="border-b px-6 pt-5 pb-4">
-          <div className="flex flex-wrap items-center gap-2 pr-8">
-            <SheetTitle className="text-lg font-semibold">What&apos;s real on this page</SheetTitle>
-            <SyntheticBadge />
-          </div>
+          <SheetTitle className="pr-8 text-lg font-semibold">About this data</SheetTitle>
           <SheetDescription>
-            Every number on Regional Pulse comes from synthetic data generated with seed {meta.seed}. We planted known patterns
-            so you can check that the methods find them. Good scores here show the pipeline works, not that the patterns exist
-            in Lives Group&apos;s data.
+            In this sandbox, Regional Pulse runs on synthetic data (seed {meta.seed}) with known patterns built in, so each
+            method can be checked against them. Good scores show the pipeline works, not that the patterns exist in Lives
+            Group&apos;s live data.
           </SheetDescription>
         </SheetHeader>
 
@@ -152,17 +158,17 @@ function HonestySheet({ open, onOpenChange }: { open: boolean; onOpenChange: (o:
           </Block>
 
           <Block
-            title="Patterns we planted, and where each comes from"
+            title="Built-in test patterns and their sources"
             note="The generator checks each one before the data is accepted; if a check fails, the data is regenerated."
           >
             <ul className="divide-y divide-border border-y border-border">
               {meta.plantedPatterns.map((p) => (
                 <li key={p.id} className="py-2.5 text-sm">
-                  <div className="font-medium">{p.name}</div>
-                  <p className="mt-0.5 text-sm leading-snug text-secondary-foreground">{p.description}</p>
+                  <div className="font-medium">{patternName(p.name)}</div>
+                  <p className="mt-0.5 text-sm leading-snug text-secondary-foreground">{patternDescription(p.description)}</p>
                   <div className="mt-1.5 flex flex-wrap gap-x-4 gap-y-0.5 text-xs text-muted-foreground">
                     <span>
-                      <span className="font-medium text-secondary-foreground">Source:</span> {p.source}
+                      <span className="font-medium text-secondary-foreground">Source:</span> {patternSource(p.id, p.source)}
                     </span>
                     <span>
                       <span className="font-medium text-secondary-foreground">Check:</span> {assertionText(p.name, p.assertion)}
@@ -173,24 +179,24 @@ function HonestySheet({ open, onOpenChange }: { open: boolean; onOpenChange: (o:
             </ul>
           </Block>
 
-          <Block title="Validated here vs needs a pilot">
+          <Block title="Validated vs needs live SAP B1 data">
             <div className="grid gap-x-6 gap-y-4 sm:grid-cols-2 sm:divide-x sm:divide-border">
               <div>
                 <StatusText tone="ok" className="text-sm">
                   Validated on synthetic data
                 </StatusText>
                 <ul className="mt-2 list-disc space-y-1 pl-4 text-[0.8125rem] text-secondary-foreground">
-                  {meta.validatedVsPilot.validatedHere.map((v) => (
+                  {VALIDATED_HERE.map((v) => (
                     <li key={v}>{v}</li>
                   ))}
                 </ul>
               </div>
               <div className="sm:pl-6">
                 <StatusText tone="phase2" className="text-sm">
-                  Needs real SAP B1 data
+                  Needs live SAP B1 data
                 </StatusText>
                 <ul className="mt-2 list-disc space-y-1 pl-4 text-[0.8125rem] text-secondary-foreground">
-                  {meta.validatedVsPilot.needsPilot.map((v) => (
+                  {NEEDS_LIVE_DATA.map((v) => (
                     <li key={v}>{v}</li>
                   ))}
                 </ul>
@@ -198,7 +204,7 @@ function HonestySheet({ open, onOpenChange }: { open: boolean; onOpenChange: (o:
             </div>
           </Block>
 
-          <Block title={`Pilot plan · ${pilot.weeks} weeks`} note={pilot.summary}>
+          <Block title="SAP B1 source tables" note="The same pipeline reruns unchanged on extracts of these tables.">
             <div className="overflow-x-auto scrollbar-thin">
               <table className="w-full min-w-[520px] text-sm">
                 <thead className="text-xs text-subtle">
@@ -209,7 +215,7 @@ function HonestySheet({ open, onOpenChange }: { open: boolean; onOpenChange: (o:
                   </tr>
                 </thead>
                 <tbody>
-                  {pilot.sapMapping.map((m) => (
+                  {sources.map((m) => (
                     <tr key={m.sapTable} className="border-b border-border align-top last:border-b-0">
                       <td className="px-3 py-2">
                         <div className="text-sm font-medium">
@@ -217,12 +223,7 @@ function HonestySheet({ open, onOpenChange }: { open: boolean; onOpenChange: (o:
                         </div>
                         <div className="text-xs text-muted-foreground">{m.sapDescription}</div>
                       </td>
-                      <td className="px-3 py-2">
-                        <div>{m.feeds}</div>
-                        <div className="text-sm text-muted-foreground">
-                          <span className="mono-id">{m.ourFile}</span>
-                        </div>
-                      </td>
+                      <td className="px-3 py-2">{m.feeds}</td>
                       <td className="px-3 py-2 text-sm text-secondary-foreground">
                         <span className="mono-id">{m.keyFields.join(", ")}</span>
                       </td>
@@ -231,24 +232,12 @@ function HonestySheet({ open, onOpenChange }: { open: boolean; onOpenChange: (o:
                 </tbody>
               </table>
             </div>
-            <ol className="space-y-1.5 text-[0.8125rem]">
-              {pilot.steps.map((s) => (
-                <li key={s} className="flex gap-2">
-                  <span aria-hidden className="mt-2 size-1.5 shrink-0 rounded-full bg-subtle" />
-                  <span className="text-secondary-foreground">{s}</span>
-                </li>
-              ))}
-            </ol>
-            <p className="text-xs text-muted-foreground">
-              A27: SAP B1 already holds ≥ 24–36 months of PO history; the 6–12-month limit is a spreadsheet habit, not a data
-              limit.
-            </p>
+            <p className="text-xs text-muted-foreground">SAP B1 holds 24–36 months of PO history.</p>
           </Block>
 
           <Block title="Model limits">
             <ul className="list-disc space-y-1 pl-4 text-[0.8125rem] text-secondary-foreground">
-              <li>{MATCHER_CAVEAT}</li>
-              {meta.modelCard.limitations.map((l) => (
+              {MODEL_LIMITS.map((l) => (
                 <li key={l}>{l}</li>
               ))}
             </ul>
@@ -263,7 +252,7 @@ function HonestySheet({ open, onOpenChange }: { open: boolean; onOpenChange: (o:
               className={buttonVariants({ variant: "outline", size: "sm" })}
             >
               <ExternalLink />
-              Every parameter: analytics/params.yaml
+              Model parameters
             </a>
             <Link href="/assumptions" className={buttonVariants({ variant: "ghost", size: "sm" })}>
               Assumptions register

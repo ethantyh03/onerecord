@@ -189,8 +189,8 @@ function BuForm({ editing, presetCode, onOpenChange, onSaved }: BuSheetProps) {
               {isEdit
                 ? "Changes apply to requests submitted from now on. In-flight requests keep their route."
                 : fromTemplate
-                  ? `Prefilled from ${template?.id ?? "the new BU"}'s onboarding sheet. Check it and save: its people get the right approvals straight away. No IT ticket.`
-                  : "Its people start getting the right approvals as soon as you save. No IT ticket."}
+                  ? `Prefilled from ${template?.id ?? "the new BU"}'s onboarding sheet. Check it and save: its people get the right approvals straight away.`
+                  : "Its people start getting the right approvals as soon as you save."}
             </SheetDescription>
           </div>
           {!isEdit && template ? (

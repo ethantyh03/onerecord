@@ -3,12 +3,12 @@
 import Link from "next/link";
 import { useRef, useState, type ReactNode } from "react";
 import { ArrowDown, ArrowUpRight, ChevronRight } from "lucide-react";
-import { bridge, meta, matrix } from "@/data/contract";
-import { SyntheticBadge } from "@/components/common/badges";
+import { bridge, meta } from "@/data/contract";
 import { RowNumber } from "@/components/common/data-rows";
 import { SectionTitle } from "@/components/common/section";
 import { formatSgd } from "@/components/common/format";
 import { DataHonestyDrawer } from "@/components/pulse/analytics/DataHonestyDrawer";
+import { MEASURE_NOTE, SEASONALITY_NOTE } from "@/components/pulse/analytics/copy";
 import { useStuckDemand } from "@/lib/selectors";
 import { cn } from "@/lib/utils";
 import { usePulse, type PulseMeasure, type PulseView } from "./PulseContext";
@@ -78,11 +78,11 @@ const VIEW_OPTIONS: SegOption<PulseView>[] = [
 ];
 
 const MEASURE_OPTIONS: SegOption<PulseMeasure>[] = [
-  { value: "sgd", label: "S$ value", hint: "Order value in SGD, fixed illustrative FX", testId: "pulse-measure-sgd" },
+  { value: "sgd", label: "S$ value", hint: "Order value in SGD at fixed FX rates", testId: "pulse-measure-sgd" },
   { value: "units", label: "Units", hint: "Units ordered, compared within each product", testId: "pulse-measure-units" },
 ];
 
-/** One term of "How we count": the term, then its definition. No icon: the term says what it is. */
+/** One term of "Definitions": the term, then its definition. No icon: the term says what it is. */
 function Definition({ term, children }: { term: string; children: ReactNode }) {
   return (
     <div className="min-w-0">
@@ -105,8 +105,8 @@ function sgdMillions(v: number): string {
 const noSept = (s: string) => s.replace(/\bSept\b/g, "Sep");
 
 /**
- * Component 1: title, the growth definition as ruled meta columns, then the region map beside what the page
- * tells you (three numbered findings) and how we count. One box on this screen: the map.
+ * Component 1: title, the growth definition as ruled meta columns, then the region map beside the key insights
+ * (three numbered findings) and the definitions. One box on this screen: the map.
  */
 export function PulseHeader() {
   const { view, setView, measure, setMeasure } = usePulse();
@@ -170,20 +170,15 @@ export function PulseHeader() {
         <div className="min-w-0 space-y-1.5">
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
             <h1 className="font-wide text-[1.75rem] leading-8 font-semibold text-foreground">Regional Pulse</h1>
-            <div className="flex items-center">
-              <SyntheticBadge />
-              <span aria-hidden className="mx-2.5 h-3.5 w-px bg-border-strong" />
-              <DataHonestyDrawer
-                variant="ghost"
-                icon={false}
-                label="What's real here? (limits & caveats)"
-                className="h-6 px-0 text-xs font-medium text-muted-foreground underline decoration-border-strong underline-offset-4 hover:bg-transparent hover:text-foreground hover:decoration-foreground"
-              />
-            </div>
+            <DataHonestyDrawer
+              variant="ghost"
+              icon={false}
+              label="About this data"
+              className="h-6 px-0 text-xs font-medium text-muted-foreground underline decoration-border-strong underline-offset-4 hover:bg-transparent hover:text-foreground hover:decoration-foreground"
+            />
           </div>
           <p className="max-w-[76ch] text-[0.9375rem] leading-6 text-muted-foreground">
-            Customer orders across five countries and three product groups, counted on clean customer records. In
-            production this is a Power BI report on SAP B1 extracts.
+            Customer orders across five countries and three product groups, counted on clean customer records.
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
@@ -214,14 +209,14 @@ export function PulseHeader() {
         </span>
       </p>
 
-      {/* The map leads; beside it (under it below 1440px) the three findings and how we count, as ruled rows. */}
+      {/* The map leads; beside it (under it below 1440px) the three findings and the definitions, as ruled rows. */}
       <div className="grid gap-x-7 gap-y-5 [grid-template-areas:'map'_'take'_'how'] min-[1440px]:grid-cols-[minmax(0,1fr)_minmax(20rem,24rem)] min-[1440px]:grid-rows-[auto_minmax(0,1fr)] min-[1440px]:gap-y-0 min-[1440px]:[grid-template-areas:'map_take'_'map_how']">
         <div className="min-w-0 [grid-area:map]">
           <RegionMap focus={focus} />
         </div>
 
         <section aria-labelledby="pulse-takeaways-title" className="flex min-w-0 flex-col [grid-area:take]">
-          <SectionTitle id="pulse-takeaways-title" title="What this page tells you" />
+          <SectionTitle id="pulse-takeaways-title" title="Key insights" />
           <ol className="mt-1 flex flex-col divide-y divide-border border-b border-border lg:max-[1439px]:mt-2 lg:max-[1439px]:grid lg:max-[1439px]:grid-cols-3 lg:max-[1439px]:divide-y-0 lg:max-[1439px]:border-b-0">
             {takeaways.map((t, i) => (
               <li
@@ -261,7 +256,7 @@ export function PulseHeader() {
         >
           <summary className="flex min-h-11 cursor-pointer list-none items-center gap-2.5 py-2.5 text-sm font-medium text-secondary-foreground transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring [&::-webkit-details-marker]:hidden">
             <ChevronRight aria-hidden className="size-4 shrink-0 text-subtle transition-transform group-open:rotate-90" />
-            How we count: exact formulas, time window, and why not half-years
+            Definitions
           </summary>
           <div className="space-y-4 pb-4 pl-6.5">
             <dl className="grid gap-x-8 gap-y-3.5 lg:max-[1439px]:grid-cols-2">
@@ -271,19 +266,16 @@ export function PulseHeader() {
               </Definition>
               <Definition term="Growth (headline)">{noSept(meta.growthFormula)}</Definition>
               <Definition term="Momentum (latest quarter)">{noSept(meta.momentumFormula)}</Definition>
-              <Definition term="Why not half-years">{meta.seasonalityNote}</Definition>
+              <Definition term="Seasonality">{SEASONALITY_NOTE}</Definition>
             </dl>
             <div className="flex flex-col gap-2 border-t border-border pt-3 text-xs text-muted-foreground">
-              <p>
-                {noSept(matrix.measureNote)} The 6–12-month limit is a spreadsheet habit, not a data limit: SAP B1 already
-                holds 24–36 months of PO history (assumption A27).
-              </p>
+              <p>{MEASURE_NOTE} History: 24–36 months of PO history from SAP B1.</p>
               <Link
                 href="/assumptions"
                 className="w-fit font-medium text-foreground underline decoration-border-strong underline-offset-4 hover:decoration-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                 data-testid="pulse-assumptions-link"
               >
-                See every assumption behind these numbers
+                Assumptions
               </Link>
             </div>
           </div>

@@ -279,7 +279,7 @@ export function FieldControl({
               </span>
             ) : null}
             {aiFilled ? (
-              // Filled by paste-to-fill (rules + a cached example; no AI model runs in phase 1). A quiet marker with the
+              // Filled by paste-to-fill (rules-based extraction; no AI model runs). A quiet marker with the
               // live-data square: this value came from the pasted text just now, so check it.
               <Tooltip>
                 <TooltipTrigger

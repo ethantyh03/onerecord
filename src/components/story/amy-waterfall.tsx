@@ -3,7 +3,7 @@
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { AMY_WATERFALL, waterfallTotals, type FixKind } from "./business-case";
-import { NoteChip, Panel, T } from "./story-ui";
+import { Panel, T } from "./story-ui";
 
 /** Grey = days elapsed; chart series 1 (teal) = saved by OneRecord's form and workflow; amber = saved by a process change alone. */
 const COLOR: Record<FixKind | "total", string> = {
@@ -26,7 +26,7 @@ interface Bar {
 const CHART_H = 260;
 
 /**
- * §6.7 waterfall: Amy's 18 days → ~4, one bar per fix.
+ * §6.7 waterfall: one new item request, 18 days by email → ~4, one bar per fix.
  * The process-change slice (parallel approvals + SLA, no new software) is highlighted and annotated.
  */
 export function AmyWaterfall() {
@@ -36,13 +36,13 @@ export function AmyWaterfall() {
   let running = t.beforeDays;
   bars.push({
     id: "start",
-    label: "Amy's request today (case brief, Appendix C)",
-    short: "Amy today",
+    label: "New item request by email today",
+    short: "By email today",
     low: 0,
     high: t.beforeDays,
     kind: "total",
     value: `${t.beforeDays} days`,
-    tip: "Case brief, Appendix C: Amy's new item code took 18 calendar days, a bounced request and three approvers one at a time.",
+    tip: "A new item code took 18 calendar days, a bounced request and three approvers one at a time.",
   });
   for (const s of AMY_WATERFALL) {
     const saved = s.beforeDays - s.afterDays;
@@ -60,8 +60,8 @@ export function AmyWaterfall() {
   }
   bars.push({
     id: "end",
-    label: "Amy with OneRecord",
-    short: "Amy with OneRecord",
+    label: "With OneRecord",
+    short: "With OneRecord",
     low: 0,
     high: t.afterDays,
     kind: "total",
@@ -76,14 +76,13 @@ export function AmyWaterfall() {
       <Panel
         as="figure"
         titleId="amy-waterfall-title"
-        title="Where Amy's 18 days go"
-        description="Calendar days, our breakdown of the case brief, Appendix C (illustrative)"
+        title="Where 18 days go: one new item request"
+        description="Calendar days, illustrative breakdown"
         level={3}
-        action={<NoteChip>Scenario from case brief, Appendix C</NoteChip>}
         footer={
           <>
-            The pilot KPI is the median: ≤4 business days (≈6 calendar days) across all requests. Amy&apos;s path comes in shorter because her approvals
-            run in parallel.
+            Target: median ≤4 business days (≈6 calendar days) across all requests; this request comes in shorter because its approvals run in
+            parallel.
           </>
         }
       >
@@ -166,7 +165,7 @@ export function AmyWaterfall() {
         </div>
       </Panel>
 
-      <Panel titleId="amy-slices-title" title="Amy's 18 days, slice by slice, and what fixes each one" level={3} flush>
+      <Panel titleId="amy-slices-title" title="The 18 days, slice by slice, and what fixes each one" level={3} flush>
         <table className={T.table} aria-labelledby="amy-slices-title">
           <thead>
             <tr className={T.headRow}>

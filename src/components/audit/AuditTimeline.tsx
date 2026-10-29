@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import type { AuditEvent } from "@/lib/types";
 import { GENESIS_HASH, hashEvent, verifyChain } from "@/lib/engine/audit";
 import { useSandbox } from "@/lib/store";
-import { personById } from "@/lib/selectors";
+import { personById, useCurrentPerson } from "@/lib/selectors";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { PersonAvatar, formatSgtDateTime } from "@/components/common";
@@ -105,15 +105,18 @@ function RailSegment({ half, state, delay, walk }: { half: "top" | "bottom"; sta
 
 /**
  * Append-only audit trail for one request, oldest first, drawn as a chain of records: each record carries the
- * SHA-256 fingerprint of itself plus the one before it. Hash-chain controls: Verify chain, Simulate tamper
- * (on a copy, never the stored log) and Export CSV. A broken link turns the record coral, shows the
+ * SHA-256 fingerprint of itself plus the one before it. Hash-chain controls: Verify chain and Export CSV for
+ * everyone; MDM and admins also get the sandbox tamper test (on a copy, never the stored log). A broken link turns the record coral, shows the
  * fingerprint recomputed from the edited entry next to the stored one, and every link after it goes dashed.
  */
 export function AuditTimeline({ requestId, bare = false, className }: AuditTimelineProps) {
   const audit = useSandbox((s) => s.audit);
   const config = useSandbox((s) => s.config);
+  const me = useCurrentPerson();
+  // The tamper test is a sandbox tool for the people who own the log (MDM, admins), not for requestors.
+  const canTamperTest = me.roles.includes("mdm") || me.roles.includes("admin");
 
-  // Simulate tamper works on a copy of the whole chain; the stored log is never touched.
+  // The tamper test works on a copy of the whole chain; the stored log is never touched.
   const [tampered, setTampered] = useState<{ chain: AuditEvent[]; seq: number; original: string } | null>(null);
   const [check, setCheck] = useState<{ result: CheckResult; auditLen: number; walk: number } | null>(null);
 
@@ -216,21 +219,29 @@ export function AuditTimeline({ requestId, bare = false, className }: AuditTimel
             <ShieldCheck aria-hidden />
             Verify chain
           </Button>
+          <Button variant="ghost" size="sm" onClick={exportCsv} disabled={events.length === 0} data-testid="audit-export">
+            <Download aria-hidden />
+            Export CSV
+          </Button>
           {tampered ? (
             <Button variant="outline" size="sm" onClick={restore} data-testid="audit-restore">
               <RotateCcw aria-hidden />
               Restore
             </Button>
-          ) : (
-            <Button variant="outline" size="sm" onClick={simulateTamper} disabled={events.length === 0} data-testid="audit-tamper">
+          ) : canTamperTest ? (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={simulateTamper}
+              disabled={events.length === 0}
+              data-testid="audit-tamper"
+              title="Sandbox only: edits one entry on a copy of the log, then re-checks the chain"
+              className="text-muted-foreground"
+            >
               <FileWarning aria-hidden />
-              Simulate tamper
+              Tamper test (sandbox)
             </Button>
-          )}
-          <Button variant="ghost" size="sm" onClick={exportCsv} disabled={events.length === 0} data-testid="audit-export">
-            <Download aria-hidden />
-            Export CSV
-          </Button>
+          ) : null}
         </div>
       </div>
 
@@ -259,7 +270,7 @@ export function AuditTimeline({ requestId, bare = false, className }: AuditTimel
               Integrity broken at event #{result.at + 1} — any edit after the fact is detectable
             </span>
             {tampered ? (
-              <span className="text-secondary-foreground">Simulation on a copy; the stored log is unchanged.</span>
+              <span className="text-secondary-foreground">Sandbox test on a copy; the stored log is unchanged.</span>
             ) : null}
           </div>
         )
@@ -352,11 +363,6 @@ export function AuditTimeline({ requestId, bare = false, className }: AuditTimel
           })}
         </ol>
       )}
-
-      <p className="border-t border-border px-4 py-2.5 text-xs leading-relaxed text-subtle">
-        Prototype: hash chain kept and checked in this browser. In production: SharePoint version history, Purview approval
-        logs and a hash column.
-      </p>
     </>
   );
 

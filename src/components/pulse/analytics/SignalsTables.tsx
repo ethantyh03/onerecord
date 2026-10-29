@@ -6,6 +6,7 @@ import { usePulse } from "@/components/pulse/core/PulseContext";
 import { signals, type CrossSellRow, type DropOffRow, type SignalRowBase } from "@/data/contract";
 import { cn } from "@/lib/utils";
 import { COUNTRY_NAME, PanelFrame, Segmented } from "./shared";
+import { SIGNALS_RATE_NOTE } from "./copy";
 
 type Tab = "dropoff" | "crosssell";
 type Scope = "all" | "country";
@@ -160,7 +161,7 @@ export function SignalsTables() {
           {rows.length} customers · {formatSgd(sum, { compact: true })} addressable, before conversion · at the assumed{" "}
           {Math.round(rate * 100)}% that is about {formatSgd(sum * rate, { compact: true })}.
         </span>
-        <span>{a.label}</span>
+        <span>{SIGNALS_RATE_NOTE}</span>
       </div>
     </PanelFrame>
   );

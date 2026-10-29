@@ -7,6 +7,7 @@ import { bridge, type BridgeKey, type BridgeStep } from "@/data/contract";
 import type { CountryCode } from "@/lib/types";
 import { sgdCompact } from "@/components/pulse/core/pulse-format";
 import { COUNTRY_CODES, COUNTRY_NAME, PanelFrame, PlainLine, Segmented, Swatch, TipBox, TipRow, VIZ } from "./shared";
+import { BRIDGE_DEFINITION, duplicateExampleTitle } from "./copy";
 
 /** "S$16.7M" with one decimal and an uppercase M, so a +2.5% change is visible in the endpoints. */
 function money(v: number): string {
@@ -119,7 +120,7 @@ export function GrowthBridge() {
     <PanelFrame
       testId="growth-bridge"
       title={`Where growth came from · ${COUNTRY_NAME[country]}`}
-      subtitle={bridge.definition}
+      subtitle={BRIDGE_DEFINITION}
       actions={
         <>
           <Segmented<CountryCode>
@@ -253,7 +254,7 @@ export function GrowthBridge() {
             )}
             {cb.example ? (
               <div className="border-t border-border pt-3">
-                <div className="text-xs font-medium text-muted-foreground">{cb.example.title}</div>
+                <div className="text-xs font-medium text-muted-foreground">{duplicateExampleTitle(cb)}</div>
                 <p className="mt-1 text-sm leading-snug text-secondary-foreground">
                   {view === "merged" ? cb.example.dedupStory : cb.example.rawStory}
                 </p>

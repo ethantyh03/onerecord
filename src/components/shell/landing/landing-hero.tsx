@@ -2,16 +2,15 @@
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type RefObject } from "react";
 import Link from "next/link";
-import { ArrowRight, Database } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useReducedMotion } from "motion/react";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { MERGE_DELAY_MS, hashUnit } from "./globe-data";
 import { HeroMeta } from "./hero-meta";
 import { LiveRequestPanel } from "./live-request-panel";
 import { createMergeClock } from "./merge-clock";
 import { RequestGlobe, type GlobeHandle } from "./request-globe";
-import { useStartAs } from "./use-start-as";
 
 /**
  * The hero bleeds to the edges of the content area (rail, if shown, on the left; status bar above). On
@@ -112,7 +111,7 @@ function useFlickerIn(markRef: RefObject<HTMLElement | null>) {
 
 /**
  * Sizes that scale with the hero's width (the section is the size container). The copy column is wide
- * enough for each sentence of the headline to hold on one line. `--mark` starts as an estimate ("OneRecord"
+ * enough for each line of the headline to hold on one line. `--mark` starts as an estimate ("OneRecord"
  * is about 5.55em wide at this tracking) and is then set from a measurement.
  */
 const HERO_VARS = {
@@ -125,13 +124,13 @@ const HERO_VARS = {
 /**
  * Landing hero, after the Gotham site's hero but with our content: a full-bleed globe of Lives Group's
  * customer records and live requests (the region fitted into the right-hand zone, the horizon arcing
- * over it), what OneRecord is at the top left, the facts the globe shows in columns between thin rules
- * above the right of the wordmark, and the product name as a giant wordmark across the full width.
+ * over it), what OneRecord does and the two ways in at the top left, the facts the globe shows in
+ * columns between thin rules above the right of the wordmark, and the product name as a giant wordmark
+ * across the full width.
  * The open-request queue (each row is one arc; pointing at a row lights it) follows as its own section.
  * The hero is at least one screen tall and grows with its content, so nothing overlaps on small screens.
  */
 export function LandingHero() {
-  const startAs = useStartAs();
   const zoneRef = useRef<HTMLDivElement>(null);
   const copyRef = useRef<HTMLDivElement>(null);
   const metaRef = useRef<HTMLDivElement>(null);
@@ -152,10 +151,11 @@ export function LandingHero() {
     merge.set(still ? Number.NEGATIVE_INFINITY : performance.now() + MERGE_DELAY_MS);
   }, [merge]);
 
-  const replay = useCallback(() => {
-    // Show the raw records for a moment, then merge again (instantly under reduced motion).
-    merge.set(performance.now() + (reduce ? 1600 : 900));
-  }, [merge, reduce]);
+  /** The map's Raw / Merged view: raw holds the duplicates apart; merged glides them in (instantly under reduced motion). */
+  const showMerged = useCallback(
+    (merged: boolean) => merge.set(merged ? performance.now() : Number.POSITIVE_INFINITY),
+    [merge],
+  );
 
   const point = useCallback((id: string | null) => {
     highlightRef.current = id;
@@ -207,34 +207,40 @@ export function LandingHero() {
                 data-testid="home-platform-badge"
                 className="mb-5 inline-flex flex-wrap items-center gap-x-2 gap-y-1 rounded-sm border border-border-strong bg-canvas/80 px-2.5 py-1 text-[0.8125rem] font-medium text-foreground"
               >
-                <Database aria-hidden className="size-3.5 text-muted-foreground" />
-                <span>Runs on Microsoft 365</span>
+                <span aria-hidden className="size-1.5 rounded-full bg-ok" />
+                <span>Connected</span>
                 <span aria-hidden className="text-muted-foreground">
                   ·
                 </span>
-                <span>lands in SAP Business One</span>
+                <span>Microsoft 365</span>
+                <span aria-hidden className="text-muted-foreground">
+                  ·
+                </span>
+                <span>
+                  SAP Business One <span className="text-muted-foreground">(LIVES_SANDBOX)</span>
+                </span>
               </p>
               <h1
                 id="home-title"
                 className="font-wide text-[clamp(1.75rem,2.45cqw,3.25rem)] leading-[1.08] font-semibold text-balance text-foreground"
               >
-                <span className="block lg:whitespace-nowrap">Messy master data hides money.</span>
-                <span className="mt-1 block lg:whitespace-nowrap">One hospital, one record.</span>
+                <span className="block lg:whitespace-nowrap">One record for every</span>
+                <span className="block lg:whitespace-nowrap">customer, item and vendor.</span>
               </h1>
-              <p className="mt-5 max-w-[60ch] text-[0.9375rem] leading-[1.6] text-secondary-foreground @min-[75rem]:text-base">
-                One front door for new customers, vendors, items and cost centres across Lives Group. Requests arrive
-                complete, approvers decide inside Teams, SAP Business One gets a clean import file instead of
-                hand-keyed data, and the regional numbers are built on records the business can trust.
+              <p className="mt-5 max-w-[60ch] text-[0.9375rem] leading-[1.6] text-pretty text-secondary-foreground @min-[75rem]:text-base">
+                Request a new customer, vendor, item or cost centre in one form. OneRecord checks it for duplicates and
+                missing fields, approvers decide in Teams or Outlook, and the MDM team loads the approved record into
+                SAP Business One.
               </p>
               <div className="mt-6 flex flex-wrap items-center gap-3">
-                <Button
-                  size="lg"
-                  className="h-10 gap-2 px-4 text-[0.9375rem]"
-                  onClick={() => startAs("amy", "/requests/new")}
+                <Link
+                  href="/requests/new"
+                  data-testid="home-new-request"
+                  className={cn(buttonVariants({ size: "lg" }), "h-10 gap-2 px-4 text-[0.9375rem]")}
                 >
-                  Start as Amy
+                  New request
                   <ArrowRight aria-hidden className="size-4" />
-                </Button>
+                </Link>
                 <Link
                   href="/pulse"
                   className={cn(
@@ -242,7 +248,7 @@ export function LandingHero() {
                     "h-10 bg-canvas/70 px-4 text-[0.9375rem]",
                   )}
                 >
-                  See Regional Pulse
+                  Regional Pulse
                 </Link>
               </div>
             </div>
@@ -255,7 +261,7 @@ export function LandingHero() {
               ref={metaRef}
               className="relative z-20 mt-4 [grid-area:meta] before:pointer-events-none before:absolute before:-inset-x-6 before:-inset-y-3 before:-z-10 before:rounded-[2rem] before:bg-canvas/85 before:blur-xl before:content-[''] lg:mt-0 lg:pt-3 lg:pb-[1.2cqw]"
             >
-              <HeroMeta merge={merge} reduce={reduce} onReplay={replay} />
+              <HeroMeta merge={merge} reduce={reduce} onShowMerged={showMerged} />
             </div>
           </div>
 

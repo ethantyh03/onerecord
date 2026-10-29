@@ -33,7 +33,7 @@ export function DemoControls({ request }: { request: MdmRequest }) {
   function plusOneDay() {
     const now = useSandbox.getState().nowIso();
     const r = fastForward(hoursForBusinessDays(now, 1));
-    toast("Clock moved forward 1 business day (simulated)", {
+    toast("Sandbox clock moved forward 1 business day", {
       description:
         r.reminders + r.escalations
           ? `${r.reminders} reminder${r.reminders === 1 ? "" : "s"} and ${r.escalations} escalation${r.escalations === 1 ? "" : "s"} sent.`
@@ -42,7 +42,7 @@ export function DemoControls({ request }: { request: MdmRequest }) {
   }
 
   return (
-    // A ruled disclosure line, not a dashed box: it is a presenter's control, so it stays quiet until opened.
+    // A ruled disclosure line, not a dashed box: it is a sandbox tool, so it stays quiet until opened.
     <section className="border-y border-border" data-testid="demo-controls">
       <button
         type="button"
@@ -53,15 +53,15 @@ export function DemoControls({ request }: { request: MdmRequest }) {
       >
         <span className="flex items-center gap-2 text-sm font-medium text-secondary-foreground">
           <UsersRound aria-hidden className="size-4 text-muted-foreground" />
-          Demo control — simulates approvers acting
+          Sandbox tools — simulate approver actions
         </span>
         <ChevronDown aria-hidden className={cn("size-4 text-muted-foreground transition-transform", open && "rotate-180")} />
       </button>
       {open ? (
         <div className="space-y-3 border-t border-border px-1 py-4">
           <p className="text-sm text-muted-foreground">
-            Plays each approver in turn so the route can be shown end to end. Segregation of duties still applies, and it stops at the MDM
-            final check.
+            Approves each pending step as its assignee to move the request along. Segregation of duties still applies, and it stops at
+            the MDM final check.
           </p>
           <Button className="w-full" onClick={approveAll} disabled={pendingBusiness === 0} data-testid="demo-approve-all">
             Approve all pending steps as their assignees

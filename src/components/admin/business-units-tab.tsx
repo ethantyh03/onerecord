@@ -41,7 +41,7 @@ export function BusinessUnitsTab({ onBuSaved }: { onBuSaved?: (buId: string) => 
     <div className="space-y-4">
       <SectionHeader
         title="Business units"
-        description="Each BU decides who approves its requests and can add its own stages. Add a newly joined business in under a minute."
+        description="Each BU decides who approves its requests and can add its own stages. Add a business unit when a new business joins."
         actions={
           <Button onClick={() => setSheet({ open: true })} data-testid="admin-add-bu">
             <Plus /> Add business unit

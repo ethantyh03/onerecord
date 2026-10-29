@@ -53,7 +53,7 @@ export function LiveRequestPanel({
             {rows.length}
           </span>
           <p className="ml-1 hidden truncate text-sm text-muted-foreground sm:block">
-            Each one is an arc or ring on the globe above. Point at one to find it.
+            Hover a request to find it on the map.
           </p>
         </div>
         <Link
@@ -69,7 +69,7 @@ export function LiveRequestPanel({
         <p className="px-4 py-3 text-sm text-muted-foreground">Nothing is open. A new request appears here.</p>
       ) : (
         <ul
-          className="-mr-px -mb-px grid sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+          className="-mr-px -mb-px grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
           onMouseLeave={() => onPoint(null)}
         >
           {rows.map((r) => (

@@ -4,7 +4,8 @@ import { useState } from "react";
 import { Lock, Plus } from "lucide-react";
 import type { FieldDef } from "@/lib/types";
 import { useSandbox } from "@/lib/store";
-import { Phase2Badge, SapCode } from "@/components/common";
+import { SapCode } from "@/components/common";
+import { PlannedBadge } from "@/components/mdm/PlannedBadge";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -52,9 +53,9 @@ export function FieldsTab() {
             <Button variant="outline" size="sm" disabled data-testid="admin-add-domain">
               <Plus /> Add a whole new domain
             </Button>
-            <Phase2Badge label="Roadmap" />
+            <PlannedBadge />
           </TooltipTrigger>
-          <TooltipContent>Roadmap: the config schema already supports it</TooltipContent>
+          <TooltipContent>Adding a new request domain is planned</TooltipContent>
         </Tooltip>
         }
       />

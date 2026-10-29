@@ -304,7 +304,7 @@ export const SYSTEM_ACTOR_ID = "system";
 export const SYSTEM_PERSON: Person = {
   id: SYSTEM_ACTOR_ID,
   name: "OneRecord automation",
-  title: "Workflow engine (Power Automate in production)",
+  title: "Workflow engine (Power Automate)",
   roles: [],
   entity: "SPD",
   country: "SG",

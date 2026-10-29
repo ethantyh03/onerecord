@@ -834,7 +834,7 @@ export const DEFAULT_CONFIG: AppConfig = {
       version: 1,
       at: CONFIG_GO_LIVE_AT,
       byId: "priya",
-      summary: "Go-live configuration: 5 request types, 3 business units, A9 approval matrix, 2-day step SLA",
+      summary: "Go-live configuration: 5 request types, 3 business units, standard approval matrix, 2-day step SLA",
     },
   ],
 };

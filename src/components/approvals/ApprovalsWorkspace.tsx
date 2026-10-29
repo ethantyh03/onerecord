@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowRight, ArrowUpRight, Building2, CheckCheck, Eye, FileJson, Mail, MessageSquare, ShieldAlert } from "lucide-react";
-import { ConsolePanel, EmptyState, Notice, PageHeader, PersonAvatar, SapCode, SyntheticBadge } from "@/components/common";
+import { ConsolePanel, EmptyState, Notice, PageHeader, PersonAvatar, SapCode } from "@/components/common";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -129,14 +129,15 @@ function Approvals() {
 
   const bu = buById({ config }, me.entity);
   const selectedKey = selected ? `${selected.request.id}:${selected.step.id}` : null;
-  const tab: Tab = tabState;
+  // The Adaptive Card JSON is a configuration view: only the MDM team and admins, who maintain the template, see it.
+  const canSeeJson = me.roles.includes("mdm") || me.roles.includes("admin");
+  const tab: Tab = tabState === "json" && !canSeeJson ? "teams" : tabState;
 
   return (
     <div className="w-full">
       <PageHeader
         title="Approvals"
         subtitle={`Everything waiting on ${me.name}, closest deadline first. Approve, reject or ask a question right on the card, in Teams or Outlook.`}
-        meta={<SyntheticBadge label="Teams, Outlook and the clock are simulated" />}
       />
 
       <div className="grid items-start gap-5 xl:grid-cols-[300px_minmax(0,1fr)] 2xl:grid-cols-[340px_minmax(0,1fr)]">
@@ -147,7 +148,7 @@ function Approvals() {
               approvers for now.
             </Notice>
           ) : null}
-          {/* One panel: the queue, then the demo clock and out-of-office as hairline-divided sections of it. */}
+          {/* One panel: the queue, then the sandbox clock and out-of-office as hairline-divided sections of it. */}
           <ConsolePanel title="Waiting on me" titleId="waiting-heading" count={waiting.length} subtitle="Closest deadline first">
             <WaitingList
               items={waiting}
@@ -209,17 +210,19 @@ function Approvals() {
                       <Mail aria-hidden="true" />
                       Outlook
                     </TabsTrigger>
-                    <TabsTrigger value="json" data-testid="tab-json" className="px-3">
-                      <FileJson aria-hidden="true" />
-                      Card JSON
-                    </TabsTrigger>
+                    {canSeeJson ? (
+                      <TabsTrigger value="json" data-testid="tab-json" className="px-3">
+                        <FileJson aria-hidden="true" />
+                        Card JSON
+                      </TabsTrigger>
+                    ) : null}
                   </TabsList>
                   <p className="text-[0.8125rem] text-muted-foreground">
                     {tab === "teams"
-                      ? "Where approvers already work. Power Automate posts this card in production."
+                      ? "Teams card preview, as Power Automate posts it to the approver."
                       : tab === "outlook"
-                        ? "The same decision as an Outlook actionable message, for people who live in email."
-                        : "The production card template with this request's values bound."}
+                        ? "The same approval as an Outlook actionable message."
+                        : "The Adaptive Card template with this request's values bound."}
                   </p>
                 </div>
                 <TabsContent value="teams" className="mt-3">
@@ -228,9 +231,11 @@ function Approvals() {
                 <TabsContent value="outlook" className="mt-3">
                   <OutlookView request={selected.request} step={selected.step} me={me} />
                 </TabsContent>
-                <TabsContent value="json" className="mt-3">
-                  <CardJsonView request={selected.request} step={selected.step} />
-                </TabsContent>
+                {canSeeJson ? (
+                  <TabsContent value="json" className="mt-3">
+                    <CardJsonView request={selected.request} step={selected.step} />
+                  </TabsContent>
+                ) : null}
               </Tabs>
               <RouteStrip request={selected.request} people={config.people} highlightStepId={selected.step.id} />
             </section>
@@ -337,34 +342,33 @@ function NothingWaiting({
       <EmptyState
         icon={CheckCheck}
         title={`Nothing is waiting on ${firstName(me.name)}`}
-        description={
-          others.length > 0
-            ? "New approvals land here and in Teams. To see a decision being made, switch to an approver who has something waiting."
-            : "New approvals land here and in Teams."
-        }
+        description="New approvals land here and in Teams."
         action={
           others.length > 0 ? (
-            // A short ruled list (name left, count right), not a row of pills.
-            <ul className="mx-auto w-[min(100%,22rem)] divide-y divide-border border-y border-border text-left">
-              {others.map(({ person, count }) => (
-                <li key={person.id}>
-                  <button
-                    type="button"
-                    data-testid={`switch-${person.id}`}
-                    onClick={() => onSwitch(person.id)}
-                    className="group/sw flex min-h-10 w-full items-center gap-2.5 px-1 py-2 text-sm text-secondary-foreground transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring"
-                  >
-                    <PersonAvatar person={person} size="xs" />
-                    <span className="font-medium">Switch to {firstName(person.name)}</span>
-                    <span className="num ml-auto text-xs text-subtle">{count} waiting</span>
-                    <ArrowRight
-                      aria-hidden
-                      className="size-3.5 shrink-0 text-subtle transition-colors group-hover/sw:text-foreground"
-                    />
-                  </button>
-                </li>
-              ))}
-            </ul>
+            // A short ruled list (name left, count right), not a row of pills, under a quiet sandbox label.
+            <div className="mx-auto w-[min(100%,22rem)] text-left">
+              <p className="mb-1.5 px-1 text-xs leading-4 text-subtle">Sandbox: view as someone with approvals waiting</p>
+              <ul className="divide-y divide-border border-y border-border">
+                {others.map(({ person, count }) => (
+                  <li key={person.id}>
+                    <button
+                      type="button"
+                      data-testid={`switch-${person.id}`}
+                      onClick={() => onSwitch(person.id)}
+                      className="group/sw flex min-h-10 w-full items-center gap-2.5 px-1 py-2 text-sm text-secondary-foreground transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring"
+                    >
+                      <PersonAvatar person={person} size="xs" />
+                      <span className="font-medium">Switch to {firstName(person.name)}</span>
+                      <span className="num ml-auto text-xs text-subtle">{count} waiting</span>
+                      <ArrowRight
+                        aria-hidden
+                        className="size-3.5 shrink-0 text-subtle transition-colors group-hover/sw:text-foreground"
+                      />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
           ) : null
         }
       />
@@ -376,7 +380,7 @@ function NothingWaiting({
                 Your requests, from the approver&apos;s side
               </h2>
               <p className="text-sm leading-5 text-muted-foreground">
-                Open the card your approvers see. Segregation of duties stops you approving your own request, even if you try.
+                Preview the card your approvers see. Segregation of duties: you can&apos;t approve your own request.
               </p>
             </div>
           </div>

@@ -11,7 +11,7 @@ interface Row {
   links: { href: string; label: string }[];
 }
 
-/** Brief §4 pain points, in the brief's own order and groupings. */
+/** Problems with today's email process, grouped by area. */
 const PAIN_POINTS: { group: string; rows: Row[] }[] = [
   {
     group: "Data quality",
@@ -22,7 +22,7 @@ const PAIN_POINTS: { group: string; rows: Row[] }[] = [
         links: [{ href: "/requests/new", label: "New request" }],
       },
       {
-        brief: "Duplicates like “National University Hospital” under a slightly different name",
+        brief: "The same customer created again under a slightly different name",
         answer: "Duplicate check while you type (name and tax ID); MDM sees the match again at the final check",
         links: [{ href: "/requests/new?domain=customer", label: "New customer" }],
       },
@@ -79,7 +79,7 @@ const PAIN_POINTS: { group: string; rows: Row[] }[] = [
     rows: [
       {
         brief: "Forecasts are compiled by hand from simple averages, missing cross-sell, seasonality and drop-off",
-        answer: "A seasonal forecast tested against today's rolling average (and shown where it loses), plus drop-off and cross-sell signals",
+        answer: "A seasonal forecast backtested against today's rolling average, plus drop-off and cross-sell signals",
         links: [{ href: "/pulse", label: "Regional Pulse" }],
       },
       {
@@ -91,7 +91,7 @@ const PAIN_POINTS: { group: string; rows: Row[] }[] = [
   },
 ];
 
-/** Brief §5 design prompts. */
+/** Requirements. */
 const PROMPTS: Row[] = [
   {
     brief: "Submit Customer, Item, Vendor or Cost Center requests; stop incomplete and duplicate ones",
@@ -123,39 +123,39 @@ const PROMPTS: Row[] = [
   },
   {
     brief: "Use data science to improve the 6–12-month forecast and find growth",
-    answer: "Seasonal forecast, honest backtest, drop-off and cross-sell signals",
+    answer: "Seasonal forecast, backtest, drop-off and cross-sell signals",
     links: [{ href: "/pulse", label: "Regional Pulse" }],
   },
   {
-    brief: "What you would deliberately not build first",
-    answer: "Six choices, each with its reason, below",
-    links: [{ href: "#not-v1-title", label: "Not in v1" }],
+    brief: "What version 1 leaves out",
+    answer: "Six items, each with its reason, below",
+    links: [{ href: "#not-v1-title", label: "Not in version 1" }],
   },
 ];
 
-/** Brief Appendix B personas. */
+/** User roles. */
 const PERSONAS: Row[] = [
   {
-    brief: "Amy, Product Manager: guesses SAP fields she isn't sure of",
-    answer: "Paste an old email and the form fills itself; the regulatory rule asks the question for her",
+    brief: "Requestor (product manager): unsure of some SAP fields",
+    answer: "Paste an old email and the form fills itself; the regulatory rule asks the right question",
     links: [{ href: "/requests/new", label: "New request" }],
   },
   {
-    brief: "Wei Jie, Finance Manager: doesn't see requests in his inbox",
-    answer: "A Teams card he can approve in place, with a reminder",
+    brief: "Finance approver: misses requests in the inbox",
+    answer: "A Teams card to approve in place, with a reminder",
     links: [{ href: "/approvals", label: "Approvals" }],
   },
   {
-    brief: "Priya, MDM Analyst: keys every record by hand; catches duplicates only from memory",
-    answer: "The duplicate check remembers for her; approved records go out as one SAP import file",
+    brief: "MDM analyst: keys records by hand, spots duplicates from memory",
+    answer: "The duplicate check does the remembering; approved records go out as one SAP import file",
     links: [
       { href: "/mdm", label: "MDM console" },
       { href: "/sap", label: "SAP B1" },
     ],
   },
   {
-    brief: "Marcus, new business unit: his first requests went to the wrong people",
-    answer: "MDM adds his business unit and routes in Admin; the duplicate check catches his near-copy",
+    brief: "New business unit: requests routed to the wrong people",
+    answer: "MDM adds the business unit and its routes in Admin; the duplicate check catches near-copies",
     links: [{ href: "/admin", label: "Admin" }],
   },
 ];
@@ -180,7 +180,7 @@ function MiniTable({ title, rows, briefHead }: { title: string; rows: Row[]; bri
         <thead className="sr-only">
           <tr>
             <th>{briefHead}</th>
-            <th>Where OneRecord answers it</th>
+            <th>Where OneRecord covers it</th>
           </tr>
         </thead>
         <tbody>
@@ -201,23 +201,23 @@ function MiniTable({ title, rows, briefHead }: { title: string; rows: Row[]; bri
   );
 }
 
-/** "What the brief asked → where OneRecord answers it": §4 pain points, §5 prompts and Appendix B personas, each linked to its screen. */
+/** "What version 1 covers": problems, requirements and user roles, each linked to its screen. */
 export function BriefMap() {
   return (
     <section aria-labelledby="brief-map-title" data-testid="scope-brief-map" className="space-y-4">
       <Panel
         as="div"
         titleId="brief-map-title"
-        title="What the brief asked → where OneRecord answers it"
-        description="Every pain point in Section 4, every design prompt in Section 5 and every Appendix B persona, with the screen that answers it."
+        title="What version 1 covers"
+        description="Each problem, and the screen that handles it."
         flush
       >
         <div className="scrollbar-thin relative overflow-x-auto">
           <table className={cn(T.table, "min-w-[860px]")}>
             <thead>
               <tr className={T.headRow}>
-                <th className={cn(T.head, "w-[16%]")}>Brief, Section 4</th>
-                <th className={cn(T.head, "w-[30%]")}>Pain point</th>
+                <th className={cn(T.head, "w-[16%]")}>Area</th>
+                <th className={cn(T.head, "w-[30%]")}>Problem today</th>
                 <th className={T.head}>What OneRecord does</th>
                 <th className={cn(T.head, "w-[17%]")}>See it</th>
               </tr>
@@ -244,8 +244,8 @@ export function BriefMap() {
         </div>
       </Panel>
       <div className="grid items-start gap-4 lg:grid-cols-2">
-        <MiniTable title="Section 5 design prompts" briefHead="Design prompt" rows={PROMPTS} />
-        <MiniTable title="Appendix B personas" briefHead="Persona" rows={PERSONAS} />
+        <MiniTable title="Requirements" briefHead="Requirement" rows={PROMPTS} />
+        <MiniTable title="User roles" briefHead="Role" rows={PERSONAS} />
       </div>
     </section>
   );

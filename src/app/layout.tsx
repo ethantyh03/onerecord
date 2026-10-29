@@ -25,8 +25,7 @@ export const metadata: Metadata = {
     default: "OneRecord · Lives Group master data",
     template: "%s · OneRecord",
   },
-  description:
-    "Prototype: one request-and-approval flow for customer, vendor, item and cost-centre master data, handed cleanly to SAP Business One, feeding a trusted regional view. Synthetic, illustrative data.",
+  description: "Request, approve and load customer, vendor, item and cost-centre master data into SAP Business One.",
   robots: { index: false, follow: false },
 };
 

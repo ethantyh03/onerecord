@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { formatSgtDateTime } from "@/components/common/format";
-import { IllustrativeMarker, PanelSection, SectionTitle } from "@/components/common";
+import { PanelSection, SectionTitle } from "@/components/common";
 import { useSandbox } from "@/lib/store";
 import { selectWaitingOn, useNow } from "@/lib/selectors";
 import { SYSTEM_ACTOR_ID } from "@/config/people";
@@ -15,7 +15,7 @@ import type { Person } from "@/lib/types";
 import { runFastForward } from "./use-approval-actions";
 
 /**
- * Demo clock control: +1 / +3 business days runs the SLA check and reports reminders and escalations.
+ * Sandbox clock control: +1 / +3 business days runs the SLA check and reports reminders and escalations.
  * A section of the approvals queue panel (hairline above, ruled sub-title), not a panel of its own.
  */
 export function SimTimePanel() {
@@ -23,7 +23,7 @@ export function SimTimePanel() {
   const sla = useSandbox((s) => s.config.sla);
   return (
     <PanelSection role="group" aria-labelledby="simtime-heading">
-      <SectionTitle id="simtime-heading" as="h3" size="sm" title="Simulated time" actions={<IllustrativeMarker label="Simulated" />} />
+      <SectionTitle id="simtime-heading" as="h3" size="sm" title="Sandbox clock" />
       <div className="mt-2">
         <p className="mono-id text-[1.0625rem] leading-6 text-foreground" data-testid="approvals-sim-time">
           {formatSgtDateTime(now)} SGT
@@ -73,7 +73,7 @@ export function OutOfOfficePanel({ me }: { me: Person }) {
       toast(`Out of office on · approvals go to ${delegate.name}`, {
         description:
           moved > 0
-            ? `${moved} open approval${moved === 1 ? "" : "s"} moved now; ${delegate.name} got the Teams card${moved === 1 ? "" : "s"} (simulated).`
+            ? `${moved} open approval${moved === 1 ? "" : "s"} moved now; ${delegate.name} got the Teams card${moved === 1 ? "" : "s"}.`
             : `Nothing is waiting on you right now. New approvals will go to ${delegate.name}.`,
       });
     } else {

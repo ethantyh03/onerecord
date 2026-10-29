@@ -1,14 +1,13 @@
 "use client";
 
 import { useMemo, useRef } from "react";
-import { backtest, matrix, streams } from "@/data/contract";
+import { backtest, headline, matrix, streams } from "@/data/contract";
 import { useSandbox } from "@/lib/store";
 import { useNow, useStuckDemand } from "@/lib/selectors";
 import { businessDaysBetween } from "@/lib/engine/sla";
 import type { RequestStatus } from "@/lib/types";
-import { IllustrativeMarker } from "@/components/common/badges";
 import { StateGlyph } from "@/components/common/glyph";
-import { LiveMark, Readout, ReadoutDelta, ReadoutStrip, ReadoutUnit } from "@/components/common/readout";
+import { LiveMark, ProportionBar, Readout, ReadoutDelta, ReadoutStrip, ReadoutUnit } from "@/components/common/readout";
 import { formatSgd } from "@/components/common/format";
 import { useHonestyDrawer } from "@/components/pulse/analytics/DataHonestyDrawer";
 import { SEASON_CAVEAT_SHORT } from "@/components/pulse/analytics/caveats";
@@ -30,20 +29,19 @@ function oneDp(n: number): string {
   return Number.isInteger(r) ? String(r) : r.toFixed(1);
 }
 
-/** The strip's one provenance line: what is illustrative, what is live, and the way into "What's real here?". */
+/** The strip's one provenance line: what is live, and the way into "About this data". */
 function StripFootnote() {
   const honesty = useHonestyDrawer();
   return (
     <span className="flex flex-wrap items-center gap-x-5 gap-y-1.5">
-      <IllustrativeMarker label="Illustrative" />
       <LiveMark label="Live from OneRecord" />
       <button
         type="button"
         onClick={() => honesty?.open()}
-        title="What's real here? Limits and caveats"
+        title="About this data: sources, methods and limits"
         className="font-medium text-muted-foreground underline decoration-border-strong underline-offset-4 transition-colors hover:text-foreground hover:decoration-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
       >
-        What&apos;s real here?
+        About this data
       </button>
     </span>
   );
@@ -51,10 +49,15 @@ function StripFootnote() {
 
 const SEEN_KEY = "onerecord-pulse-unblock-seen";
 
+/** Measured on the customer master (summary.json → headlines.duplicates): the same figure as Home. */
+const DUP = headline("duplicates");
+const DUP_PCT = DUP?.baseline ? `${((DUP.value / DUP.baseline) * 100).toFixed(1)}%` : "6.4%";
+const DUP_OF = DUP?.baseline ? `${DUP.value} of ${DUP.baseline}` : "25 of 388";
+
 /**
  * Component 2: six headline readouts in two tiers, order unchanged. Tier one is the demand money
  * (orders, pipeline, stuck), with stuck demand as the large figure in the wider third column; tier
- * two is our own work (setups, forecast, analyst time) at a smaller size. Columns line up across tiers.
+ * two is internal work and data quality (setups, forecast error, duplicate records) at a smaller size. Columns line up across tiers.
  * Stuck demand and MDM work in flight read live from the sandbox.
  */
 export function PulseKpis() {
@@ -166,39 +169,32 @@ export function PulseKpis() {
         label="Setup requests in flight"
         marker={<LiveMark />}
         value={inFlight.count}
-        caption={`Customer, item and vendor setups being approved. Median age ${oneDp(inFlight.medianAge)} business days; ${inFlight.atMdm} waiting for the MDM final check. Our internal work, not demand.`}
+        caption={`Customer, item and vendor setups being approved. Median age ${oneDp(inFlight.medianAge)} business days; ${inFlight.atMdm} waiting for the MDM final check. Internal MDM work, not demand.`}
         footnote="Live from OneRecord."
       />
       <Readout
         size="sm"
-        tone="ok"
         label="Forecast error, Products A and B"
         value={
-          <>
-            <span className="text-muted-foreground line-through decoration-[2px] decoration-muted-foreground/50">
-              {Math.round(h.baselineWape * 100)}
-            </span>
-            <span aria-hidden className="text-muted-foreground">
-              →
-            </span>
-            <span className="sr-only">down to</span>
-            <span>{Math.round(h.oursWape * 100)}</span>
-            <ReadoutUnit className="ml-0">per 100</ReadoutUnit>
-          </>
+          <span>
+            {Math.round(h.oursWape * 100)}
+            <ReadoutUnit>per 100 ordered</ReadoutUnit>
+          </span>
         }
-        caption={`${h.plainBaseline}. ${h.plainOurs}.`}
-        footnote={`Backtested on 6 months the model never saw. ${SEASON_CAVEAT_SHORT}`}
+        caption={`Seasonal model, 1–3 months ahead. Rolling 12-month average: ${Math.round(h.baselineWape * 100)} per 100.`}
+        footnote={`Backtested on 6 held-out months. ${SEASON_CAVEAT_SHORT}`}
       />
       <Readout
         size="sm"
-        label="Analyst time back"
-        value={
-          <span>
-            ≈40<ReadoutUnit>h / month</ReadoutUnit>
-          </span>
+        label="Duplicate customer records"
+        value={DUP_PCT}
+        caption={
+          <>
+            {`${DUP_OF} customer records duplicate a customer already in SAP B1, under another spelling or country code.`}
+            {DUP?.baseline ? <ProportionBar part={DUP.value} whole={DUP.baseline} tone="stuck" /> : null}
+          </>
         }
-        caption="Country analysts no longer extract and reconcile spreadsheets by hand each month."
-        footnote="Assumption A21: 5 analysts × 1 day a month. To confirm in the pilot."
+        footnote="Merged view groups them into one customer each."
       />
     </ReadoutStrip>
   );

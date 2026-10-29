@@ -106,7 +106,7 @@ export const SCENES: Scene[] = [
       "Amy pastes her old email and the form fills itself. Because her blood collection tube is regulated as an IVD medical device, the licence number becomes mandatory and Quality is added to the route automatically: the exact step she missed last time. Before she submits, she sees who approves, in parallel, and when it'll be live.",
     checklist: [
       "In the paste panel, click “Amy's old email”, then “Fill the form”. The chip shows one sensitive value removed.",
-      "Point at the filled fields and the “Rules + cached example” badge.",
+      "Point at the filled fields (each tagged “Auto-filled”) and the “Rules-based extraction” label.",
       "Category reads “Lab consumable – IVD medical device”: the licence no. and certificate turn required and the QA/RA chip slides into the route.",
       "Pick storage “Ambient (15–30 °C)”, type the licence no. HSA-DE-0012345 and attach the sample certificate. Hold on the route: QA/RA · BU Head · Business Support in parallel → MDM, expected live Tue 3 Nov.",
       "Submit. The receipt mentions 3 waiting orders linked (S$36,000).",
@@ -178,7 +178,7 @@ export const SCENES: Scene[] = [
       "Once approved, Priya generates an import file in SAP's Data Transfer Workbench format, with SAP's own field names, and loads it after a final check. The moment it's live, Amy is told, and this number drops: customer orders that were waiting on that one record.",
     checklist: [
       "Click “Generate SAP B1 import”. Hold on the DTW preview with its two header rows.",
-      "Open the simulated Item Master Data window (SIMULATED banner), then the Service Layer tab: validator ✓, “Phase 2 — not sent”.",
+      "Open the Item Master Data window (company LIVES_SANDBOX), then the “Service Layer (planned)” tab: validator ✓, “Planned · not sent”.",
       "Click “Mark created in SAP B1”. Toast: Amy is told her item is live.",
       "Cut to Regional Pulse: stuck demand counts down S$345,800 → S$309,800 (S$36k unblocked).",
     ],

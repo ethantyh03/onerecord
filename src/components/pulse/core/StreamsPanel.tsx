@@ -5,6 +5,7 @@ import { streams, type CountryStreams, type StreamMonth } from "@/data/contract"
 import { useStuckDemand } from "@/lib/selectors";
 import { StateGlyph } from "@/components/common/glyph";
 import { formatSgd } from "@/components/common/format";
+import { STREAMS_LEGEND } from "@/components/pulse/analytics/copy";
 import { Sparkline } from "./Sparkline";
 import { PULSE_COUNTRIES, countCompact, countryName, formatMonth, formatPct, sgdCompact } from "./pulse-format";
 
@@ -108,7 +109,7 @@ export function StreamsPanel() {
     <section aria-labelledby="pulse-streams-title" data-testid="pulse-streams" className="panel overflow-hidden">
       <div className="border-b border-border px-4 py-3">
         <h2 id="pulse-streams-title" className="panel-title flex min-h-7 items-center">
-          Demand and setup work, kept apart
+          Demand and setup work by country
         </h2>
         <p className="mt-1 max-w-[86ch] text-sm leading-snug text-muted-foreground">
           Last 12 months per country, each stream on its own scale. Demand lines cover 24 months (the coloured part is
@@ -120,7 +121,7 @@ export function StreamsPanel() {
         className="flex flex-col gap-2 border-b border-border px-4 py-3 md:flex-row md:items-center md:justify-between md:gap-6"
         data-testid="pulse-streams-legend"
       >
-        <p className="text-sm font-medium text-foreground md:max-w-[62ch]">{streams.legend}</p>
+        <p className="text-sm font-medium text-foreground md:max-w-[62ch]">{STREAMS_LEGEND}</p>
         <ul className="flex flex-wrap gap-x-4 gap-y-1.5 text-xs text-secondary-foreground">
           {[...DEMAND, MDM].map((d) => (
             <li key={d.key} className="inline-flex items-center gap-1.5">
@@ -190,8 +191,7 @@ export function StreamsPanel() {
       <p className="border-t border-border px-4 py-3 text-xs text-muted-foreground">
         Orders are counted on merged customers. Setup requests are counts of internal MDM work and never feed the order
         or growth figures. The only link between the two is stuck demand: a customer request that can&apos;t become an
-        order until a record is set up. Setup lines start in Oct 2025: the synthetic data has no setup history before
-        then, which is not the same as no requests.
+        order until a record is set up. Setup history starts in Oct 2025.
       </p>
     </section>
   );

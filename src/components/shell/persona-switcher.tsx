@@ -18,12 +18,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { PersonAvatar } from "@/components/common/person-avatar";
 
-/** The four people the story follows, in story order, with what each one does. */
+/** The four sandbox personas in workflow order, with what each one does. */
 const STORY: { id: string; does: string }[] = [
   { id: "amy", does: "raises requests" },
   { id: "weijie", does: "approves" },
   { id: "priya", does: "MDM final check" },
-  { id: "marcus", does: "new business unit" },
+  { id: "marcus", does: "raises requests (MLS)" },
 ];
 const STORY_IDS = new Set(STORY.map((s) => s.id));
 
@@ -76,7 +76,7 @@ export function PersonaSwitcher({ className }: { className?: string }) {
     <DropdownMenu>
       <DropdownMenuTrigger
         className={cn(
-          "group/persona flex h-full max-w-[24rem] min-w-0 items-center gap-2.5 px-3 text-left outline-none transition-colors sm:px-4",
+          "group/persona flex h-full max-w-[24rem] min-w-0 items-center gap-2.5 overflow-hidden px-3 text-left outline-none transition-colors sm:px-4",
           "hover:bg-secondary/70 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring data-popup-open:bg-secondary/70",
           className,
         )}
@@ -87,7 +87,7 @@ export function PersonaSwitcher({ className }: { className?: string }) {
           <span className="text-xs text-subtle">Viewing as</span>
           <span className="flex min-w-0 items-baseline gap-2">
             <span className="shrink-0 text-sm font-semibold text-foreground">{current?.name ?? "Choose a persona"}</span>
-            <span className="hidden truncate text-xs text-muted-foreground xl:inline">{current?.title ?? ""}</span>
+            <span className="hidden truncate text-xs text-muted-foreground 2xl:inline">{current?.title ?? ""}</span>
           </span>
         </span>
         <ChevronsUpDown aria-hidden className="size-4 shrink-0 text-subtle group-hover/persona:text-muted-foreground" />
@@ -95,7 +95,7 @@ export function PersonaSwitcher({ className }: { className?: string }) {
 
       <DropdownMenuContent align="start" sideOffset={6} className="max-h-[min(36rem,80dvh)] w-[24rem] overflow-y-auto p-1.5">
         <DropdownMenuGroup>
-          <DropdownMenuLabel className="px-2 pt-2 pb-1">The four in the story</DropdownMenuLabel>
+          <DropdownMenuLabel className="px-2 pt-2 pb-1">Sandbox personas</DropdownMenuLabel>
           {story.map(({ person, does }) => (
             <DropdownMenuItem
               key={person.id}

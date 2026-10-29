@@ -43,7 +43,7 @@ export function TeamsWindow({ request, step, me }: { request: MdmRequest; step: 
     <LightScope
       className="overflow-hidden rounded-xl border border-[#d6d6d6] bg-[#f5f5f5] text-[#242424]"
       style={{ fontFamily: MS_FONT }}
-      aria-label="Microsoft Teams (simulated)"
+      aria-label="Microsoft Teams preview"
     >
       {/* title bar */}
       <div className="flex items-center gap-3 border-b border-[#e0e0e0] bg-[#ebebeb] px-3 py-1">
@@ -60,7 +60,7 @@ export function TeamsWindow({ request, step, me }: { request: MdmRequest; step: 
           <span className="h-6 w-full rounded-[4px] bg-white pl-8 text-[12px] leading-6 text-[#616161]">Search</span>
         </span>
         <span className="rounded-full border border-[#e0b252] bg-[#fff6dc] px-2 py-px text-[11px] font-semibold text-[#5c4300]">
-          Simulated
+          Preview
         </span>
         <MsAvatar person={me} size={22} presence={me.outOfOffice ? "away" : "available"} />
       </div>

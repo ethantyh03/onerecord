@@ -1,7 +1,6 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { RotateCcw } from "lucide-react";
 import { dedup, master } from "@/data/contract";
 import { cn } from "@/lib/utils";
 import { buildCustomerPoints, countByCountry } from "./globe-data";
@@ -87,19 +86,59 @@ function MapKey({ className }: { className?: string }) {
 }
 
 /**
+ * The map's Raw / Merged view, as a small segmented control (buttons with aria-pressed). "Merged" stays
+ * pressed while the duplicates glide in, so the control shows where the map is going.
+ */
+function ViewToggle({ merged, onChange }: { merged: boolean; onChange: (merged: boolean) => void }) {
+  const options = [
+    { merged: false, label: "Raw", title: "Raw SAP records: every customer record, duplicates included" },
+    { merged: true, label: "Merged", title: "Merged customers: each duplicate folded into its customer" },
+  ];
+  return (
+    <div
+      role="group"
+      aria-label="Customer records on the map"
+      className="mt-1.5 inline-flex items-center gap-0.5 rounded-sm border border-border-strong bg-canvas/80 p-0.5"
+    >
+      {options.map((o) => {
+        const active = o.merged === merged;
+        return (
+          <button
+            key={o.label}
+            type="button"
+            title={o.title}
+            aria-pressed={active}
+            data-testid={`home-map-${o.merged ? "merged" : "raw"}`}
+            onClick={() => onChange(o.merged)}
+            className={cn(
+              "h-6 rounded-[3px] px-2 text-[0.8125rem] leading-none font-medium whitespace-nowrap transition-colors focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-ring",
+              active ? "bg-secondary text-foreground" : "text-muted-foreground hover:text-foreground",
+            )}
+          >
+            {o.label}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+/**
  * The facts under the globe, all real: the customer records and their duplicates, with the merge counter
- * (388 customer records → 363 distinct customers, from dedup.json), the open requests the arcs and rings
- * are, the five entities, and what the data is. (The platform line is the badge above the headline.)
+ * (388 customer records → 363 distinct customers, from dedup.json) and the map's Raw / Merged view, the
+ * open requests the arcs and rings are, the five entities, and the map key. (The platform line is the
+ * badge above the headline.)
  */
 export function HeroMeta({
   merge,
   reduce,
-  onReplay,
+  onShowMerged,
   className,
 }: {
   merge: MergeClock;
   reduce: boolean;
-  onReplay: () => void;
+  /** Switch the map to merged customers (true) or raw SAP records (false). */
+  onShowMerged: (merged: boolean) => void;
   className?: string;
 }) {
   const { landed, phase } = useMergeProgress(merge, RECORDS, reduce);
@@ -158,15 +197,7 @@ export function HeroMeta({
             )}
           </Note>
         </div>
-        <button
-          type="button"
-          onClick={onReplay}
-          disabled={phase === "merging"}
-          className="mt-1 inline-flex h-6 items-center gap-1 rounded-sm text-[0.8125rem] font-medium text-foreground underline-offset-2 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:opacity-50"
-        >
-          <RotateCcw aria-hidden className="size-3.5" />
-          Replay merge
-        </button>
+        <ViewToggle merged={phase !== "raw"} onChange={onShowMerged} />
       </MetaCol>
 
       <MetaCol data-testid="home-globe-caption">
@@ -203,7 +234,7 @@ export function HeroMeta({
       </MetaCol>
 
       <MetaCol>
-        <Figure>Synthetic, illustrative data</Figure>
+        <Figure>Map key</Figure>
         <Note>One dot per customer record, placed by postcode area:</Note>
         <MapKey className="mt-1" />
       </MetaCol>

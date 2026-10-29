@@ -1,5 +1,6 @@
 import type { HTMLAttributes, ReactNode } from "react";
 import { cn } from "@/lib/utils";
+import { isBlankMarker } from "./badges";
 
 export interface SectionTitleProps {
   title: ReactNode;
@@ -44,7 +45,7 @@ export function SectionTitle({
         </H>
         {count !== undefined && count !== null ? <span className="num text-sm text-subtle">{count}</span> : null}
         <span aria-hidden className="h-px min-w-6 flex-1 bg-border" />
-        {actions ? <div className="flex shrink-0 items-center gap-2">{actions}</div> : null}
+        {!isBlankMarker(actions) ? <div className="flex shrink-0 items-center gap-2">{actions}</div> : null}
       </div>
       {description ? <p className="mt-1 max-w-[80ch] text-sm leading-snug text-muted-foreground">{description}</p> : null}
     </div>
@@ -59,7 +60,7 @@ export interface ConsolePanelProps extends Omit<HTMLAttributes<HTMLElement>, "ti
   subtitle?: ReactNode;
   /** Controls on the right of the header */
   actions?: ReactNode;
-  /** At most one quiet marker in the header (e.g. <IllustrativeMarker />), before the actions */
+  /** At most one quiet marker in the header (e.g. <IllustrativeMarker label="…" />), before the actions */
   marker?: ReactNode;
   /** The panel's last line: source, caveat, provenance (12px subtle, hairline above, no fill) */
   footnote?: ReactNode;
@@ -89,7 +90,10 @@ export function ConsolePanel({
   children,
   ...rest
 }: ConsolePanelProps) {
-  const hasHeader = title || actions || marker;
+  // A provenance marker without a label renders nothing: treat it as absent so no empty slot is left.
+  const markerShown = !isBlankMarker(marker);
+  const actionsShown = !isBlankMarker(actions);
+  const hasHeader = title || actionsShown || markerShown;
   return (
     <Tag aria-labelledby={title && titleId ? titleId : undefined} {...rest} className={cn("panel min-w-0 overflow-hidden", className)}>
       {hasHeader ? (
@@ -105,17 +109,17 @@ export function ConsolePanel({
             ) : null}
             {subtitle ? <p className="mt-0.5 text-sm leading-snug text-muted-foreground">{subtitle}</p> : null}
           </div>
-          {marker || actions ? (
+          {markerShown || actionsShown ? (
             <div className="flex shrink-0 items-center gap-3">
-              {marker}
-              {actions}
+              {markerShown ? marker : null}
+              {actionsShown ? actions : null}
             </div>
           ) : null}
         </header>
       ) : null}
       <div className={cn("divide-y divide-border", bodyClassName)}>
         {children}
-        {footnote ? <PanelFootnote>{footnote}</PanelFootnote> : null}
+        {!isBlankMarker(footnote) ? <PanelFootnote>{footnote}</PanelFootnote> : null}
       </div>
     </Tag>
   );

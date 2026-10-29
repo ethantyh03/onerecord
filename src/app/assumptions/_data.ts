@@ -27,17 +27,17 @@ export const TAG_META: Record<AssumptionTag, { label: string; cls: string; hint:
   illustrative: {
     label: "Illustrative",
     cls: "border-border bg-secondary text-secondary-foreground",
-    hint: "A plausible value we chose to make the prototype concrete. Replace with real figures in the pilot.",
+    hint: "A plausible value chosen where no figure exists; replace with real figures.",
   },
   research: {
     label: "From research",
     cls: "border-ok/40 bg-ok-soft text-ok-ink",
-    hint: "Taken from a cited public source in our research log.",
+    hint: "Taken from a cited public source.",
   },
   "team-estimate": {
     label: "Team estimate",
     cls: "border-border-strong text-foreground",
-    hint: "Our own estimate, shown with its arithmetic so it can be challenged.",
+    hint: "An internal estimate, shown with its arithmetic so it can be challenged.",
   },
   amended: {
     label: "Amended 28 Oct",
@@ -60,14 +60,13 @@ export const ASSUMPTION_GROUPS: AssumptionGroup[] = [
   {
     id: "company",
     title: "Company and scope",
-    blurb: "Who Lives Group is, for the purposes of this prototype.",
+    blurb: "Where Lives Group operates, its entities, products and currency.",
     items: [
       {
         id: "A1",
         title: "Five countries",
         value: "Singapore (HQ), Malaysia, Thailand, Vietnam, Myanmar.",
-        basis:
-          "The public footprint of the kind of company the case describes. The company itself is never named, because the brief anonymises it on purpose.",
+        basis: "Group footprint.",
         tags: ["research"],
         usedIn: "Regional Pulse, routing time zones",
       },
@@ -76,7 +75,7 @@ export const ASSUMPTION_GROUPS: AssumptionGroup[] = [
         title: "Business entities",
         value:
           "SPD sells Product A (diagnostics) to hospital and diagnostic labs; QTS sells Product C (instruments) to hospitals; QTG sells Product B (lab essentials) to research, industry and hospital labs. Large hospitals buy from all three, so each entity created its own customer record.",
-        basis: "Brief S2 and S4. The shared-customer pattern is the root of the duplicate and cross-sell problem.",
+        basis: "Group structure: shared customers are the root of the duplicate and cross-sell problem.",
         tags: ["illustrative"],
         usedIn: "Intake, duplicate check, Pulse merge toggle",
       },
@@ -85,7 +84,7 @@ export const ASSUMPTION_GROUPS: AssumptionGroup[] = [
         title: "Products",
         value:
           "A = IVD reagents and test kits (recurring, seasonal disease peaks). B = lab consumables (steady, budget-cycle effects). C = instruments (lumpy, tender-driven, fiscal-year flushes). Each instrument installed pulls through Product A demand.",
-        basis: "Brief S2 product groups; the reagent-rental pattern is standard in IVD distribution.",
+        basis: "Product-group definitions; the reagent-rental pattern is standard in IVD distribution.",
         tags: ["illustrative"],
         usedIn: "Pulse matrix, forecast, signals",
       },
@@ -119,7 +118,7 @@ export const ASSUMPTION_GROUPS: AssumptionGroup[] = [
         title: "Record types",
         value:
           "Purchase order (PO) = confirmed order, counted as volume. Purchase request (PR) = intent or accepted quote, shown as pipeline. Enquiry = leading indicator only. Follow-up = excluded. MDM setup request = internal work, never demand; a PR can be blocked by one (stuck demand).",
-        basis: "The brief never defines these terms, so these are our definitions.",
+        basis: "Defined here; no prior definition existed.",
         tags: ["policy"],
         usedIn: "Streams panel, inbound sorting, stuck demand",
       },
@@ -154,7 +153,7 @@ export const ASSUMPTION_GROUPS: AssumptionGroup[] = [
         value:
           "New customer: [BU Head or Sales Manager · Business Support] in parallel → Finance (+ Finance Director if credit limit > S$50k) → MDM. New vendor: [Procurement Head · QA/RA if regulated] → Finance (bank details verified by call-back) → MDM. New item: [QA/RA if IVD or medical device · BU Head · Business Support] → MDM. Cost centre: [Financial Controller · BU Head] → MDM. Extend: Business Support (+ Finance if credit terms change) → MDM.",
         basis:
-          "Built from fragments in S2, App B and App C. Running independent checks in parallel is a policy change from App A's ordered chain, not a software trick.",
+          "Built from current approval practice. Running independent checks in parallel is a policy change from today's ordered chain.",
         tags: ["policy"],
         usedIn: "Route preview, approvals, admin",
       },
@@ -162,7 +161,7 @@ export const ASSUMPTION_GROUPS: AssumptionGroup[] = [
         id: "A10",
         title: "Service levels",
         value:
-          "2 business days per approval step in the approver's local time zone (production configuration; the prototype runs on SGT). Reminder after 1 business day; escalation to the delegate or manager after 3. Asking the requestor a question pauses the step's clock.",
+          "2 business days per approval step in the approver's local time zone (production configuration; the sandbox runs on SGT). Reminder after 1 business day; escalation to the delegate or manager after 3. Asking the requestor a question pauses the step's clock.",
         basis: "Team proposal, sized so the median request finishes within the 4-business-day target.",
         tags: ["policy"],
         usedIn: "Tracker, fast-forward, Teams reminders",
@@ -170,18 +169,17 @@ export const ASSUMPTION_GROUPS: AssumptionGroup[] = [
       {
         id: "A11",
         title: "Cycle time, today vs target",
-        value:
-          "Median 14 days (Amy's took 18) → ≤ 4 business days. Amy's 18 days are from the case brief, Appendix C.",
+        value: "Median 14 days → ≤ 4 business days. Example new item request by email: 18 days.",
         basis:
-          "18 days is App C. The 14-day median sits between S4's \"2–3 weeks\" and App C (see A26). The 2/5/9/2-day split is our breakdown of App C (illustrative).",
+          "The 14-day median sits between the reported 2–3 weeks and the 18-day example (see A26). The 2/5/9/2-day split of the example is an illustrative breakdown.",
         tags: ["illustrative"],
-        usedIn: "Impact page, pitch close",
+        usedIn: "Business case",
       },
       {
         id: "A12",
         title: "Request volume",
         value: "About 80 MDM requests a month group-wide (customers 35, items 30, vendors 10, cost centres 5). Business case shown at 40 / 80 / 120.",
-        basis: "Not in the brief; sized for five countries and three entities, with a sensitivity range.",
+        basis: "Sized for five countries and three entities, with a sensitivity range.",
         tags: ["illustrative"],
         usedIn: "Business case",
       },
@@ -189,7 +187,7 @@ export const ASSUMPTION_GROUPS: AssumptionGroup[] = [
         id: "A13",
         title: "Error rates today",
         value: "40% of requests bounce at least once for missing information. 6% of new customer records duplicate an existing one.",
-        basis: "Illustrative, consistent with App C's bounced request and S4's duplicate complaints. The pilot measures the real duplicate rate on OCRD.",
+        basis: "Consistent with reported bounced requests and duplicate complaints. The pilot measures the real duplicate rate on OCRD.",
         tags: ["illustrative"],
         usedIn: "Business case, duplicate matcher test",
       },
@@ -206,9 +204,9 @@ export const ASSUMPTION_GROUPS: AssumptionGroup[] = [
         value:
           "Canvas Power Apps form on a SharePoint List, Power Automate routing with the standard Approvals connector, Teams and Outlook approvals, Entra ID roles. No new licences for the workflow (phase 1): standard connectors only. The duplicate matcher runs as a nightly job that writes normalised match keys to a SharePoint list via Microsoft Graph; the form does a delegable key and tax-ID lookup, so no premium HTTP connector is needed. Regional Pulse in production = Power BI, with Pro licences for about 10 viewers (≈ USD 14/user/month, approx.) if not already owned.",
         basis:
-          "Microsoft licensing documentation in the research log: Approvals and Teams are standard connectors included with Microsoft 365. Avoids Dataverse to stay clear of premium enforcement.",
+          "Microsoft licensing documentation: Approvals and Teams are standard connectors included with Microsoft 365. Avoids Dataverse to stay clear of premium enforcement.",
         tags: ["research"],
-        usedIn: "Architecture page, business case",
+        usedIn: "Architecture, business case",
       },
       {
         id: "A15",
@@ -226,7 +224,7 @@ export const ASSUMPTION_GROUPS: AssumptionGroup[] = [
         value:
           "Bank details, credit limit and payment terms are visible only to Finance and MDM roles and masked for everyone else. Every reveal is logged.",
         basis:
-          "Role-enforced in the prototype; in production by a restricted SharePoint list with Entra ID permissions.",
+          "Role-enforced in the sandbox; in production by a restricted SharePoint list with Entra ID permissions.",
         tags: ["policy"],
         usedIn: "Teams card, MDM console, tracker",
       },
@@ -234,18 +232,18 @@ export const ASSUMPTION_GROUPS: AssumptionGroup[] = [
         id: "A17",
         title: "Data",
         value:
-          "All data is synthetic, generated from one seed with documented planted patterns, and labelled illustrative everywhere. Customer names are fictional. National University Hospital exists only as a master record for the duplicate demo, with no transactions.",
-        basis: "No real Lives Group data is available. The loader reads a documented CSV schema so real SAP B1 extracts can replace it.",
+          "All sandbox data is synthetic, generated from one seed with documented patterns. Customer names are fictional. National University Hospital exists only as a sample master record for duplicate checks, with no transactions.",
+        basis: "Sandbox data is synthetic; the loader reads the SAP B1 extract schema, so live extracts can replace it.",
         tags: ["illustrative"],
         usedIn: "Every analytics view",
       },
       {
         id: "A18",
         title: "Business-case unit costs",
-        value: "Salaries, licence prices and consultant day rates come from the verified research log, with sources cited. No unsourced numbers.",
-        basis: "Research log of 23 Oct 2026 (four researchers plus a sceptical verifier). The generator reads every value from one parameter file.",
+        value: "Salaries, licence prices and consultant day rates come from sourced research, with sources cited. No unsourced numbers.",
+        basis: "Sourced research, Oct 2026. The generator reads every value from one parameter file.",
         tags: ["research"],
-        usedIn: "Impact page",
+        usedIn: "Business case",
       },
       {
         id: "A27",
@@ -262,7 +260,7 @@ export const ASSUMPTION_GROUPS: AssumptionGroup[] = [
           "In SAP B1 one business-partner record is shared by all entities, so Extend is an update of the existing record: add the entity to the user-defined field U_Entities, plus any Finance-approved payment-terms or credit change, and a new ship-to address row if given. DTW: an oBusinessPartners update row keyed by CardCode. Service Layer: PATCH /b1s/v2/BusinessPartners('C-SG-00017').",
         basis: "Assumes one shared company database with an entity UDF. A per-entity database design would need one record per database instead.",
         tags: ["team-estimate"],
-        usedIn: "Marcus's extension, DTW wizard",
+        usedIn: "Customer extensions, DTW wizard",
       },
     ],
   },
@@ -278,15 +276,15 @@ export const ASSUMPTION_GROUPS: AssumptionGroup[] = [
         basis:
           "Team estimate. S$50/hr is derived from the MOM Occupational Wage Survey 2025 median for a data analyst, plus a 1.8-month bonus and 17% CPF, over 1,872 productive hours. Approver time is not counted.",
         tags: ["team-estimate"],
-        usedIn: "Impact page",
+        usedIn: "Business case",
       },
       {
         id: "A20",
         title: "Cost of a duplicate",
         value: "4 hours of rework per duplicate customer record; 70% intercepted at intake.",
-        basis: "Team estimate, informed by the 1-10-100 data-quality heuristic (research log).",
+        basis: "Team estimate, informed by the 1-10-100 data-quality heuristic.",
         tags: ["team-estimate"],
-        usedIn: "Impact page",
+        usedIn: "Business case",
       },
       {
         id: "A21",
@@ -294,7 +292,7 @@ export const ASSUMPTION_GROUPS: AssumptionGroup[] = [
         value: "5 country analysts × 1 day a month saved = about 40 hours a month.",
         basis: "Team estimate of today's manual extract-and-reconcile work for the regional report.",
         tags: ["team-estimate"],
-        usedIn: "Pulse KPI tile, impact page",
+        usedIn: "Regional Pulse, business case",
       },
       {
         id: "A22",
@@ -303,7 +301,7 @@ export const ASSUMPTION_GROUPS: AssumptionGroup[] = [
           "Lean team 2 people × 6 weeks × 40 h × S$50 = S$24,000; data-science / Power Platform contractor 15 days × S$650 = S$9,750; MDM configuration 48 h = S$2,400; onboarding 150 people × 0.5 h = S$3,750. Run cost 15% a year.",
         basis: "Day rate at the upper end of the research-derived S$450–650 range (low confidence). Run cost from the research range of 15–25%.",
         tags: ["team-estimate", "low-confidence"],
-        usedIn: "Impact page, payback",
+        usedIn: "Business case, payback",
       },
       {
         id: "A23",
@@ -311,33 +309,33 @@ export const ASSUMPTION_GROUPS: AssumptionGroup[] = [
         value:
           "SAP partner 15 days × S$1,500 = S$22,500. Licences for automatic posting: one Process licence USD 150/month + one Premium maker USD 15/month = USD 1,980 a year ≈ S$2,633.",
         basis:
-          "Partner rate derived from a USD 150–350/hr global proxy (low confidence). Licence prices from Microsoft (research log). Pay-as-you-go at USD 0.60 per run is cheaper below about 250 postings a month.",
+          "Partner rate derived from a USD 150–350/hr global proxy (low confidence). Licence prices from Microsoft list pricing. Pay-as-you-go at USD 0.60 per run is cheaper below about 250 postings a month.",
         tags: ["research", "low-confidence"],
-        usedIn: "Impact page, scope",
+        usedIn: "Business case, scope",
       },
       {
         id: "A24",
         title: "Leak rate on stuck demand",
         value: "10% of stuck-demand value is assumed lost to delay. Opportunity column only, never in payback.",
-        basis: "Team assumption through a CFO lens; deliberately kept out of the hard benefit.",
+        basis: "Finance-view assumption; deliberately kept out of the hard benefit.",
         tags: ["team-estimate", "illustrative"],
-        usedIn: "Impact page opportunity column",
+        usedIn: "Business case, opportunity column",
       },
       {
         id: "A25",
         title: "Exchange rate",
         value: "USD 1 = S$1.33.",
-        basis: "Research log range S$1.30–1.35.",
+        basis: "Recent market range S$1.30–1.35.",
         tags: ["research"],
         usedIn: "Licence costs",
       },
       {
         id: "A26",
         title: "Baseline median cycle time",
-        value: "14 calendar days (Amy's case in the case brief, Appendix C: 18).",
-        basis: "Between S4's \"2–3 weeks\" for a request needing five approvals and App C's 18 days.",
+        value: "14 calendar days (example request: 18).",
+        basis: "Between the reported 2–3 weeks for a request needing five approvals and the 18-day example.",
         tags: ["illustrative"],
-        usedIn: "Impact page, pitch close",
+        usedIn: "Business case",
       },
     ],
   },

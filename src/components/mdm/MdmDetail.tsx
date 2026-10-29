@@ -37,7 +37,6 @@ import {
   formatDays,
   formatSgd,
   formatSgtDateTime,
-  IllustrativeMarker,
   Notice,
   PanelSection,
   PersonChip,
@@ -148,8 +147,8 @@ export function MdmDetail({ id }: { id: string }) {
         <BackLink />
         <EmptyState
           icon={FileX2}
-          title={`${id} isn't in this sandbox`}
-          description="It may have been raised before the demo was reset. Pick a request from the MDM queue."
+          title={`${id} wasn't found`}
+          description="It may have been cleared by a sandbox reset. Pick a request from the MDM queue."
           action={
             <Link href="/mdm" className={buttonVariants({ variant: "outline" })}>
               Open the MDM queue
@@ -176,7 +175,7 @@ export function MdmDetail({ id }: { id: string }) {
 
   function notMdm(action: string) {
     toast.error(`Only the MDM team can ${action}`, {
-      description: `${me.name} isn't on the MDM team. Switch persona to Priya Nair (MDM).`,
+      description: `${me.name} isn't on the MDM team. Switch to Priya Nair (MDM) to continue.`,
     });
   }
 
@@ -227,7 +226,7 @@ export function MdmDetail({ id }: { id: string }) {
           description:
             released > 0
               ? "The stuck-demand total drops by exactly the orders that were waiting on this record."
-              : "Teams and Outlook notifications (simulated) sent to the requestor.",
+              : "Teams and Outlook notifications sent to the requestor.",
         },
       );
     } finally {
@@ -328,10 +327,9 @@ export function MdmDetail({ id }: { id: string }) {
               title="SAP B1 hand-off"
               subtitle={
                 isExtend
-                  ? "One business partner record is shared by every entity, so an extension updates the existing record (assumption A28)."
-                  : "Phase 1: MDM imports an approved record with SAP's Data Transfer Workbench after a final check."
+                  ? "One business partner record is shared by every entity, so an extension updates the existing record."
+                  : "MDM imports the approved record into SAP B1 with the Data Transfer Workbench (DTW) after a final check."
               }
-              marker={<IllustrativeMarker label="Simulated" />}
             >
               <PanelSection flush>
                 <ol className="divide-y divide-border">
@@ -372,14 +370,15 @@ export function MdmDetail({ id }: { id: string }) {
                     action={
                       <Link href={sapHref} data-testid="mdm-open-sap" className={cn(buttonVariants({ variant: "outline" }))}>
                         <MonitorCog aria-hidden />
-                        Open in SAP B1 (simulated)
+                        Open in SAP B1
                         <ExternalLink aria-hidden className="size-3.5 opacity-70" />
                       </Link>
                     }
                   >
                     <span>
-                      DTW wizard: {dtwImportMode(domain) === "update" ? "“Update existing objects”, keyed by CardCode" : "“Add new objects”"}.
-                      No SAP licence in the prototype, so SAP B1 is a faithful simulation.
+                      In DTW, choose{" "}
+                      {dtwImportMode(domain) === "update" ? "“Update existing objects” (keyed by CardCode)" : "“Add new objects”"} and load{" "}
+                      {files.length === 1 ? "the file" : files.length === 2 ? "both files" : `all ${files.length} files`}.
                     </span>
                   </HandoffStep>
                   <HandoffStep
@@ -434,10 +433,10 @@ export function MdmDetail({ id }: { id: string }) {
                 <Tabs value={tab} onValueChange={(v) => setTab(v as Tab)}>
                   <TabsList>
                     <TabsTrigger value="dtw" data-testid="mdm-tab-dtw" className="px-3">
-                      DTW import (Phase 1)
+                      DTW import
                     </TabsTrigger>
                     <TabsTrigger value="sl" data-testid="mdm-tab-sl" className="px-3">
-                      Service Layer (Phase 2)
+                      Service Layer (planned)
                     </TabsTrigger>
                   </TabsList>
                   <TabsContent value="dtw" className="pt-3">

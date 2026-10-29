@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 export const DTW_HEADER_NOTE =
-  "Row 1: DI/Service Layer property names · Row 2: database column names (per DTW template convention; confirm against the installed DTW Templates folder)";
+  "Row 1: DI/Service Layer property names · Row 2: database column names (DTW template convention)";
 
 function columnLetter(i: number): string {
   let n = i + 1;
@@ -25,7 +25,7 @@ function columnLetter(i: number): string {
 function download(file: DtwFile, canDownload: boolean) {
   if (!canDownload) {
     toast.error("Only the MDM team can download SAP B1 import files", {
-      description: "The files carry credit terms and bank details. Switch persona to Priya Nair (MDM).",
+      description: "The files carry credit terms and bank details. Switch to Priya Nair (MDM) to download them.",
     });
     return;
   }
@@ -203,8 +203,7 @@ export function DtwPreview({
         </span>
         <span className="inline-flex items-center gap-1.5">
           <RowKey n={2} />
-          <strong className="font-semibold text-foreground">Row 2:</strong> database column names (per DTW template convention;
-          confirm against the installed DTW Templates folder)
+          <strong className="font-semibold text-foreground">Row 2:</strong> database column names (DTW template convention)
         </span>
       </div>
       {files.map((f) => (

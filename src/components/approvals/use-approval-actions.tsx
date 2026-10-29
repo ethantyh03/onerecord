@@ -105,7 +105,7 @@ export function useApprovalActions() {
     } else {
       description = `${step.label} recorded. ${nameOf(request.requestorId)} was told; other reviewers in this stage are still deciding.`;
     }
-    toast.success("Approved · Teams notification sent (simulated)", { description });
+    toast.success("Approved · Teams notification sent", { description });
     return true;
   }, []);
 
@@ -126,7 +126,7 @@ export function useApprovalActions() {
     }
     markStepRead(request.id, step.id);
     toast(`Rejected · ${request.id}`, {
-      description: `${nameOf(request.requestorId)} got your reason in Teams and Outlook (simulated).`,
+      description: `${nameOf(request.requestorId)} got your reason in Teams and Outlook.`,
     });
     return true;
   }, []);
@@ -143,7 +143,7 @@ export function useApprovalActions() {
       return false;
     }
     markStepRead(request.id, step.id);
-    toast(`Question sent to ${nameOf(request.requestorId)} · Teams (simulated)`, {
+    toast(`Question sent to ${nameOf(request.requestorId)} · Teams`, {
       description: "Your step's SLA clock is paused until they answer. The answer comes back to you.",
     });
     return true;
@@ -170,7 +170,7 @@ export function useApprovalActions() {
   return { approve, reject, ask, answer };
 }
 
-/** "+N business days" on the simulated clock, with a toast naming every reminder and escalation it produced. */
+/** "+N business days" on the sandbox clock, with a toast naming every reminder and escalation it produced. */
 export function runFastForward(businessDays: number): void {
   const s = useSandbox.getState();
   const before = snapshotIds();
@@ -189,7 +189,7 @@ export function runFastForward(businessDays: number): void {
       );
     }
   }
-  const label = `Clock moved +${businessDays} business day${businessDays === 1 ? "" : "s"} (simulated)`;
+  const label = `Sandbox clock moved +${businessDays} business day${businessDays === 1 ? "" : "s"}`;
   if (res.reminders + res.escalations === 0) {
     toast(label, { description: "No reminders or escalations due. Every open step is inside its SLA, or already chased." });
     return;

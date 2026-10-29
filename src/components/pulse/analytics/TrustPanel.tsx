@@ -11,11 +11,11 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { Notice, StatusText } from "@/components/common";
+import { StatusText } from "@/components/common";
 import { cleanXMethod, matcherEval, stress, triageEval } from "@/data/contract";
 import type { MessageKind } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { MATCHER_CAVEAT } from "./caveats";
+import { STRESS_TITLE, STRESS_VERDICT, methodNames, stressExpected, stressScenario, triagePlain, triageTestSet } from "./copy";
 import { COUNTRY_NAME, PanelFrame, PlainLine, TipBox, TipRow, VIZ, per100, signedPts } from "./shared";
 
 const KIND_LABEL: Record<MessageKind, string> = {
@@ -26,10 +26,25 @@ const KIND_LABEL: Record<MessageKind, string> = {
   mdm: "MDM setup",
 };
 
-/** One name for our model across the page: "Seasonal model (ours)", ETS only in tooltips. */
+/** One name per method across the page: "Seasonal model" and "Rolling 12-month average", ETS only in tooltips. */
 function plainModel(s: string): string {
-  return s.replace(/\b(?:[Dd]amped |[Ss]easonal )?(?:Holt-Winters )?ETS\b/g, (_m: string, offset: number) =>
-    offset === 0 ? "Seasonal model" : "seasonal model",
+  return methodNames(
+    s
+      .replace(/\b(?:[Dd]amped |[Ss]easonal )?(?:Holt-Winters )?ETS\b/g, (_m: string, offset: number) =>
+        offset === 0 ? "Seasonal model" : "seasonal model",
+      )
+      .replace(/\s*\(ours\)/g, "")
+      .replace(/\(today\)/g, "(current)"),
+  );
+}
+
+/** The clean × method finding, without the slogans. */
+function cleanXSentence(s: string): string {
+  return plainModel(
+    s
+      .replace(/\bour method is worse than today's\b/g, "the seasonal model is worse than the rolling average")
+      .replace(/\s*A better model on dirty data makes things worse\./g, "")
+      .replace(/\s*Clean the data first, then model\./g, ""),
   );
 }
 
@@ -70,9 +85,9 @@ function MatcherSection() {
 
   return (
     <div>
-      <SubHead n="1" title="Duplicate finder, tested on countries it never saw">
-        Threshold tuned on {tunedNames}, then frozen and tested on {heldNames}. The test duplicates include typos, word
-        swaps and romanisation variants the name cleaner was never written for.
+      <SubHead n="1" title="Duplicate finder accuracy">
+        Match threshold set on {tunedNames}, then tested on {heldNames}. Test duplicates include typos, word swaps and
+        romanisation variants.
       </SubHead>
       <div className="grid gap-4 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1fr)_minmax(0,1.15fr)]">
         <div className="space-y-5">
@@ -80,8 +95,8 @@ function MatcherSection() {
           <BigStat value={<span className="num">{Math.round(hm.recall * 100)} of 100</span>} label="Recall" caption={`${m.plain.recall}.`} />
           <p className="text-xs text-muted-foreground">
             Balance of the two (F1) {hm.f1.toFixed(2)} · {hm.tp} found, {hm.fp} false alarm{hm.fp === 1 ? "" : "s"}, {hm.fn}{" "}
-            missed, out of {hm.pairsScored.toLocaleString("en-SG")} candidate pairs ({hm.truePairs} real duplicates). A perfect
-            score would be a warning sign; we expect 0.80–0.97.
+            missed, out of {hm.pairsScored.toLocaleString("en-SG")} candidate pairs ({hm.truePairs} real duplicates). Expected
+            range: 0.80–0.97.
           </p>
         </div>
 
@@ -172,9 +187,6 @@ function MatcherSection() {
         </div>
 
         <div className="space-y-3">
-          <Notice tone="warn" className="leading-snug" data-testid="trust-matcher-caveat">
-            {MATCHER_CAVEAT}
-          </Notice>
           <div>
             <div className="border-b border-border pb-1.5 text-xs font-medium text-muted-foreground">Where it goes wrong, and why</div>
             <ul className="divide-y divide-border">
@@ -206,27 +218,29 @@ function MatcherSection() {
 function StressSection() {
   return (
     <div>
-      <SubHead n="2" title={stress.title}>
-        Same pipeline, three versions of the data. If the seasonal method only won by luck, it would also &ldquo;win&rdquo; on
-        data with no seasons in it.
+      <SubHead n="2" title={STRESS_TITLE}>
+        The same forecast run on three versions of the data. With the seasons taken out, the seasonal model should hold no
+        advantage.
       </SubHead>
       <div className="overflow-x-auto scrollbar-thin">
         <table className="w-full min-w-[520px] text-sm">
           <thead className="text-xs text-subtle">
             <tr className="border-b border-border-strong">
               <th className="px-3 py-2 text-left font-medium">Data</th>
-              <th className="px-3 py-2 text-right font-medium">Today&apos;s</th>
-              <th className="px-3 py-2 text-right font-medium">Ours</th>
-              <th className="px-3 py-2 text-right font-medium whitespace-nowrap">Our lead</th>
+              <th className="px-3 py-2 text-right font-medium">Rolling</th>
+              <th className="px-3 py-2 text-right font-medium">Seasonal</th>
+              <th className="px-3 py-2 text-right font-medium whitespace-nowrap">Lead</th>
               <th className="px-3 py-2 text-left font-medium">Expected</th>
             </tr>
           </thead>
           <tbody>
-            {stress.scenarios.map((s) => (
+            {stress.scenarios.map((s) => {
+              const shown = stressScenario(s.id, s.label, s.description);
+              return (
               <tr key={s.id} className="border-b border-border last:border-b-0">
                 <td className="px-3 py-2">
-                  <div className="font-medium">{s.label}</div>
-                  <div className="text-xs text-muted-foreground">{s.description}</div>
+                  <div className="font-medium">{shown.label}</div>
+                  <div className="text-xs text-muted-foreground">{shown.description}</div>
                 </td>
                 <td className="num px-3 py-2 text-right">{per100(s.baselineWape)}</td>
                 <td className="num px-3 py-2 text-right">{per100(s.oursWape)}</td>
@@ -235,10 +249,11 @@ function StressSection() {
                   <StatusText size="sm" tone={s.passed ? "ok" : "stuck"}>
                     {s.passed ? "As expected" : "Not as expected"}
                   </StatusText>
-                  <div className="text-muted-foreground">{s.expected}</div>
+                  <div className="text-muted-foreground">{stressExpected(s.expected)}</div>
                 </td>
               </tr>
-            ))}
+              );
+            })}
           </tbody>
         </table>
       </div>
@@ -246,7 +261,7 @@ function StressSection() {
         Errors are units off per 100 ordered: Products A and B, all five countries, merged customers, the same six forecast
         dates as the scorecard.
       </p>
-      <PlainLine className="mt-2 text-sm">{stress.verdict}</PlainLine>
+      <PlainLine className="mt-2 text-sm">{STRESS_VERDICT}</PlainLine>
     </div>
   );
 }
@@ -263,12 +278,12 @@ function CleanXMethodSection() {
         <div className="mt-1 text-xs text-muted-foreground">per 100 ordered</div>
         {today ? (
           <StatusText size="sm" tone="neutral" hollow className="mt-1.5">
-            Today
+            Current
           </StatusText>
         ) : null}
         {highlight ? (
           <StatusText size="sm" tone="ok" className="mt-1.5">
-            With OneRecord
+            Clean records
           </StatusText>
         ) : null}
       </div>
@@ -302,7 +317,7 @@ function CleanXMethodSection() {
           Total: <span className="num font-semibold text-foreground">{c.totalImprovementPts.toFixed(1)} pts</span>
         </span>
       </p>
-      <PlainLine className="mt-2 text-sm">{plainModel(c.sentence)}</PlainLine>
+      <PlainLine className="mt-2 text-sm">{cleanXSentence(c.sentence)}</PlainLine>
     </div>
   );
 }
@@ -313,10 +328,10 @@ function TriageSection() {
   const correct = Math.round(t.accuracy * 100);
   return (
     <div>
-      <SubHead n="4" title="Inbox triage rules, tested honestly">
+      <SubHead n="4" title="Inbox triage rules: accuracy">
         Tested on {t.testSetSize} messages written independently of the rules and never used to tune them.
       </SubHead>
-      <p className="-mt-1.5 mb-3 max-w-[100ch] text-xs text-muted-foreground">{t.testSet}</p>
+      <p className="-mt-1.5 mb-3 max-w-[100ch] text-xs text-muted-foreground">{triageTestSet(t.testSet)}</p>
       <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
         <div className="min-w-0 overflow-x-auto">
           <table className="w-full min-w-[440px] border-separate border-spacing-[3px] text-xs" aria-label="Confusion matrix: rows are the true stream, columns are what the rules chose">
@@ -372,7 +387,7 @@ function TriageSection() {
           <BigStat
             value={<span className="num">{correct} of 100</span>}
             label="Sorted into the right stream"
-            caption={t.plain}
+            caption={triagePlain(t.plain)}
           />
           <div>
             <div className="border-b border-border pb-1.5 text-xs font-medium text-muted-foreground">Typical misses</div>
@@ -388,8 +403,8 @@ function TriageSection() {
             </ul>
           </div>
           <p className="text-xs text-muted-foreground">
-            This is why sorting stays a suggestion: a person confirms every message. In production, an in-tenant model would
-            replace the rules (Phase 2).
+            Sorting stays a suggestion: a person confirms every message. An in-tenant AI model is planned to replace the
+            rules.
           </p>
         </div>
       </div>
@@ -397,13 +412,13 @@ function TriageSection() {
   );
 }
 
-/** Component 8: "Can we trust it?" panel. */
+/** Component 8: "Model quality" panel. */
 export function TrustPanel() {
   return (
     <PanelFrame
       testId="trust-panel"
-      title="Can we trust it?"
-      subtitle="Four checks on the methods behind this page, including where they fall short."
+      title="Model quality"
+      subtitle="How the duplicate finder, the forecast and inbox sorting perform, including where they fall short."
     >
       <div className="space-y-8">
         <MatcherSection />

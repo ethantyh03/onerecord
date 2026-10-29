@@ -5,7 +5,7 @@ import type { MdmRequest } from "@/lib/types";
 import { useSandbox } from "@/lib/store";
 import { selectPrsForRequest, useNow } from "@/lib/selectors";
 import { cn } from "@/lib/utils";
-import { PanelFootnote, StatusText, formatSgd } from "@/components/common";
+import { StatusText, formatSgd } from "@/components/common";
 
 const DAY_MS = 86_400_000;
 
@@ -85,9 +85,6 @@ export function BlockedOrdersCard({ request }: { request: MdmRequest }) {
             );
           })}
         </ul>
-      ) : null}
-      {linked.length ? (
-        <PanelFootnote>Synthetic, illustrative orders.</PanelFootnote>
       ) : null}
     </section>
   );

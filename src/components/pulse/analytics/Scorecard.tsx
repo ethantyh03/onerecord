@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { COUNTRY_NAME, PanelFrame, PlainLine, VIZ, per100, signedPts, biasWords } from "./shared";
 import { productCPlan } from "./productC";
 import { SEASON_CAVEAT } from "./caveats";
+import { HEADLINE_ERROR, WIN_LOSS_SENTENCE } from "./copy";
 
 const ORDER = ["SG", "MY", "TH", "VN", "MM"];
 
@@ -23,7 +24,7 @@ function biasShort(b: number): string {
   return `${v > 0 ? "+" : "−"}${Math.abs(v)}%`;
 }
 
-/** Diverging bar for Δ WAPE points: left (teal) = ours better, right (coral) = today's better. */
+/** Diverging bar for Δ WAPE points: left (teal) = seasonal model better, right (amber) = rolling average better. */
 function DeltaBar({ pts, max }: { pts: number; max: number }) {
   const w = Math.min(1, Math.abs(pts) / max) * 50;
   const better = pts < 0;
@@ -88,21 +89,21 @@ export function Scorecard() {
       <div className="mb-4 grid gap-3 md:grid-cols-[1fr_auto] md:items-end">
         <div className="space-y-1">
           <PlainLine>
-            <span className="font-medium text-foreground">Products A and B:</span> {h.plainBaseline}. {h.plainOurs}.
+            <span className="font-medium text-foreground">Products A and B:</span> {HEADLINE_ERROR}.
           </PlainLine>
           <p className="text-sm font-medium text-secondary-foreground" data-testid="scorecard-season-caveat">
             {SEASON_CAVEAT}
           </p>
           <p className="text-sm text-muted-foreground" data-testid="scorecard-winloss">
-            {wl.sentence}
+            {WIN_LOSS_SENTENCE}
           </p>
         </div>
         <div className="flex gap-5 text-sm md:pb-0.5">
           <StatusText tone="ok" className="text-sm">
-            <span className="num font-semibold">{wl.oursWins}</span> ours closer
+            <span className="num font-semibold">{wl.oursWins}</span> seasonal better
           </StatusText>
           <StatusText tone="warn" className="text-sm">
-            <span className="num font-semibold">{wl.baselineWins}</span> today&apos;s closer
+            <span className="num font-semibold">{wl.baselineWins}</span> rolling better
           </StatusText>
         </div>
       </div>
@@ -113,13 +114,13 @@ export function Scorecard() {
           <thead className="text-xs text-subtle">
             <tr className="border-b border-border-strong">
               <th className="px-3 py-2 text-left font-medium">Cell</th>
-              <th className="px-3 py-2 text-right font-medium">Today&apos;s method (rolling 12)</th>
+              <th className="px-3 py-2 text-right font-medium">Rolling 12-month average</th>
               <th className="px-3 py-2 text-right font-medium" title="Damped Holt-Winters exponential smoothing (ETS)">
-                Ours (seasonal model)
+                Seasonal model
               </th>
               <th className="px-3 py-2 text-left font-medium">Difference</th>
               <th className="px-3 py-2 text-right font-medium" title="Bias: + means the method orders too much on average, − too little">
-                Over (+) / under (−) forecast, today / ours
+                Over (+) / under (−) forecast, rolling / seasonal
               </th>
               <th className="px-3 py-2 text-left font-medium">Result</th>
             </tr>
@@ -162,11 +163,11 @@ export function Scorecard() {
                   <td className="px-3 py-2">
                     {loss ? (
                       <StatusText size="sm" tone="warn">
-                        Today&apos;s method wins
+                        Rolling better
                       </StatusText>
                     ) : (
                       <StatusText size="sm" tone="ok">
-                        Ours wins
+                        Seasonal better
                       </StatusText>
                     )}
                   </td>
@@ -215,9 +216,10 @@ export function Scorecard() {
         </table>
       </div>
       <p className="mt-3 text-xs text-muted-foreground">
-        Difference = ours − today&apos;s, in error points; negative means ours is closer. Over/under: today&apos;s method{" "}
-        {biasWords(h.baselineBias)} overall, ours {biasWords(h.oursBias)}. Product C is excluded from the headline: today&apos;s
-        method is off by {per100(backtest.productC.baselineWape)} per 100 and ours by {per100(backtest.productC.oursWape)}.
+        Difference = seasonal − rolling, in error points; negative means the seasonal model is closer. Over/under: the rolling
+        average {biasWords(h.baselineBias)} overall, the seasonal model {biasWords(h.oursBias)}. Product C is excluded from
+        the headline: the rolling average is off by {per100(backtest.productC.baselineWape)} per 100 and the seasonal model by{" "}
+        {per100(backtest.productC.oursWape)}.
         Pipeline-weighted = open PR/tender value for instruments × the country&apos;s historical PR→PO conversion.
       </p>
     </PanelFrame>

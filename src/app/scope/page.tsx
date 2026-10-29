@@ -3,7 +3,7 @@ import { ScopePage } from "@/components/story/scope-page";
 
 export const metadata: Metadata = {
   title: "Scope and roadmap",
-  description: "What we deliberately left out of version 1, why, and the order we would build the rest.",
+  description: "What version 1 covers, what it leaves out and why, and the roadmap.",
 };
 
 export default function Page() {

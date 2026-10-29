@@ -296,7 +296,7 @@ export function RequestsWorkspace() {
           caption={`Requests with a step open more than ${config.sla.stepBusinessDays} business days`}
         />
         <Readout
-          label="Median time to create"
+          label="Median time to SAP B1"
           value={
             hydrated ? (
               // One span so the unit sits 4px after the figure, not a flex gap away.
@@ -309,7 +309,7 @@ export function RequestsWorkspace() {
             )
           }
           caption="Business days from submission to live in SAP B1"
-          footnote="Today by email: median 14 days (Amy's took 18) → ≤ 4 business days"
+          footnote="Target ≤ 4 business days"
         />
       </ReadoutStrip>
 
@@ -327,10 +327,8 @@ export function RequestsWorkspace() {
           </TabsList>
 
           <div className="flex min-w-0 flex-1 items-center justify-end gap-x-4">
-            {tab === "mine" ? (
-              <p className="min-w-0 text-right text-[0.8125rem] leading-5 text-muted-foreground">
-                {me ? `Requests raised by ${me.name}.` : null} Switch persona in the top bar to see someone else&apos;s.
-              </p>
+            {tab === "mine" && me ? (
+              <p className="min-w-0 text-right text-[0.8125rem] leading-5 text-muted-foreground">Requests raised by {me.name}.</p>
             ) : null}
             <div role="group" aria-label="View" className="inline-flex h-8 shrink-0 items-center gap-0.5 rounded-md border border-border bg-canvas p-0.5">
               {VIEWS.map(({ id, label, icon: Icon }) => (
@@ -417,7 +415,7 @@ export function RequestsWorkspace() {
                 size="md"
                 icon={Inbox}
                 className="m-4 border-0"
-                title={`${me?.name ?? "This persona"} hasn't raised any requests`}
+                title={me ? `${me.name} hasn't raised any requests` : "No requests raised yet"}
                 description="Start a request and you can follow every approval here, or look at the whole pipeline."
                 action={
                   <div className="flex flex-wrap justify-center gap-2">
@@ -471,8 +469,7 @@ export function RequestsWorkspace() {
           )}
           {hydrated && rows.length > 0 ? (
             <p className="border-t border-border px-4 py-2.5 text-xs leading-4 text-subtle">
-              {rows.length} request{rows.length === 1 ? "" : "s"} · age in business days (Mon–Fri, SGT) on the simulated clock · synthetic,
-              illustrative data
+              {rows.length} request{rows.length === 1 ? "" : "s"} · age in business days (Mon–Fri, SGT)
             </p>
           ) : null}
         </div>

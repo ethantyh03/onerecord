@@ -279,17 +279,17 @@ interface RecordLabel extends LabelText {
   mono?: boolean;
 }
 
-/** Labels on the records that carry the story (names and facts from dedup.json and the seed). */
+/** Labels on the records worth pointing out (names and facts from dedup.json and the seed). */
 const RECORD_LABELS: RecordLabel[] = [
   {
     code: "C-SG-00074",
     title: "Hosp Taman Seri",
-    sub: "SG-coded copy of a Malaysian hospital",
+    sub: "SG-coded duplicate of C-MY-00066",
     at: [[36, 30], [42, -30], [-36, 22], [36, 64], [-30, 58], [-30, 86], [-46, -34]],
     after: {
       code: "C-MY-00066",
       title: "Hospital Taman Seri",
-      sub: "Back in Malaysia: one record",
+      sub: "C-MY-00066 · SG duplicate merged",
       at: [[-56, -22], [-48, 26], [-60, 6], [52, -30], [-40, -52], [40, 30]],
     },
   },
@@ -301,7 +301,7 @@ const RECORD_LABELS: RecordLabel[] = [
     after: {
       code: "C-MY-00029",
       title: "Bukit Damai Specialist Hospital",
-      sub: "One customer, #2 in Malaysia",
+      sub: "1 customer · #2 in Malaysia by sales",
       at: [[-64, 30], [-40, 58], [70, 36], [-70, -24], [24, -40]],
     },
   },

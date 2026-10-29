@@ -220,7 +220,7 @@ export function revenueAtRiskSgd(stuckDemandSgd: number, i: BusinessCaseInputs =
 }
 
 // ---------------------------------------------------------------------------------------------
-// §6.7 Where Amy's 18 days go (our breakdown of App C, illustrative)
+// §6.7 Where 18 days go: one new item request by email (illustrative breakdown)
 
 export type FixKind = "tooling" | "process";
 
@@ -388,19 +388,19 @@ export const ALTERNATIVES: Alternative[] = [
 // Sources shown on hover
 
 export const SOURCES = {
-  rate: "S$50/h loaded cost: MOM Occupational Wage Survey 2025 median + 1.8-month AVC + 17% CPF ÷ 1,872 h (derived; research log). Approver time is not counted.",
-  volume: "A12 (illustrative): 40 / 80 / 120 requests a month; 35 of 80 are customers.",
+  rate: "S$50/h loaded cost: MOM Occupational Wage Survey 2025 median + 1.8-month AVC + 17% CPF ÷ 1,872 h (derived). Approver time is not counted.",
+  volume: "A12 (illustrative): 40 / 80 / 120 requests a month, base case 80; 35 of 80 are customers.",
   a19: "A19 (team estimate): 1.25 h per request = rework 0.40 (40% bounce × 1.0 h) + forwarding and chasing 0.50 + keying vs import file 0.35.",
-  a20: "A20 (team estimate): 6% of new customer records are duplicates (A13); 70% caught at intake; 4 h rework each (1-10-100 heuristic, research log).",
+  a20: "A20 (team estimate): 6% of new customer records are duplicates (A13); 70% caught at intake; 4 h rework each (1-10-100 data-quality heuristic).",
   a21: "A21 (team estimate): 5 country analysts × 1 day a month of manual consolidation = 40 h/month.",
   a22: "A22: lean team 2 × 6 weeks × 40 h × S$50 = S$24,000; contractor 15 days × S$650 = S$9,750; MDM config 48 h = S$2,400; onboarding 150 people × 0.5 h = S$3,750. Day rate is the upper end of S$450–650 (low confidence).",
   run: "Run cost 15% of the one-off per year (research range 15–25%).",
   a23: "A23 (low confidence): SAP partner 15 days × S$1,500/day, derived from a US$150–350/h global proxy.",
-  licences: "Process licence USD 150/month + 1 Premium maker USD 15/month = USD 1,980/yr × 1.33 (A25). Microsoft pricing (research log).",
+  licences: "Process licence USD 150/month + 1 Premium maker USD 15/month = USD 1,980/yr × 1.33 (A25). Microsoft list pricing.",
   payg: "Pay-as-you-go USD 0.60 per premium flow run (preview); cheaper than a Process licence below 250 runs a month.",
-  a24: "A24 (team assumption, CFO lens): 10% of stuck demand leaks away. Opportunity column only, never in payback.",
-  a26: "A26: baseline median 14 calendar days, between the brief's '2–3 weeks' and Amy's 18 (case brief, Appendix C).",
+  a24: "A24 (assumption): 10% of stuck demand leaks away. Opportunity column only, never in payback.",
+  a26: "A26: baseline median 14 calendar days for an email request (example new item: 18).",
   apqc: "APQC Open Standards Benchmarking: median 3.0 calendar days to set up a supplier (3,047 organisations).",
-  edge: "EDGE (EnterpriseSG, from 30 Sep 2026): up to 50% of third-party costs for SMEs, S$30k digital sub-cap. Applies only if Lives qualifies as an SME on the turnover test.",
-  fte: "1,872 working hours per FTE-year (research log).",
+  edge: "EDGE (EnterpriseSG, from 30 Sep 2026): up to 50% of third-party costs for SMEs, S$30k digital sub-cap. Applies only if Lives Group qualifies as an SME on the turnover test.",
+  fte: "1,872 working hours per FTE-year.",
 } as const;

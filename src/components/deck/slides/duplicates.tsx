@@ -296,7 +296,7 @@ function DotField({ play, delayMs }: { play: boolean; delayMs: number }) {
             {count}
           </span>
           <span className={cn("text-[34px] leading-none transition-opacity duration-300", done ? "text-foreground opacity-100" : "opacity-0")}>
-            real customers
+            distinct customers
           </span>
         </p>
         <p className="mt-9 flex items-center gap-7 text-[22px] leading-[28px] text-subtle">

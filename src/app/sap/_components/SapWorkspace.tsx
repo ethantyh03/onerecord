@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Database, FileInput, Info, Network } from "lucide-react";
+import { Database, FileInput, Network } from "lucide-react";
 import { LightScope, PageHeader } from "@/components/common";
 import { useSandbox } from "@/lib/store";
 import { DtwWizard } from "./DtwWizard";
@@ -15,7 +15,7 @@ type Tab = "dtw" | "master" | "sl";
 const TABS: { id: Tab; label: string; window: string }[] = [
   { id: "dtw", label: "Data Transfer Workbench", window: "Data Transfer Workbench · Import Business Object" },
   { id: "master", label: "Master Data", window: "Business Partner / Item Master Data" },
-  { id: "sl", label: "Service Layer (Phase 2)", window: "Service Layer API · /b1s/v2" },
+  { id: "sl", label: "Service Layer (planned)", window: "Service Layer API · /b1s/v2" },
 ];
 
 function isTab(v: string | null): v is Tab {
@@ -58,14 +58,8 @@ export function SapWorkspace() {
   return (
     <div className="w-full">
       <PageHeader
-        title="SAP Business One — simulated sandbox"
-        subtitle="What the MDM team does after the final check: load the ready-made import files (SAP’s Data Transfer Workbench), open the new record, and preview Phase 2, where the record posts itself to SAP."
-        meta={
-          <span className="inline-flex min-h-5 items-center gap-1.5 rounded-sm border border-border-strong px-1.5 py-0.5 text-xs text-muted-foreground">
-            <Info className="size-3.5 shrink-0 text-subtle" aria-hidden="true" />
-            Simulated for the prototype — production uses DTW import (Phase 1) and the Service Layer API (Phase 2)
-          </span>
-        }
+        title="SAP Business One"
+        subtitle="Load approved records with SAP’s Data Transfer Workbench, open the new record, and preview the Service Layer request (planned)."
       />
 
       {/* The SAP Business One look-alike keeps its native light desktop-client look inside the dark console. */}
@@ -90,16 +84,16 @@ export function SapWorkspace() {
         }
         status={
           <>
-            <span>Company: LIVES_SANDBOX (simulated)</span>
+            <span>Company: LIVES_SANDBOX</span>
             <span className="text-[#8fa1b3]">|</span>
             <span>Branch: {companyCountry}</span>
             <span className="text-[#8fa1b3]">|</span>
             <span>{recordCount} record(s) in sandbox</span>
-            <span className="ml-auto hidden sm:inline">Version 10.0 FP 2602 (assumed)</span>
+            <span className="ml-auto hidden sm:inline">Version 10.0 FP 2602</span>
           </>
         }
       >
-        <SapTabs ariaLabel="SAP sandbox views" className="bg-[#e4eaf0] pt-2" value={tab} onChange={setTab} tabs={TABS} />
+        <SapTabs ariaLabel="SAP Business One views" className="bg-[#e4eaf0] pt-2" value={tab} onChange={setTab} tabs={TABS} />
         {/* All views stay mounted so an in-progress import survives a look at Master Data. */}
         <div className="bg-[#f6f8fa]">
           <div hidden={tab !== "dtw"}>

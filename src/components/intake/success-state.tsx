@@ -49,7 +49,6 @@ export function SuccessState({ request, people, prs, onNew }: SuccessStateProps)
           {request.expectedBy ? (
             <p className="mt-2 text-[0.9375rem] text-secondary-foreground">
               Expected live in SAP B1: <strong className="font-wide num font-semibold text-foreground">{formatLiveDate(request.expectedBy)}</strong>
-              <span className="text-muted-foreground"> · today by email: median 14 days</span>
             </p>
           ) : null}
         </div>
@@ -73,7 +72,6 @@ export function SuccessState({ request, people, prs, onNew }: SuccessStateProps)
         <div className="px-6 py-4">
           <p className="text-sm font-medium text-foreground" data-testid="success-teams">
             Teams approval cards sent to {recipients.length ? joinNames(recipients.map((p) => p.name)) : "the approvers"}
-            <span className="ml-3 border-l border-border-strong pl-3 text-xs font-normal text-subtle">Simulated</span>
           </p>
           {recipients.length ? (
             <ul className="mt-2.5 flex flex-wrap gap-x-5 gap-y-2" aria-label="Approvers notified">

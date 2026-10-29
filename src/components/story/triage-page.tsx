@@ -5,13 +5,11 @@ import Link from "next/link";
 import { ArrowUpRight, Check, FilePlus2, FlaskConical, TriangleAlert } from "lucide-react";
 import {
   EmptyState,
-  IllustrativeMarker,
   Notice,
   PageHeader,
   Phase2Badge,
   Readout,
   ReadoutStrip,
-  SyntheticBadge,
   formatSgtDateTime,
 } from "@/components/common";
 import { buttonVariants } from "@/components/ui/button";
@@ -19,7 +17,7 @@ import { inbox, triageEval, type InboxMessage } from "@/data/contract";
 import { classifyMessage } from "@/lib/engine/triage";
 import type { MessageKind } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { Figure, LINK, Panel, SectionHeading } from "./story-ui";
+import { LINK, Panel, SectionHeading } from "./story-ui";
 
 const KINDS: MessageKind[] = ["po", "pr", "enquiry", "followup", "mdm"];
 
@@ -114,30 +112,25 @@ export function TriagePage() {
     <div className="w-full space-y-6 pb-10">
       <PageHeader
         title="Inbox triage"
-        subtitle="Everything that lands in the shared sales mailbox, sorted into five streams with the reason for each. Customer demand and our own setup work are never mixed."
-        meta={
-          <>
-            <SyntheticBadge label="Fictional sample messages" />
-          </>
-        }
+        subtitle="Everything that lands in the shared sales mailbox, sorted into five streams with the reason for each."
       />
 
       {/* Sits flush under the page header, whose hairline is its top rule */}
       <Notice
         tone="phase2"
-        lead={<span className="text-foreground">Rules-based today; Phase 2: in-tenant LLM triage on the shared mailbox.</span>}
-        action={<Phase2Badge label="LLM triage" className="mt-2" />}
+        lead={<span className="text-foreground">Sorted by rules.</span>}
+        action={<Phase2Badge label="AI triage" className="mt-2" />}
         className="border-b border-border py-3"
       >
-        Every message is sorted live in your browser by transparent rules. No AI service is called.
+        Each message shows the rule that matched.
       </Notice>
 
       {/* ---------------------------------------------------------------- streams */}
       <section aria-labelledby="streams-title">
         <SectionHeading
           id="streams-title"
-          title="Five streams, five different jobs"
-          subtitle="Only purchase orders count as demand. The others are pipeline, early signals, service or our own internal work."
+          title="Streams"
+          subtitle="Only purchase orders count as demand. The others are pipeline, early signals, service or internal work."
         />
         <ReadoutStrip columns="auto" gridClassName="lg:[&>[data-lead]]:flex-[1.25]">
           {KINDS.map((k) => {
@@ -181,10 +174,10 @@ export function TriagePage() {
         {/* ---------------------------------------------------------------- inbox */}
         <Panel
           titleId="inbox-title"
-          title="The mailbox, sorted"
+          title="Shared mailbox"
           description={
             labelled.length
-              ? `On these ${labelled.length} sample messages the rules agree with a person's label on ${agree}.`
+              ? `${agree} of ${labelled.length} reviewed messages confirmed by the team.`
               : "Each message shows the stream it was sorted into and why."
           }
           flush
@@ -208,7 +201,7 @@ export function TriagePage() {
             <div className="p-4">
               <EmptyState
                 title={classified.length ? "No messages in this stream" : "The mailbox is empty"}
-                description={classified.length ? "Pick another stream above, or show all messages." : "Sample messages appear here once the data pipeline has run."}
+                description={classified.length ? "Pick another stream above, or show all messages." : "Messages appear here once the shared mailbox is connected."}
               />
             </div>
           ) : (
@@ -279,11 +272,11 @@ function MessageRow({ c }: { c: Classified }) {
           <h3 className="min-w-0 text-[0.9375rem] leading-5 font-semibold text-foreground">{c.msg.subject}</h3>
           {agrees === null ? null : agrees ? (
             <span className="inline-flex shrink-0 items-center gap-1 text-xs text-subtle">
-              <Check aria-hidden className="size-3.5" /> Matches a person&apos;s label
+              <Check aria-hidden className="size-3.5" /> Confirmed
             </span>
           ) : (
             <span className="inline-flex shrink-0 items-center gap-1 text-xs font-medium text-warn-ink">
-              <TriangleAlert aria-hidden className="size-3.5" /> A person labelled it {KIND_META[human!].label.toLowerCase()}
+              <TriangleAlert aria-hidden className="size-3.5" /> Team corrected to {KIND_META[human!].label.toLowerCase()}
             </span>
           )}
         </div>
@@ -315,117 +308,39 @@ function MessageRow({ c }: { c: Classified }) {
 
 function EvalCard() {
   const e = triageEval;
-  const valid =
-    e &&
-    e.testSetSize > 0 &&
-    Array.isArray(e.labels) &&
-    e.labels.length > 0 &&
-    Array.isArray(e.confusion) &&
-    e.confusion.length === e.labels.length;
+  const valid = e && e.testSetSize > 0 && Number.isFinite(e.accuracy);
 
   if (!valid) {
     return (
-      <Panel as="aside" titleId="eval-title" title="How well do the rules sort?" className="xl:sticky xl:top-[4.5rem]">
+      <Panel as="aside" titleId="eval-title" title="Sorting accuracy" className="xl:sticky xl:top-[4.5rem]">
         <EmptyState
           size="sm"
           icon={FlaskConical}
-          title="No test results yet"
-          description="The accuracy check runs on a separate set of messages written independently of the rules. Run the analytics pipeline to fill it in."
+          title="No accuracy check yet"
+          description="Accuracy is checked on a separate set of labelled messages. Results appear after the next check."
         />
       </Panel>
     );
   }
 
-  const max = Math.max(1, ...e.confusion.flat());
   const pct = Math.round(e.accuracy * 100);
 
   return (
     <Panel
       as="aside"
       titleId="eval-title"
-      title="How well do the rules sort?"
-      description={`Tested on ${e.testSetSize} messages written independently of the rules.`}
-      action={<IllustrativeMarker />}
+      title="Sorting accuracy"
+      description={`Last check: ${e.testSetSize} labelled messages, not used to write the rules.`}
       className="xl:sticky xl:top-[4.5rem]"
       testId="triage-eval"
     >
-      <div className="flex items-end gap-4">
-        <div>
-          <p className="num font-wide text-[2.25rem] leading-none font-semibold text-foreground">{pct}%</p>
-          <p className="mt-1 text-xs text-muted-foreground">sorted into the right stream</p>
-        </div>
-        <div className="pb-1 text-sm text-secondary-foreground">
-          Each of the five streams scores about the same (
-          <Figure
-            formula={
-              <>
-                Macro-averaged F1 score across the five streams: {e.macroF1.toFixed(2)}. F1 balances how many of a stream&apos;s messages the rules catch
-                with how many they wrongly add.
-              </>
-            }
-          >
-            ≈{Math.round(e.macroF1 * 100)}%
-          </Figure>
-          )
-        </div>
-      </div>
-      <p className="mt-3 text-sm text-foreground">{e.plain}</p>
-
-      <div className="mt-4 border-t border-border pt-3">
-        <p className="mb-1.5 text-xs font-medium text-muted-foreground">Rows: what it really was · Columns: where the rules put it</p>
-        <table className="w-full table-fixed border-separate border-spacing-[3px] text-center text-[0.8125rem]">
-          <caption className="sr-only">Confusion matrix: actual stream by predicted stream</caption>
-          <thead>
-            <tr>
-              <th className="w-[26%]" />
-              {e.labels.map((l) => (
-                <th key={l} scope="col" className="pb-1 text-xs font-medium text-muted-foreground">
-                  {shortKind(l)}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {e.labels.map((actual, r) => (
-              <tr key={actual}>
-                <th scope="row" className="pr-1 text-left text-xs font-medium text-muted-foreground">
-                  {shortKind(actual)}
-                </th>
-                {e.labels.map((pred, ci) => {
-                  const v = e.confusion[r]?.[ci] ?? 0;
-                  const diag = r === ci;
-                  const share = v / max;
-                  return (
-                    <td
-                      key={pred}
-                      title={`${v} ${KIND_META[actual]?.label ?? actual} message${v === 1 ? "" : "s"} sorted as ${KIND_META[pred]?.label ?? pred}`}
-                      className={cn("num h-9 rounded-[2px] font-medium", diag ? "font-semibold" : "", v === 0 && "text-subtle")}
-                      style={{
-                        background:
-                          v === 0 ? "var(--secondary)" : `color-mix(in oklch, ${diag ? "var(--ok)" : "var(--stuck)"} ${Math.round(14 + share * 66)}%, var(--card))`,
-                        color: v > 0 && share > 0.55 ? (diag ? "var(--ok-foreground)" : "var(--stuck-foreground)") : undefined,
-                      }}
-                    >
-                      {v}
-                    </td>
-                  );
-                })}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <p className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground">
-          <span className="inline-flex items-center gap-1.5">
-            <span aria-hidden className="size-2 rounded-[1px]" style={{ background: "var(--ok)" }} /> Right stream
-          </span>
-          <span className="inline-flex items-center gap-1.5">
-            <span aria-hidden className="size-2 rounded-[1px]" style={{ background: "var(--stuck)" }} /> Wrong stream
-          </span>
-        </p>
+      <div>
+        <p className="num font-wide text-[2.25rem] leading-none font-semibold text-foreground">{pct}%</p>
+        <p className="mt-1 text-xs text-muted-foreground">sorted into the right stream</p>
       </div>
 
       {Array.isArray(e.perClass) && e.perClass.length ? (
-        <ul className="mt-3 divide-y divide-border border-t border-border text-[0.8125rem]">
+        <ul className="mt-4 divide-y divide-border border-y border-border text-[0.8125rem]">
           {e.perClass.map((p) => (
             <li key={p.kind} className="flex justify-between gap-3 py-1.5">
               <span className="inline-flex items-center gap-2 text-secondary-foreground">
@@ -438,27 +353,15 @@ function EvalCard() {
         </ul>
       ) : null}
 
-      <Notice tone="warn" className="mt-3 border-t border-border pt-3 [&>div]:text-foreground">
-        Rules alone miss many tricky messages, so every sort shows its reasons and a person confirms the routing. Phase 2 replaces the rules with an
-        in-tenant LLM reading the shared mailbox.
+      <p className="mt-3 text-sm text-secondary-foreground">
+        Every sort shows its reasons, and a person confirms the routing.{" "}
+        <Link href="/pulse#pulse-more-trust" className={cn("font-medium", LINK)}>
+          Full breakdown in Regional Pulse
+        </Link>
+      </p>
+      <Notice tone="phase2" className="mt-3 border-t border-border pt-3 [&>div]:text-foreground">
+        Planned: an in-tenant AI model reading the shared mailbox replaces the rules.
       </Notice>
     </Panel>
   );
-}
-
-function shortKind(k: MessageKind): string {
-  switch (k) {
-    case "po":
-      return "PO";
-    case "pr":
-      return "PR";
-    case "enquiry":
-      return "Enquiry";
-    case "followup":
-      return "Follow-up";
-    case "mdm":
-      return "MDM";
-    default:
-      return String(k);
-  }
 }

@@ -4,7 +4,6 @@ import { useMemo, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { ScrollText } from "lucide-react";
 import {
-  IllustrativeMarker,
   PageHeader,
   Phase2Badge,
   Readout,
@@ -76,13 +75,8 @@ export function ImpactPage() {
   return (
     <div className="w-full space-y-8 pb-10">
       <PageHeader
-        title="The business case"
+        title="Business case"
         subtitle="What OneRecord saves, what it costs and when it pays back. Only hard savings (hours released) count towards payback; delayed revenue and growth signals sit in their own columns."
-        meta={
-          <Link href="/assumptions#group-business" className="rounded-sm outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring">
-            <NoteChip>Every input labelled, A12–A26</NoteChip>
-          </Link>
-        }
         actions={
           <Link href="/assumptions" className={buttonVariants({ variant: "outline" })}>
             <ScrollText aria-hidden />
@@ -107,8 +101,8 @@ export function ImpactPage() {
               </span>
             </Figure>
           }
-          caption="Median 14 days (Amy's took 18) → ≤ 4 business days. Amy's item is from the case brief (Appendix C)."
-          footnote="A26 · APQC benchmark 3.0 days"
+          caption="Email baseline median 14 calendar days → target ≤ 4 business days."
+          footnote="APQC benchmark 3.0 days"
         />
         <Readout
           label="Hours back a year"
@@ -126,7 +120,7 @@ export function ImpactPage() {
             </Figure>
           }
           caption={`About ${c.fte.toFixed(2)} of a full-time person, at ${volume} requests a month`}
-          footnote="A19–A21 · valued at S$50/h"
+          footnote="Valued at S$50/h"
         />
         <Readout
           label="Phase-1 payback"
@@ -143,7 +137,7 @@ export function ImpactPage() {
             </Figure>
           }
           caption={`On a ${formatSgd(oneOff)} one-off; hard hours only, at ${volume} requests a month`}
-          footnote="A22 · run cost 15%/yr deducted"
+          footnote="Run cost 15%/yr deducted"
         />
         <Readout
           label="New workflow licences, phase 1"
@@ -153,7 +147,7 @@ export function ImpactPage() {
             </Figure>
           }
           caption="No new licences for the workflow (phase 1): standard connectors only. Power BI Pro only if not owned."
-          footnote="Research log: Microsoft licensing"
+          footnote="Source: Microsoft licensing"
         />
       </ReadoutStrip>
 
@@ -163,7 +157,7 @@ export function ImpactPage() {
           as="div"
           titleId="calc-title"
           title="Try a different volume"
-          description="Lives Group has not published its request volume, so we show three cases. Pick one, or drag the slider; every number on this page follows."
+          description="Request volume isn't tracked yet, so the model shows three scenarios. Pick one, or drag the slider; every number on this page follows."
           bodyClassName="flex flex-col gap-5 lg:flex-row lg:items-center"
         >
           <div className="shrink-0 lg:min-w-[8.5rem]">
@@ -201,7 +195,9 @@ export function ImpactPage() {
             />
             <span className="num flex justify-between gap-4 text-xs text-muted-foreground">
               <span>{VOLUME_MIN}</span>
-              <span className="text-center">{SOURCES.volume}</span>
+              <Figure formula={SOURCES.volume} className="text-center">
+                Scenarios: 40 · 80 · 120 a month
+              </Figure>
               <span>{VOLUME_MAX}</span>
             </span>
           </label>
@@ -266,7 +262,7 @@ export function ImpactPage() {
               },
               {
                 label: "Median cycle time",
-                value: <Figure formula={SOURCES.a26}>median 14 days (Amy&apos;s took 18) → ≤ 4 business days</Figure>,
+                value: <Figure formula={SOURCES.a26}>median 14 days → ≤ 4 business days</Figure>,
               },
               {
                 label: "Outside benchmark",
@@ -278,7 +274,7 @@ export function ImpactPage() {
               },
               {
                 label: "Approver time saved",
-                value: <Figure formula="Approvers cost S$85–110/h. Their time is real but deliberately left out of the case.">Not counted</Figure>,
+                value: <Figure formula="Approvers cost S$85–110/h. Their time is real but deliberately left out of the business case.">Not counted</Figure>,
               },
               {
                 label: "Status chasing",
@@ -400,7 +396,7 @@ export function ImpactPage() {
           title="Why automatic SAP posting is not in v1"
           level={3}
           action={<Phase2Badge />}
-          footer={<span className="text-sm font-medium text-foreground">Phase 2 is justified by speed (same-day posting) or scale, not hours. We decide after the pilot.</span>}
+          footer={<span className="text-sm font-medium text-foreground">Phase 2 is justified by speed (same-day posting) or scale, not hours. Decision after the pilot.</span>}
         >
           <p className="text-sm text-secondary-foreground">
             Posting straight to SAP B1 through the Service Layer only removes the import step MDM already does in minutes.
@@ -425,7 +421,7 @@ export function ImpactPage() {
         <SectionHeading
           id="amy-title"
           title="Where the time goes, and what fixes it"
-          subtitle="Amy needed one new item code. It took eighteen days, a bounced request and three approvers one at a time — and her sales order still failed."
+          subtitle="A typical new item request by email today: 18 days, a bounced request and three approvers one at a time."
         />
         <AmyWaterfall />
         <p className="mt-3 max-w-[110ch] text-sm text-muted-foreground">
@@ -438,7 +434,7 @@ export function ImpactPage() {
       <Panel
         titleId="alt-title"
         title="Why this, and not something else"
-        description="Six ways to fix master-data requests, scored on what the brief asks for."
+        description="Six ways to fix master-data requests, scored on the requirements."
         flush
         footer="SAP Learning: B1 approval procedures can be set up for sales, purchasing, inventory and payment documents. Legend: ✓ yes · ~ partly · ✗ no · – not applicable."
       >
@@ -492,7 +488,7 @@ export function ImpactPage() {
               </dl>
             </div>
             <div className="p-4">
-              <h3 className="text-sm font-semibold text-foreground">What we measure</h3>
+              <h3 className="text-sm font-semibold text-foreground">What the pilot measures</h3>
               <ul className="mt-3 space-y-2 text-sm">
                 <KpiLine target="≥90%" what="of requests come through OneRecord by week 6" />
                 <KpiLine target="≤4 business days" what="median setup time (baseline 14 calendar days)" />
@@ -524,7 +520,7 @@ export function ImpactPage() {
       </section>
 
       {/* ---------------------------------------------------------------- EDGE */}
-      <Panel titleId="edge-title" title="Upside, not in the base case" action={<NoteChip tone="warn">Only if Lives qualifies as an SME</NoteChip>}>
+      <Panel titleId="edge-title" title="Upside, not in the base case" action={<NoteChip tone="warn">Only if Lives Group qualifies as an SME</NoteChip>}>
         <p className="max-w-[110ch] text-sm leading-relaxed text-secondary-foreground">
           An EDGE grant could cover{" "}
           <Figure formula={`50% × (contractor ${formatSgd(I.contractorSgd)} + SAP partner ${formatSgd(I.sapPartnerSgd)}) = ${formatSgd(edge.grantSgd)}. ${SOURCES.edge}`}>
@@ -558,27 +554,22 @@ function BenefitColumn({
   note,
   tone,
   rows,
-  marker,
   footer,
 }: {
   title: string;
   note: string;
   tone: StateTone;
   rows: BenefitRow[];
-  marker?: ReactNode;
   footer?: ReactNode;
 }) {
   return (
     <section className="flex flex-col border-border not-first:border-t lg:row-span-3 lg:grid lg:grid-rows-subgrid lg:not-first:border-t-0 lg:not-first:border-l">
-      <header className="flex flex-wrap items-start justify-between gap-x-3 gap-y-1 border-b border-border px-4 py-2.5">
-        <div className="min-w-0">
-          <h3 className="panel-title flex items-center gap-2">
-            <StateGlyph tone={tone} />
-            {title}
-          </h3>
-          <p className="mt-0.5 text-sm leading-5 text-muted-foreground">{note}</p>
-        </div>
-        {marker ? <div className="pt-0.5">{marker}</div> : null}
+      <header className="border-b border-border px-4 py-2.5">
+        <h3 className="panel-title flex items-center gap-2">
+          <StateGlyph tone={tone} />
+          {title}
+        </h3>
+        <p className="mt-0.5 text-sm leading-5 text-muted-foreground">{note}</p>
       </header>
       <dl className="flex-1 divide-y divide-border">
         {rows.map((r) => (
@@ -628,7 +619,7 @@ function OpportunityColumn() {
       {
         label: "Accounts dropping off",
         value: (
-          <Figure formula={`Trailing-12-month value of flagged accounts, at risk before any save. Assumed save rate ${Math.round(a.dropOffSaveRate * 100)}%. From signals.json.`}>
+          <Figure formula={`Trailing-12-month value of flagged accounts, at risk before any save. Assumed save rate ${Math.round(a.dropOffSaveRate * 100)}%. From Regional Pulse signals.`}>
             {millions(t.dropOffAddressableSgd)} at risk, before save rate
           </Figure>
         ),
@@ -636,7 +627,7 @@ function OpportunityColumn() {
       {
         label: "Cross-sell gaps",
         value: (
-          <Figure formula={`Σ peer-gap value, addressable before conversion. Assumed conversion ${Math.round(a.crossSellConversion * 100)}%. From signals.json.`}>
+          <Figure formula={`Σ peer-gap value, addressable before conversion. Assumed conversion ${Math.round(a.crossSellConversion * 100)}%. From Regional Pulse signals.`}>
             {millions(t.crossSellAddressableSgd)} addressable, before conversion
           </Figure>
         ),
@@ -648,7 +639,6 @@ function OpportunityColumn() {
       title="Opportunity: money in view"
       note="Never added to payback or to one revenue figure"
       tone="stuck"
-      marker={<IllustrativeMarker />}
       rows={rows}
       footer="Stuck demand is mostly delayed revenue, not lost revenue. Drop-off and cross-sell are addressable before conversion."
     />

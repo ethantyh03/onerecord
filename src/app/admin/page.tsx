@@ -5,7 +5,7 @@ import { AdminWorkspace } from "@/components/admin/admin-workspace";
 
 export const metadata: Metadata = {
   title: "Admin settings",
-  description: "Configure business units, approval routes, required fields, delegates and SLAs without IT. Every change is versioned.",
+  description: "Configure business units, approval routes, required fields, delegates and SLAs. Every change is versioned.",
 };
 
 function AdminLoading() {

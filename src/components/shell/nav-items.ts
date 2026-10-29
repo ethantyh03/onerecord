@@ -30,12 +30,14 @@ export interface NavItem {
 export interface NavGroup {
   label: string | null;
   items: NavItem[];
+  /** Pin the group to the foot of the rail (reference pages, apart from daily work) */
+  atEnd?: boolean;
 }
 
 export const NAV_GROUPS: NavGroup[] = [
   {
     label: null,
-    items: [{ href: "/", label: "Home", icon: House, hint: "How OneRecord works" }],
+    items: [{ href: "/", label: "Home", icon: House, hint: "Overview" }],
   },
   {
     label: "Requests",
@@ -49,7 +51,7 @@ export const NAV_GROUPS: NavGroup[] = [
     label: "Master data",
     items: [
       { href: "/mdm", label: "MDM console", icon: ShieldCheck, badge: "mdm", hint: "Final checks before SAP B1" },
-      { href: "/sap", label: "SAP B1", icon: Database, hint: "Simulated SAP Business One sandbox" },
+      { href: "/sap", label: "SAP B1", icon: Database, hint: "SAP Business One" },
     ],
   },
   {
@@ -57,20 +59,21 @@ export const NAV_GROUPS: NavGroup[] = [
     items: [
       { href: "/pulse", label: "Regional Pulse", icon: Activity, hint: "Products A/B/C across five countries" },
       { href: "/triage", label: "Inbox triage", icon: Inbox, hint: "Sort the shared mailbox" },
-      { href: "/impact", label: "Impact", icon: ChartNoAxesCombined, hint: "Business case and payback" },
-    ],
-  },
-  {
-    label: "The case",
-    items: [
-      { href: "/architecture", label: "Architecture", icon: Network, hint: "How it lands in SAP B1" },
-      { href: "/scope", label: "Scope & roadmap", icon: ListChecks, hint: "What v1 does and does not do" },
-      { href: "/assumptions", label: "Assumptions", icon: BookOpenCheck, hint: "Every number's source, A1–A28" },
     ],
   },
   {
     label: "Configure",
     items: [{ href: "/admin", label: "Admin", icon: SlidersHorizontal, hint: "Forms, routes and business units" }],
+  },
+  {
+    label: "About",
+    atEnd: true,
+    items: [
+      { href: "/impact", label: "Business case", icon: ChartNoAxesCombined, hint: "Costs, savings and payback" },
+      { href: "/architecture", label: "Architecture", icon: Network, hint: "How it lands in SAP B1" },
+      { href: "/scope", label: "Scope & roadmap", icon: ListChecks, hint: "What v1 does and does not do" },
+      { href: "/assumptions", label: "Assumptions", icon: BookOpenCheck, hint: "Every assumption and its basis" },
+    ],
   },
 ];
 

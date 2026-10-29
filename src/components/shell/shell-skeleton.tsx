@@ -1,8 +1,10 @@
+import { Fragment } from "react";
 import { Menu } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { RecordMark } from "./brand-mark";
 import { FooterStrip } from "./footer-strip";
+import { NAV_GROUPS } from "./nav-items";
 
 /**
  * Server-renderable placeholder that mirrors the console frame while the sandbox loads from this browser.
@@ -34,11 +36,12 @@ export function ShellSkeleton({ rail = true }: { rail?: boolean }) {
               <Skeleton className="h-3.5 w-40" />
             </div>
             <span aria-hidden className="mx-2 h-full w-px bg-border dark:bg-sidebar-border" />
-            <Skeleton className="hidden h-8 w-56 md:block" />
+            <Skeleton className="hidden h-8 w-56 lg:block" />
             <div className="ml-auto flex items-center gap-2">
+              <Skeleton className="mr-1.5 hidden h-6 w-24 md:block xl:w-48" />
               <Skeleton className="size-9" />
               <Skeleton className="size-9" />
-              <Skeleton className="h-9 w-9 xl:w-28" />
+              <Skeleton className="h-9 w-9 2xl:w-32" />
             </div>
           </div>
         </div>
@@ -59,12 +62,25 @@ function SkeletonRail() {
           <span className="mt-1 text-xs text-sidebar-muted">Lives Group master data</span>
         </span>
       </div>
-      <div className="space-y-3 px-4 pt-4">
-        {Array.from({ length: 10 }, (_, i) => (
-          <div key={i} className={i === 1 || i === 4 || i === 6 || i === 9 ? "pt-3" : undefined}>
-            <div className="h-4 rounded-sm bg-sidebar-accent" style={{ width: `${56 + ((i * 37) % 36)}%` }} />
-          </div>
+      {/* Mirrors the rail's groups (the end group sits at the foot), so nothing jumps when it loads. */}
+      <div className="flex flex-1 flex-col px-4 py-4">
+        {NAV_GROUPS.map((group, gi) => (
+          <Fragment key={group.label ?? gi}>
+            {group.atEnd ? <div aria-hidden className="grow" /> : null}
+            <div className={cn("space-y-3", gi > 0 && "pt-6")}>
+              {group.items.map((item, ii) => (
+                <div
+                  key={item.href}
+                  className="h-4 rounded-sm bg-sidebar-accent"
+                  style={{ width: `${56 + (((gi * 5 + ii) * 37) % 36)}%` }}
+                />
+              ))}
+            </div>
+          </Fragment>
         ))}
+      </div>
+      <div className="border-t border-sidebar-border px-4 py-3">
+        <div className="h-3 w-40 rounded-sm bg-sidebar-accent" />
       </div>
     </aside>
   );
@@ -86,7 +102,7 @@ function SkeletonMain() {
         </div>
       </div>
       <p className="sr-only" role="status">
-        Loading your demo sandbox
+        Loading OneRecord…
       </p>
     </main>
   );

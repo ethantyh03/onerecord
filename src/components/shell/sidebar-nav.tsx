@@ -1,6 +1,6 @@
 "use client";
 
-import type { MouseEvent, Ref } from "react";
+import { Fragment, type MouseEvent, type Ref } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
@@ -35,15 +35,14 @@ export interface SidebarNavProps {
 }
 
 /**
- * The console rail: brand, grouped navigation separated by hairlines, and the sandbox note.
- * Text labels stay visible (judges read them from the back of the room); the active item carries
- * a 2px signal bar on the rail's edge and a raised row.
+ * The console rail: brand, grouped navigation separated by hairlines (the About group sits at the
+ * foot), and the sandbox note. Text labels always stay visible; the active item carries a 2px signal
+ * bar on the rail's edge and a raised row.
  */
 export function SidebarNav({ onNavigate, onClose, closeRef, className }: SidebarNavProps) {
   const pathname = usePathname() ?? "/";
   const active = activeNavHref(pathname);
   const counts = useNavCounts();
-  const configVersion = useSandbox((s) => s.config.version);
   const drawer = Boolean(onClose);
   const follow = (href: string) => (e: MouseEvent) => {
     if (isPlainClick(e)) onNavigate?.(href);
@@ -86,75 +85,72 @@ export function SidebarNav({ onNavigate, onClose, closeRef, className }: Sidebar
         </Link>
       </div>
 
-      <nav aria-label="Main" className="scrollbar-thin flex-1 overflow-y-auto overscroll-contain py-2">
+      <nav aria-label="Main" className="scrollbar-thin flex flex-1 flex-col overflow-y-auto overscroll-contain py-2">
         {NAV_GROUPS.map((group, gi) => (
-          <div
-            key={group.label ?? gi}
-            className={cn(
-              gi > 0 &&
-                "mt-2 border-t border-sidebar-border pt-2.5 [@media(max-height:760px)]:mt-1.5 [@media(max-height:760px)]:pt-1.5",
-            )}
-          >
-            {group.label ? <p className="px-4 pb-1 text-xs font-medium text-sidebar-muted">{group.label}</p> : null}
-            <ul>
-              {group.items.map((item) => {
-                const isActive = active === item.href;
-                const count = item.badge ? counts[item.badge] : 0;
-                const Icon = item.icon;
-                return (
-                  <li key={item.href}>
-                    <Link
-                      href={item.href}
-                      onClick={follow(item.href)}
-                      aria-current={isActive ? "page" : undefined}
-                      title={item.hint}
-                      className={cn(
-                        "group/nav relative flex h-9 items-center gap-3 px-4 text-sm outline-none transition-colors [@media(max-height:760px)]:h-8",
-                        "focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-sidebar-ring",
-                        isActive
-                          ? "bg-sidebar-accent font-medium text-sidebar-accent-foreground"
-                          : "text-sidebar-foreground/85 hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground",
-                      )}
-                    >
-                      {isActive ? <span aria-hidden className="absolute inset-y-0 left-0 w-0.5 bg-sidebar-primary" /> : null}
-                      <Icon
-                        aria-hidden
+          <Fragment key={group.label ?? gi}>
+            {/* Pushes an end group to the foot of the rail; collapses to nothing when the rail scrolls. */}
+            {group.atEnd ? <div aria-hidden className="grow" /> : null}
+            <div
+              className={cn(
+                gi > 0 &&
+                  "mt-2 border-t border-sidebar-border pt-2.5 [@media(max-height:760px)]:mt-1.5 [@media(max-height:760px)]:pt-1.5",
+              )}
+            >
+              {group.label ? <p className="px-4 pb-1 text-xs font-medium text-sidebar-muted">{group.label}</p> : null}
+              <ul>
+                {group.items.map((item) => {
+                  const isActive = active === item.href;
+                  const count = item.badge ? counts[item.badge] : 0;
+                  const Icon = item.icon;
+                  return (
+                    <li key={item.href}>
+                      <Link
+                        href={item.href}
+                        onClick={follow(item.href)}
+                        aria-current={isActive ? "page" : undefined}
+                        title={item.hint}
                         className={cn(
-                          "size-4 shrink-0",
-                          isActive ? "text-sidebar-primary" : "text-sidebar-muted group-hover/nav:text-sidebar-foreground",
+                          "group/nav relative flex h-9 items-center gap-3 px-4 text-sm outline-none transition-colors [@media(max-height:760px)]:h-8",
+                          "focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-sidebar-ring",
+                          isActive
+                            ? "bg-sidebar-accent font-medium text-sidebar-accent-foreground"
+                            : "text-sidebar-foreground/85 hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground",
                         )}
-                        strokeWidth={2}
-                      />
-                      <span className="truncate">{item.label}</span>
-                      {count > 0 ? (
-                        <span
+                      >
+                        {isActive ? <span aria-hidden className="absolute inset-y-0 left-0 w-0.5 bg-sidebar-primary" /> : null}
+                        <Icon
+                          aria-hidden
                           className={cn(
-                            "num ml-auto inline-flex h-5 min-w-5 items-center justify-center rounded-sm px-1.5 text-xs font-semibold",
-                            item.badge === "approvals"
-                              ? "bg-sidebar-primary text-sidebar-primary-foreground"
-                              : "bg-sidebar-foreground/12 text-sidebar-accent-foreground",
+                            "size-4 shrink-0",
+                            isActive ? "text-sidebar-primary" : "text-sidebar-muted group-hover/nav:text-sidebar-foreground",
                           )}
-                        >
-                          <span aria-hidden>{count}</span>
-                          <span className="sr-only">
-                            {item.badge === "approvals" ? `, ${count} waiting on you` : `, ${count} ready for MDM review`}
+                          strokeWidth={2}
+                        />
+                        <span className="truncate">{item.label}</span>
+                        {count > 0 ? (
+                          <span
+                            className={cn(
+                              "num ml-auto inline-flex h-5 min-w-5 items-center justify-center rounded-sm px-1.5 text-xs font-semibold",
+                              item.badge === "approvals"
+                                ? "bg-sidebar-primary text-sidebar-primary-foreground"
+                                : "bg-sidebar-foreground/12 text-sidebar-accent-foreground",
+                            )}
+                          >
+                            <span aria-hidden>{count}</span>
+                            <span className="sr-only">
+                              {item.badge === "approvals" ? `, ${count} waiting on you` : `, ${count} ready for MDM review`}
+                            </span>
                           </span>
-                        </span>
-                      ) : null}
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
+                        ) : null}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          </Fragment>
         ))}
       </nav>
-
-      <div className="border-t border-sidebar-border px-4 py-3 text-xs leading-relaxed text-sidebar-muted">
-        <p>
-          Sandbox for this browser only. Config <span className="mono-id">v{configVersion}</span>.
-        </p>
-      </div>
     </div>
   );
 }
