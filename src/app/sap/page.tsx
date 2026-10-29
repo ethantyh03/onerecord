@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 function SapLoading() {
   return (
-    <div className="mx-auto w-full max-w-[1280px] space-y-4" aria-busy="true" aria-label="Loading SAP sandbox">
+    <div className="w-full space-y-4" aria-busy="true" aria-label="Loading SAP sandbox">
       <Skeleton className="h-9 w-96 max-w-full" />
       <Skeleton className="h-5 w-[36rem] max-w-full" />
       <Skeleton className="h-[520px] w-full rounded-[6px]" />

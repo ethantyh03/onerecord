@@ -11,7 +11,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { Check, X } from "lucide-react";
+import { Notice, StatusText } from "@/components/common";
 import { cleanXMethod, matcherEval, stress, triageEval } from "@/data/contract";
 import type { MessageKind } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -33,24 +33,27 @@ function plainModel(s: string): string {
   );
 }
 
+/** A numbered check: plain numeral, title, then a hairline running to the right edge (no boxed number). */
 function SubHead({ n, title, children }: { n: string; title: string; children?: ReactNode }) {
   return (
     <div className="mb-3 space-y-0.5">
-      <h3 className="flex items-baseline gap-2 text-[0.9375rem] font-semibold">
-        <span className="text-xs font-medium text-muted-foreground">{n}</span>
-        {title}
+      <h3 className="flex items-center gap-3 text-[0.9375rem] font-semibold">
+        <span className="num w-4 shrink-0 text-sm font-normal text-subtle">{n}</span>
+        <span className="shrink-0">{title}</span>
+        <span aria-hidden className="h-px min-w-6 flex-1 bg-border" />
       </h3>
-      {children ? <p className="text-[0.8125rem] text-muted-foreground">{children}</p> : null}
+      {children ? <p className="pl-7 text-[0.8125rem] text-muted-foreground">{children}</p> : null}
     </div>
   );
 }
 
+/** A figure as a readout (a hairline rule on its left, label, value, one line of meaning), not a box. */
 function BigStat({ value, label, caption }: { value: ReactNode; label: string; caption: ReactNode }) {
   return (
-    <div className="rounded-lg border bg-muted/30 px-3.5 py-3">
-      <div className="text-xs font-medium text-muted-foreground">{label}</div>
-      <div className="mt-1 text-[1.75rem] leading-none font-semibold tracking-[-0.02em]">{value}</div>
-      <p className="mt-1.5 text-[0.8125rem] leading-snug text-secondary-foreground">{caption}</p>
+    <div className="border-l border-border-strong pl-4">
+      <div className="text-[0.8125rem] text-muted-foreground">{label}</div>
+      <div className="font-wide mt-1.5 text-[1.75rem] leading-none font-semibold">{value}</div>
+      <p className="mt-2 text-sm leading-snug text-secondary-foreground">{caption}</p>
     </div>
   );
 }
@@ -72,7 +75,7 @@ function MatcherSection() {
         swaps and romanisation variants the name cleaner was never written for.
       </SubHead>
       <div className="grid gap-4 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1fr)_minmax(0,1.15fr)]">
-        <div className="space-y-3">
+        <div className="space-y-5">
           <BigStat value={<span className="num">{Math.round(hm.precision * 100)} of 100</span>} label="Precision" caption={`${m.plain.precision}.`} />
           <BigStat value={<span className="num">{Math.round(hm.recall * 100)} of 100</span>} label="Recall" caption={`${m.plain.recall}.`} />
           <p className="text-xs text-muted-foreground">
@@ -168,33 +171,32 @@ function MatcherSection() {
           </div>
         </div>
 
-        <div className="space-y-2.5">
-          <p className="rounded-lg border border-warn/50 bg-warn-soft px-3 py-2.5 text-[0.8125rem] leading-snug text-warn-ink" data-testid="trust-matcher-caveat">
+        <div className="space-y-3">
+          <Notice tone="warn" className="leading-snug" data-testid="trust-matcher-caveat">
             {MATCHER_CAVEAT}
-          </p>
-          <div className="text-xs font-medium text-muted-foreground">Where it goes wrong, and why</div>
-          {m.examples.slice(0, 3).map((e, i) => (
-            <div key={i} className="rounded-lg border px-3 py-2.5">
-              <div className="flex items-center justify-between gap-2">
-                <span
-                  className={cn(
-                    "inline-flex h-5 items-center rounded-full px-2 text-[0.6875rem] font-medium",
-                    e.kind === "missed" ? "bg-warn-soft text-warn-ink" : "bg-stuck-soft text-stuck-ink",
-                  )}
-                >
-                  {e.kind === "missed" ? "Missed duplicate" : "False alarm"}
-                </span>
-                <span className="num text-xs text-muted-foreground">score {e.score.toFixed(2)}</span>
-              </div>
-              <div className="mt-1.5 text-[0.8125rem] leading-snug">
-                <span className="font-medium">{e.a.cardName}</span>
-                <span className="text-muted-foreground"> vs </span>
-                <span className="font-medium">{e.b.cardName}</span>
-                <span className="text-muted-foreground"> · {COUNTRY_NAME[e.a.country]}</span>
-              </div>
-              <p className="mt-1 text-xs leading-snug text-muted-foreground">{e.why}</p>
-            </div>
-          ))}
+          </Notice>
+          <div>
+            <div className="border-b border-border pb-1.5 text-xs font-medium text-muted-foreground">Where it goes wrong, and why</div>
+            <ul className="divide-y divide-border">
+              {m.examples.slice(0, 3).map((e, i) => (
+                <li key={i} className="py-2.5">
+                  <div className="flex items-center justify-between gap-2">
+                    <StatusText size="sm" tone={e.kind === "missed" ? "warn" : "stuck"}>
+                      {e.kind === "missed" ? "Missed duplicate" : "False alarm"}
+                    </StatusText>
+                    <span className="num text-xs text-muted-foreground">score {e.score.toFixed(2)}</span>
+                  </div>
+                  <div className="mt-1 text-[0.8125rem] leading-snug">
+                    <span className="font-medium">{e.a.cardName}</span>
+                    <span className="text-muted-foreground"> vs </span>
+                    <span className="font-medium">{e.b.cardName}</span>
+                    <span className="text-muted-foreground"> · {COUNTRY_NAME[e.a.country]}</span>
+                  </div>
+                  <p className="mt-1 text-xs leading-snug text-muted-foreground">{e.why}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -208,32 +210,31 @@ function StressSection() {
         Same pipeline, three versions of the data. If the seasonal method only won by luck, it would also &ldquo;win&rdquo; on
         data with no seasons in it.
       </SubHead>
-      <div className="overflow-x-auto rounded-lg border">
+      <div className="overflow-x-auto scrollbar-thin">
         <table className="w-full min-w-[520px] text-sm">
-          <thead className="bg-muted/50 text-xs text-muted-foreground">
-            <tr className="border-b">
+          <thead className="text-xs text-subtle">
+            <tr className="border-b border-border-strong">
               <th className="px-3 py-2 text-left font-medium">Data</th>
               <th className="px-3 py-2 text-right font-medium">Today&apos;s</th>
               <th className="px-3 py-2 text-right font-medium">Ours</th>
-              <th className="px-3 py-2 text-right font-medium">Our lead</th>
+              <th className="px-3 py-2 text-right font-medium whitespace-nowrap">Our lead</th>
               <th className="px-3 py-2 text-left font-medium">Expected</th>
             </tr>
           </thead>
           <tbody>
             {stress.scenarios.map((s) => (
-              <tr key={s.id} className="border-b last:border-b-0">
+              <tr key={s.id} className="border-b border-border last:border-b-0">
                 <td className="px-3 py-2">
                   <div className="font-medium">{s.label}</div>
                   <div className="text-xs text-muted-foreground">{s.description}</div>
                 </td>
                 <td className="num px-3 py-2 text-right">{per100(s.baselineWape)}</td>
                 <td className="num px-3 py-2 text-right">{per100(s.oursWape)}</td>
-                <td className="num px-3 py-2 text-right font-medium">{signedPts(s.advantagePts)}</td>
+                <td className="num px-3 py-2 text-right font-medium whitespace-nowrap">{signedPts(s.advantagePts)}</td>
                 <td className="px-3 py-2 text-xs">
-                  <span className={cn("inline-flex items-center gap-1 font-medium", s.passed ? "text-ok-ink" : "text-stuck-ink")}>
-                    {s.passed ? <Check className="size-3.5" aria-hidden /> : <X className="size-3.5" aria-hidden />}
+                  <StatusText size="sm" tone={s.passed ? "ok" : "stuck"}>
                     {s.passed ? "As expected" : "Not as expected"}
-                  </span>
+                  </StatusText>
                   <div className="text-muted-foreground">{s.expected}</div>
                 </td>
               </tr>
@@ -257,17 +258,19 @@ function CleanXMethodSection() {
     const highlight = row === "golden" && col === "ours";
     const today = row === "raw" && col === "rolling";
     return (
-      <div
-        className={cn(
-          "rounded-lg border px-3 py-3",
-          highlight && "border-primary/50 bg-primary-soft",
-          today && "bg-muted/40",
-        )}
-      >
-        <div className="num text-2xl leading-none font-semibold tracking-[-0.02em]">{per100(v)}</div>
+      <div className="border-t border-border px-1 py-3">
+        <div className={cn("num font-wide text-2xl leading-none font-semibold", highlight && "text-ok-ink")}>{per100(v)}</div>
         <div className="mt-1 text-xs text-muted-foreground">per 100 ordered</div>
-        {today ? <div className="mt-1.5 text-[0.6875rem] font-medium text-secondary-foreground">Today</div> : null}
-        {highlight ? <div className="mt-1.5 text-[0.6875rem] font-medium text-primary">With OneRecord</div> : null}
+        {today ? (
+          <StatusText size="sm" tone="neutral" hollow className="mt-1.5">
+            Today
+          </StatusText>
+        ) : null}
+        {highlight ? (
+          <StatusText size="sm" tone="ok" className="mt-1.5">
+            With OneRecord
+          </StatusText>
+        ) : null}
       </div>
     );
   };
@@ -276,28 +279,29 @@ function CleanXMethodSection() {
       <SubHead n="3" title="How much comes from clean data, how much from the model">
         Forecast error on the series that duplicates and mis-coding distort.
       </SubHead>
-      <div className="grid grid-cols-[auto_1fr_1fr] gap-2 text-sm">
+      {/* A ruled 2 x 2: rows are the data, columns the method. No boxed cells: the winner is in the ink. */}
+      <div className="grid grid-cols-[auto_1fr_1fr] gap-x-4 text-sm">
         <div />
-        <div className="px-1 text-xs font-medium text-muted-foreground">{plainModel(c.colLabels.rolling)}</div>
-        <div className="px-1 text-xs font-medium text-muted-foreground">{plainModel(c.colLabels.ours)}</div>
-        <div className="flex max-w-36 items-center pr-1 text-xs font-medium text-muted-foreground">{c.rowLabels.raw}</div>
+        <div className="px-1 pb-1.5 text-xs font-medium text-subtle">{plainModel(c.colLabels.rolling)}</div>
+        <div className="px-1 pb-1.5 text-xs font-medium text-subtle">{plainModel(c.colLabels.ours)}</div>
+        <div className="flex max-w-36 items-center border-t border-border pr-1 text-xs font-medium text-muted-foreground">{c.rowLabels.raw}</div>
         {cell("raw", "rolling")}
         {cell("raw", "ours")}
-        <div className="flex max-w-36 items-center pr-1 text-xs font-medium text-muted-foreground">{c.rowLabels.golden}</div>
+        <div className="flex max-w-36 items-center border-t border-border pr-1 text-xs font-medium text-muted-foreground">{c.rowLabels.golden}</div>
         {cell("golden", "rolling")}
         {cell("golden", "ours")}
       </div>
-      <div className="mt-3 flex flex-wrap gap-2 text-xs">
-        <span className="rounded-full border px-2.5 py-1">
-          From cleaning: <span className="num font-semibold">{c.fromCleaningPts.toFixed(1)} pts</span>
+      <p className="mt-3 flex flex-wrap gap-y-1 border-t border-border pt-3 text-xs text-secondary-foreground [&>span]:border-l [&>span]:border-border-strong [&>span]:px-3 [&>span:first-child]:border-l-0 [&>span:first-child]:pl-0">
+        <span>
+          From cleaning: <span className="num font-semibold text-foreground">{c.fromCleaningPts.toFixed(1)} pts</span>
         </span>
-        <span className="rounded-full border px-2.5 py-1">
-          From the model: <span className="num font-semibold">{c.fromModellingPts.toFixed(1)} pts</span>
+        <span>
+          From the model: <span className="num font-semibold text-foreground">{c.fromModellingPts.toFixed(1)} pts</span>
         </span>
-        <span className="rounded-full border px-2.5 py-1">
-          Total: <span className="num font-semibold">{c.totalImprovementPts.toFixed(1)} pts</span>
+        <span>
+          Total: <span className="num font-semibold text-foreground">{c.totalImprovementPts.toFixed(1)} pts</span>
         </span>
-      </div>
+      </p>
       <PlainLine className="mt-2 text-sm">{plainModel(c.sentence)}</PlainLine>
     </div>
   );
@@ -341,12 +345,13 @@ function TriageSection() {
                           key={j}
                           title={`${v} ${KIND_LABEL[t.labels[i]]} messages sorted as ${KIND_LABEL[t.labels[j]]}`}
                           className={cn(
-                            "num h-9 min-w-12 rounded-[4px] text-center text-[0.8125rem] font-medium",
+                            "num h-9 min-w-12 rounded-[3px] text-center text-[0.8125rem] font-medium",
                             diag && "ring-2 ring-foreground/70 ring-inset",
                           )}
                           style={{
-                            background: v === 0 ? "var(--muted)" : `color-mix(in oklch, var(--chart-1) ${Math.round(12 + share * 78)}%, var(--card))`,
-                            color: share > 0.55 ? "var(--primary-foreground)" : "var(--foreground)",
+                            // Capped at a 45% mix so the body text keeps >= 4.5:1 in both themes (no ink switch needed).
+                            background: v === 0 ? "var(--muted)" : `color-mix(in oklab, var(--chart-1) ${Math.round(10 + share * 35)}%, var(--card))`,
+                            color: "var(--foreground)",
                           }}
                         >
                           {v}
@@ -363,22 +368,24 @@ function TriageSection() {
           </table>
           <p className="mt-1.5 text-xs text-muted-foreground">Outlined squares are correct. Darker = more messages.</p>
         </div>
-        <div className="space-y-3">
+        <div className="space-y-4">
           <BigStat
             value={<span className="num">{correct} of 100</span>}
             label="Sorted into the right stream"
             caption={t.plain}
           />
-          <div className="space-y-1.5">
-            <div className="text-xs font-medium text-muted-foreground">Typical misses</div>
-            {t.errors.slice(0, 2).map((e) => (
-              <div key={e.id} className="rounded-lg border px-3 py-2 text-xs">
-                <div className="font-medium text-foreground">&ldquo;{e.subject}&rdquo;</div>
-                <div className="text-muted-foreground">
-                  Was {KIND_LABEL[e.actual]}, rules said {KIND_LABEL[e.predicted]}.
-                </div>
-              </div>
-            ))}
+          <div>
+            <div className="border-b border-border pb-1.5 text-xs font-medium text-muted-foreground">Typical misses</div>
+            <ul className="divide-y divide-border">
+              {t.errors.slice(0, 2).map((e) => (
+                <li key={e.id} className="py-2 text-xs">
+                  <div className="font-medium text-foreground">&ldquo;{e.subject}&rdquo;</div>
+                  <div className="text-muted-foreground">
+                    Was {KIND_LABEL[e.actual]}, rules said {KIND_LABEL[e.predicted]}.
+                  </div>
+                </li>
+              ))}
+            </ul>
           </div>
           <p className="text-xs text-muted-foreground">
             This is why sorting stays a suggestion: a person confirms every message. In production, an in-tenant model would
@@ -398,15 +405,13 @@ export function TrustPanel() {
       title="Can we trust it?"
       subtitle="Four checks on the methods behind this page, including where they fall short."
     >
-      <div className="space-y-6">
+      <div className="space-y-8">
         <MatcherSection />
-        <div className="grid gap-6 border-t pt-5 xl:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)]">
+        <div className="grid gap-x-8 gap-y-6 xl:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)]">
           <StressSection />
           <CleanXMethodSection />
         </div>
-        <div className="border-t pt-5">
-          <TriageSection />
-        </div>
+        <TriageSection />
       </div>
     </PanelFrame>
   );

@@ -2,22 +2,28 @@ import { cn } from "@/lib/utils";
 
 export interface SapCodeProps {
   code: string | null | undefined;
-  /** "chip" (default) for inline codes; "plain" for dense tables */
+  /**
+   * Kept for compatibility: both render the same now, without a box (mono already marks an
+   * identifier, so a SAP code needs no chip).
+   */
   variant?: "chip" | "plain";
   className?: string;
 }
 
-/** SAP codes, request ids, hashes: always monospace with tabular figures. */
-export function SapCode({ code, variant = "chip", className }: SapCodeProps) {
+/**
+ * Identifiers: SAP codes, request ids, tax ids, hashes. Martian Mono at 0.9em of the surrounding
+ * text (it is a wide face), tabular figures. Mono means "this is a machine value", so it is used for
+ * nothing else, and it needs no chip around it. Missing = "—".
+ */
+export function SapCode({ code, className }: SapCodeProps) {
   if (!code) {
-    return <span className={cn("text-muted-foreground", className)}>—</span>;
+    return <span className={cn("text-subtle", className)}>—</span>;
   }
   return (
     <code
       translate="no"
       className={cn(
-        "num font-mono text-[0.8125em] font-medium tracking-tight whitespace-nowrap text-foreground",
-        variant === "chip" && "rounded-[5px] border border-border bg-muted/70 px-1.5 py-px",
+        "font-mono text-[0.9em] font-normal tracking-normal whitespace-nowrap text-foreground tabular-nums",
         className,
       )}
     >

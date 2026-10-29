@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
-import { ArrowRight, CircleCheck, Link2, MessageSquareMore, Plus } from "lucide-react";
+import { ArrowRight, Plus } from "lucide-react";
 import type { MdmRequest, Person, PurchaseRequest } from "@/lib/types";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { PersonAvatar, SapCode, formatSgd } from "@/components/common";
+import { PersonAvatar, SapCode, StatusText, formatSgd } from "@/components/common";
 import { MDM_STAGE_ID } from "@/lib/engine/routing";
 import { cn } from "@/lib/utils";
 import { formatLiveDate } from "./intake-logic";
@@ -32,102 +32,86 @@ export function SuccessState({ request, people, prs, onNew }: SuccessStateProps)
   return (
     <motion.section
       data-testid="submit-success"
-      initial={reduce ? false : { opacity: 0, y: 10 }}
+      initial={reduce ? false : { opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.35, ease: "easeOut" }}
-      className="mx-auto max-w-3xl rounded-2xl border border-border bg-card shadow-float"
+      transition={{ duration: 0.3, ease: "easeOut" }}
+      className="panel max-w-[1120px] overflow-hidden"
     >
-      <div className="flex items-start gap-4 border-b border-border px-7 py-6">
-        <motion.span
-          initial={reduce ? false : { scale: 0.4, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ type: "spring", stiffness: 360, damping: 18, delay: 0.1 }}
-          className="inline-flex size-12 shrink-0 items-center justify-center rounded-full bg-ok text-ok-foreground"
-        >
-          <CircleCheck aria-hidden className="size-7" />
-        </motion.span>
-        <div className="min-w-0">
-          <p className="text-[0.8125rem] text-muted-foreground">Submitted for approval</p>
-          <h2 className="mt-0.5 flex flex-wrap items-center gap-2.5 text-[1.5rem] leading-tight font-semibold tracking-tight">
-            <SapCode code={request.id} className="text-[0.9em]" />
+      {/* Header: the receipt left (status line, mono ID, title, expected date), the next actions right (kept above the
+          fold on a 720px projector). No icon tile: the green square and the words say it went through. */}
+      <div className="flex flex-wrap items-start gap-x-6 gap-y-4 border-b border-border px-6 py-5">
+        <div className="min-w-0 flex-1 basis-80">
+          <StatusText tone="ok">Submitted for approval</StatusText>
+          <h2 className="font-wide mt-2 flex flex-wrap items-baseline gap-x-3 gap-y-1 text-[1.375rem] leading-7 font-semibold text-foreground">
+            <SapCode code={request.id} className="text-[0.75em]" />
             <span>{request.title}</span>
           </h2>
           {request.expectedBy ? (
-            <p className="mt-1.5 text-[0.9375rem] text-foreground/90">
-              Expected live in SAP B1: <strong>{formatLiveDate(request.expectedBy)}</strong>
+            <p className="mt-2 text-[0.9375rem] text-secondary-foreground">
+              Expected live in SAP B1: <strong className="font-wide num font-semibold text-foreground">{formatLiveDate(request.expectedBy)}</strong>
               <span className="text-muted-foreground"> · today by email: median 14 days</span>
             </p>
           ) : null}
         </div>
+        <div className="flex shrink-0 flex-wrap items-center gap-2">
+          <Link
+            href={`/requests/view?id=${encodeURIComponent(request.id)}`}
+            data-testid="success-track"
+            className={cn(buttonVariants({ variant: "default" }), "h-9 px-4")}
+          >
+            Track this request
+            <ArrowRight aria-hidden />
+          </Link>
+          <Button type="button" variant="outline" className="h-9 px-4" data-testid="success-new" onClick={onNew}>
+            <Plus aria-hidden />
+            New request
+          </Button>
+        </div>
       </div>
 
-      <div className="space-y-4 px-7 py-5">
-        <div className="flex items-start gap-3">
-          <span className="inline-flex size-8 shrink-0 items-center justify-center rounded-lg bg-teams/12 text-teams" style={{ background: "color-mix(in oklch, var(--teams) 12%, transparent)" }}>
-            <MessageSquareMore aria-hidden className="size-4.5" />
-          </span>
-          <div className="min-w-0">
-            <p className="text-sm font-medium" data-testid="success-teams">
-              Teams approval cards sent to {recipients.length ? joinNames(recipients.map((p) => p.name)) : "the approvers"}
-              <span className="ml-2 rounded-full border border-border px-1.5 py-px align-middle text-[0.6875rem] font-normal text-muted-foreground">
-                Simulated
-              </span>
-            </p>
-            <div className="mt-2 flex flex-wrap gap-2">
+      <div className="divide-y divide-border">
+        <div className="px-6 py-4">
+          <p className="text-sm font-medium text-foreground" data-testid="success-teams">
+            Teams approval cards sent to {recipients.length ? joinNames(recipients.map((p) => p.name)) : "the approvers"}
+            <span className="ml-3 border-l border-border-strong pl-3 text-xs font-normal text-subtle">Simulated</span>
+          </p>
+          {recipients.length ? (
+            <ul className="mt-2.5 flex flex-wrap gap-x-5 gap-y-2" aria-label="Approvers notified">
               {recipients.map((p) => (
-                <span key={p.id} className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background py-0.5 pr-2.5 pl-0.5 text-[0.75rem]">
+                <li key={p.id} className="inline-flex items-center gap-2 text-[0.8125rem] text-foreground">
                   <PersonAvatar person={p} size="xs" />
                   {p.name}
-                </span>
+                </li>
               ))}
-            </div>
-            <p className="mt-1.5 text-[0.75rem] text-muted-foreground">
-              They approve in parallel from Teams or Outlook. A reminder goes out after 1 business day, an escalation after 3.
-            </p>
-          </div>
+            </ul>
+          ) : null}
+          <p className="mt-2.5 text-xs text-muted-foreground">
+            They approve in parallel from Teams or Outlook. A reminder goes out after 1 business day, an escalation after 3.
+          </p>
         </div>
 
         {linked.length ? (
-          <div className="flex items-start gap-3" data-testid="success-linked">
-            <span className="inline-flex size-8 shrink-0 items-center justify-center rounded-lg bg-stuck-soft text-stuck-ink">
-              <Link2 aria-hidden className="size-4.5" />
-            </span>
-            <div className="min-w-0 flex-1">
-              <p className="text-sm font-medium">
-                {linked.length} waiting customer order{linked.length === 1 ? "" : "s"} ({formatSgd(linkedSgd)}) linked to this request
-              </p>
-              <ul className="mt-2 divide-y divide-border rounded-lg border border-border">
-                {linked.map((p) => (
-                  <li key={p.id} className="flex items-center gap-3 px-3 py-1.5 text-[0.8125rem]">
-                    <SapCode code={p.id} variant="plain" />
-                    <span className="min-w-0 flex-1 truncate">{p.customerName}</span>
-                    <span className="text-muted-foreground">{p.country}</span>
-                    <span className="num w-20 text-right font-medium">{formatSgd(p.sgd)}</span>
-                  </li>
-                ))}
-              </ul>
-              <p className="mt-1.5 text-[0.75rem] text-muted-foreground">
-                They are released automatically the moment the record is created in SAP B1.
-              </p>
-            </div>
+          <div className="px-6 py-4" data-testid="success-linked">
+            <p className="text-sm font-medium text-foreground">
+              {linked.length} waiting customer order{linked.length === 1 ? "" : "s"} (
+              <span className="num font-semibold text-stuck">{formatSgd(linkedSgd)}</span>) linked to this request
+            </p>
+            {/* The orders as ruled rows (money waiting = coral on the total above; rows stay neutral). */}
+            <ul className="mt-2.5 divide-y divide-border border-y border-border">
+              {linked.map((p) => (
+                <li key={p.id} className="flex h-9 items-center gap-4 text-[0.8125rem]">
+                  <SapCode code={p.id} className="w-20 shrink-0 text-muted-foreground" />
+                  <span className="min-w-0 flex-1 truncate text-foreground">{p.customerName}</span>
+                  <span className="w-8 text-muted-foreground">{p.country}</span>
+                  <span className="num w-24 text-right font-medium text-foreground">{formatSgd(p.sgd)}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-2 text-xs text-muted-foreground">They are released automatically the moment the record is created in SAP B1.</p>
           </div>
         ) : null}
       </div>
 
-      <div className="flex flex-wrap items-center gap-2 border-t border-border px-7 py-4">
-        <Link
-          href={`/requests/view?id=${encodeURIComponent(request.id)}`}
-          data-testid="success-track"
-          className={cn(buttonVariants({ variant: "default" }), "h-10 px-4")}
-        >
-          Track this request
-          <ArrowRight aria-hidden />
-        </Link>
-        <Button type="button" variant="outline" className="h-10 px-4" data-testid="success-new" onClick={onNew}>
-          <Plus aria-hidden />
-          New request
-        </Button>
-      </div>
     </motion.section>
   );
 }

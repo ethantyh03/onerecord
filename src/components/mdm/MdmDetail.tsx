@@ -9,7 +9,6 @@ import {
   ExternalLink,
   FileSpreadsheet,
   FileX2,
-  Info,
   MonitorCog,
   PackageCheck,
 } from "lucide-react";
@@ -32,11 +31,15 @@ import { dtwImportMode, toServiceLayerPayload } from "@/lib/engine/dtw";
 import { businessDaysBetween } from "@/lib/engine/sla";
 import { AuditTimeline } from "@/components/audit/AuditTimeline";
 import {
+  ConsolePanel,
   EmptyState,
   firstName,
   formatDays,
   formatSgd,
   formatSgtDateTime,
+  IllustrativeMarker,
+  Notice,
+  PanelSection,
   PersonChip,
   SapCode,
   StatusBadge,
@@ -49,47 +52,63 @@ import { DtwPreview } from "./DtwPreview";
 import { DuplicateRecheck } from "./DuplicateRecheck";
 import { FieldReview } from "./FieldReview";
 import { approvedAt, buildFieldReview, isMdmUser, sensitiveProperties } from "./mdm-helpers";
-import { EntityCell, Panel } from "./Panel";
+import { EntityCell, ViewerNotice } from "./Panel";
 import { ServiceLayerPanel } from "./ServiceLayerPanel";
 import { StuckDemandTile } from "./StuckDemandTile";
 import { SwitchToMdmButton } from "./SwitchToMdmButton";
 
 type Tab = "dtw" | "sl";
 
-function SimulatedTag() {
-  return (
-    <span className="inline-flex h-5 items-center rounded-full border border-border-strong/70 bg-card px-2 text-[0.6875rem] font-medium whitespace-nowrap text-muted-foreground">
-      Simulated
-    </span>
-  );
-}
+type StepState = "done" | "current" | "todo";
 
-/** One step of the hand-off sequence: generate → load in SAP B1 → mark created. */
+/**
+ * One column of the hand-off: generate → load in SAP B1 → mark created. Columns are split by hairlines;
+ * state is in the ink, not a bar: a done step shows a green check in place of its number, the current
+ * step's number is bright (and its button is the filled one), later steps stay subtle.
+ */
+/**
+ * One row of the hand-off procedure: number (or a check when done), the title over its description,
+ * and the step's button at the right. Rows stack under hairlines so the three buttons line up in one column.
+ */
 function HandoffStep({
   n,
   title,
-  done,
+  state,
+  action,
   children,
 }: {
   n: number;
   title: string;
-  done: boolean;
+  state: StepState;
+  /** The step's button, right-aligned on wide screens (under the description on narrow ones) */
+  action?: React.ReactNode;
   children: React.ReactNode;
 }) {
   return (
-    <li className="flex min-w-0 flex-col gap-2 rounded-lg border bg-background/60 px-3.5 py-3">
-      <div className="flex items-center gap-2">
+    <li
+      data-state={state}
+      aria-current={state === "current" ? "step" : undefined}
+      className="grid min-w-0 grid-cols-[1rem_minmax(0,1fr)] items-start gap-x-3 gap-y-3 px-4 py-3.5 md:grid-cols-[1rem_minmax(0,1fr)_auto] md:gap-x-5"
+    >
+      {state === "done" ? (
+        <CheckCircle2 aria-label="Done" className="mt-0.5 size-4 shrink-0 text-ok-ink" />
+      ) : (
         <span
           className={cn(
-            "num inline-flex size-6 shrink-0 items-center justify-center rounded-full text-xs font-semibold",
-            done ? "bg-ok text-ok-foreground" : "bg-primary-soft text-accent-foreground",
+            "num w-4 shrink-0 text-center text-sm leading-5 font-semibold",
+            state === "current" ? "text-foreground" : "text-subtle",
           )}
         >
-          {done ? <CheckCircle2 aria-hidden className="size-3.5" /> : n}
+          {n}
         </span>
-        <span className="text-[0.8125rem] font-semibold text-foreground">{title}</span>
+      )}
+      <div className="min-w-0 space-y-1">
+        <p className={cn("text-sm leading-5 font-semibold", state === "todo" ? "text-secondary-foreground" : "text-foreground")}>
+          {title}
+        </p>
+        <div className="max-w-[72ch] text-[0.8125rem] leading-5 text-muted-foreground">{children}</div>
       </div>
-      <div className="flex min-w-0 flex-1 flex-col justify-between gap-2 text-xs text-muted-foreground">{children}</div>
+      {action ? <div className="col-start-2 md:col-start-3 md:self-center md:justify-self-end">{action}</div> : null}
     </li>
   );
 }
@@ -222,56 +241,61 @@ export function MdmDetail({ id }: { id: string }) {
     <div className="space-y-5">
       <BackLink />
 
-      {/* Request summary + live stuck demand */}
-      <div className="grid gap-4 xl:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]">
-        <section className="rounded-xl border bg-card px-5 py-4 shadow-raised">
-          <div className="flex flex-wrap items-center gap-2">
-            <SapCode code={req.id} />
+      {/* The record as an object, on the open page: identity, then the four facts MDM checks first as
+          Gotham meta columns (a hairline before each). The live stuck-demand readout sits beside it. */}
+      <div className="grid gap-x-8 gap-y-6 xl:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] 2xl:gap-x-10 2xl:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]">
+        <section className="min-w-0" aria-label={`${req.id} summary`}>
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+            <SapCode code={req.id} className="text-[0.9375rem] text-foreground" />
             <StatusBadge status={req.status} />
             <span className="text-[0.8125rem] text-muted-foreground">{domain.label}</span>
           </div>
-          <h1 className="mt-2 text-[1.5rem] leading-tight font-semibold tracking-[-0.02em] text-foreground">{req.title}</h1>
-          <dl className="mt-3 grid grid-cols-2 gap-x-6 gap-y-3 sm:grid-cols-4">
-            <div className="min-w-0">
-              <dt className="text-xs text-muted-foreground">Requested by</dt>
-              <dd className="mt-1">
+          <h1 className="font-wide mt-2 text-[1.625rem] leading-8 font-semibold text-foreground">{req.title}</h1>
+          <dl className="mt-5 grid grid-cols-2 gap-y-4 sm:grid-cols-4 [&>div]:min-w-0 [&>div]:border-l [&>div]:border-border-strong [&>div]:pr-4 [&>div]:pl-3">
+            <div>
+              <dt className="text-xs text-subtle">Requested by</dt>
+              <dd className="mt-1.5">
                 <PersonChip personId={req.requestorId} />
               </dd>
             </div>
             <div>
-              <dt className="text-xs text-muted-foreground">Entity / country</dt>
-              <dd className="mt-1">
+              <dt className="text-xs text-subtle">Entity / country</dt>
+              <dd className="mt-1.5">
                 <EntityCell entity={req.entity} country={req.country} configured={!!buById({ config }, req.entity)} />
               </dd>
             </div>
             <div>
-              <dt className="text-xs text-muted-foreground">{created ? "Created in SAP B1" : "Approved at"}</dt>
-              <dd className="num mt-1 text-[0.8125rem] font-medium text-foreground">
+              <dt className="text-xs text-subtle">{created ? "Created in SAP B1" : "Approved at"}</dt>
+              <dd className="num mt-1.5 text-[0.8125rem] font-medium text-foreground">
                 {created && req.sapCreatedAt ? formatSgtDateTime(req.sapCreatedAt) : approved ? formatSgtDateTime(approved) : "—"}
-                {atReview ? <span className="block text-xs font-normal text-muted-foreground">{formatDays(waiting)} business days waiting</span> : null}
+                {atReview ? (
+                  <span className={cn("block text-xs font-normal", waiting > 1 ? "text-warn-ink" : "text-muted-foreground")}>
+                    {formatDays(waiting)} business days waiting
+                  </span>
+                ) : null}
               </dd>
             </div>
             <div>
-              <dt className="text-xs text-muted-foreground">{created ? "Orders released" : "Customer orders waiting"}</dt>
+              <dt className="text-xs text-subtle">{created ? "Orders released" : "Customer orders waiting"}</dt>
               <dd className="num mt-1">
                 {created ? (
-                  <span className={cn("text-base font-semibold", releasedSgd > 0 ? "text-ok-ink" : "text-muted-foreground")}>
+                  <span className={cn("font-wide text-lg leading-6 font-semibold", releasedSgd > 0 ? "text-ok-ink" : "text-muted-foreground")}>
                     {releasedSgd > 0 ? formatSgd(releasedSgd) : "—"}
                   </span>
                 ) : (
-                  <span className={cn("text-base font-semibold", blockedSgd > 0 ? "text-stuck" : "text-muted-foreground")}>
+                  <span className={cn("font-wide text-lg leading-6 font-semibold", blockedSgd > 0 ? "text-stuck" : "text-muted-foreground")}>
                     {blockedSgd > 0 ? formatSgd(blockedSgd) : "—"}
                   </span>
                 )}
                 {linked.length ? (
                   <>
-                    <span className="block text-xs text-muted-foreground">
+                    <span className="block text-xs text-subtle">
                       {linked.length} order{linked.length === 1 ? "" : "s"}
                     </span>
                     <ul className="mt-1 space-y-0.5 text-xs text-secondary-foreground" data-testid="mdm-linked-prs">
                       {linked.slice(0, 3).map((p) => (
                         <li key={p.id} className="truncate" title={`${p.id} · ${p.customerName} · ${formatSgd(p.sgd)}`}>
-                          <span className="font-mono text-[0.6875rem] text-muted-foreground">{p.id}</span> {p.customerName}
+                          <span className="mono-id text-muted-foreground">{p.id}</span> {p.customerName}
                         </li>
                       ))}
                       {linked.length > 3 ? <li className="text-muted-foreground">+{linked.length - 3} more</li> : null}
@@ -282,135 +306,168 @@ export function MdmDetail({ id }: { id: string }) {
             </div>
           </dl>
         </section>
-        <StuckDemandTile />
+        <StuckDemandTile className="self-start" />
       </div>
 
       {!mdm ? (
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-2 rounded-xl border border-warn/50 bg-warn-soft px-4 py-3 text-sm text-warn-ink">
-          <Info aria-hidden className="size-4 shrink-0" />
-          <p className="min-w-0 flex-1">
-            You&apos;re viewing as <strong className="font-semibold">{me.name}</strong> ({me.title}). Only the MDM team can generate
-            imports or create records in SAP B1{canSee ? "" : ", and credit terms and bank details stay masked"}.
+        <ViewerNotice action={<SwitchToMdmButton />}>
+          <p>
+            You&apos;re viewing as <strong className="font-semibold text-foreground">{me.name}</strong> ({me.title}). Only the MDM team can
+            generate imports or create records in SAP B1{canSee ? "" : ", and credit terms and bank details stay masked"}.
           </p>
-          <SwitchToMdmButton />
-        </div>
+        </ViewerNotice>
       ) : null}
 
-      <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_400px]">
+      <div className="grid gap-5 2xl:grid-cols-[minmax(0,1fr)_400px]">
         <div className="min-w-0 space-y-5">
           <DuplicateRecheck req={req} domain={domain} now={now} />
 
           {/* SAP B1 hand-off */}
           <div ref={handoffRef} className="scroll-mt-4">
-            <Panel
+            <ConsolePanel
               title="SAP B1 hand-off"
-              description={
+              subtitle={
                 isExtend
                   ? "One business partner record is shared by every entity, so an extension updates the existing record (assumption A28)."
                   : "Phase 1: MDM imports an approved record with SAP's Data Transfer Workbench after a final check."
               }
-              actions={<SimulatedTag />}
+              marker={<IllustrativeMarker label="Simulated" />}
             >
-              <ol className="grid gap-3 md:grid-cols-3">
-                <HandoffStep n={1} title="Generate the import file" done={generated}>
-                  <span>
-                    {generated && req.dtwGeneratedAt
-                      ? `Generated ${formatSgtDateTime(req.dtwGeneratedAt)} · code ${code} reserved`
-                      : `DTW template rows with SAP's own field names. Code ${code ?? "—"} will be reserved.`}
-                  </span>
-                  <Button
-                    data-testid="mdm-generate-dtw"
-                    onClick={onGenerate}
-                    variant={generated ? "outline" : "default"}
-                    disabled={!atReview && !created}
-                    className="self-start"
+              <PanelSection flush>
+                <ol className="divide-y divide-border">
+                  <HandoffStep
+                    n={1}
+                    title="Generate the import file"
+                    state={generated ? "done" : atReview ? "current" : "todo"}
+                    action={
+                      <Button
+                        data-testid="mdm-generate-dtw"
+                        onClick={onGenerate}
+                        variant={generated ? "outline" : "default"}
+                        disabled={!atReview && !created}
+                      >
+                        <FileSpreadsheet aria-hidden />
+                        {generated ? "Show SAP B1 import" : "Generate SAP B1 import"}
+                      </Button>
+                    }
                   >
-                    <FileSpreadsheet aria-hidden />
-                    {generated ? "Show SAP B1 import" : "Generate SAP B1 import"}
-                  </Button>
-                </HandoffStep>
-                <HandoffStep n={2} title="Load it in SAP B1" done={created}>
-                  <span>
-                    DTW wizard: {dtwImportMode(domain) === "update" ? "“Update existing objects”, keyed by CardCode" : "“Add new objects”"}.
-                    No SAP licence in the prototype, so SAP B1 is a faithful simulation.
-                  </span>
-                  <Link
-                    href={sapHref}
-                    data-testid="mdm-open-sap"
-                    className={cn(buttonVariants({ variant: "outline" }), "self-start")}
-                  >
-                    <MonitorCog aria-hidden />
-                    Open in SAP B1 (simulated)
-                    <ExternalLink aria-hidden className="size-3.5 opacity-70" />
-                  </Link>
-                </HandoffStep>
-                <HandoffStep n={3} title={isExtend ? "Confirm the update" : "Confirm it's live"} done={created}>
-                  {created ? (
-                    <span className="flex flex-col gap-1 text-[0.8125rem] text-foreground" data-testid="mdm-created-summary">
-                      <span className="flex items-center gap-1.5">
-                        <PackageCheck aria-hidden className="size-4 text-ok-ink" />
-                        <SapCode code={req.sapCode} /> {createVerb} {req.sapCreatedAt ? formatSgtDateTime(req.sapCreatedAt) : ""}
-                      </span>
-                      <span className="text-xs text-muted-foreground">
-                        {requestor} notified in Teams and Outlook
-                        {releasedSgd > 0 ? ` · ${formatSgd(releasedSgd)} of customer orders released` : ""}
-                      </span>
-                    </span>
-                  ) : (
                     <span>
-                      Releases {blockedSgd > 0 ? `${formatSgd(blockedSgd)} of customer orders` : "the record"} and tells {requestor}.
-                      Whoever approved Finance can&apos;t do this step.
+                      {generated && req.dtwGeneratedAt ? (
+                        <>
+                          Generated <span className="num">{formatSgtDateTime(req.dtwGeneratedAt)}</span> · code{" "}
+                          <SapCode code={code} variant="plain" className="text-foreground" /> reserved
+                        </>
+                      ) : (
+                        <>
+                          DTW template rows with SAP&apos;s own field names. Code <SapCode code={code} variant="plain" className="text-foreground" />{" "}
+                          will be reserved.
+                        </>
+                      )}
                     </span>
-                  )}
-                  {created ? null : (
-                    <Button
-                      data-testid="mdm-mark-created"
-                      onClick={onMarkCreated}
-                      disabled={!atReview || busy}
-                      className="self-start"
-                    >
-                      <Database aria-hidden />
-                      {isExtend ? "Mark updated in SAP B1" : "Mark created in SAP B1"}
-                    </Button>
-                  )}
-                </HandoffStep>
-              </ol>
+                  </HandoffStep>
+                  <HandoffStep
+                    n={2}
+                    title="Load it in SAP B1"
+                    state={created ? "done" : generated && atReview ? "current" : "todo"}
+                    action={
+                      <Link href={sapHref} data-testid="mdm-open-sap" className={cn(buttonVariants({ variant: "outline" }))}>
+                        <MonitorCog aria-hidden />
+                        Open in SAP B1 (simulated)
+                        <ExternalLink aria-hidden className="size-3.5 opacity-70" />
+                      </Link>
+                    }
+                  >
+                    <span>
+                      DTW wizard: {dtwImportMode(domain) === "update" ? "“Update existing objects”, keyed by CardCode" : "“Add new objects”"}.
+                      No SAP licence in the prototype, so SAP B1 is a faithful simulation.
+                    </span>
+                  </HandoffStep>
+                  <HandoffStep
+                    n={3}
+                    title={isExtend ? "Confirm the update" : "Confirm it's live"}
+                    state={created ? "done" : "todo"}
+                    action={
+                      created ? null : (
+                        <Button
+                          data-testid="mdm-mark-created"
+                          onClick={onMarkCreated}
+                          variant={generated ? "default" : "outline"}
+                          disabled={!atReview || busy}
+                        >
+                          <Database aria-hidden />
+                          {isExtend ? "Mark updated in SAP B1" : "Mark created in SAP B1"}
+                        </Button>
+                      )
+                    }
+                  >
+                    {created ? (
+                      <span className="flex flex-col gap-1 text-[0.8125rem] text-foreground" data-testid="mdm-created-summary">
+                        <span className="flex flex-wrap items-center gap-1.5">
+                          <PackageCheck aria-hidden className="size-4 text-ok-ink" />
+                          <SapCode code={req.sapCode} /> {createVerb}{" "}
+                          <span className="num">{req.sapCreatedAt ? formatSgtDateTime(req.sapCreatedAt) : ""}</span>
+                        </span>
+                        <span className="text-xs text-muted-foreground">
+                          {requestor} notified in Teams and Outlook
+                          {releasedSgd > 0 ? ` · ${formatSgd(releasedSgd)} of customer orders released` : ""}
+                        </span>
+                      </span>
+                    ) : (
+                      <span>
+                        Releases {blockedSgd > 0 ? `${formatSgd(blockedSgd)} of customer orders` : "the record"} and tells {requestor}.
+                        Whoever approved Finance can&apos;t do this step.
+                      </span>
+                    )}
+                  </HandoffStep>
+                </ol>
+              </PanelSection>
 
               {!atReview && !created ? (
-                <p className="mt-3 rounded-lg bg-muted px-3 py-2 text-[0.8125rem] text-secondary-foreground">
-                  {req.id} is {req.status.replace("_", " ")}: it reaches MDM after every business approver signs off.
-                </p>
+                <PanelSection className="py-3">
+                  <Notice tone="waiting">
+                    {req.id} is {req.status.replace("_", " ")}: it reaches MDM after every business approver signs off.
+                  </Notice>
+                </PanelSection>
               ) : null}
 
-              <Tabs value={tab} onValueChange={(v) => setTab(v as Tab)} className="mt-4">
-                <TabsList>
-                  <TabsTrigger value="dtw" data-testid="mdm-tab-dtw" className="px-3">
-                    DTW import (Phase 1)
-                  </TabsTrigger>
-                  <TabsTrigger value="sl" data-testid="mdm-tab-sl" className="px-3">
-                    Service Layer (Phase 2)
-                  </TabsTrigger>
-                </TabsList>
-                <TabsContent value="dtw" className="pt-3">
-                  {generated ? (
-                    <DtwPreview files={files} sensitive={sensitive} canSee={canSee} canDownload={mdm} />
-                  ) : (
-                    <div className="rounded-lg border border-dashed border-border-strong px-4 py-6 text-center text-sm text-muted-foreground">
-                      Generate the SAP B1 import to preview the DTW files here: {files.map((f) => f.fileName).join(", ")}.
-                    </div>
-                  )}
-                </TabsContent>
-                <TabsContent value="sl" className="pt-3">
-                  {payload ? <ServiceLayerPanel payload={payload} sensitive={sensitive} canSee={canSee} /> : null}
-                </TabsContent>
-              </Tabs>
-            </Panel>
+              <PanelSection>
+                <Tabs value={tab} onValueChange={(v) => setTab(v as Tab)}>
+                  <TabsList>
+                    <TabsTrigger value="dtw" data-testid="mdm-tab-dtw" className="px-3">
+                      DTW import (Phase 1)
+                    </TabsTrigger>
+                    <TabsTrigger value="sl" data-testid="mdm-tab-sl" className="px-3">
+                      Service Layer (Phase 2)
+                    </TabsTrigger>
+                  </TabsList>
+                  <TabsContent value="dtw" className="pt-3">
+                    {generated ? (
+                      <DtwPreview files={files} sensitive={sensitive} canSee={canSee} canDownload={mdm} />
+                    ) : (
+                      <p className="py-1 text-sm text-muted-foreground">
+                        Generate the SAP B1 import to preview the DTW files here:{" "}
+                        {files.map((f, i) => (
+                          <span key={f.fileName}>
+                            {i ? ", " : ""}
+                            <span className="mono-id text-secondary-foreground">{f.fileName}</span>
+                          </span>
+                        ))}
+                        .
+                      </p>
+                    )}
+                  </TabsContent>
+                  <TabsContent value="sl" className="pt-3">
+                    {payload ? <ServiceLayerPanel payload={payload} sensitive={sensitive} canSee={canSee} /> : null}
+                  </TabsContent>
+                </Tabs>
+              </PanelSection>
+            </ConsolePanel>
           </div>
 
           <FieldReview req={req} rows={rows} />
         </div>
 
-        <aside className="min-w-0 space-y-5">
+        <aside className="grid min-w-0 content-start items-start gap-5 xl:grid-cols-2 2xl:grid-cols-1">
           <ApprovalHistory req={req} />
           <AuditTimeline requestId={req.id} />
         </aside>
@@ -423,7 +480,7 @@ function BackLink() {
   return (
     <Link
       href="/mdm"
-      className="inline-flex items-center gap-1.5 rounded-md text-sm font-medium text-muted-foreground transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:outline-none"
+      className="inline-flex items-center gap-1.5 rounded-md text-sm font-medium text-muted-foreground transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
     >
       <ArrowLeft aria-hidden className="size-4" />
       MDM queue

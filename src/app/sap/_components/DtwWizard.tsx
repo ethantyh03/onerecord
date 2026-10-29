@@ -217,7 +217,7 @@ export function DtwWizard({
               <span
                 className={cn(
                   "mt-px inline-flex size-[18px] shrink-0 items-center justify-center rounded-full text-[10px] font-bold",
-                  state === "done" ? "bg-[#3d8b3d] text-white" : state === "current" ? "bg-[#f2b100] text-[#2b2000]" : "bg-[#b9c6d3] text-white",
+                  state === "done" ? "bg-[#3d8b3d] text-white" : state === "current" ? "bg-[#f2b100] text-[#2b2000]" : "bg-[#7d8fa1] text-white",
                 )}
               >
                 {state === "done" ? "✓" : s.n}
@@ -311,7 +311,7 @@ export function DtwWizard({
                                 className="accent-[#d99a00]"
                               />
                             </td>
-                            <td className="border-r border-b border-[#dde4eb] px-2 py-1 font-mono">{r.id}</td>
+                            <td className="border-r border-b border-[#dde4eb] px-2 py-1 font-mono whitespace-nowrap">{r.id}</td>
                             <td className="border-r border-b border-[#dde4eb] px-2 py-1 font-mono text-[11px]">{d?.sapObject ?? "—"}</td>
                             <td className="border-r border-b border-[#dde4eb] px-2 py-1">{r.title}</td>
                             <td className="border-r border-b border-[#dde4eb] px-2 py-1">

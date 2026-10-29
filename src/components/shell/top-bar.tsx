@@ -1,38 +1,82 @@
 "use client";
 
-import { useState } from "react";
+import type { Ref } from "react";
+import Link from "next/link";
 import { Menu } from "lucide-react";
-import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { cn } from "@/lib/utils";
+import { RecordMark } from "./brand-mark";
 import { NotificationBell } from "./notification-bell";
 import { PersonaSwitcher } from "./persona-switcher";
 import { ResetDemoButton } from "./reset-demo-button";
-import { SidebarNav } from "./sidebar-nav";
 import { SimClock } from "./sim-clock";
+import { SIDEBAR_ID } from "./sidebar-state";
+import { ThemeToggle } from "./theme-toggle";
 
-export function TopBar() {
-  const [navOpen, setNavOpen] = useState(false);
+/** Full-height hairline between status-bar segments. */
+function Divider({ className }: { className?: string }) {
+  return <span aria-hidden className={cn("w-px shrink-0 self-stretch bg-border dark:bg-sidebar-border", className)} />;
+}
 
+export interface TopBarProps {
+  /** Whether the rail is showing (docked or as the open drawer): drives ☰'s label and aria-expanded. */
+  navOpen: boolean;
+  onToggleNav: () => void;
+  toggleRef?: Ref<HTMLButtonElement>;
+  /**
+   * Show the brand beside ☰: whenever the rail is not docked, so the product name never leaves the
+   * screen. On wide screens ☰ + brand span the rail's 232px, so the drawer's brand row lands on them.
+   */
+  showBrand: boolean;
+}
+
+/**
+ * The status bar: ☰ for the rail, whose seat you are in, the simulated clock that drives every SLA
+ * (with its fast-forward), then alerts, theme and reset. Segments are separated like an instrument panel.
+ */
+export function TopBar({ navOpen, onToggleNav, toggleRef, showBrand }: TopBarProps) {
   return (
-    <header className="sticky top-0 z-30 border-b bg-card/92 backdrop-blur-md supports-[backdrop-filter]:bg-card/80">
-      <div className="mx-auto flex h-16 w-full max-w-[1600px] items-center gap-3 px-4 sm:px-6 lg:px-8">
-        <Sheet open={navOpen} onOpenChange={setNavOpen}>
-          <SheetTrigger
-            className="inline-flex size-10 items-center justify-center rounded-lg border bg-card outline-none hover:bg-muted focus-visible:ring-3 focus-visible:ring-ring/40 lg:hidden"
-            aria-label="Open navigation"
+    <header className="sticky top-0 z-30 border-b border-border bg-card dark:border-sidebar-border dark:bg-sidebar">
+      <div className="flex h-14 w-full items-stretch">
+        <button
+          ref={toggleRef}
+          type="button"
+          onClick={onToggleNav}
+          aria-label={navOpen ? "Close navigation" : "Open navigation"}
+          aria-expanded={navOpen}
+          aria-controls={SIDEBAR_ID}
+          data-testid="nav-toggle"
+          className="inline-flex w-12 shrink-0 items-center justify-center text-muted-foreground outline-none transition-colors hover:bg-secondary/70 hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring dark:text-sidebar-foreground"
+        >
+          <Menu aria-hidden className="size-5" />
+        </button>
+
+        {/* Gone while the rail is docked (the rail carries the brand then); it changes under the sliding rail. */}
+        <div inert={!showBrand} className={cn("flex shrink-0 overflow-hidden", showBrand ? "lg:w-[184px]" : "invisible w-0")}>
+          <Link
+            href="/"
+            aria-label="OneRecord home"
+            className="flex shrink-0 items-center gap-2.5 pr-3 pl-1 outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring sm:pr-4 lg:w-[184px] lg:pr-2"
           >
-            <Menu aria-hidden className="size-5" />
-          </SheetTrigger>
-          <SheetContent side="left" showCloseButton={false} className="w-[264px] border-r-0 p-0 sm:max-w-[264px]">
-            <SheetTitle className="sr-only">Navigation</SheetTitle>
-            <SidebarNav onNavigate={() => setNavOpen(false)} />
-          </SheetContent>
-        </Sheet>
+            <RecordMark className="size-7 shrink-0 text-foreground" />
+            <span className="hidden min-w-0 flex-col leading-none sm:flex">
+              <span className="font-wide text-[1.0625rem] font-semibold text-foreground">OneRecord</span>
+              <span className="mt-1 hidden truncate text-xs text-muted-foreground lg:block dark:text-sidebar-muted">
+                Lives Group master data
+              </span>
+            </span>
+          </Link>
+        </div>
+        <Divider />
 
         <PersonaSwitcher />
+        <Divider />
+        <SimClock />
+        <Divider className="hidden md:block" />
 
-        <div className="ml-auto flex items-center gap-2">
-          <SimClock />
+        <div className="ml-auto flex items-center gap-1 pr-2 pl-2 sm:pr-4">
           <NotificationBell />
+          <ThemeToggle />
+          <Divider className="mx-1.5 my-3.5" />
           <ResetDemoButton />
         </div>
       </div>

@@ -2,7 +2,6 @@
 
 import type { ReactNode } from "react";
 import { COUNTRIES, type CountryCode, type ProductGroup } from "@/lib/types";
-import { SyntheticBadge } from "@/components/common";
 import { cn } from "@/lib/utils";
 
 /**
@@ -101,7 +100,12 @@ export function biasWords(b: number): string {
   return `tends to ${b > 0 ? "over" : "under"}-forecast by ${v}%`;
 }
 
-/** Card frame shared by every analytics panel: title row, synthetic badge, body. */
+/**
+ * Console panel shared by every analytics panel: a header bar (title and one line of purpose left, controls right,
+ * hairline under it), then the body at 16px padding. Flat: surface + hairline, no shadow. The page header carries
+ * the one "Synthetic, illustrative data" marker, so panels don't repeat it; pass `badges` only for something the
+ * page header doesn't already say.
+ */
 export function PanelFrame({
   id,
   testId,
@@ -125,21 +129,20 @@ export function PanelFrame({
     <section
       id={id}
       data-testid={testId}
-      className={cn("rounded-xl border bg-card shadow-raised", className)}
+      className={cn("panel min-w-0 overflow-hidden", className)}
       aria-label={typeof title === "string" ? title : undefined}
     >
-      <header className="flex flex-col gap-3 border-b px-5 pt-4 pb-3.5 lg:flex-row lg:items-start lg:justify-between">
+      <header className="flex flex-col gap-3 border-b border-border px-4 py-3 lg:flex-row lg:items-start lg:justify-between">
         <div className="min-w-0 space-y-1">
-          <div className="flex flex-wrap items-center gap-2">
-            <h2 className="text-[1.0625rem] leading-tight font-semibold tracking-[-0.01em]">{title}</h2>
-            <SyntheticBadge />
+          <div className="flex min-h-7 flex-wrap items-center gap-x-3 gap-y-1">
+            <h2 className="panel-title">{title}</h2>
             {badges}
           </div>
-          {subtitle ? <p className="max-w-[78ch] text-sm text-muted-foreground">{subtitle}</p> : null}
+          {subtitle ? <p className="max-w-[86ch] text-sm leading-snug text-muted-foreground">{subtitle}</p> : null}
         </div>
         {actions ? <div className="flex shrink-0 flex-wrap items-center gap-2">{actions}</div> : null}
       </header>
-      <div className="px-5 py-4">{children}</div>
+      <div className="p-4">{children}</div>
     </section>
   );
 }
@@ -159,7 +162,7 @@ export function Segmented<T extends string>({
   testIdPrefix?: string;
 }) {
   return (
-    <div role="group" aria-label={label} className="inline-flex items-center rounded-lg bg-muted p-[3px]">
+    <div role="group" aria-label={label} className="inline-flex items-center gap-0.5 rounded-md border border-border bg-canvas p-0.5">
       {options.map((o) => {
         const active = o.value === value;
         return (
@@ -171,8 +174,8 @@ export function Segmented<T extends string>({
             data-testid={testIdPrefix ? `${testIdPrefix}-${o.value}` : undefined}
             onClick={() => onChange(o.value)}
             className={cn(
-              "h-7 rounded-md px-2.5 text-[0.8125rem] font-medium whitespace-nowrap transition-colors focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none",
-              active ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground",
+              "h-7 rounded-sm border px-2.5 text-[0.8125rem] font-medium whitespace-nowrap transition-colors focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-ring",
+              active ? "border-border-strong bg-card text-foreground" : "border-transparent text-muted-foreground hover:text-foreground",
             )}
           >
             {o.label}
@@ -186,7 +189,7 @@ export function Segmented<T extends string>({
 /** Tooltip shell for Recharts custom content. */
 export function TipBox({ title, children }: { title: ReactNode; children: ReactNode }) {
   return (
-    <div className="min-w-44 rounded-lg border bg-popover px-3 py-2 text-xs text-popover-foreground shadow-float">
+    <div className="min-w-44 rounded-md border border-border-strong bg-popover px-3 py-2 text-xs text-popover-foreground shadow-float">
       <div className="mb-1.5 font-semibold">{title}</div>
       <div className="space-y-1">{children}</div>
     </div>
@@ -207,7 +210,7 @@ export function TipRow({ color, label, value, dashed }: { color?: string; label:
 
 export function Swatch({ color, dashed, kind = "line" }: { color: string; dashed?: boolean; kind?: "line" | "block" }) {
   if (kind === "block") {
-    return <span aria-hidden className="inline-block size-2.5 shrink-0 rounded-[3px]" style={{ background: color }} />;
+    return <span aria-hidden className="inline-block size-2.5 shrink-0 rounded-[2px]" style={{ background: color }} />;
   }
   return (
     <span

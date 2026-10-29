@@ -2,13 +2,13 @@
 
 import { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
-import { Clock, ShieldCheck } from "lucide-react";
 import { useSandbox } from "@/lib/store";
 import { selectMdmQueue, useCurrentPerson, usePipelineStats } from "@/lib/selectors";
-import { formatDays, KpiTile, PageHeader } from "@/components/common";
+import { formatDays, PageHeader, Readout, ReadoutStrip, ReadoutUnit } from "@/components/common";
 import { isMdmUser } from "./mdm-helpers";
 import { MdmDetail } from "./MdmDetail";
 import { MdmQueue } from "./MdmQueue";
+import { ViewerNotice } from "./Panel";
 import { StuckDemandTile } from "./StuckDemandTile";
 import { SwitchToMdmButton } from "./SwitchToMdmButton";
 
@@ -36,37 +36,31 @@ function MdmHome() {
       />
 
       {!mdm ? (
-        <div className="mb-5 flex flex-wrap items-center gap-x-3 gap-y-2 rounded-xl border border-warn/50 bg-warn-soft px-4 py-3 text-sm text-warn-ink">
-          <ShieldCheck aria-hidden className="size-4 shrink-0" />
-          <span className="min-w-0 flex-1">
-            You&apos;re viewing as <strong className="font-semibold">{me.name}</strong> ({me.title}). This console belongs to the MDM
-            team: you can look, but only MDM can import records into SAP B1.
-          </span>
-          <SwitchToMdmButton />
-        </div>
+        <ViewerNotice className="-mt-6 mb-6 border-t-0" action={<SwitchToMdmButton />}>
+          You&apos;re viewing as <strong className="font-semibold text-foreground">{me.name}</strong> ({me.title}). This console belongs to
+          the MDM team: you can look, but only MDM can import records into SAP B1.
+        </ViewerNotice>
       ) : null}
 
-      <div className="mb-6 grid gap-4 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)_minmax(0,1fr)]">
+      {/* The Gotham meta-column readouts: the money waiting leads, wider; the other two are plain figures. */}
+      <ReadoutStrip className="mb-9">
         <StuckDemandTile />
-        <KpiTile
-          tone="brand"
-          icon={ShieldCheck}
+        <Readout
           label={mdm ? "Waiting for your final check" : "Waiting for MDM's final check"}
           value={queueCount}
           caption="Fully approved by the business; MDM checks and imports them."
         />
-        <KpiTile
-          icon={Clock}
+        <Readout
           label="Median time to SAP B1"
           value={
             <>
               {formatDays(stats.medianDaysToCreate)}
-              <span className="ml-1.5 text-base font-medium text-muted-foreground">business days</span>
+              <ReadoutUnit>business days</ReadoutUnit>
             </>
           }
           caption={`Submission to created, across ${createdCount} records. Target ≤ 4 business days.`}
         />
-      </div>
+      </ReadoutStrip>
 
       <MdmQueue mine={mdm} />
     </div>

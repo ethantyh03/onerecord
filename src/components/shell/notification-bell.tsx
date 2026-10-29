@@ -21,7 +21,7 @@ function ChannelMark({ channel }: { channel: AppNotification["channel"] }) {
   const c = CHANNEL[channel];
   const Icon = c.icon;
   return (
-    <span className={cn("inline-flex size-7 shrink-0 items-center justify-center rounded-md", c.cls)} title={c.label}>
+    <span className={cn("inline-flex size-7 shrink-0 items-center justify-center rounded-sm", c.cls)} title={c.label}>
       <Icon aria-hidden className="size-3.5" strokeWidth={2.25} />
       <span className="sr-only">{c.label}</span>
     </span>
@@ -64,30 +64,30 @@ export function NotificationBell() {
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger
         className={cn(
-          "relative inline-flex size-10 items-center justify-center rounded-lg border bg-card text-foreground outline-none transition-colors",
-          "hover:bg-muted focus-visible:ring-3 focus-visible:ring-ring/40 data-popup-open:bg-muted",
+          "relative inline-flex size-9 items-center justify-center rounded-md text-muted-foreground outline-none transition-colors",
+          "hover:bg-secondary hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-ring data-popup-open:bg-secondary data-popup-open:text-foreground",
         )}
         aria-label={unread.length ? `Notifications, ${unread.length} unread` : "Notifications"}
       >
         <Bell aria-hidden className="size-[1.125rem]" strokeWidth={2} />
         {unread.length > 0 ? (
-          <span className="num absolute -top-1.5 -right-1.5 inline-flex h-5 min-w-5 items-center justify-center rounded-full border-2 border-background bg-stuck px-1 text-[0.6875rem] leading-none font-semibold text-stuck-foreground">
+          <span className="num absolute -top-0.5 -right-0.5 inline-flex h-[1.125rem] min-w-[1.125rem] items-center justify-center rounded-sm bg-primary px-1 text-xs leading-none font-semibold text-primary-foreground ring-2 ring-card dark:ring-sidebar">
             {unread.length > 99 ? "99+" : unread.length}
           </span>
         ) : null}
       </PopoverTrigger>
 
       <PopoverContent align="end" sideOffset={8} className="w-[400px] max-w-[calc(100vw-1.5rem)] gap-0 p-0">
-        <div className="flex items-center justify-between gap-3 border-b px-4 py-3">
+        <div className="flex items-center justify-between gap-3 border-b px-4 py-2.5">
           <div className="min-w-0">
-            <p className="text-sm font-semibold text-foreground">Notifications</p>
+            <p className="panel-title">Notifications</p>
             <p className="mt-0.5 flex items-center gap-2.5 text-xs text-muted-foreground">
               <span className="inline-flex items-center gap-1">
-                <span aria-hidden className="size-2 rounded-[3px] bg-teams" />
+                <span aria-hidden className="size-2 rounded-[2px] bg-teams" />
                 Teams <span className="num font-medium text-foreground">{unreadTeams}</span>
               </span>
               <span className="inline-flex items-center gap-1">
-                <span aria-hidden className="size-2 rounded-[3px] bg-outlook" />
+                <span aria-hidden className="size-2 rounded-[2px] bg-outlook" />
                 Outlook <span className="num font-medium text-foreground">{unreadOutlook}</span>
               </span>
               <span>unread</span>
@@ -97,7 +97,7 @@ export function NotificationBell() {
             <button
               type="button"
               onClick={markAllRead}
-              className="rounded-md px-2 py-1 text-xs font-medium text-primary outline-none hover:bg-primary-soft focus-visible:ring-2 focus-visible:ring-ring/50"
+              className="rounded-md px-2 py-1 text-xs font-medium text-primary outline-none hover:bg-primary-soft focus-visible:outline-2 focus-visible:outline-ring"
             >
               Mark all read
             </button>
@@ -119,8 +119,8 @@ export function NotificationBell() {
                   type="button"
                   onClick={() => openNotification(n)}
                   className={cn(
-                    "flex w-full gap-3 px-4 py-3 text-left outline-none transition-colors hover:bg-muted/70 focus-visible:bg-muted",
-                    !n.read && "bg-primary-soft/45",
+                    "relative flex w-full gap-3 px-4 py-3 text-left outline-none transition-colors hover:bg-secondary focus-visible:bg-secondary",
+                    !n.read && "bg-primary-soft/35",
                   )}
                 >
                   <ChannelMark channel={n.channel} />
@@ -129,7 +129,7 @@ export function NotificationBell() {
                       <span className={cn("text-sm leading-snug text-foreground", n.read ? "font-medium" : "font-semibold")}>
                         {n.title}
                       </span>
-                      <span className="num shrink-0 pt-px text-[0.6875rem] text-muted-foreground">{formatAgo(n.at, now)}</span>
+                      <span className="num shrink-0 pt-px text-xs text-subtle">{formatAgo(n.at, now)}</span>
                     </span>
                     <span className="mt-0.5 line-clamp-2 block text-[0.8125rem] leading-snug text-muted-foreground">
                       {n.body}

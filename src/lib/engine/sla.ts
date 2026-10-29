@@ -1,4 +1,4 @@
-import type { ApprovalStep, MdmRequest, Person, SlaConfig } from "@/lib/types";
+import type { ApprovalStep, MdmRequest, Person, SlaConfig, StepStatus } from "@/lib/types";
 
 /**
  * Business-time arithmetic in Singapore time (UTC+8, no DST).
@@ -65,7 +65,42 @@ export function stepElapsedBusinessDays(step: ApprovalStep, nowIso: string): num
   return Math.max(0, businessDaysBetween(step.activatedAt, nowIso) - paused / DAY_MS);
 }
 
-export type SlaEvent = { kind: "reminder" | "escalation"; stepId: string; toId: string; fromId?: string };
+/** Why a would-be escalation target was passed over (segregation of duties). */
+export type SodSkip = {
+  id: string;
+  reason: "requestor" | "requestor_delegate" | "holds_step";
+  /** For holds_step: the other step on the request that this person holds or has decided, and its status. */
+  stepLabel?: string;
+  stepStatus?: StepStatus;
+};
+
+export type SlaEvent = {
+  kind: "reminder" | "escalation";
+  stepId: string;
+  toId: string;
+  fromId?: string;
+  /** Escalation only: eligible-looking targets skipped for segregation of duties, in the order they were tried. */
+  skipped?: SodSkip[];
+};
+
+/**
+ * Segregation of duties for a reassignment: may `personId` take over step `stepId` of `req`?
+ * Returns why not, or null when they may. Nobody approves their own request (nor does the requestor's delegate,
+ * matching segregationCheck), and nobody holds or decides two steps of the same request. Skipped steps were
+ * never decided, so they don't count.
+ */
+export function reassignmentConflict(
+  req: Pick<MdmRequest, "requestorId" | "steps">,
+  stepId: string,
+  personId: string,
+  people: Pick<Person, "id" | "delegateId">[],
+): SodSkip | null {
+  if (personId === req.requestorId) return { id: personId, reason: "requestor" };
+  const requestor = people.find((p) => p.id === req.requestorId);
+  if (requestor?.delegateId && requestor.delegateId === personId) return { id: personId, reason: "requestor_delegate" };
+  const other = req.steps.find((s) => s.id !== stepId && s.status !== "skipped" && s.assigneeId === personId);
+  return other ? { id: personId, reason: "holds_step", stepLabel: other.label, stepStatus: other.status } : null;
+}
 
 const OPEN_STATUSES = new Set<MdmRequest["status"]>(["in_approval", "needs_info", "mdm_review"]);
 
@@ -73,8 +108,10 @@ const OPEN_STATUSES = new Set<MdmRequest["status"]>(["in_approval", "needs_info"
  * Advance SLA state for one request. Only `pending` steps are considered (a `question` step's clock is paused).
  * - reminder once elapsed ≥ reminderAfterBusinessDays (to the current assignee)
  * - escalation once elapsed ≥ escalateAfterBusinessDays: reassigned to the assignee's delegate, else their manager;
- *   originalAssigneeId keeps the first owner. With no delegate or manager, the MDM team is notified and the
- *   assignee stays.
+ *   originalAssigneeId keeps the first owner. Segregation of duties (reassignmentConflict) applies: a target who
+ *   raised the request or already holds or decided another step on it is skipped, and the first choice's manager is
+ *   tried once more. With no eligible delegate or manager, the MDM team is notified and the assignee stays.
+ * Steps are handled in order, so two steps escalating in the same tick never land on the same person.
  * Idempotent: reminderSentAt / escalatedAt guard against repeats, so a second tick yields no events.
  */
 export function slaTick(
@@ -86,10 +123,12 @@ export function slaTick(
   const events: SlaEvent[] = [];
   if (!OPEN_STATUSES.has(req.status)) return { steps: req.steps, events };
   const byId = new Map(people.map((p) => [p.id, p]));
+  const steps = [...req.steps];
   let changed = false;
 
-  const steps = req.steps.map((step) => {
-    if (step.status !== "pending" || !step.activatedAt) return step;
+  for (let i = 0; i < steps.length; i++) {
+    const step = steps[i];
+    if (step.status !== "pending" || !step.activatedAt) continue;
     const elapsed = stepElapsedBusinessDays(step, nowIso);
     let next = step;
 
@@ -99,28 +138,41 @@ export function slaTick(
     }
 
     if (!next.escalatedAt && elapsed >= sla.escalateAfterBusinessDays) {
-      const current = byId.get(next.assigneeId);
-      const candidate = [current?.delegateId, current?.managerId].find(
-        (id): id is string => !!id && id !== next.assigneeId && byId.has(id),
-      );
+      const from = next.assigneeId;
+      const current = byId.get(from);
+      const valid = (id: string | undefined): id is string => !!id && id !== from && byId.has(id);
+      // Delegate, else manager (the plain rule); then, one level up, the first choice's manager.
+      const direct = [current?.delegateId, current?.managerId].filter(valid);
+      const chain = [...new Set([...direct, byId.get(direct[0] ?? "")?.managerId].filter(valid))];
+      // Judge eligibility against the steps as they stand now, including reassignments earlier in this tick.
+      const view = { requestorId: req.requestorId, steps };
+      const skipped: SodSkip[] = [];
+      const candidate = chain.find((id) => {
+        const conflict = reassignmentConflict(view, step.id, id, people);
+        if (conflict) skipped.push(conflict);
+        return !conflict;
+      });
+      const extra = skipped.length ? { skipped } : {};
       if (candidate) {
-        events.push({ kind: "escalation", stepId: step.id, toId: candidate, fromId: next.assigneeId });
+        events.push({ kind: "escalation", stepId: step.id, toId: candidate, fromId: from, ...extra });
         next = {
           ...next,
           escalatedAt: nowIso,
-          originalAssigneeId: next.originalAssigneeId ?? next.assigneeId,
+          originalAssigneeId: next.originalAssigneeId ?? from,
           assigneeId: candidate,
         };
       } else {
-        const mdm = people.find((p) => p.roles.includes("mdm") && p.id !== next.assigneeId);
-        events.push({ kind: "escalation", stepId: step.id, toId: mdm?.id ?? next.assigneeId, fromId: next.assigneeId });
+        const mdm = people.find((p) => p.roles.includes("mdm") && p.id !== from);
+        events.push({ kind: "escalation", stepId: step.id, toId: mdm?.id ?? from, fromId: from, ...extra });
         next = { ...next, escalatedAt: nowIso };
       }
     }
 
-    if (next !== step) changed = true;
-    return next;
-  });
+    if (next !== step) {
+      steps[i] = next;
+      changed = true;
+    }
+  }
 
   return { steps: changed ? steps : req.steps, events };
 }

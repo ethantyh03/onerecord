@@ -2,14 +2,14 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowUpRight, BookOpenCheck, FileJson, FileSpreadsheet, FileText, FolderGit2, Lock, Workflow } from "lucide-react";
+import { ArrowUpRight, FolderGit2, Lock } from "lucide-react";
 import { PageHeader, Phase2Badge } from "@/components/common";
 import { useSandbox } from "@/lib/store";
 import { LINKS } from "@/lib/links";
 import { cn } from "@/lib/utils";
 import { buildFieldMap } from "./field-map";
 import { BUILDER_META, Swimlane } from "./swimlane";
-import { NoteChip, SectionHeading } from "./story-ui";
+import { LINK, NoteChip, Panel, SectionHeading, T } from "./story-ui";
 
 type Builder = keyof typeof BUILDER_META;
 
@@ -119,18 +119,28 @@ function repoUrl(path: string, dir = false): string {
   return `${LINKS.github.replace(/\/$/, "")}/${dir ? "tree" : "blob"}/master/${path}`;
 }
 
-const KIT = [
-  { path: "integrations/teams/approval-card.json", what: "Teams approval card (real Adaptive Card JSON)", icon: FileJson },
-  { path: "integrations/teams/approval-card.data.json", what: "Sample data bound into the card", icon: FileJson },
-  { path: "integrations/power-automate/flow-spec.md", what: "Power Automate flow specification", icon: Workflow },
-  { path: "integrations/sap/dtw-templates", what: "DTW header templates for every SAP object", icon: FileSpreadsheet, dir: true },
-  { path: "integrations/sap/service-layer-samples.json", what: "Service Layer request samples (phase 2)", icon: FileJson },
-  { path: "integrations/sap/README.md", what: "How the import is loaded, step by step", icon: FileText },
+const KIT: { path: string; what: string; dir?: boolean }[] = [
+  { path: "integrations/teams/approval-card.json", what: "Teams approval card (real Adaptive Card JSON)" },
+  { path: "integrations/teams/approval-card.data.json", what: "Sample data bound into the card" },
+  { path: "integrations/power-automate/flow-spec.md", what: "Power Automate flow specification" },
+  { path: "integrations/sap/dtw-templates", what: "DTW header templates for every SAP object", dir: true },
+  { path: "integrations/sap/service-layer-samples.json", what: "Service Layer request samples (phase 2)" },
+  { path: "integrations/sap/README.md", what: "How the import is loaded, step by step" },
+];
+
+/** SAP B1 table codes named in the field-map footnote, set as identifiers. */
+const SAP_TABLE_NOTE: [string, string][] = [
+  ["OCRD", "business partners"],
+  ["CRD1", "addresses"],
+  ["OCRB", "bank accounts"],
+  ["OITM", "items"],
+  ["ITM1", "prices"],
+  ["OPRC", "cost centres"],
 ];
 
 export function ArchitecturePage() {
   return (
-    <div className="mx-auto w-full max-w-[1320px] space-y-12 pb-10">
+    <div className="w-full space-y-6 pb-10">
       <PageHeader
         title="How it lands in SAP B1"
         subtitle="Approvals live in Microsoft 365, where people already work. SAP Business One stays the system of record. Each box is coloured by who builds it, so a company without a development team can see exactly what it takes on."
@@ -141,34 +151,34 @@ export function ArchitecturePage() {
 
       <WhyNotSapApprovals />
 
-      <section aria-labelledby="map-title">
-        <SectionHeading
-          id="map-title"
-          title="Prototype → production"
-          subtitle="What you click in this prototype, and what it becomes in the Microsoft 365 build."
-        />
-        <div className="overflow-x-auto rounded-xl border bg-card shadow-raised">
-          <table className="w-full min-w-[960px] text-sm">
-            <thead className="bg-muted/60 text-left text-[0.8125rem] text-muted-foreground">
-              <tr>
-                <th className="w-[15%] px-4 py-2.5 font-medium">Part</th>
-                <th className="w-[22%] px-4 py-2.5 font-medium">In this prototype</th>
-                <th className="px-4 py-2.5 font-medium">In production</th>
-                <th className="w-[20%] px-4 py-2.5 font-medium">Who builds it</th>
+      <Panel
+        titleId="map-title"
+        title="Prototype → production"
+        description="What you click in this prototype, and what it becomes in the Microsoft 365 build."
+        flush
+      >
+        <div className="scrollbar-thin relative overflow-x-auto">
+          <table className={cn(T.table, "min-w-[960px]")}>
+            <thead>
+              <tr className={T.headRow}>
+                <th className={cn(T.head, "w-[15%]")}>Part</th>
+                <th className={cn(T.head, "w-[22%]")}>In this prototype</th>
+                <th className={T.head}>In production</th>
+                <th className={cn(T.head, "w-[20%]")}>Who builds it</th>
               </tr>
             </thead>
             <tbody>
               {MAPPING.map((r) => (
-                <tr key={r.part} className="border-t align-top">
-                  <td className="px-4 py-3 font-medium text-foreground">
+                <tr key={r.part} className={T.row}>
+                  <td className={cn(T.cell, "font-medium text-foreground")}>
                     <span className="flex flex-wrap items-center gap-1.5">
                       {r.part}
                       {r.phase2 ? <Phase2Badge /> : null}
                     </span>
                   </td>
-                  <td className="px-4 py-3">
+                  <td className={T.cell}>
                     {r.href ? (
-                      <Link href={r.href} className="inline-flex items-start gap-1 text-primary underline-offset-4 hover:underline">
+                      <Link href={r.href} className={cn("inline-flex items-start gap-1", LINK)}>
                         {r.prototype}
                         <ArrowUpRight aria-hidden className="mt-0.5 size-3.5 shrink-0" />
                       </Link>
@@ -176,12 +186,12 @@ export function ArchitecturePage() {
                       <span className="text-secondary-foreground">{r.prototype}</span>
                     )}
                   </td>
-                  <td className="px-4 py-3 text-foreground">{r.production}</td>
-                  <td className="px-4 py-3">
+                  <td className={cn(T.cell, "text-foreground")}>{r.production}</td>
+                  <td className={T.cell}>
                     <ul className="space-y-1">
                       {r.who.map((w) => (
                         <li key={w.text} className="flex items-center gap-2 text-secondary-foreground">
-                          <span aria-hidden className="size-2.5 shrink-0 rounded-full" style={{ background: BUILDER_META[w.b].color }} />
+                          <span aria-hidden className="size-2.5 shrink-0 rounded-[1px]" style={{ background: BUILDER_META[w.b].color }} />
                           {w.text}
                         </li>
                       ))}
@@ -192,7 +202,7 @@ export function ArchitecturePage() {
             </tbody>
           </table>
         </div>
-      </section>
+      </Panel>
 
       <FieldMapSection />
 
@@ -203,28 +213,20 @@ export function ArchitecturePage() {
 
 function WhyNotSapApprovals() {
   return (
-    <section
-      aria-labelledby="why-not-title"
-      className="grid gap-4 rounded-xl border border-primary/20 bg-primary-soft/50 p-5 md:grid-cols-[auto_1fr] md:items-start"
-    >
-      <BookOpenCheck aria-hidden className="size-7 text-primary" strokeWidth={1.75} />
-      <div className="space-y-2">
-        <h2 id="why-not-title" className="text-[1.0625rem] font-semibold text-foreground">
-          Why not SAP&apos;s own approvals?
-        </h2>
-        <p className="max-w-[90ch] text-[0.9375rem] text-foreground">
-          SAP B1&apos;s approval procedures are designed around documents (sales, purchasing, inventory, payments). They are
-          document-centric: no structured intake, no duplicate check, no Teams routing and no parallel SLA for master-data requests. Purchase-order
-          approvals can stay in SAP; master-data requests are approved in Microsoft 365, and SAP receives a clean, approved record.
-        </p>
-        <p className="text-xs text-muted-foreground">
-          Source:{" "}
-          <a href={SAP_LEARNING_URL} target="_blank" rel="noreferrer" className="text-primary underline-offset-4 hover:underline">
-            SAP Learning, “Implementing the approval processes in SAP Business One”
-          </a>{" "}
-          (approval processes “can be established for various sales, purchasing, inventory and payment documents”).
-        </p>
-      </div>
+    <section aria-labelledby="why-not-title">
+      <SectionHeading id="why-not-title" title="Why not SAP's own approvals?" />
+      <p className="max-w-[96ch] text-[0.9375rem] leading-relaxed text-foreground">
+        SAP B1&apos;s approval procedures are designed around documents (sales, purchasing, inventory, payments). They are document-centric: no
+        structured intake, no duplicate check, no Teams routing and no parallel SLA for master-data requests. Purchase-order approvals can stay in SAP;
+        master-data requests are approved in Microsoft 365, and SAP receives a clean, approved record.
+      </p>
+      <p className="mt-2 max-w-[96ch] text-xs leading-5 text-muted-foreground">
+        Source:{" "}
+        <a href={SAP_LEARNING_URL} target="_blank" rel="noreferrer" className={LINK}>
+          SAP Learning, “Implementing the approval processes in SAP Business One”
+        </a>{" "}
+        (approval processes “can be established for various sales, purchasing, inventory and payment documents”).
+      </p>
     </section>
   );
 }
@@ -237,65 +239,83 @@ function FieldMapSection() {
   const rows = useMemo(() => (domain ? buildFieldMap(domain) : []), [domain]);
 
   return (
-    <section aria-labelledby="fields-title">
-      <SectionHeading
-        id="fields-title"
-        title="Every form field has a home in SAP"
-        subtitle="Built live from the current form configuration and the same generator that writes the import file. Add a field in Admin with an SAP property and it appears here."
-        aside={<NoteChip>Config version {version}</NoteChip>}
-      />
-      <div className="mb-3 flex flex-wrap items-center gap-1.5" role="tablist" aria-label="Request type">
-        {FIELD_DOMAINS.map((d) => (
-          <button
-            key={d.id}
-            type="button"
-            role="tab"
-            aria-selected={domainId === d.id}
-            data-testid={`arch-fields-${d.id}`}
-            onClick={() => setDomainId(d.id)}
-            className={cn(
-              "h-8 rounded-lg border px-3 text-sm font-medium transition-colors outline-none focus-visible:ring-3 focus-visible:ring-ring/40",
-              domainId === d.id ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card text-secondary-foreground hover:bg-muted",
-            )}
-          >
-            {d.label}
-          </button>
-        ))}
+    <Panel
+      titleId="fields-title"
+      title="Every form field has a home in SAP"
+      description="Built live from the current form configuration and the same generator that writes the import file. Add a field in Admin with an SAP property and it appears here."
+      action={<NoteChip>Config version {version}</NoteChip>}
+      flush
+      footer={
+        <>
+          Each import file has two header rows: SAP property names, then database column names. Column names follow DTW template convention for SAP B1
+          10.0; confirm against the installed DTW Templates folder. Tables:{" "}
+          {SAP_TABLE_NOTE.map(([code, what], i) => (
+            <span key={code}>
+              <span className="text-sm">
+                <code className="mono-id text-secondary-foreground">{code}</code>
+              </span>{" "}
+              {what}
+              {i < SAP_TABLE_NOTE.length - 1 ? ", " : "."}
+            </span>
+          ))}
+        </>
+      }
+    >
+      <div className="flex flex-wrap items-center gap-3 border-b border-border px-4 py-2.5">
+        <div className="inline-flex gap-0.5 rounded-md border border-border bg-canvas p-0.5" role="tablist" aria-label="Request type">
+          {FIELD_DOMAINS.map((d) => (
+            <button
+              key={d.id}
+              type="button"
+              role="tab"
+              aria-selected={domainId === d.id}
+              data-testid={`arch-fields-${d.id}`}
+              onClick={() => setDomainId(d.id)}
+              className={cn(
+                "h-7 rounded-sm border px-3 text-sm font-medium transition-colors outline-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-ring",
+                domainId === d.id ? "border-transparent bg-secondary text-foreground" : "border-transparent text-muted-foreground hover:text-foreground",
+              )}
+            >
+              {d.label}
+            </button>
+          ))}
+        </div>
       </div>
       {domainId === "extend" ? (
-        <p className="mb-3 max-w-[100ch] text-sm text-secondary-foreground">
-          In SAP B1 one business-partner record is shared by every entity, so extending a customer is an <strong>update</strong> of the existing
-          record: the entity is added to the user-defined field U_Entities, plus any Finance-approved payment-terms or credit change. The import file is
-          an update row keyed by CardCode; in phase 2 the Service Layer call is{" "}
-          <code className="rounded bg-muted px-1 py-0.5 text-[0.8125rem]">PATCH /b1s/v2/BusinessPartners(&apos;C-SG-00017&apos;)</code>.{" "}
-          <span className="text-muted-foreground">Assumption A28.</span>
+        <p className="max-w-[110ch] border-b border-border px-4 py-3 text-sm leading-relaxed text-secondary-foreground">
+          In SAP B1 one business-partner record is shared by every entity, so extending a customer is an <strong className="text-foreground">update</strong> of
+          the existing record: the entity is added to the user-defined field <code className="mono-id text-foreground">U_Entities</code>, plus any
+          Finance-approved payment-terms or credit change. The import file is an update row keyed by <code className="mono-id text-foreground">CardCode</code>;
+          in phase 2 the Service Layer call is{" "}
+          <code className="mono-id whitespace-nowrap text-foreground">PATCH /b1s/v2/BusinessPartners(&apos;C-SG-00017&apos;)</code>
+          . <span className="text-muted-foreground">Assumption A28.</span>
         </p>
       ) : null}
       {!domain ? (
-        <p className="rounded-xl border border-dashed p-6 text-sm text-muted-foreground">
+        <p className="px-4 py-10 text-center text-sm text-muted-foreground">
           This request type is switched off in Admin, so it has no SAP mapping to show.
         </p>
       ) : (
-        <div className="overflow-x-auto rounded-xl border bg-card shadow-raised">
-          <table className="w-full min-w-[900px] text-sm">
-            <thead className="bg-muted/60 text-left text-[0.8125rem] text-muted-foreground">
-              <tr>
-                <th className="px-4 py-2.5 font-medium">Form field</th>
-                <th className="px-4 py-2.5 font-medium">SAP property (DTW / Service Layer)</th>
-                <th className="px-4 py-2.5 font-medium">Import file</th>
-                <th className="px-4 py-2.5 font-medium">Database column</th>
-                <th className="px-4 py-2.5 text-right font-medium">Max length</th>
+        <div className="scrollbar-thin relative overflow-x-auto">
+          <table className={cn(T.table, "min-w-[900px]")}>
+            <thead>
+              <tr className={T.headRow}>
+                <th className={T.head}>Form field</th>
+                <th className={T.head}>SAP property (DTW / Service Layer)</th>
+                <th className={T.head}>Import file</th>
+                <th className={T.head}>Database column</th>
+                <th className={cn(T.head, "text-right")}>Max length</th>
               </tr>
             </thead>
             <tbody>
               {rows.map((r) => (
-                <tr key={r.key} className={cn("border-t align-top", r.source === "system" && "bg-muted/30")}>
-                  <td className="px-4 py-2.5">
+                <tr key={r.key} className={T.row}>
+                  <td className={cn(T.cell, "py-2")}>
                     <span className="flex flex-wrap items-center gap-1.5 font-medium text-foreground">
                       {r.label}
                       {r.sensitive ? (
-                        <span className="inline-flex items-center gap-1 rounded-full bg-warn-soft px-1.5 text-[0.6875rem] font-medium text-warn-ink">
-                          <Lock aria-hidden className="size-3" /> Finance &amp; MDM only
+                        <span className="inline-flex items-center gap-1 text-xs font-medium text-warn-ink">
+                          <Lock aria-hidden className="size-3.5" /> Finance &amp; MDM only
                         </span>
                       ) : null}
                     </span>
@@ -303,73 +323,69 @@ function FieldMapSection() {
                       {r.source === "system" ? "Set by OneRecord" : r.required === "always" ? "Required" : r.required === "conditional" ? "Required when it applies" : "Optional"}
                     </span>
                   </td>
-                  <td className="px-4 py-2.5">
-                    {r.sapProperty ? <code className="text-[0.8125rem] text-foreground">{r.sapProperty}</code> : <span className="text-muted-foreground">—</span>}
+                  <td className={cn(T.cell, "py-2")}>
+                    {r.sapProperty ? <code className="mono-id text-foreground">{r.sapProperty}</code> : <span className="text-muted-foreground">—</span>}
                   </td>
-                  <td className="px-4 py-2.5">
-                    {r.dtwFile ? <code className="text-[0.8125rem] text-secondary-foreground">{r.dtwFile}</code> : <span className="text-muted-foreground">—</span>}
+                  <td className={cn(T.cell, "py-2")}>
+                    {r.dtwFile ? <code className="mono-id text-secondary-foreground">{r.dtwFile}</code> : <span className="text-muted-foreground">—</span>}
                   </td>
-                  <td className="px-4 py-2.5">
+                  <td className={cn(T.cell, "py-2")}>
                     {r.dbColumn ? (
-                      <code className="text-[0.8125rem] font-medium text-primary">{r.dbColumn}</code>
+                      <code className="mono-id text-foreground">{r.dbColumn}</code>
                     ) : (
                       <span className="text-xs text-muted-foreground">{r.note}</span>
                     )}
                     {r.dbColumn && r.note ? <span className="block text-xs text-muted-foreground">{r.note}</span> : null}
                   </td>
-                  <td className="num px-4 py-2.5 text-right text-secondary-foreground">{r.maxLength ?? "—"}</td>
+                  <td className={cn(T.cell, "num py-2 text-right text-secondary-foreground")}>{r.maxLength ?? "—"}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
       )}
-      <p className="mt-2 text-xs text-muted-foreground">
-        Each import file has two header rows: SAP property names, then database column names. Column names follow DTW template convention for SAP B1
-        10.0; confirm against the installed DTW Templates folder. Tables: OCRD business partners, CRD1 addresses, OCRB bank accounts, OITM items, ITM1
-        prices, OPRC cost centres.
-      </p>
-    </section>
+    </Panel>
   );
 }
 
 function ProductionKit() {
   return (
-    <section aria-labelledby="kit-title">
-      <SectionHeading
-        id="kit-title"
-        title="The production kit"
-        subtitle="Real artefacts in the repository, ready for the lean team to start from."
-        aside={
-          <a
-            href={LINKS.github}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-primary underline-offset-4 hover:underline"
-          >
-            <FolderGit2 aria-hidden className="size-4" /> Open the repository
-          </a>
-        }
-      />
-      <ul className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-        {KIT.map((k) => (
-          <li key={k.path}>
+    <Panel
+      titleId="kit-title"
+      title="The production kit"
+      description="Real artefacts in the repository, ready for the lean team to start from."
+      action={
+        <a
+          href={LINKS.github}
+          target="_blank"
+          rel="noreferrer"
+          className="inline-flex h-7 items-center gap-1.5 rounded-md border border-border-strong px-2.5 text-[0.8125rem] font-medium text-foreground transition-colors outline-none hover:bg-secondary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+        >
+          <FolderGit2 aria-hidden className="size-3.5" /> Open the repository
+        </a>
+      }
+      flush
+    >
+      <ul className="grid lg:grid-cols-2">
+        {KIT.map((k, i) => (
+          <li key={k.path} className={cn("border-border", i > 0 && "border-t", i === 1 && "lg:border-t-0", i % 2 === 1 && "lg:border-l")}>
             <a
               href={repoUrl(k.path, k.dir)}
               target="_blank"
               rel="noreferrer"
-              className="group flex h-full items-start gap-3 rounded-xl border bg-card p-4 shadow-raised transition-colors hover:border-border-strong focus-visible:ring-3 focus-visible:ring-ring/40 focus-visible:outline-none"
+              className="group flex h-full items-start gap-3 px-4 py-3 transition-colors outline-none hover:bg-secondary/55 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring"
             >
-              <k.icon aria-hidden className="mt-0.5 size-5 shrink-0 text-primary" strokeWidth={1.75} />
-              <span className="min-w-0">
-                <span className="block font-medium text-foreground">{k.what}</span>
-                <code className="block truncate text-xs text-muted-foreground">{k.path}</code>
+              <span className="min-w-0 flex-1">
+                <span className="block text-sm font-medium text-foreground">{k.what}</span>
+                <span className="block truncate text-sm">
+                  <code className="mono-id text-muted-foreground">{k.path}</code>
+                </span>
               </span>
-              <ArrowUpRight aria-hidden className="ml-auto size-4 shrink-0 text-muted-foreground group-hover:text-foreground" />
+              <ArrowUpRight aria-hidden className="mt-0.5 size-4 shrink-0 text-subtle transition-colors group-hover:text-foreground" />
             </a>
           </li>
         ))}
       </ul>
-    </section>
+    </Panel>
   );
 }

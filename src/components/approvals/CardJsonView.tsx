@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState, type ReactNode } from "react";
-import { Check, Copy, FileJson, ShieldCheck } from "lucide-react";
+import { Check, Copy, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { useSandbox } from "@/lib/store";
@@ -20,20 +20,20 @@ function highlight(json: string): ReactNode[] {
     if (at > last) out.push(json.slice(last, at));
     if (m[1] && m[2]) {
       out.push(
-        <span key={i++} className="text-[#0451a5] dark:text-[#9cdcfe]">
+        <span key={i++} className="text-muted-foreground">
           {m[1]}
         </span>,
         m[2],
       );
     } else if (m[1]) {
       out.push(
-        <span key={i++} className="text-[#a31515] dark:text-[#ce9178]">
+        <span key={i++} className="text-foreground">
           {m[1]}
         </span>,
       );
     } else {
       out.push(
-        <span key={i++} className="text-[#098658] dark:text-[#b5cea8]">
+        <span key={i++} className="font-medium text-foreground">
           {m[0]}
         </span>,
       );
@@ -70,28 +70,32 @@ export function CardJsonView({ request, step }: { request: MdmRequest; step: App
   }
 
   return (
-    <div className="overflow-hidden rounded-xl border border-border bg-card shadow-raised">
-      <div className="flex flex-wrap items-center gap-3 border-b border-border px-4 py-3">
-        <FileJson className="size-4 text-muted-foreground" aria-hidden="true" />
-        <div className="min-w-0">
-          <p className="text-sm font-semibold">integrations/teams/approval-card.json</p>
-          <p className="text-xs text-muted-foreground">
+    <div className="panel overflow-hidden">
+      <div className="panel-header py-2.5">
+        <div className="min-w-0 flex-1">
+          <p className="mono-id text-sm font-medium text-foreground">integrations/teams/approval-card.json</p>
+          <p className="text-[0.8125rem] leading-5 text-muted-foreground">
             Adaptive Card 1.5, bound with {request.id}&apos;s values · the same template the production flow posts to Teams
           </p>
         </div>
-        <Button variant="outline" size="sm" className="ml-auto" onClick={copy} data-testid="json-copy">
+        <Button variant="outline" size="sm" onClick={copy} data-testid="json-copy">
           {copied ? <Check aria-hidden="true" /> : <Copy aria-hidden="true" />}
           {copied ? "Copied" : "Copy JSON"}
         </Button>
       </div>
-      <p className="flex items-start gap-2 border-b border-border bg-ok-soft/50 px-4 py-2 text-xs text-ok-ink">
-        <ShieldCheck className="mt-px size-3.5 shrink-0" aria-hidden="true" />
-        Bank details, credit limits and payment terms are replaced with a mask before binding, so they never travel in the Teams
-        message. Finance opens them in OneRecord, where each view is logged.
+      {/* A status line under the header (shield in the "verified" ink), not a tinted band. */}
+      <p className="flex items-start gap-2 border-b border-border px-4 py-2.5 text-[0.8125rem] leading-5 text-secondary-foreground">
+        <ShieldCheck className="mt-0.5 size-3.5 shrink-0 text-ok-ink" aria-hidden="true" />
+        <span>
+          <span className="font-medium text-ok-ink">
+            Bank details, credit limits and payment terms are replaced with a mask before binding,
+          </span>{" "}
+          so they never travel in the Teams message. Finance opens them in OneRecord, where each view is logged.
+        </span>
       </p>
       <pre
         data-testid="card-json"
-        className="max-h-[560px] overflow-auto bg-[#fbfbfd] px-4 py-3 font-mono text-[12px] leading-[1.55] text-[#242424] dark:bg-[#1e1e1e] dark:text-[#d4d4d4]"
+        className="max-h-[560px] overflow-auto bg-canvas px-4 py-3 font-mono text-[12px] leading-[1.6] text-subtle scrollbar-thin [font-variant-ligatures:none]"
       >
         <code>{nodes}</code>
       </pre>

@@ -1,13 +1,14 @@
 "use client";
 
+import type React from "react";
 import Link from "next/link";
-import { ArrowUpRight, CircleSlash2 } from "lucide-react";
-import { PageHeader, Phase2Badge } from "@/components/common";
+import { ArrowUpRight } from "lucide-react";
+import { PageHeader, Phase2Badge, RowNumber } from "@/components/common";
 import { formatSgd } from "@/components/common/format";
 import { cn } from "@/lib/utils";
 import { computePhase2Case, BASE_VOLUME } from "./business-case";
 import { BriefMap } from "./brief-map";
-import { NoteChip, SectionHeading } from "./story-ui";
+import { LINK, NoteChip, Panel } from "./story-ui";
 
 interface NotInV1 {
   title: string;
@@ -78,27 +79,25 @@ export function ScopePage() {
   ];
 
   return (
-    <div className="mx-auto w-full max-w-[1320px] space-y-8 pb-10">
+    <div className="w-full space-y-6 pb-10">
       <PageHeader
         title="Scope: what we built, and what we left out"
         subtitle="Version 1 fixes how master data gets in and makes the regional numbers trustworthy. First, where each part of the brief is answered; then what we left out on purpose, each a choice and not a time cut, with the reason."
-        meta={<NoteChip tone="brand">Answers the brief&apos;s “what you will not build”</NoteChip>}
+        meta={<NoteChip>Answers the brief&apos;s “what you will not build”</NoteChip>}
       />
 
       <BriefMap />
 
-      <div className="grid gap-8 lg:grid-cols-2">
-        <section aria-labelledby="not-v1-title">
-          <SectionHeading id="not-v1-title" title="Deliberately not in v1, and why" className="scroll-mt-24" />
-          <ul className="space-y-3" data-testid="scope-not-in-v1">
+      <div className="grid items-start gap-6 lg:grid-cols-2">
+        <Panel titleId="not-v1-title" title="Deliberately not in v1, and why" className="scroll-mt-24" flush>
+          <ul className="divide-y divide-border" data-testid="scope-not-in-v1">
             {notInV1.map((n) => (
-              <li key={n.title} className="flex gap-3 rounded-xl border bg-card p-4 shadow-raised">
-                <CircleSlash2 aria-hidden className="mt-0.5 size-5 shrink-0 text-muted-foreground" strokeWidth={1.75} />
+              <li key={n.title} className="px-4 py-3.5">
                 <div className="min-w-0 space-y-1">
-                  <h3 className="font-semibold text-foreground">{n.title}</h3>
-                  <p className="text-sm text-secondary-foreground">{n.why}</p>
+                  <h3 className="text-[0.9375rem] leading-5 font-semibold text-foreground">{n.title}</h3>
+                  <p className="text-sm leading-relaxed text-secondary-foreground">{n.why}</p>
                   {n.link ? (
-                    <Link href={n.link.href} className="inline-flex items-center gap-1 text-sm font-medium text-primary underline-offset-4 hover:underline">
+                    <Link href={n.link.href} className={cn("inline-flex items-center gap-1 text-sm font-medium", LINK)}>
                       {n.link.label}
                       <ArrowUpRight aria-hidden className="size-3.5" />
                     </Link>
@@ -107,36 +106,43 @@ export function ScopePage() {
               </li>
             ))}
           </ul>
-        </section>
+        </Panel>
 
-        <section aria-labelledby="roadmap-title">
-          <SectionHeading id="roadmap-title" title="Roadmap, in order" />
-          <ol className="relative space-y-0" data-testid="scope-roadmap">
-            {roadmap.map((r, i) => (
-              <li key={r.title} className="relative grid grid-cols-[2.25rem_1fr] gap-3 pb-5 last:pb-0">
-                {i < roadmap.length - 1 ? (
-                  <span aria-hidden className="absolute top-9 bottom-0 left-[1.0625rem] w-px border-l border-dashed border-phase2/60" />
-                ) : null}
-                <span
-                  className={cn(
-                    "num relative z-10 inline-flex size-9 items-center justify-center rounded-full border text-sm font-semibold",
-                    r.next ? "border-primary bg-primary-soft text-primary" : "border-dashed border-phase2 bg-phase2-soft text-phase2-ink",
-                  )}
-                >
-                  {i + 1}
-                </span>
-                <div className="pt-1.5">
-                  <h3 className="flex flex-wrap items-center gap-2 font-semibold text-foreground">
-                    {r.title}
-                    {r.next ? <NoteChip tone="ok">Phase 1 · next</NoteChip> : <Phase2Badge label="not built" />}
-                  </h3>
-                  <p className="text-sm text-secondary-foreground">{r.detail}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </section>
+        <Panel titleId="roadmap-title" title="Roadmap, in order" flush>
+          <div data-testid="scope-roadmap">
+            <RoadmapGroup label={<NoteChip tone="ok">Phase 1 · next</NoteChip>} items={roadmap.filter((r) => r.next)} start={1} />
+            <RoadmapGroup
+              label={<Phase2Badge label="not built" />}
+              items={roadmap.filter((r) => !r.next)}
+              start={roadmap.filter((r) => r.next).length + 1}
+            />
+          </div>
+        </Panel>
       </div>
+    </div>
+  );
+}
+
+/** One phase of the roadmap: the phase label once, then numbered items as hairline-divided rows. */
+function RoadmapGroup({ label, items, start }: { label: React.ReactNode; items: { title: string; detail: string }[]; start: number }) {
+  if (items.length === 0) return null;
+  return (
+    <div className="border-border not-first:border-t">
+      <div className="flex items-center gap-3 px-4 pt-3 pb-1">
+        {label}
+        <span aria-hidden className="h-px flex-1 bg-border" />
+      </div>
+      <ol start={start} className="divide-y divide-border">
+        {items.map((r, i) => (
+          <li key={r.title} className="flex gap-3 px-4 py-3">
+            <RowNumber n={start + i} className="pt-px" />
+            <div className="min-w-0">
+              <h3 className="text-[0.9375rem] leading-5 font-semibold text-foreground">{r.title}</h3>
+              <p className="mt-1 text-sm leading-relaxed text-secondary-foreground">{r.detail}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
     </div>
   );
 }

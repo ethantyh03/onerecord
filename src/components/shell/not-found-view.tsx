@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 /** Branded 404 for the prototype. Render from src/app/not-found.tsx. */
 export function NotFoundView() {
   return (
-    <div className="mx-auto max-w-xl py-16">
+    <div className="max-w-xl py-10">
       <EmptyState
         icon={MapPinOff}
         title="This page isn't in the prototype"

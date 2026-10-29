@@ -1,13 +1,81 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { CheckCircle2, GitMerge, RefreshCw, TriangleAlert } from "lucide-react";
+import { useMemo, useState, type ReactNode } from "react";
+import { RefreshCw } from "lucide-react";
 import type { DomainConfig, MdmRequest } from "@/lib/types";
 import { master } from "@/data/contract";
 import { useSandbox } from "@/lib/store";
-import { formatAgo, SapCode } from "@/components/common";
+import { formatAgo, SapCode, StateGlyph } from "@/components/common";
 import { Button } from "@/components/ui/button";
-import { recheckDuplicates } from "./mdm-helpers";
+import { cn } from "@/lib/utils";
+import { recheckDuplicates, type RecheckMatch } from "./mdm-helpers";
+
+/**
+ * The re-check result as a ruled status line (hairlines above and below, no box, no rail): a state
+ * square, the result in the state's ink, the detail under it, the Re-check control on the right.
+ */
+function ResultLine({
+  tone,
+  children,
+  action,
+  className,
+}: {
+  tone: "ok" | "neutral";
+  children: ReactNode;
+  action?: ReactNode;
+  className?: string;
+}) {
+  return (
+    <div
+      data-testid="mdm-dup-recheck"
+      className={cn("flex items-start gap-3 border-y border-border py-3 text-sm leading-6", className)}
+    >
+      <StateGlyph tone={tone} className="mt-2" />
+      <div className="min-w-0 flex-1">{children}</div>
+      {action ? <div className="-my-0.5 shrink-0">{action}</div> : null}
+    </div>
+  );
+}
+
+/**
+ * The matcher's own reasons as a machine readout: "97% · Same tax ID · Same postcode". A reason that
+ * already carries the score ("92% name match") drops the repeated figure.
+ */
+function readout(m: RecheckMatch): string[] {
+  const pct = `${Math.round(m.score * 100)}%`;
+  const reasons = m.reasons.map((r) => (r.startsWith(`${pct} `) ? r.slice(pct.length + 1) : r));
+  return [pct, ...reasons];
+}
+
+/**
+ * Lock-on: corner brackets close around the existing record that matched (once, ~250 ms) and a mono
+ * readout says why. It answers MDM's re-check, so the motion is earned; reduced motion shows it static.
+ */
+function LockOn({ match }: { match: RecheckMatch }) {
+  return (
+    <li className="relative px-3.5 py-2.5" data-testid={`mdm-dup-match-${match.code}`}>
+      <span aria-hidden className="pointer-events-none absolute inset-0 animate-in duration-250 ease-out fade-in zoom-in-[1.06]">
+        <span className="absolute top-0 left-0 size-3 border-t-2 border-l-2 border-signal" />
+        <span className="absolute top-0 right-0 size-3 border-t-2 border-r-2 border-signal" />
+        <span className="absolute bottom-0 left-0 size-3 border-b-2 border-l-2 border-signal" />
+        <span className="absolute right-0 bottom-0 size-3 border-r-2 border-b-2 border-signal" />
+      </span>
+      <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+        <SapCode code={match.code} />
+        <span className="text-sm font-medium text-foreground">{match.name}</span>
+      </div>
+      {/* Break only between reasons, never inside one. */}
+      <p className="mono-id mt-1.5 text-signal">
+        {readout(match).map((part, i) => (
+          <span key={i}>
+            {i ? <span className="text-subtle"> · </span> : null}
+            <span className="whitespace-nowrap">{part}</span>
+          </span>
+        ))}
+      </p>
+    </li>
+  );
+}
 
 /** (1) Duplicate re-check: the intake check runs again at MDM, against the master extract and everything created since. */
 export function DuplicateRecheck({ req, domain, now }: { req: MdmRequest; domain: DomainConfig; now: string }) {
@@ -25,13 +93,14 @@ export function DuplicateRecheck({ req, domain, now }: { req: MdmRequest; domain
 
   const rerun = (
     <Button
-      variant="ghost"
-      size="xs"
+      variant="outline"
+      size="sm"
       onClick={() => {
         setRuns((n) => n + 1);
         setCheckedAt(useSandbox.getState().nowIso());
       }}
       aria-label="Run the duplicate check again"
+      className="shrink-0"
     >
       <RefreshCw aria-hidden />
       Re-check
@@ -40,73 +109,53 @@ export function DuplicateRecheck({ req, domain, now }: { req: MdmRequest; domain
 
   if (result.kind === "extension") {
     return (
-      <div data-testid="mdm-dup-recheck" className="rounded-xl border border-primary/20 bg-primary-soft/60 px-4 py-3">
-        <div className="flex items-start gap-2.5">
-          <GitMerge aria-hidden className="mt-0.5 size-4 shrink-0 text-primary" />
-          <div className="min-w-0 text-sm">
-            <p className="font-semibold text-foreground">Extension of an existing record: no new record is created</p>
-            <p className="mt-0.5 text-secondary-foreground">
-              Updates <SapCode code={String(req.data.existingCode ?? "")} /> {String(req.data.existingName ?? "")} for{" "}
-              {String(req.data.extendToEntity ?? req.entity)}, so there is nothing new to duplicate.
-            </p>
-          </div>
-        </div>
-      </div>
+      <ResultLine tone="neutral">
+        <p className="font-semibold text-foreground">Extension of an existing record: no new record is created</p>
+        <p className="text-secondary-foreground">
+          Updates <SapCode code={String(req.data.existingCode ?? "")} /> {String(req.data.existingName ?? "")} for{" "}
+          {String(req.data.extendToEntity ?? req.entity)}, so there is nothing new to duplicate.
+        </p>
+      </ResultLine>
     );
   }
 
   if (result.kind === "matches") {
     return (
-      <div data-testid="mdm-dup-recheck" className="rounded-xl border border-warn/50 bg-warn-soft px-4 py-3">
-        <div className="flex items-start justify-between gap-2">
-          <div className="flex items-start gap-2.5">
-            <TriangleAlert aria-hidden className="mt-0.5 size-4 shrink-0 text-warn-ink" />
-            <div>
-              <p className="text-sm font-semibold text-warn-ink">
-                {result.matches.length} possible duplicate{result.matches.length === 1 ? "" : "s"} · re-checked {ago}
+      <section data-testid="mdm-dup-recheck" className="border-y border-border text-sm">
+        <header className="flex items-start gap-3 py-3 leading-6">
+          <StateGlyph tone="warn" className="mt-2" />
+          <div className="min-w-0 flex-1">
+            <p className="font-semibold text-warn-ink">
+              {result.matches.length} possible duplicate{result.matches.length === 1 ? "" : "s"} · re-checked {ago}
+            </p>
+            {decision?.choice === "override" ? (
+              <p className="text-secondary-foreground">
+                Requestor overrode the warning at intake: “{decision.justification ?? "no reason given"}”
               </p>
-              {decision?.choice === "override" ? (
-                <p className="mt-0.5 text-[0.8125rem] text-secondary-foreground">
-                  Requestor overrode the warning at intake: “{decision.justification ?? "no reason given"}”
-                </p>
-              ) : null}
-            </div>
+            ) : null}
           </div>
-          {rerun}
-        </div>
-        <ul className="mt-2.5 space-y-1.5">
+          <div className="-my-0.5 shrink-0">{rerun}</div>
+        </header>
+        <ul className="grid gap-x-6 gap-y-3 pb-4 pl-5 md:grid-cols-2">
           {result.matches.map((m) => (
-            <li key={m.code} className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5 rounded-md bg-card/80 px-2.5 py-1.5 text-[0.8125rem]">
-              <SapCode code={m.code} />
-              <span className="font-medium text-foreground">{m.name}</span>
-              <span className="num font-semibold text-warn-ink">{Math.round(m.score * 100)}%</span>
-              <span className="text-muted-foreground">{m.reasons.join(", ")}</span>
-            </li>
+            <LockOn key={`${m.code}-${runs}`} match={m} />
           ))}
         </ul>
-      </div>
+      </section>
     );
   }
 
   return (
-    <div
-      data-testid="mdm-dup-recheck"
-      className="flex items-center justify-between gap-3 rounded-xl border border-ok/30 bg-ok-soft px-4 py-3"
-    >
-      <div className="flex items-start gap-2.5">
-        <CheckCircle2 aria-hidden className="mt-0.5 size-4 shrink-0 text-ok-ink" />
-        <div className="text-sm">
-          <p className="font-semibold text-ok-ink">
-            {result.kind === "not_applicable" ? "No duplicate check for this record type" : `No duplicates found · re-checked ${ago}`}
-          </p>
-          {result.kind === "clear" ? (
-            <p className="mt-0.5 text-[0.8125rem] text-secondary-foreground">
-              Compared with {result.compared.toLocaleString("en-SG")} records in the SAP B1 master extract and the sandbox.
-            </p>
-          ) : null}
-        </div>
-      </div>
-      {result.kind === "clear" ? rerun : null}
-    </div>
+    <ResultLine tone={result.kind === "clear" ? "ok" : "neutral"} action={result.kind === "clear" ? rerun : undefined}>
+      <p className={cn("font-semibold", result.kind === "clear" ? "text-ok-ink" : "text-foreground")}>
+        {result.kind === "not_applicable" ? "No duplicate check for this record type" : `No duplicates found · re-checked ${ago}`}
+      </p>
+      {result.kind === "clear" ? (
+        <p className="text-secondary-foreground">
+          Compared with <span className="num">{result.compared.toLocaleString("en-SG")}</span> records in the SAP B1 master
+          extract and the sandbox.
+        </p>
+      ) : null}
+    </ResultLine>
   );
 }

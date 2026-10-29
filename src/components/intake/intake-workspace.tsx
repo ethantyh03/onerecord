@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
-import { History, Info } from "lucide-react";
+import { History } from "lucide-react";
 import type { DomainConfig, DuplicateDecision, DuplicateMatch, FieldDef, FieldValue } from "@/lib/types";
 import { useSandbox } from "@/lib/store";
 import { useCurrentPerson, useNow } from "@/lib/selectors";
@@ -12,7 +12,7 @@ import { activateNext, buildRoute, expectedCompletion } from "@/lib/engine/routi
 import { isEmptyValue, isFieldRequired, isFieldVisible } from "@/lib/engine/conditions";
 import { entitiesOf } from "@/lib/seed";
 import { extractForIntake, PASTE_EXAMPLES, type IntakeExtraction } from "@/lib/extract-cache";
-import { PageHeader, PersonAvatar } from "@/components/common";
+import { Notice, PageHeader, PersonAvatar, SectionTitle } from "@/components/common";
 import { cn } from "@/lib/utils";
 import { TypePicker } from "./type-picker";
 import { PastePanel } from "./paste-panel";
@@ -214,6 +214,7 @@ function IntakeForm({ domainParam, draftParam }: { domainParam: string | null; d
         label: "Required fields",
         state: comp.missing.length ? "todo" : "ok",
         detail: comp.missing.length ? `${comp.missing.length} still empty` : "All filled",
+        listMissing: true,
       },
       {
         label: "SAP B1 field rules (length, format)",
@@ -413,26 +414,21 @@ function IntakeForm({ domainParam, draftParam }: { domainParam: string | null; d
       subtitle="One form for every master-data request. It checks for duplicates, shows who approves, and hands a clean record to SAP B1."
       meta={
         <>
-          <span className="inline-flex h-5 items-center rounded-full border border-border bg-card px-2 text-[0.6875rem] text-muted-foreground">
-            Production: Power Apps form in Microsoft 365
-          </span>
+          <span className="whitespace-nowrap">Production: Power Apps form in Microsoft 365</span>
           {notice ? (
-            <span
-              data-testid="intake-notice"
-              className="inline-flex min-h-5 items-center gap-1.5 rounded-full border border-border bg-card px-2 text-[0.6875rem] text-muted-foreground"
-            >
-              <History aria-hidden className="size-3" />
+            <span data-testid="intake-notice" className="inline-flex items-center gap-1.5 text-secondary-foreground">
+              <History aria-hidden className="size-3.5 text-subtle" />
               {notice}
             </span>
           ) : null}
         </>
       }
       actions={
-        <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card py-1 pr-3 pl-1 text-[0.8125rem]">
+        <span className="inline-flex items-center gap-2 text-[0.8125rem] text-muted-foreground">
           <PersonAvatar person={person} size="sm" />
           <span>
-            Requesting as <strong className="font-semibold">{person.name}</strong>
-            <span className="text-muted-foreground"> · {person.entity}</span>
+            Requesting as <strong className="font-semibold text-foreground">{person.name}</strong>
+            <span> · {person.entity}</span>
           </span>
         </span>
       }
@@ -491,10 +487,10 @@ function IntakeForm({ domainParam, draftParam }: { domainParam: string | null; d
     <div className="pb-10">
       {header}
 
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(340px,410px)]">
+      <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_clamp(340px,28vw,410px)]">
         <div className="min-w-0 space-y-5">
           <section aria-labelledby="type-title">
-            <h2 id="type-title" className={cn("mb-2.5 text-base font-semibold", !pickerOpen && domain && "sr-only")}>
+            <h2 id="type-title" className={cn("panel-title mb-3", !pickerOpen && domain && "sr-only")}>
               What do you need?
             </h2>
             <TypePicker
@@ -522,18 +518,17 @@ function IntakeForm({ domainParam, draftParam }: { domainParam: string | null; d
           </div>
 
           {!domain ? (
-            <div className="flex items-center gap-2.5 rounded-xl border border-dashed border-border-strong bg-card/60 px-5 py-6 text-sm text-muted-foreground">
-              <Info aria-hidden className="size-4.5 shrink-0" />
+            <Notice className="py-1">
               Pick a request type above, or paste an old email and OneRecord picks it for you.
-            </div>
+            </Notice>
           ) : (
+            // The form itself sits on the page, not in boxes: each section is a ruled title (hairline to the right
+            // edge) over its fields. Only the tools with their own controls (paste, duplicate check, the rail) are panels.
             sections.map((sec, i) => (
               <div key={sec.name} className="space-y-5">
-                <section aria-labelledby={`sec-${i}`} className="rounded-xl border border-border bg-card px-5 pt-4 pb-3 shadow-raised">
-                  <h2 id={`sec-${i}`} className="mb-1.5 text-base font-semibold">
-                    {sec.name}
-                  </h2>
-                  <div className="grid gap-x-5 sm:grid-cols-2">
+                <section aria-labelledby={`sec-${i}`} className={cn("@container", i > 0 && "pt-2")}>
+                  <SectionTitle id={`sec-${i}`} title={sec.name} />
+                  <div className="mt-1 grid gap-x-6 sm:grid-cols-2">
                     {sec.fields.map((f) => {
                       const required = isFieldRequired(f, data);
                       const err = comp.errors[f.key];

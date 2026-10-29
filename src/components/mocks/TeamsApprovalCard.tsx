@@ -24,7 +24,7 @@ import { canSeeSensitive } from "@/lib/engine/masking";
 import { useSandbox } from "@/lib/store";
 import type { ApprovalStep, MdmRequest } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { MS_FONT, MsAvatar, TEAMS, findPerson, formatAgo, formatSgd, usePeople, useSimNow } from "./shared";
+import { MS_FONT, MS_SCOPE, MS_TEXT, MsAvatar, TEAMS, findPerson, formatAgo, formatSgd, usePeople, useSimNow } from "./shared";
 import { buildKeyFacts, countryName, formatFactValue, teamsSla, type TeamsSlaTone } from "./teams-helpers";
 
 /** What a sensitive field shows on any card or message: never the value, for anyone (final model decision 4). */
@@ -169,11 +169,13 @@ export function TeamsApprovalCard({
       data-testid="teams-card"
       aria-label={`Approval request: ${request.title}`}
       className={cn(
-        "overflow-hidden rounded-[6px] border border-[#e0e0e0] bg-white text-[#242424]",
+        MS_SCOPE,
+        "overflow-hidden rounded-[6px] border border-[#e0e0e0] bg-white",
+        // Fluent card elevation: part of the native Teams look, not a console panel shadow.
         "shadow-[0_1.6px_3.6px_rgba(0,0,0,0.11),0_0.3px_0.9px_rgba(0,0,0,0.09)]",
         className,
       )}
-      style={{ fontFamily: MS_FONT }}
+      style={{ fontFamily: MS_FONT, color: MS_TEXT }}
     >
       <div className="h-1" style={{ background: TEAMS.purple }} aria-hidden="true" />
 

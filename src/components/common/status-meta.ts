@@ -1,4 +1,5 @@
 import type { RequestStatus, StepStatus } from "@/lib/types";
+import type { StateTone } from "./glyph";
 
 export type AnyStatus = RequestStatus | StepStatus;
 export type StatusTone = "neutral" | "brand" | "warn" | "stuck" | "ok";
@@ -44,4 +45,25 @@ export const STATUS_META: Record<AnyStatus, StatusMeta> = {
 
 export function statusMeta(status: AnyStatus): StatusMeta {
   return STATUS_META[status] ?? { label: String(status), tone: "neutral", icon: "waiting", description: "" };
+}
+
+/**
+ * Which state square a status gets (pattern sheet E1): done → green, rejected → coral, a question
+ * → amber, in progress → filled grey, not started / skipped / withdrawn → hollow grey.
+ */
+const GLYPH_BY_ICON: Record<StatusMeta["icon"], StateTone> = {
+  done: "ok",
+  rejected: "stuck",
+  question: "warn",
+  progress: "neutral",
+  review: "neutral",
+  pending: "neutral",
+  draft: "waiting",
+  waiting: "waiting",
+  skipped: "waiting",
+  cancelled: "waiting",
+};
+
+export function statusGlyphTone(status: AnyStatus): StateTone {
+  return GLYPH_BY_ICON[statusMeta(status).icon];
 }

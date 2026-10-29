@@ -15,7 +15,7 @@ function MoneyCell({ row }: { row: SignalRowBase }) {
   return (
     <td className="px-3 py-2.5 text-right align-top">
       <div className="num font-semibold">{formatSgd(row.sgdAddressable, { compact: true })}</div>
-      <div className="num text-[0.6875rem] whitespace-nowrap text-muted-foreground">
+      <div className="num text-xs whitespace-nowrap text-muted-foreground">
         × {rate}% = {formatSgd(row.sgdAddressable * row.assumedConversion, { compact: true })}
       </div>
     </td>
@@ -27,7 +27,9 @@ function IdCells({ row, highlight }: { row: SignalRowBase; highlight: boolean })
     <>
       <td className="px-3 py-2.5 align-top">
         <div className={cn("font-medium", highlight && "text-foreground")}>{row.name}</div>
-        <div className="font-mono text-[0.6875rem] text-muted-foreground">{row.goldenId}</div>
+        <div className="mt-0.5 text-sm leading-none">
+          <span className="mono-id text-muted-foreground">{row.goldenId}</span>
+        </div>
       </td>
       <td className="px-3 py-2.5 align-top whitespace-nowrap">{COUNTRY_NAME[row.country]}</td>
       <td className="px-3 py-2.5 align-top whitespace-nowrap">
@@ -39,8 +41,8 @@ function IdCells({ row, highlight }: { row: SignalRowBase; highlight: boolean })
 
 function Head({ rateLabel }: { rateLabel: string }) {
   return (
-    <thead className="bg-muted/50 text-xs text-muted-foreground">
-      <tr className="border-b">
+    <thead className="text-xs text-subtle">
+      <tr className="border-b border-border-strong">
         <th className="px-3 py-2 text-left font-medium" title="Golden ID: one ID per real hospital, however many SAP records it has">
           Customer (one ID per real hospital)
         </th>
@@ -107,7 +109,7 @@ export function SignalsTables() {
           ? "Customers whose last 6 months are well below the 6 before, or who are overdue for their usual reorder."
           : "Customers buying well below similar customers in a product, including hospitals with our instruments installed but low reagent orders."}
       </p>
-      <div className="overflow-x-auto rounded-lg border">
+      <div className="overflow-x-auto scrollbar-thin">
         <table className="w-full min-w-[820px] text-sm">
           <Head rateLabel={tab === "dropoff" ? `× ${Math.round(a.dropOffSaveRate * 100)}% assumed save rate` : `× ${Math.round(a.crossSellConversion * 100)}% assumed conversion`} />
           <tbody>
@@ -119,7 +121,7 @@ export function SignalsTables() {
               </tr>
             ) : tab === "dropoff" ? (
               drop.map((r) => (
-                <tr key={`${r.goldenId}-${r.product}`} className="border-b last:border-b-0">
+                <tr key={`${r.goldenId}-${r.product}`} className="border-b transition-colors last:border-b-0 hover:bg-secondary/60">
                   <IdCells row={r} highlight={r.country === country} />
                   <td className="max-w-[46ch] px-3 py-2.5 align-top">
                     <div className="line-clamp-2 leading-snug" title={r.reason}>
@@ -135,7 +137,7 @@ export function SignalsTables() {
               ))
             ) : (
               cross.map((r) => (
-                <tr key={`${r.goldenId}-${r.product}`} className="border-b last:border-b-0">
+                <tr key={`${r.goldenId}-${r.product}`} className="border-b transition-colors last:border-b-0 hover:bg-secondary/60">
                   <IdCells row={r} highlight={r.country === country} />
                   <td className="max-w-[46ch] px-3 py-2.5 align-top">
                     <div className="line-clamp-2 leading-snug" title={r.reason}>

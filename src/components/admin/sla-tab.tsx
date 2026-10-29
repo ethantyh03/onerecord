@@ -6,7 +6,7 @@ import type { SlaConfig } from "@/lib/types";
 import { useSandbox } from "@/lib/store";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useSaveConfig } from "./shared";
+import { SectionHeader, useSaveConfig } from "./shared";
 
 const ROWS: { key: keyof SlaConfig; label: string; help: string; icon: typeof Clock }[] = [
   { key: "stepBusinessDays", label: "Time to decide", help: "Business days each approver has before the step counts as late.", icon: Clock },
@@ -38,18 +38,13 @@ export function SlaTab() {
 
   return (
     <div className="space-y-4">
-      <div>
-        <h2 className="text-base font-semibold text-foreground">Service levels</h2>
-        <p className="text-[0.8125rem] text-muted-foreground">
-          Counted in business days (Mon–Fri). Time spent waiting for the requestor to answer a question doesn&rsquo;t count.
-        </p>
-      </div>
-      <div className="divide-y divide-border overflow-hidden rounded-xl border border-border bg-card shadow-raised">
-        {ROWS.map(({ key, label, help, icon: Icon }) => (
+      <SectionHeader
+        title="Service levels"
+        description={<>Counted in business days (Mon–Fri). Time spent waiting for the requestor to answer a question doesn&rsquo;t count.</>}
+      />
+      <div className="panel divide-y divide-border overflow-hidden">
+        {ROWS.map(({ key, label, help }) => (
           <div key={key} className="flex flex-wrap items-center gap-4 px-4 py-3.5">
-            <span className="inline-flex size-9 items-center justify-center rounded-lg bg-primary-soft text-primary">
-              <Icon className="size-4.5" aria-hidden />
-            </span>
             <div className="min-w-0 flex-1">
               <label htmlFor={`sla-${key}`} className="text-sm font-medium text-foreground">
                 {label}
@@ -62,7 +57,7 @@ export function SlaTab() {
                 type="number"
                 min={0.5}
                 step={0.5}
-                className="w-20 text-right tabular-nums"
+                className="num w-20 text-right"
                 value={values[key]}
                 onChange={(e) => setDraft({ version: config.version, sla: { ...values, [key]: e.target.value } })}
                 data-testid={`admin-sla-${key}`}

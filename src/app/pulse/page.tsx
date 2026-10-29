@@ -20,20 +20,23 @@ import {
   TrustPanel,
 } from "@/components/pulse/analytics";
 
-/** Closed-by-default section for the deep-dive panels below the country actions. Native <details>: no state. */
+/**
+ * Closed-by-default deep dive below the country actions: one ruled row of a list (not a card), opening onto its
+ * panel. Native <details>: no state.
+ */
 function MoreSection({ id, title, summary, children }: { id: string; title: string; summary: string; children: ReactNode }) {
   return (
-    <details id={id} data-testid={id} className="group scroll-mt-24 rounded-xl border bg-card shadow-raised open:border-transparent open:bg-transparent open:shadow-none">
-      <summary className="flex cursor-pointer list-none items-center gap-3 rounded-xl px-5 py-4 transition-colors hover:bg-muted/40 focus-visible:ring-3 focus-visible:ring-ring/40 focus-visible:outline-none group-open:mb-3 group-open:border group-open:bg-card [&::-webkit-details-marker]:hidden">
-        <ChevronRight aria-hidden className="size-4 shrink-0 text-muted-foreground transition-transform group-open:rotate-90" />
+    <details id={id} data-testid={id} className="group scroll-mt-24">
+      <summary className="flex min-h-16 cursor-pointer list-none items-center gap-3 py-3 pr-1 transition-colors hover:bg-secondary/40 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring [&::-webkit-details-marker]:hidden">
+        <ChevronRight aria-hidden className="ml-1 size-4 shrink-0 text-subtle transition-transform group-open:rotate-90" />
         <span className="min-w-0">
-          <span className="block text-base font-semibold text-foreground">{title}</span>
-          <span className="block text-sm text-muted-foreground">{summary}</span>
+          <span className="panel-title block">{title}</span>
+          <span className="mt-0.5 block text-sm text-muted-foreground">{summary}</span>
         </span>
-        <span className="ml-auto shrink-0 text-sm font-medium text-primary group-open:hidden">Show</span>
-        <span className="ml-auto hidden shrink-0 text-sm font-medium text-primary group-open:inline">Hide</span>
+        <span className="ml-auto shrink-0 text-sm font-medium text-muted-foreground group-open:hidden">Show</span>
+        <span className="ml-auto hidden shrink-0 text-sm font-medium text-muted-foreground group-open:inline">Hide</span>
       </summary>
-      {children}
+      <div className="pt-1 pb-5">{children}</div>
     </details>
   );
 }
@@ -42,18 +45,21 @@ export default function PulsePage() {
   return (
     <PulseProvider>
       <DataHonestyProvider>
-        <div className="space-y-7 pb-4">
+        <div className="space-y-6 pb-4">
           <PulseHeader />
           <PulseKpis />
           <CountryProductMatrix />
           <StreamsPanel />
           <HeroReveal />
-          <section id="pulse-forecast" aria-label="Forecast" className="scroll-mt-24 space-y-7">
+          <section id="pulse-forecast" aria-label="Forecast" className="scroll-mt-24 space-y-6">
             <ForecastPanel />
             <Scorecard />
           </section>
           <CountryActions />
-          <section aria-label="Can we trust it, growth bridge and signals" className="space-y-4">
+          <section
+            aria-label="Can we trust it, growth bridge and signals"
+            className="divide-y divide-border border-y border-border"
+          >
             <MoreSection
               id="pulse-more-trust"
               title="Can we trust it?"
@@ -76,7 +82,7 @@ export default function PulsePage() {
               <SignalsTables />
             </MoreSection>
           </section>
-          <footer className="flex flex-col gap-3 border-t pt-5 md:flex-row md:items-center md:justify-between">
+          <footer className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
             <Link
               href="/triage"
               data-testid="pulse-triage-link"

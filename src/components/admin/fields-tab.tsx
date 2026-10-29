@@ -4,13 +4,12 @@ import { useState } from "react";
 import { Lock, Plus } from "lucide-react";
 import type { FieldDef } from "@/lib/types";
 import { useSandbox } from "@/lib/store";
-import { Phase2Badge } from "@/components/common";
+import { Phase2Badge, SapCode } from "@/components/common";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { cn } from "@/lib/utils";
-import { describeRule, useSaveConfig } from "./shared";
+import { describeRule, DomainSwitch, SectionHeader, useSaveConfig } from "./shared";
 
 const TYPE_LABELS: Record<FieldDef["type"], string> = {
   text: "Text",
@@ -44,13 +43,10 @@ export function FieldsTab() {
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h2 className="text-base font-semibold text-foreground">Fields &amp; rules</h2>
-          <p className="text-[0.8125rem] text-muted-foreground">
-            Flip a switch to make a field mandatory or masked. Each change is saved as a new config version straight away.
-          </p>
-        </div>
+      <SectionHeader
+        title="Fields & rules"
+        description="Flip a switch to make a field mandatory or masked. Each change is saved as a new config version straight away."
+        actions={
         <Tooltip>
           <TooltipTrigger render={<span tabIndex={0} className="inline-flex cursor-not-allowed items-center gap-2 rounded-lg" />}>
             <Button variant="outline" size="sm" disabled data-testid="admin-add-domain">
@@ -60,31 +56,15 @@ export function FieldsTab() {
           </TooltipTrigger>
           <TooltipContent>Roadmap: the config schema already supports it</TooltipContent>
         </Tooltip>
-      </div>
+        }
+      />
 
-      <div className="flex flex-wrap gap-1.5" role="tablist" aria-label="Request type">
-        {config.domains.map((d) => (
-          <button
-            key={d.id}
-            type="button"
-            role="tab"
-            aria-selected={d.id === domain.id}
-            onClick={() => setDomainId(d.id)}
-            data-testid={`admin-fields-domain-${d.id}`}
-            className={cn(
-              "h-8 rounded-full border px-3 text-[0.8125rem] font-medium transition-colors",
-              d.id === domain.id ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card text-muted-foreground hover:text-foreground",
-            )}
-          >
-            {d.label}
-          </button>
-        ))}
-      </div>
+      <DomainSwitch domains={config.domains} value={domain.id} onChange={setDomainId} testIdPrefix="admin-fields-domain" />
 
-      <div className="overflow-hidden rounded-xl border border-border bg-card shadow-raised">
+      <div className="panel overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow className="bg-muted/50 hover:bg-muted/50">
+            <TableRow>
               <TableHead className="pl-4">Field</TableHead>
               <TableHead>Type</TableHead>
               <TableHead className="text-center">Required</TableHead>
@@ -99,7 +79,9 @@ export function FieldsTab() {
               <TableRow key={f.key} data-testid={`admin-field-row-${domain.id}-${f.key}`}>
                 <TableCell className="pl-4">
                   <div className="font-medium text-foreground">{f.label}</div>
-                  <div className="font-mono text-[0.6875rem] text-muted-foreground">{f.key}</div>
+                  <div className="text-xs text-muted-foreground">
+                    <span className="mono-id">{f.key}</span>
+                  </div>
                 </TableCell>
                 <TableCell className="text-muted-foreground">{TYPE_LABELS[f.type] ?? f.type}</TableCell>
                 <TableCell className="text-center">
@@ -141,12 +123,12 @@ export function FieldsTab() {
                 </TableCell>
                 <TableCell>
                   {f.sapField ? (
-                    <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-[0.75rem] text-foreground">{f.sapField}</code>
+                    <SapCode code={f.sapField} className="text-[0.75rem]" />
                   ) : (
                     <span className="text-xs text-muted-foreground">Attached in OneRecord</span>
                   )}
                 </TableCell>
-                <TableCell className="pr-4 text-right tabular-nums text-muted-foreground">{f.maxLength ?? "—"}</TableCell>
+                <TableCell className="num pr-4 text-right text-muted-foreground">{f.maxLength ?? "—"}</TableCell>
               </TableRow>
             ))}
           </TableBody>

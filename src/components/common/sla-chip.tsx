@@ -1,30 +1,30 @@
 "use client";
 
-import { CircleCheck, CircleDashed, Pause, Siren, Timer, TriangleAlert, type LucideIcon } from "lucide-react";
+import { Pause } from "lucide-react";
 import type { ApprovalStep } from "@/lib/types";
 import { stepElapsedBusinessDays } from "@/lib/engine/sla";
 import { useSandbox } from "@/lib/store";
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { readSla, type SlaTone } from "./sla";
+import { STATE_INK, StateGlyph } from "./glyph";
+import { readSla, SLA_GLYPH } from "./sla";
 import { useSimNow } from "./use-sim-now";
-
-const TONE: Record<SlaTone, { cls: string; icon: LucideIcon }> = {
-  idle: { cls: "border-border bg-transparent text-muted-foreground", icon: CircleDashed },
-  ok: { cls: "border-ok/30 bg-ok-soft text-ok-ink", icon: Timer },
-  warn: { cls: "border-warn/45 bg-warn-soft text-warn-ink", icon: TriangleAlert },
-  stuck: { cls: "border-stuck/35 bg-stuck-soft text-stuck-ink", icon: Siren },
-  paused: { cls: "border-border-strong bg-muted text-secondary-foreground", icon: Pause },
-  done: { cls: "border-border bg-transparent text-muted-foreground", icon: CircleCheck },
-};
 
 export interface SlaChipProps {
   step: ApprovalStep;
+  /**
+   * Drop the square once the step is decided ("Done in 1d" as plain muted text). For places where a
+   * status beside it already says Approved or Rejected, so one fact does not get two markers.
+   */
+  quietWhenDone?: boolean;
   className?: string;
 }
 
-/** Live SLA reading for one approval step, driven by the simulated clock. */
-export function SlaChip({ step, className }: SlaChipProps) {
+/**
+ * Live SLA reading for one approval step, driven by the simulated clock. Plain status text (square +
+ * reading); "paused" shows the Pause icon instead of the square. Focusable, with the detail in a tooltip.
+ */
+export function SlaChip({ step, quietWhenDone, className }: SlaChipProps) {
   const now = useSimNow();
   const sla = useSandbox((s) => s.config.sla);
   const elapsed = !step.activatedAt
@@ -33,7 +33,7 @@ export function SlaChip({ step, className }: SlaChipProps) {
       ? stepElapsedBusinessDays(step, step.decidedAt ?? now)
       : stepElapsedBusinessDays(step, now);
   const reading = readSla(step, elapsed, sla);
-  const { cls, icon: Icon } = TONE[reading.tone];
+  const tone = SLA_GLYPH[reading.tone];
 
   return (
     <Tooltip>
@@ -41,15 +41,20 @@ export function SlaChip({ step, className }: SlaChipProps) {
         render={
           <span
             tabIndex={0}
+            data-sla={reading.tone}
             className={cn(
-              "num inline-flex h-6 shrink-0 cursor-default items-center gap-1 rounded-md border px-1.5 text-xs font-medium whitespace-nowrap outline-none focus-visible:ring-2 focus-visible:ring-ring/50",
-              cls,
+              "num inline-flex shrink-0 cursor-default items-center gap-1.5 rounded-[2px] text-[0.8125rem] leading-5 font-medium whitespace-nowrap outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+              reading.tone === "done" ? "text-muted-foreground" : STATE_INK[tone],
               className,
             )}
           />
         }
       >
-        <Icon aria-hidden className="size-3.5" strokeWidth={2.25} />
+        {reading.tone === "paused" ? (
+          <Pause aria-hidden className="size-3.5 shrink-0 text-muted-foreground" strokeWidth={2.25} />
+        ) : quietWhenDone && reading.tone === "done" ? null : (
+          <StateGlyph tone={tone} />
+        )}
         {reading.label}
         <span className="sr-only">. {reading.detail}</span>
       </TooltipTrigger>

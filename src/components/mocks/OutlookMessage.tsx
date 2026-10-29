@@ -8,7 +8,7 @@ import { formatSgtDateTime } from "@/components/common/format";
 import { useSandbox } from "@/lib/store";
 import type { AppNotification } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { MS_FONT, findPerson, firstName, formatAgo, usePeople, useSimNow } from "./shared";
+import { MS_FONT, MS_SCOPE, MS_TEXT, findPerson, firstName, formatAgo, usePeople, useSimNow } from "./shared";
 import { buildKeyFacts, countryName, formatFactValue } from "./teams-helpers";
 import { CARD_MASK_TEXT } from "./TeamsApprovalCard";
 
@@ -64,8 +64,8 @@ export function OutlookMessage({ notification: n, markReadOnView = true, classNa
 
   return (
     <article
-      className={cn("flex min-h-0 flex-col overflow-hidden bg-white text-[#242424]", className)}
-      style={{ fontFamily: MS_FONT }}
+      className={cn(MS_SCOPE, "flex min-h-0 flex-col overflow-hidden bg-white", className)}
+      style={{ fontFamily: MS_FONT, color: MS_TEXT }}
       aria-label={`Email: ${n.title}`}
     >
       <header className="border-b border-[#ebebeb] px-5 pt-4 pb-3">
@@ -279,8 +279,8 @@ export function OutlookPanel({ personId, className }: OutlookPanelProps) {
 
   return (
     <section
-      className={cn("@container flex min-h-0 flex-col overflow-hidden rounded-[8px] border border-[#e0e0e0] bg-[#faf9f8] text-[#242424]", className)}
-      style={{ fontFamily: MS_FONT }}
+      className={cn(MS_SCOPE, "@container flex min-h-0 flex-col overflow-hidden rounded-[8px] border border-[#e0e0e0] bg-[#faf9f8]", className)}
+      style={{ fontFamily: MS_FONT, color: MS_TEXT }}
       aria-label="Outlook inbox"
     >
       <div className="flex items-center gap-2 px-3 py-2 text-white" style={{ background: OUTLOOK.blue }}>

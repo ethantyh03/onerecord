@@ -1,8 +1,8 @@
 "use client";
 
-import { Check, Lock, Paperclip, Sparkles, X } from "lucide-react";
+import { Check, Lock, Paperclip, X } from "lucide-react";
 import type { MdmRequest } from "@/lib/types";
-import { MaskedValue } from "@/components/common";
+import { MaskedValue, StatusText } from "@/components/common";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import type { FieldReviewRow } from "./mdm-helpers";
@@ -11,6 +11,18 @@ import { Panel } from "./Panel";
 function valueText(v: FieldReviewRow["value"]): string {
   if (v === null || v === undefined) return "—";
   return typeof v === "number" ? v.toLocaleString("en-SG") : String(v);
+}
+
+/** Paste-to-fill provenance: the value came from the requestor's pasted text and they confirmed it. No model runs in phase 1. */
+function AutoFilledTag() {
+  return (
+    <span
+      title="Filled by paste-to-fill, confirmed by the requestor"
+      className="inline-flex h-5 shrink-0 items-center rounded-sm bg-secondary px-1.5 text-xs font-normal whitespace-nowrap text-secondary-foreground"
+    >
+      Auto-filled
+    </span>
+  );
 }
 
 /** (2) Field review: form field → SAP property → DB column → value → SDK 10.0 length check. */
@@ -25,48 +37,45 @@ export function FieldReview({ req, rows }: { req: MdmRequest; rows: FieldReviewR
       title="Field review"
       description="Every value, where it lands in SAP B1, and whether it fits the column."
       actions={
-        <span
-          className={cn(
-            "inline-flex h-6 items-center gap-1 rounded-full border px-2 text-xs font-medium",
-            failing.length ? "border-stuck/30 bg-stuck-soft text-stuck-ink" : "border-ok/30 bg-ok-soft text-ok-ink",
-          )}
-        >
-          {failing.length ? <X aria-hidden className="size-3.5" /> : <Check aria-hidden className="size-3.5" />}
+        <StatusText tone={failing.length ? "stuck" : "ok"} className="num">
           {failing.length
             ? `${failing.length} value${failing.length === 1 ? "" : "s"} too long for SAP B1`
             : `${checked.length} length checks passed`}
+        </StatusText>
+      }
+      bodyClassName="p-0"
+      footer={
+        <span className="flex items-start gap-1.5">
+          <Lock aria-hidden className="mt-0.5 size-3 shrink-0" />
+          Credit terms and bank details are masked for everyone outside Finance and MDM, and every reveal is logged. Role-enforced
+          in the prototype; production: restricted SharePoint list + Entra ID.
         </span>
       }
-      bodyClassName="px-0 py-0"
     >
       <Table>
         <TableHeader>
-          <TableRow className="hover:bg-transparent">
-            <TableHead className="pl-5 text-muted-foreground">Form field</TableHead>
-            <TableHead className="text-muted-foreground">SAP property</TableHead>
-            <TableHead className="text-muted-foreground">DB column</TableHead>
-            <TableHead className="text-muted-foreground">Value</TableHead>
-            <TableHead className="pr-5 text-right text-muted-foreground">Length (SDK 10.0)</TableHead>
+          <TableRow>
+            <TableHead className="pl-4">Form field</TableHead>
+            <TableHead>SAP property</TableHead>
+            <TableHead>DB column</TableHead>
+            <TableHead>Value</TableHead>
+            <TableHead className="pr-4 text-right">Length (SDK 10.0)</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {rows.map((r) => (
-            <TableRow key={r.key} className={cn(r.system && "bg-primary-soft/40 hover:bg-primary-soft/60")}>
-              <TableCell className="py-2 pl-5 align-top whitespace-normal">
-                <span className="flex items-center gap-1.5 text-[0.8125rem] font-medium text-foreground">
+            <TableRow key={r.key} data-system={r.system || undefined}>
+              <TableCell className="py-2 pl-4 align-top whitespace-normal">
+                <span className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[0.8125rem] font-medium text-foreground">
                   {r.label}
-                  {ai.has(r.key) ? (
-                    <span title="Filled by paste-to-fill, confirmed by the requestor" className="text-primary">
-                      <Sparkles aria-label="Filled by paste-to-fill" className="size-3.5" />
-                    </span>
-                  ) : null}
+                  {ai.has(r.key) ? <AutoFilledTag /> : null}
                 </span>
               </TableCell>
               <TableCell className="py-2 align-top">
-                <code className="font-mono text-[0.8125rem] text-foreground">{r.sapProperty}</code>
+                <code className="mono-id text-foreground">{r.sapProperty}</code>
               </TableCell>
               <TableCell className="py-2 align-top">
-                <code className="font-mono text-[0.8125rem] text-muted-foreground">{r.dbColumn}</code>
+                <code className="mono-id text-muted-foreground">{r.dbColumn}</code>
                 {!r.inImport && !r.isFile ? (
                   <span className="ml-1.5 text-xs text-muted-foreground">(not in this import)</span>
                 ) : null}
@@ -83,16 +92,16 @@ export function FieldReview({ req, rows }: { req: MdmRequest; rows: FieldReviewR
                   </span>
                 ) : (
                   <span className="text-[0.8125rem] break-words text-foreground">
-                    {r.system ? <code className="font-mono font-semibold">{valueText(r.value)}</code> : valueText(r.value)}
+                    {r.system ? <code className="mono-id font-medium">{valueText(r.value)}</code> : valueText(r.value)}
                     {r.importValue ? (
                       <span className="ml-2 text-xs text-muted-foreground">
-                        imports as <code className="font-mono">{r.importValue}</code>
+                        imports as <code className="mono-id text-secondary-foreground">{r.importValue}</code>
                       </span>
                     ) : null}
                   </span>
                 )}
               </TableCell>
-              <TableCell className="num py-2 pr-5 text-right align-top">
+              <TableCell className="num py-2 pr-4 text-right align-top">
                 {r.sensitive && !r.length ? (
                   <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
                     <Lock aria-hidden className="size-3" />
@@ -116,11 +125,6 @@ export function FieldReview({ req, rows }: { req: MdmRequest; rows: FieldReviewR
           ))}
         </TableBody>
       </Table>
-      <p className="flex items-center gap-1.5 border-t px-5 py-2.5 text-xs text-muted-foreground">
-        <Lock aria-hidden className="size-3" />
-        Credit terms and bank details are masked for everyone outside Finance and MDM, and every reveal is logged. Role-enforced in
-        the prototype; production: restricted SharePoint list + Entra ID.
-      </p>
     </Panel>
   );
 }

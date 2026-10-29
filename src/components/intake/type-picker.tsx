@@ -45,7 +45,7 @@ export interface TypePickerProps {
   onExpand?: () => void;
 }
 
-/** Request-type cards, straight from config.domains (enabled only). */
+/** Request-type options, straight from config.domains (enabled only). */
 export function TypePicker({ domains, selectedId, onSelect, collapsed, onExpand }: TypePickerProps) {
   const enabled = domains.filter((d) => d.enabled);
   const selected = enabled.find((d) => d.id === selectedId);
@@ -53,8 +53,9 @@ export function TypePicker({ domains, selectedId, onSelect, collapsed, onExpand 
   if (collapsed && selected) {
     const Icon = ICONS[selected.icon] ?? FileText;
     const copy = cardCopy(selected);
+    // The type is known: one ruled line (no box, no rail), with the way back on the right.
     return (
-      <div className="flex items-center gap-3 rounded-xl border border-primary/40 bg-primary-soft px-3.5 py-2 shadow-raised">
+      <div className="flex min-h-11 items-center gap-3 border-y border-border py-1">
         <div role="radiogroup" aria-label="Request type" className="flex min-w-0 flex-1 items-center">
           <button
             type="button"
@@ -63,16 +64,14 @@ export function TypePicker({ domains, selectedId, onSelect, collapsed, onExpand 
             data-testid={`request-type-${selected.id}`}
             onClick={onExpand}
             title="Change the request type"
-            className="flex min-w-0 items-center gap-2.5 rounded-lg text-left outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+            className="flex min-w-0 items-center gap-2.5 rounded-sm text-left outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
           >
-            <span className="inline-flex size-7 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-              <Icon aria-hidden className="size-4" />
-            </span>
-            <span className="shrink-0 text-sm font-semibold text-primary">{copy.label}</span>
+            <Icon aria-hidden className="size-4 shrink-0 text-foreground" />
+            <span className="font-wide shrink-0 text-[0.9375rem] font-semibold text-foreground">{copy.label}</span>
             <span className="hidden truncate text-[0.8125rem] text-muted-foreground sm:inline">· {copy.description}</span>
           </button>
         </div>
-        <Button type="button" variant="ghost" size="sm" className="shrink-0" data-testid="request-type-change" onClick={onExpand}>
+        <Button type="button" variant="ghost" size="sm" className="-mr-2 shrink-0" data-testid="request-type-change" onClick={onExpand}>
           <ArrowLeftRight aria-hidden />
           Change type
         </Button>
@@ -80,42 +79,51 @@ export function TypePicker({ domains, selectedId, onSelect, collapsed, onExpand 
     );
   }
 
+  // A ruled option table, not a row of cards: hairlines between the options and above/below the set, no box per
+  // option, no rail. Five across when the column is wide enough, otherwise three or two per row; the grid is
+  // nudged 1px past the clip box so only the inner rules show at any column count (an unfilled last slot stays
+  // closed off by the last option's right rule). The chosen type is the raised fill, like a selected row.
   return (
-    <div role="radiogroup" aria-label="Request type" className="grid grid-cols-2 gap-2 sm:grid-cols-3 xl:grid-cols-5">
-      {enabled.map((d) => {
-        const Icon = ICONS[d.icon] ?? FileText;
-        const on = d.id === selectedId;
-        const copy = cardCopy(d);
-        return (
-          <button
-            key={d.id}
-            type="button"
-            role="radio"
-            aria-checked={on}
-            data-testid={`request-type-${d.id}`}
-            onClick={() => onSelect(d.id)}
-            title={d.description}
-            className={cn(
-              "group flex min-w-0 flex-col items-start gap-1.5 rounded-xl border px-3 py-2.5 text-left outline-none transition-colors",
-              "focus-visible:ring-3 focus-visible:ring-ring/50",
-              on
-                ? "border-primary bg-primary-soft shadow-[inset_0_0_0_1px_var(--primary)]"
-                : "border-border bg-card hover:border-border-strong hover:bg-muted/50",
-            )}
-          >
-            <span
+    <div className="@container overflow-hidden border-y border-border">
+      <div
+        role="radiogroup"
+        aria-label="Request type"
+        className="-mx-px -mb-px grid w-[calc(100%+2px)] grid-cols-2 @lg:grid-cols-3 @3xl:grid-cols-5"
+      >
+        {enabled.map((d) => {
+          const Icon = ICONS[d.icon] ?? FileText;
+          const on = d.id === selectedId;
+          const copy = cardCopy(d);
+          return (
+            <button
+              key={d.id}
+              type="button"
+              role="radio"
+              aria-checked={on}
+              data-testid={`request-type-${d.id}`}
+              onClick={() => onSelect(d.id)}
+              title={d.description}
               className={cn(
-                "inline-flex size-7 shrink-0 items-center justify-center rounded-lg",
-                on ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground group-hover:text-foreground",
+                "group flex min-w-0 flex-col items-start gap-1 border-b border-l border-border px-3.5 pt-3 pb-3 text-left transition-colors outline-none last:border-r",
+                "focus-visible:z-10 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring",
+                on ? "bg-secondary" : "hover:bg-secondary/50",
               )}
             >
-              <Icon aria-hidden className="size-4" />
-            </span>
-            <span className={cn("w-full truncate text-sm leading-5 font-semibold", on ? "text-primary" : "text-foreground")}>{copy.label}</span>
-            <span className="line-clamp-2 min-h-[2lh] text-[0.75rem] leading-snug text-muted-foreground">{copy.description}</span>
-          </button>
-        );
-      })}
+              <span className="flex w-full min-w-0 items-center gap-2">
+                <Icon
+                  aria-hidden
+                  className={cn(
+                    "size-4 shrink-0 transition-colors",
+                    on ? "text-foreground" : "text-subtle group-hover:text-muted-foreground",
+                  )}
+                />
+                <span className="truncate text-sm leading-5 font-semibold text-foreground">{copy.label}</span>
+              </span>
+              <span className="line-clamp-2 min-h-[2lh] pl-6 text-xs leading-4 text-muted-foreground">{copy.description}</span>
+            </button>
+          );
+        })}
+      </div>
     </div>
   );
 }

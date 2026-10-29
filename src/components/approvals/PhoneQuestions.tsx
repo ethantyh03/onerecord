@@ -1,11 +1,12 @@
 "use client";
 
 import { useId, useState } from "react";
-import { CheckCircle2, MessageCircleQuestion, PauseCircle, Undo2 } from "lucide-react";
+import { CheckCircle2, PauseCircle, Undo2 } from "lucide-react";
 import { PhoneFrame } from "@/components/mocks/PhoneFrame";
 import { MS_FONT, MsAvatar, TEAMS } from "@/components/mocks/shared";
 import { TeamsButton } from "@/components/mocks/TeamsApprovalCard";
 import { firstName, formatAgo } from "@/components/common/format";
+import { Count, LightScope } from "@/components/common";
 import type { ApprovalStep, MdmRequest, Person } from "@/lib/types";
 import { useApprovalActions } from "./use-approval-actions";
 
@@ -32,78 +33,70 @@ export function QuestionsForYou({ me, entries, people, now, onAnswered }: Questi
   const approver = people.find((p) => p.id === first?.step.assigneeId);
 
   return (
-    <section
-      aria-labelledby="questions-heading"
-      className="grid gap-6 rounded-xl border border-border bg-card p-5 shadow-raised md:grid-cols-[minmax(0,1fr)_auto] md:p-6"
-    >
-      <div className="min-w-0 max-w-[60ch]">
-        <div className="flex items-center gap-2">
-          <MessageCircleQuestion className="size-5 text-primary" aria-hidden="true" />
-          <h2 id="questions-heading" className="text-lg font-semibold tracking-tight">
-            Questions for you
-          </h2>
-          {open.length > 0 ? (
-            <span className="num inline-flex h-6 min-w-6 items-center justify-center rounded-full bg-primary px-2 text-xs font-semibold text-primary-foreground">
-              {open.length}
-            </span>
-          ) : null}
-        </div>
-        <p className="mt-2 text-[0.9375rem] leading-relaxed text-muted-foreground">
-          {open.length > 0 && approver ? (
-            <>
-              {approver.name} needs one detail before deciding on {first.request.id}. {firstName(me.name)} is travelling, so
-              the question arrives on Teams mobile. The reply goes straight back to {firstName(approver.name)}.
-            </>
-          ) : (
-            <>Every question on your requests has an answer. The approvals carried on with the same approvers.</>
-          )}
-        </p>
-        <ul className="mt-4 space-y-3 text-sm">
-          <li className="flex gap-2.5">
-            <PauseCircle className="mt-0.5 size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
-            <span>
-              <span className="font-medium text-foreground">The approver&apos;s clock is paused.</span>{" "}
-              <span className="text-muted-foreground">Time spent waiting for your answer doesn&apos;t count against their SLA.</span>
-            </span>
-          </li>
-          <li className="flex gap-2.5">
-            <Undo2 className="mt-0.5 size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
-            <span>
-              <span className="font-medium text-foreground">Nothing restarts.</span>{" "}
-              <span className="text-muted-foreground">
-                Your answer returns the step to the same approver. Approvals already given stay given, unlike a bounced email
-                that starts the chain again.
-              </span>
-            </span>
-          </li>
-        </ul>
-        <p className="mt-4 text-xs text-muted-foreground">Teams mobile is simulated. In production this is the same Adaptive Card in the Teams app.</p>
+    <section aria-labelledby="questions-heading" className="panel @container overflow-hidden">
+      <div className="panel-header">
+        <h2 id="questions-heading" className="panel-title">
+          Questions for you
+          {open.length > 0 ? <Count className="ml-2">{open.length}</Count> : null}
+        </h2>
       </div>
 
-      <PhoneFrame
-        height={560}
-        className="justify-self-center"
-        caption={`${me.name} · travelling, on Teams mobile (simulated)`}
-      >
-        <div style={{ fontFamily: MS_FONT }} className="text-[#242424]">
-          <div className="flex items-center gap-2.5 border-b border-[#ebebeb] px-4 pt-1 pb-2.5">
-            <MsAvatar person={me} size={28} presence="away" />
-            <p className="text-[20px] font-bold tracking-tight">Activity</p>
-          </div>
-          <div className="space-y-3 p-3">
-            {entries.map((e, i) => (
-              <PhoneQuestionCard
-                key={`${e.request.id}:${e.step.id}`}
-                entry={e}
-                approver={people.find((p) => p.id === e.step.assigneeId)}
-                now={now}
-                primary={i === 0}
-                onAnswered={() => onAnswered(`${e.request.id}:${e.step.id}`)}
-              />
-            ))}
-          </div>
+      <div className="grid gap-6 p-5 @xl:grid-cols-[minmax(0,1fr)_auto]">
+        <div className="min-w-0 max-w-[60ch]">
+          <p className="text-[0.9375rem] leading-relaxed text-secondary-foreground">
+            {open.length > 0 && approver ? (
+              <>
+                {approver.name} needs one detail before deciding on {first.request.id}. {firstName(me.name)} is travelling, so the question
+                arrives on Teams mobile. The reply goes straight back to {firstName(approver.name)}.
+              </>
+            ) : (
+              <>Every question on your requests has an answer. The approvals carried on with the same approvers.</>
+            )}
+          </p>
+          <ul className="mt-4 space-y-3 text-sm">
+            <li className="flex gap-2.5">
+              <PauseCircle className="mt-0.5 size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+              <span>
+                <span className="font-medium text-foreground">The approver&apos;s clock is paused.</span>{" "}
+                <span className="text-muted-foreground">Time spent waiting for your answer doesn&apos;t count against their SLA.</span>
+              </span>
+            </li>
+            <li className="flex gap-2.5">
+              <Undo2 className="mt-0.5 size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+              <span>
+                <span className="font-medium text-foreground">Nothing restarts.</span>{" "}
+                <span className="text-muted-foreground">
+                  Your answer returns the step to the same approver. Approvals already given stay given, unlike a bounced email that
+                  starts the chain again.
+                </span>
+              </span>
+            </li>
+          </ul>
+          <p className="mt-4 text-xs text-subtle">Teams mobile is simulated. In production this is the same Adaptive Card in the Teams app.</p>
         </div>
-      </PhoneFrame>
+
+        <PhoneFrame height={600} className="justify-self-center" caption={`${me.name} · travelling, on Teams mobile (simulated)`}>
+          {/* The phone screen imitates Teams mobile, so it keeps its native light look; the caption stays on the console. */}
+          <LightScope style={{ fontFamily: MS_FONT }} className="text-[#242424]">
+            <div className="flex items-center gap-2.5 border-b border-[#ebebeb] px-4 pt-1 pb-2.5">
+              <MsAvatar person={me} size={28} presence="away" />
+              <p className="text-[20px] font-bold tracking-tight">Activity</p>
+            </div>
+            <div className="space-y-3 p-3">
+              {entries.map((e, i) => (
+                <PhoneQuestionCard
+                  key={`${e.request.id}:${e.step.id}`}
+                  entry={e}
+                  approver={people.find((p) => p.id === e.step.assigneeId)}
+                  now={now}
+                  primary={i === 0}
+                  onAnswered={() => onAnswered(`${e.request.id}:${e.step.id}`)}
+                />
+              ))}
+            </div>
+          </LightScope>
+        </PhoneFrame>
+      </div>
     </section>
   );
 }

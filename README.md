@@ -59,7 +59,7 @@ Open **https://onerecord-lives-dsa26.vercel.app** on a laptop. Your browser is y
 - "1 sensitive value removed before extraction" (the bank account in the email)
 - a list of what is still needed
 
-> **How it really works:** no AI model runs in this prototype. The two built-in examples ("Amy's old email" and "Customer spreadsheet row") return a stored result, so the demo is the same every time. Any other text goes through a rules-based extractor (labels such as "Item:", keywords, and price, country and code patterns) in your browser. Bank and credit details are stripped before extraction. The small "AI" tag on a field only marks that it came from the paste. In production this step would use an LLM inside Lives Group's own Microsoft tenant.
+> **How it really works:** no AI model runs in this prototype. The two built-in examples ("Amy's old email" and "Customer spreadsheet row") return a stored result, so the demo is the same every time. Any other text goes through a rules-based extractor (labels such as "Item:", keywords, and price, country and code patterns) in your browser. Bank and credit details are stripped before extraction. The small "Auto-filled" tag on a field marks that it came from the paste, so the requester checks it before submitting. Phase 2 adds an AI model inside Lives Group's own Microsoft tenant for messier emails, with these rules as the fallback.
 >
 > **Try it yourself:** click **Paste again**, replace the text with this email and click **Fill the form**:
 > ```

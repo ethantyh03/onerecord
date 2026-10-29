@@ -2,19 +2,21 @@
 
 import { useRef } from "react";
 import { motion, useReducedMotion } from "motion/react";
-import { Lock, Paperclip, Sparkles, X } from "lucide-react";
+import { ChevronDown, Lock, Paperclip, X } from "lucide-react";
 import type { FieldDef, FieldValue } from "@/lib/types";
 import { COUNTRIES } from "@/lib/types";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { StateGlyph, StatusText } from "@/components/common";
 import { cn } from "@/lib/utils";
 import type { EntityOption } from "./intake-logic";
 
+/* Native select styled like the console Input: raised surface in dark, 4px, signal focus ring. The chevron is an
+   icon laid over it (no hard-coded colour in a data URI), so it follows the theme. */
 const SELECT_CLASS =
-  "h-9 w-full min-w-0 appearance-none rounded-lg border border-input bg-card bg-[length:16px] bg-[right_0.6rem_center] bg-no-repeat pr-8 pl-2.5 text-sm outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20";
-const CHEVRON =
-  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23667788' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")";
+  "h-9 w-full min-w-0 appearance-none rounded-md border border-input bg-transparent pr-8 pl-2.5 text-sm text-foreground outline-none transition-colors hover:border-subtle focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30 aria-invalid:border-destructive aria-invalid:ring-2 aria-invalid:ring-destructive/25 dark:bg-secondary";
 
 const MARKETS = COUNTRIES.map((c) => c.code);
 
@@ -27,7 +29,7 @@ export interface FieldControlProps {
   aiFilled: boolean;
   /** Changes on every paste-to-fill apply, so the highlight replays */
   fillEpoch: number;
-  /** Position among the AI-filled fields, for a short stagger */
+  /** Position among the auto-filled fields, for a short stagger */
   fillOrder: number;
   /** Required, empty, and the user has been told what's missing */
   pulse: boolean;
@@ -82,20 +84,22 @@ export function FieldControl({
             : (field.options ?? []).map((o) => ({ value: o, label: field.key === "productGroup" ? productGroupLabel(o) : o }));
       if (str && !opts.some((o) => o.value === str)) opts.push({ value: str, label: str });
       control = (
-        <select
-          {...common}
-          value={str}
-          onChange={(e) => onChange(field.key, e.target.value)}
-          className={cn(SELECT_CLASS, !str && "text-muted-foreground")}
-          style={{ backgroundImage: CHEVRON }}
-        >
-          <option value="">Choose…</option>
-          {opts.map((o) => (
-            <option key={o.value} value={o.value} className="text-foreground">
-              {o.label}
-            </option>
-          ))}
-        </select>
+        <div className="relative">
+          <select
+            {...common}
+            value={str}
+            onChange={(e) => onChange(field.key, e.target.value)}
+            className={cn(SELECT_CLASS, !str && "text-subtle")}
+          >
+            <option value="">Choose…</option>
+            {opts.map((o) => (
+              <option key={o.value} value={o.value} className="text-foreground">
+                {o.label}
+              </option>
+            ))}
+          </select>
+          <ChevronDown aria-hidden className="pointer-events-none absolute top-1/2 right-2.5 size-4 -translate-y-1/2 text-subtle" />
+        </div>
       );
       break;
     }
@@ -106,7 +110,7 @@ export function FieldControl({
           value={str}
           rows={2}
           onChange={(e) => onChange(field.key, e.target.value)}
-          className="min-h-[4.25rem] bg-card"
+          className="min-h-[4.25rem]"
         />
       );
       break;
@@ -127,13 +131,14 @@ export function FieldControl({
             }}
           />
           {str ? (
-            <span className="inline-flex h-9 max-w-full items-center gap-2 rounded-lg border border-ok/40 bg-ok-soft px-2.5 text-sm text-ok-ink">
-              <Paperclip aria-hidden className="size-4 shrink-0" />
+            // Attached: the file name on a plain line (the green clip says it is there), no tinted chip.
+            <span className="inline-flex h-9 max-w-full items-center gap-2 text-sm text-foreground">
+              <Paperclip aria-hidden className="size-4 shrink-0 text-ok" />
               <span className="truncate">{str}</span>
               <button
                 type="button"
                 aria-label="Remove attachment"
-                className="rounded p-0.5 hover:bg-ok/15"
+                className="rounded-sm p-1 text-muted-foreground outline-none hover:bg-secondary hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring"
                 onClick={() => onChange(field.key, "")}
               >
                 <X className="size-3.5" />
@@ -178,7 +183,7 @@ export function FieldControl({
             value={str}
             onChange={(e) => onChange(field.key, e.target.value)}
             placeholder={placeholderFor(field)}
-            className="h-9 bg-card"
+            className="h-9"
             autoComplete="off"
           />
           {isMarkets ? (
@@ -198,8 +203,10 @@ export function FieldControl({
                       onChange(field.key, MARKETS.filter((x) => next.has(x)).join(", "));
                     }}
                     className={cn(
-                      "h-6 rounded-full border px-2.5 text-xs font-medium transition-colors",
-                      on ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card text-muted-foreground hover:bg-muted",
+                      "h-7 min-w-10 rounded-sm border px-2 text-xs font-semibold transition-colors outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+                      on
+                        ? "border-primary bg-primary-soft text-primary"
+                        : "border-border-strong text-muted-foreground hover:bg-secondary hover:text-foreground",
                     )}
                   >
                     {m}
@@ -216,75 +223,97 @@ export function FieldControl({
   return (
     <div
       className={cn(
-        "relative isolate -mx-2.5 rounded-xl px-2.5 py-2",
+        "relative isolate -mx-2.5 rounded-md px-2.5 py-2",
         field.type === "textarea" || field.key === "itemName" || field.key === "customerName" || field.key === "reason"
           ? "sm:col-span-2"
-          : undefined,
+          : // Long option labels ("Lab consumable – IVD medical device"): full row until the form panel is wide.
+            field.key === "category"
+            ? "sm:col-span-2 @3xl:col-span-1"
+            : undefined,
       )}
     >
       {aiFilled && !reduce ? (
         <motion.span
           key={`fill-${fillEpoch}`}
           aria-hidden
-          className="pointer-events-none absolute inset-0 -z-10 rounded-xl bg-primary-soft"
+          className="pointer-events-none absolute inset-0 -z-10 rounded-md bg-signal-soft"
           initial={{ opacity: 1 }}
           animate={{ opacity: 0 }}
           transition={{ duration: 2.4, delay: 0.4 + Math.min(fillOrder, 12) * 0.07, ease: "easeOut" }}
         />
       ) : null}
-      {pulse ? (
-        <motion.span
-          aria-hidden
-          className="pointer-events-none absolute inset-0 rounded-xl ring-2 ring-warn"
-          initial={{ opacity: 0.2 }}
-          animate={reduce ? { opacity: 0.8 } : { opacity: [0.25, 0.95, 0.25] }}
-          transition={reduce ? undefined : { duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-        />
-      ) : null}
-      <div className="mb-1.5 flex min-h-5 items-center gap-1.5">
+      {/* Label row: the label and this field's state ("Needed") on the left; quiet provenance and access markers on
+          the right. No chips and no outlined box around the field. */}
+      <div className="mb-1.5 flex min-h-5 items-center gap-2.5">
         <label htmlFor={id} className="text-[0.8125rem] font-medium text-foreground">
           {field.label}
           {required ? (
-            <span className="ml-0.5 text-stuck" aria-hidden>
+            <span className="ml-0.5 text-muted-foreground" aria-hidden>
               *
             </span>
           ) : null}
           {required ? <span className="sr-only"> (required)</span> : null}
         </label>
-        {field.sensitive ? (
-          <span
-            className="inline-flex items-center gap-1 rounded-full bg-muted px-1.5 py-px text-[0.6875rem] text-muted-foreground"
-            title="After you submit, only Finance and MDM see this value; everyone else sees ••••"
-          >
-            <Lock aria-hidden className="size-3" />
-            Finance &amp; MDM only
-          </span>
-        ) : null}
-        {aiFilled ? (
+        {pulse ? (
+          // Still needed: amber status text that blinks twice when the user is told, then holds (no endless loop).
           <motion.span
-            initial={reduce ? false : { opacity: 0, scale: 0.6 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.15 + Math.min(fillOrder, 12) * 0.07, type: "spring", stiffness: 420, damping: 22 }}
-            className="inline-flex items-center gap-0.5 rounded-full bg-primary-soft px-1.5 py-px text-[0.6875rem] font-semibold text-primary"
-            title="Filled by paste-to-fill. Check it, then edit if needed."
+            className="inline-flex"
+            initial={reduce ? false : { opacity: 0 }}
+            animate={reduce ? { opacity: 1 } : { opacity: [0, 1, 0.25, 1] }}
+            transition={reduce ? undefined : { duration: 1.4, ease: "easeInOut" }}
           >
-            <Sparkles aria-hidden className="size-3" />
-            AI
+            <StatusText tone="warn" size="sm">
+              Needed
+            </StatusText>
           </motion.span>
         ) : null}
-        {pulse ? <span className="text-[0.6875rem] font-medium text-warn-ink">Needed</span> : null}
+        {field.sensitive || aiFilled ? (
+          <span className="ml-auto flex min-w-0 items-center gap-3">
+            {field.sensitive ? (
+              <span
+                className="inline-flex items-center gap-1 text-xs whitespace-nowrap text-subtle"
+                title="After you submit, only Finance and MDM see this value; everyone else sees ••••"
+              >
+                <Lock aria-hidden className="size-3" />
+                Finance &amp; MDM only
+              </span>
+            ) : null}
+            {aiFilled ? (
+              // Filled by paste-to-fill (rules + a cached example; no AI model runs in phase 1). A quiet marker with the
+              // live-data square: this value came from the pasted text just now, so check it.
+              <Tooltip>
+                <TooltipTrigger
+                  render={
+                    <motion.span
+                      data-autofilled="true"
+                      initial={reduce ? false : { opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.15 + Math.min(fillOrder, 12) * 0.07, duration: 0.2, ease: "easeOut" }}
+                      className="inline-flex cursor-default items-center gap-1.5 rounded-[2px] text-xs whitespace-nowrap text-muted-foreground outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                    />
+                  }
+                >
+                  <StateGlyph tone="live" size="sm" />
+                  Auto-filled
+                </TooltipTrigger>
+                <TooltipContent>Filled from the pasted text. Check it, then edit if needed.</TooltipContent>
+              </Tooltip>
+            ) : null}
+          </span>
+        ) : null}
       </div>
       {control}
-      <div id={`${id}-hint`} className="mt-1 flex items-start justify-between gap-3 text-[0.75rem] leading-snug">
-        <div className="min-w-0">
+      <div id={`${id}-hint`} className="mt-1 flex items-start justify-between gap-3 text-xs leading-4">
+        <div className="min-w-0 space-y-0.5">
           {error ? (
             <p className="text-destructive">{error}</p>
           ) : field.helpText ? (
             <p className="text-muted-foreground">{field.helpText}</p>
           ) : null}
           {field.sapField ? (
-            <p className="mt-0.5 font-mono text-[0.6875rem] text-muted-foreground/90">
-              → SAP: {field.sapField}
+            // Where the value lands in SAP B1: the field key is a machine value, so it alone is mono.
+            <p className="text-subtle">
+              → SAP: <span className="mono-id text-muted-foreground">{field.sapField}</span>
               {field.maxLength ? ` · max ${field.maxLength}` : ""}
             </p>
           ) : null}
@@ -292,8 +321,8 @@ export function FieldControl({
         {field.maxLength && field.type !== "select" ? (
           <span
             className={cn(
-              "num shrink-0 pt-px text-[0.6875rem] tabular-nums",
-              over ? "font-semibold text-destructive" : near ? "text-warn-ink" : "text-muted-foreground/80",
+              "num shrink-0 text-xs",
+              over ? "font-semibold text-destructive" : near ? "text-warn-ink" : "text-subtle",
             )}
             aria-label={`${len} of ${field.maxLength} characters`}
           >

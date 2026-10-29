@@ -20,7 +20,17 @@ vi.hoisted(() => {
 import { useSandbox } from "@/lib/store";
 import { verifyChain } from "@/lib/engine/audit";
 import { approveAllAsAssignees } from "../demo-actions";
-import { businessStages, linkedDemandByRequest, mdmStep, requestAgeBusinessDays, subDayDuration } from "../tracker-utils";
+import {
+  BOARD_COLUMNS,
+  boardColumnOf,
+  boardSortKey,
+  businessStages,
+  linkedDemandByRequest,
+  mdmStep,
+  requestAgeBusinessDays,
+  stageProgress,
+  subDayDuration,
+} from "../tracker-utils";
 
 const S = () => useSandbox.getState();
 const req = (id: string) => S().requests.find((r) => r.id === id)!;
@@ -63,6 +73,49 @@ describe("tracker helpers", () => {
     const copy = chain.map((e) => (e.seq === target.seq ? { ...e, detail: "edited" } : e));
     expect(verifyChain(copy)).toEqual({ ok: false, brokenAt: target.seq });
     expect(verifyChain(S().audit).ok).toBe(true);
+  });
+});
+
+describe("stage board", () => {
+  beforeEach(() => S().resetSandbox());
+
+  it("puts every request in exactly one column, matching its status", () => {
+    for (const r of S().requests) {
+      const col = boardColumnOf(r);
+      if (r.status === "in_approval" || r.status === "needs_info") expect(col).toBe("approval");
+      else if (r.status === "created") expect(col).toBe("created");
+      else if (r.status === "rejected" || r.status === "cancelled") expect(col).toBe("stopped");
+      else if (r.status === "draft") expect(col).toBe("draft");
+      else expect(["mdm", "ready"]).toContain(col);
+    }
+    expect(boardColumnOf(req("REQ-1042"))).toBe("mdm");
+    expect(BOARD_COLUMNS.filter((c) => c.pipeline).map((c) => c.id)).toEqual(["approval", "mdm", "ready", "created"]);
+  });
+
+  it("moves a request to Ready for SAP B1 once MDM generates the DTW import", () => {
+    S().setPersona("priya");
+    S().generateDtw("REQ-1042");
+    expect(boardColumnOf(req("REQ-1042"))).toBe("ready");
+  });
+
+  it("shows a route meter with the MDM check last and the active stage marked", () => {
+    const meter = stageProgress(req("REQ-1042"));
+    expect(meter.at(-1)).toEqual({ label: "MDM final check", state: "active" });
+    expect(meter.slice(0, -1).every((m) => m.state === "done")).toBe(true);
+    expect(stageProgress(req("REQ-1036")).some((m) => m.state === "paused")).toBe(true);
+  });
+
+  it("sorts in-flight cards by SLA used (questions last) and closed cards newest first", () => {
+    const now = S().nowIso();
+    const inFlight = S()
+      .requests.filter((r) => boardColumnOf(r) === "approval")
+      .sort((a, b) => boardSortKey(a, now) - boardSortKey(b, now));
+    expect(inFlight.at(-1)?.status).toBe("needs_info");
+    const created = S()
+      .requests.filter((r) => boardColumnOf(r) === "created")
+      .sort((a, b) => boardSortKey(a, now) - boardSortKey(b, now));
+    const times = created.map((r) => Date.parse(r.sapCreatedAt ?? r.closedAt ?? r.submittedAt ?? r.createdAt));
+    expect([...times].sort((a, b) => b - a)).toEqual(times);
   });
 });
 

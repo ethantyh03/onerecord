@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ChevronDown, FastForward, Wand2 } from "lucide-react";
+import { ChevronDown, FastForward, UsersRound } from "lucide-react";
 import { toast } from "sonner";
 import type { MdmRequest } from "@/lib/types";
 import { MDM_STAGE_ID } from "@/lib/engine/routing";
@@ -42,22 +42,23 @@ export function DemoControls({ request }: { request: MdmRequest }) {
   }
 
   return (
-    <section className="rounded-xl border border-dashed border-border-strong bg-card/70" data-testid="demo-controls">
+    // A ruled disclosure line, not a dashed box: it is a presenter's control, so it stays quiet until opened.
+    <section className="border-y border-border" data-testid="demo-controls">
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
-        className="flex w-full items-center justify-between gap-3 rounded-xl px-5 py-3.5 text-left focus-visible:ring-3 focus-visible:ring-ring/40 focus-visible:outline-none"
+        className="flex min-h-11 w-full items-center justify-between gap-3 px-1 py-2.5 text-left transition-colors hover:bg-secondary/50 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring"
         data-testid="demo-controls-toggle"
       >
         <span className="flex items-center gap-2 text-sm font-medium text-secondary-foreground">
-          <Wand2 aria-hidden className="size-4 text-phase2-ink" />
+          <UsersRound aria-hidden className="size-4 text-muted-foreground" />
           Demo control — simulates approvers acting
         </span>
         <ChevronDown aria-hidden className={cn("size-4 text-muted-foreground transition-transform", open && "rotate-180")} />
       </button>
       {open ? (
-        <div className="space-y-3 border-t border-dashed border-border-strong px-5 py-4">
+        <div className="space-y-3 border-t border-border px-1 py-4">
           <p className="text-sm text-muted-foreground">
             Plays each approver in turn so the route can be shown end to end. Segregation of duties still applies, and it stops at the MDM
             final check.

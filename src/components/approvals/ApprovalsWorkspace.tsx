@@ -3,12 +3,11 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { ArrowUpRight, Building2, CheckCheck, Eye, FileJson, Mail, MessageSquare, ShieldAlert } from "lucide-react";
-import { EmptyState, PageHeader } from "@/components/common";
+import { ArrowRight, ArrowUpRight, Building2, CheckCheck, Eye, FileJson, Mail, MessageSquare, ShieldAlert } from "lucide-react";
+import { ConsolePanel, EmptyState, Notice, PageHeader, PersonAvatar, SapCode, SyntheticBadge } from "@/components/common";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { MsAvatar } from "@/components/mocks/shared";
 import { firstName } from "@/components/common/format";
 import { useHasHydrated, useSandbox } from "@/lib/store";
 import { buById, canActOnStep, selectWaitingOn, useCurrentPerson, useNow, useWaitingOn } from "@/lib/selectors";
@@ -32,9 +31,7 @@ function stepFor(request: MdmRequest, meId: string): ApprovalStep | undefined {
   if (mine) return mine;
   const active = request.steps.find((s) => ACTIVE.has(s.status));
   if (active) return active;
-  const decided = request.steps
-    .filter((s) => s.decidedAt)
-    .sort((a, b) => Date.parse(b.decidedAt ?? "") - Date.parse(a.decidedAt ?? ""));
+  const decided = request.steps.filter((s) => s.decidedAt).sort((a, b) => Date.parse(b.decidedAt ?? "") - Date.parse(a.decidedAt ?? ""));
   return decided[0] ?? request.steps[0];
 }
 
@@ -46,12 +43,12 @@ export function ApprovalsWorkspace() {
 
 export function ApprovalsLoading() {
   return (
-    <div className="mx-auto w-full max-w-[1440px] space-y-4" aria-busy="true" aria-label="Loading approvals">
+    <div className="w-full space-y-4" aria-busy="true" aria-label="Loading approvals">
       <Skeleton className="h-9 w-64" />
       <Skeleton className="h-5 w-[32rem] max-w-full" />
-      <div className="grid gap-6 lg:grid-cols-[340px_minmax(0,1fr)]">
-        <Skeleton className="h-[420px] rounded-xl" />
-        <Skeleton className="h-[620px] rounded-xl" />
+      <div className="grid gap-5 xl:grid-cols-[300px_minmax(0,1fr)] 2xl:grid-cols-[340px_minmax(0,1fr)]">
+        <Skeleton className="h-[420px]" />
+        <Skeleton className="h-[620px]" />
       </div>
     </div>
   );
@@ -68,7 +65,11 @@ function Approvals() {
   const waitingRaw = useWaitingOn(me.id);
   const now = useNow(15_000);
 
-  const [selection, setSelection] = useState<{ personaId: string; requestId: string; stepId: string } | null>(null);
+  const [selection, setSelection] = useState<{
+    personaId: string;
+    requestId: string;
+    stepId: string;
+  } | null>(null);
   const [tabState, setTab] = useState<Tab>("teams");
   const [answeredKeys, setAnsweredKeys] = useState<string[]>([]);
 
@@ -84,7 +85,10 @@ function Approvals() {
   }, [waitingRaw, config.sla.stepBusinessDays, now]);
 
   // Which card is open: an explicit click, else ?id=, else the most urgent item.
-  const selected = useMemo((): { request: MdmRequest; step: ApprovalStep } | null => {
+  const selected = useMemo((): {
+    request: MdmRequest;
+    step: ApprovalStep;
+  } | null => {
     if (selection && selection.personaId === me.id) {
       // Closed explicitly: show the queue again (falls through to the most urgent item, if any).
       if (!selection.requestId) return waiting[0] ? { request: waiting[0].request, step: waiting[0].step } : null;
@@ -117,7 +121,10 @@ function Approvals() {
   /** Open a card and keep its id in the URL, so a persona switch stays on the same request. */
   function openCard(request: MdmRequest, step: ApprovalStep) {
     setSelection({ personaId: me.id, requestId: request.id, stepId: step.id });
-    if (paramId !== request.id) router.replace(`/approvals?id=${encodeURIComponent(request.id)}`, { scroll: false });
+    if (paramId !== request.id)
+      router.replace(`/approvals?id=${encodeURIComponent(request.id)}`, {
+        scroll: false,
+      });
   }
 
   const bu = buById({ config }, me.entity);
@@ -125,41 +132,37 @@ function Approvals() {
   const tab: Tab = tabState;
 
   return (
-    <div className="mx-auto w-full max-w-[1440px]">
+    <div className="w-full">
       <PageHeader
         title="Approvals"
         subtitle={`Everything waiting on ${me.name}, closest deadline first. Approve, reject or ask a question right on the card, in Teams or Outlook.`}
-        meta={
-          <span className="inline-flex h-5 items-center rounded-full border border-warn/45 bg-warn-soft px-2 text-[0.6875rem] font-medium text-warn-ink">
-            Teams, Outlook and the clock are simulated
-          </span>
-        }
+        meta={<SyntheticBadge label="Teams, Outlook and the clock are simulated" />}
       />
 
-      <div className="grid items-start gap-6 lg:grid-cols-[340px_minmax(0,1fr)]">
-        <aside className="space-y-4" aria-label="Your queue and settings">
+      <div className="grid items-start gap-5 xl:grid-cols-[300px_minmax(0,1fr)] 2xl:grid-cols-[340px_minmax(0,1fr)]">
+        <aside className="min-w-0 space-y-4" aria-label="Your queue and settings">
           {!bu ? (
-            <div role="note" className="flex gap-2.5 rounded-xl border border-warn/45 bg-warn-soft p-3.5 text-sm text-warn-ink">
-              <Building2 className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
-              <p>
-                <span className="font-semibold">BU not configured yet — ask MDM to add it.</span> {me.entity} isn&apos;t set up as a
-                business unit, so {firstName(me.name)}&apos;s requests use the group&apos;s shared approvers for now.
-              </p>
-            </div>
+            <Notice ruled tone="warn" icon={<Building2 />} lead="BU not configured yet — ask MDM to add it.">
+              {me.entity} isn&apos;t set up as a business unit, so {firstName(me.name)}&apos;s requests use the group&apos;s shared
+              approvers for now.
+            </Notice>
           ) : null}
-          <WaitingList
-            items={waiting}
-            selectedKey={selectedKey}
-            onSelect={(e) => openCard(e.request, e.step)}
-            people={config.people}
-            domains={config.domains}
-            personName={firstName(me.name)}
-          />
-          <SimTimePanel />
-          <OutOfOfficePanel me={me} />
+          {/* One panel: the queue, then the demo clock and out-of-office as hairline-divided sections of it. */}
+          <ConsolePanel title="Waiting on me" titleId="waiting-heading" count={waiting.length} subtitle="Closest deadline first">
+            <WaitingList
+              items={waiting}
+              selectedKey={selectedKey}
+              onSelect={(e) => openCard(e.request, e.step)}
+              people={config.people}
+              domains={config.domains}
+              personName={firstName(me.name)}
+            />
+            <SimTimePanel />
+            <OutOfOfficePanel me={me} />
+          </ConsolePanel>
         </aside>
 
-        <div className="min-w-0 space-y-6">
+        <div className="min-w-0 space-y-5">
           {questions.length > 0 ? (
             <QuestionsForYou
               me={me}
@@ -173,11 +176,16 @@ function Approvals() {
           {selected ? (
             <section
               aria-label={`Approval card for ${selected.request.id}`}
-              className="space-y-4"
+              className="space-y-3"
               // Pin the card being worked on, so a decision shows its outcome instead of jumping to the next item.
               onClickCapture={() => {
-                if (selection?.personaId === me.id && selection.requestId === selected.request.id && selection.stepId === selected.step.id) return;
-                setSelection({ personaId: me.id, requestId: selected.request.id, stepId: selected.step.id });
+                if (selection?.personaId === me.id && selection.requestId === selected.request.id && selection.stepId === selected.step.id)
+                  return;
+                setSelection({
+                  personaId: me.id,
+                  requestId: selected.request.id,
+                  stepId: selected.step.id,
+                });
               }}
             >
               <ViewerNote
@@ -191,7 +199,7 @@ function Approvals() {
                 }}
               />
               <Tabs value={tab} onValueChange={(v) => setTab(v as Tab)}>
-                <div className="flex flex-wrap items-center gap-3">
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
                   <TabsList>
                     <TabsTrigger value="teams" data-testid="tab-teams" className="px-3">
                       <MessageSquare aria-hidden="true" />
@@ -206,7 +214,7 @@ function Approvals() {
                       Card JSON
                     </TabsTrigger>
                   </TabsList>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-[0.8125rem] text-muted-foreground">
                     {tab === "teams"
                       ? "Where approvers already work. Power Automate posts this card in production."
                       : tab === "outlook"
@@ -255,26 +263,29 @@ function ViewerNote({
   if (mine || !ACTIVE.has(step.status)) return null;
   const assignee = people.find((p) => p.id === step.assigneeId);
   const sod = canActOnStep({ requests, config }, request.id, step.id, me.id);
+  // A ruled line above the card, not a tinted box: the eye says "viewing", the shield (coral) says segregation of duties.
   return (
-    <div role="note" className="flex items-start gap-2.5 rounded-xl border border-border bg-muted/60 px-4 py-3 text-sm">
-      {sod.ok ? <Eye className="mt-0.5 size-4 shrink-0 text-muted-foreground" aria-hidden="true" /> : <ShieldAlert className="mt-0.5 size-4 shrink-0 text-stuck" aria-hidden="true" />}
-      <p className="text-secondary-foreground">
-        You&apos;re viewing {assignee?.name ?? "the approver"}&apos;s card for {request.id}. It isn&apos;t waiting on you.
-        {!sod.ok ? <span className="block font-medium text-stuck-ink">{sod.reason}</span> : null}
-      </p>
-      <Button
-        variant="ghost"
-        size="sm"
-        className="ml-auto shrink-0"
-        data-testid="viewer-close"
-        onClick={(e) => {
-          e.stopPropagation();
-          onClose();
-        }}
-      >
-        Close
-      </Button>
-    </div>
+    <Notice
+      ruled
+      tone={sod.ok ? "neutral" : "stuck"}
+      icon={sod.ok ? <Eye className="text-muted-foreground" /> : <ShieldAlert />}
+      action={
+        <Button
+          variant="ghost"
+          size="sm"
+          data-testid="viewer-close"
+          onClick={(e) => {
+            e.stopPropagation();
+            onClose();
+          }}
+        >
+          Close
+        </Button>
+      }
+    >
+      You&apos;re viewing {assignee?.name ?? "the approver"}&apos;s card for {request.id}. It isn&apos;t waiting on you.
+      {!sod.ok ? <span className="block font-medium text-stuck-ink">{sod.reason}</span> : null}
+    </Notice>
   );
 }
 
@@ -299,7 +310,10 @@ function NothingWaiting({
     };
     return people
       .filter((p) => p.persona && p.id !== me.id)
-      .map((p) => ({ person: p, count: selectWaitingOn({ requests }, p.id).length }))
+      .map((p) => ({
+        person: p,
+        count: selectWaitingOn({ requests }, p.id).length,
+      }))
       .filter((x) => x.count > 0)
       .sort((a, b) => rank(a.person.id) - rank(b.person.id))
       .slice(0, 4);
@@ -309,7 +323,10 @@ function NothingWaiting({
     () =>
       requests
         .filter((r) => r.requestorId === me.id && IN_FLIGHT.has(r.status))
-        .map((r) => ({ request: r, step: r.steps.find((s) => s.status === "pending") }))
+        .map((r) => ({
+          request: r,
+          step: r.steps.find((s) => s.status === "pending"),
+        }))
         .filter((x): x is { request: MdmRequest; step: ApprovalStep } => Boolean(x.step))
         .slice(0, 3),
     [requests, me.id],
@@ -327,32 +344,52 @@ function NothingWaiting({
         }
         action={
           others.length > 0 ? (
-            <div className="flex flex-wrap justify-center gap-2">
+            // A short ruled list (name left, count right), not a row of pills.
+            <ul className="mx-auto w-[min(100%,22rem)] divide-y divide-border border-y border-border text-left">
               {others.map(({ person, count }) => (
-                <Button key={person.id} variant="outline" data-testid={`switch-${person.id}`} onClick={() => onSwitch(person.id)}>
-                  <MsAvatar person={person} size={18} />
-                  Switch to {firstName(person.name)}
-                  <span className="num text-muted-foreground">· {count} waiting</span>
-                </Button>
+                <li key={person.id}>
+                  <button
+                    type="button"
+                    data-testid={`switch-${person.id}`}
+                    onClick={() => onSwitch(person.id)}
+                    className="group/sw flex min-h-10 w-full items-center gap-2.5 px-1 py-2 text-sm text-secondary-foreground transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring"
+                  >
+                    <PersonAvatar person={person} size="xs" />
+                    <span className="font-medium">Switch to {firstName(person.name)}</span>
+                    <span className="num ml-auto text-xs text-subtle">{count} waiting</span>
+                    <ArrowRight
+                      aria-hidden
+                      className="size-3.5 shrink-0 text-subtle transition-colors group-hover/sw:text-foreground"
+                    />
+                  </button>
+                </li>
               ))}
-            </div>
+            </ul>
           ) : null
         }
       />
       {own.length > 0 ? (
-        <section aria-labelledby="own-heading" className="rounded-xl border border-border bg-card p-4 shadow-raised">
-          <h2 id="own-heading" className="text-[0.9375rem] font-semibold">
-            Your requests, from the approver&apos;s side
-          </h2>
-          <p className="mt-1 text-xs text-muted-foreground">
-            Open the card your approvers see. Segregation of duties stops you approving your own request, even if you try.
-          </p>
-          <ul className="mt-3 divide-y divide-border">
+        <section aria-labelledby="own-heading" className="panel overflow-hidden">
+          <div className="panel-header py-2.5">
+            <div className="min-w-0">
+              <h2 id="own-heading" className="panel-title">
+                Your requests, from the approver&apos;s side
+              </h2>
+              <p className="text-sm leading-5 text-muted-foreground">
+                Open the card your approvers see. Segregation of duties stops you approving your own request, even if you try.
+              </p>
+            </div>
+          </div>
+          <ul className="divide-y divide-border">
             {own.map(({ request, step }) => (
-              <li key={request.id} className="flex flex-wrap items-center gap-3 py-2.5">
-                <span className="num text-sm font-semibold">{request.id}</span>
-                <span className="min-w-0 flex-1 truncate text-sm text-foreground">{request.title}</span>
-                <span className="text-xs text-muted-foreground">{step.label}</span>
+              <li key={request.id} className="flex flex-wrap items-center gap-3 px-4 py-2.5">
+                <span className="text-sm">
+                  <SapCode code={request.id} variant="plain" />
+                </span>
+                <span className="min-w-[12rem] flex-1">
+                  <span className="block truncate text-sm text-foreground">{request.title}</span>
+                  <span className="block truncate text-xs text-muted-foreground">{step.label}</span>
+                </span>
                 <Button variant="outline" size="sm" data-testid={`open-own-${request.id}`} onClick={() => onOpen(request, step)}>
                   Open approver card
                 </Button>

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Database, FileInput, Info, Network } from "lucide-react";
-import { PageHeader } from "@/components/common";
+import { LightScope, PageHeader } from "@/components/common";
 import { useSandbox } from "@/lib/store";
 import { DtwWizard } from "./DtwWizard";
 import { MasterDataView } from "./MasterDataView";
@@ -56,18 +56,20 @@ export function SapWorkspace() {
   }
 
   return (
-    <div className="mx-auto w-full max-w-[1280px]">
+    <div className="w-full">
       <PageHeader
         title="SAP Business One — simulated sandbox"
         subtitle="What the MDM team does after the final check: load the ready-made import files (SAP’s Data Transfer Workbench), open the new record, and preview Phase 2, where the record posts itself to SAP."
         meta={
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-[#e0b252] bg-[#fff6dc] px-2.5 py-0.5 text-[11.5px] font-medium text-[#5c4300]">
-            <Info className="size-3.5" aria-hidden="true" />
+          <span className="inline-flex min-h-5 items-center gap-1.5 rounded-sm border border-border-strong px-1.5 py-0.5 text-xs text-muted-foreground">
+            <Info className="size-3.5 shrink-0 text-subtle" aria-hidden="true" />
             Simulated for the prototype — production uses DTW import (Phase 1) and the Service Layer API (Phase 2)
           </span>
         }
       />
 
+      {/* The SAP Business One look-alike keeps its native light desktop-client look inside the dark console. */}
+      <LightScope>
       <SapWindow
         title={`SAP Business One · LIVES_SANDBOX · ${active.window}`}
         toolbar={
@@ -111,6 +113,7 @@ export function SapWorkspace() {
           </div>
         </div>
       </SapWindow>
+      </LightScope>
     </div>
   );
 }

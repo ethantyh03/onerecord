@@ -89,14 +89,14 @@ export function SimClock({ className }: { className?: string }) {
 
   return (
     <div className={cn("flex items-center", className)}>
-      <div className="relative flex h-10 items-center gap-2.5 rounded-l-lg border border-r-0 bg-card pr-3 pl-2.5">
+      <div className="relative hidden h-full items-center gap-2.5 px-4 md:flex" data-testid="sim-clock">
         {pulse > 0 && !reduceMotion ? (
           <motion.span
             key={pulse}
             aria-hidden
-            className="pointer-events-none absolute -inset-px rounded-l-lg ring-2 ring-primary"
+            className="pointer-events-none absolute inset-x-1.5 inset-y-2 rounded-md ring-2 ring-primary"
             initial={{ opacity: 0.9, scale: 1 }}
-            animate={{ opacity: 0, scale: 1.12 }}
+            animate={{ opacity: 0, scale: 1.06 }}
             transition={{ duration: 0.9, ease: "easeOut" }}
           />
         ) : null}
@@ -110,44 +110,44 @@ export function SimClock({ className }: { className?: string }) {
           <Clock aria-hidden className="size-4" strokeWidth={2.25} />
         </motion.span>
         <span className="flex flex-col leading-none">
-          <span className="text-[0.6875rem] text-muted-foreground">
+          <span className="text-xs text-subtle">
             Simulated clock
-            {offsetLabel ? <span className="num ml-1.5 font-medium text-primary">{offsetLabel}</span> : null}
+            {offsetLabel ? <span className="ml-1.5 font-mono text-xs font-medium text-primary">{offsetLabel}</span> : null}
           </span>
           <motion.span
             key={`time-${pulse}`}
-            className="num mt-1 text-sm font-semibold whitespace-nowrap text-foreground"
+            className="mt-1.5 font-mono text-[0.8125rem] whitespace-nowrap text-foreground"
             initial={pulse > 0 && !reduceMotion ? { opacity: 0, y: -4 } : false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.35, ease: "easeOut" }}
           >
-            {formatSgtDateTime(now)} <span className="font-medium text-muted-foreground">SGT</span>
+            {formatSgtDateTime(now)} <span className="text-muted-foreground">SGT</span>
           </motion.span>
         </span>
       </div>
       <DropdownMenu>
         <DropdownMenuTrigger
           className={cn(
-            "inline-flex h-10 items-center gap-1.5 rounded-r-lg border bg-card px-3 text-sm font-medium text-foreground outline-none transition-colors",
-            "hover:bg-muted focus-visible:ring-3 focus-visible:ring-ring/40 data-popup-open:bg-muted",
+            "mx-3 inline-flex h-8 items-center gap-1.5 rounded-md border border-border-strong px-2.5 text-sm font-medium text-foreground outline-none transition-colors md:ml-0",
+            "hover:bg-secondary focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-ring data-popup-open:bg-secondary",
           )}
         >
           <FastForward aria-hidden className="size-4 text-primary" />
           <span className="hidden md:inline">Fast-forward</span>
           <ChevronDown aria-hidden className="size-3.5 text-muted-foreground" />
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" sideOffset={6} className="w-64 p-1.5">
+        <DropdownMenuContent align="start" sideOffset={8} className="w-72 p-1.5">
           <DropdownMenuGroup>
-            <DropdownMenuLabel className="px-2 pt-1 pb-1.5 leading-snug">
+            <DropdownMenuLabel className="px-2 pt-1 pb-1.5 text-[0.8125rem] leading-snug text-muted-foreground">
               Move the demo clock to see SLA reminders and escalations fire.
             </DropdownMenuLabel>
             {JUMPS.map((j) => {
               const hours = j.hours(now);
               const target = new Date(new Date(now).getTime() + hours * HOUR_MS).toISOString();
               return (
-                <DropdownMenuItem key={j.id} onClick={() => jump(j)} className="flex-col items-start gap-0 rounded-md px-2 py-1.5">
+                <DropdownMenuItem key={j.id} onClick={() => jump(j)} className="flex-col items-start gap-0.5 px-2 py-1.5">
                   <span className="text-sm font-medium text-foreground">{j.label}</span>
-                  <span className="num text-xs text-muted-foreground">to {formatSgtDateTime(target)}</span>
+                  <span className="font-mono text-xs text-muted-foreground">to {formatSgtDateTime(target)}</span>
                 </DropdownMenuItem>
               );
             })}

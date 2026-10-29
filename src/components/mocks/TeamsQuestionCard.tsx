@@ -5,7 +5,7 @@ import { useId, useState } from "react";
 import { ArrowUpRight, CheckCircle2, MessageCircleQuestion, PauseCircle } from "lucide-react";
 import type { ApprovalStep, MdmRequest } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { MS_FONT, MsAvatar, TEAMS, findPerson, firstName, formatAgo, usePeople, useSimNow } from "./shared";
+import { MS_FONT, MS_SCOPE, MS_TEXT, MsAvatar, TEAMS, findPerson, firstName, formatAgo, usePeople, useSimNow } from "./shared";
 import { TeamsButton } from "./TeamsApprovalCard";
 
 export interface TeamsQuestionCardProps {
@@ -38,11 +38,13 @@ export function TeamsQuestionCard({ request, step, onAnswer, compact = false, cl
     <article
       aria-label={`Question about ${request.title}`}
       className={cn(
-        "overflow-hidden rounded-[6px] border border-[#e0e0e0] bg-white text-[#242424]",
+        MS_SCOPE,
+        "overflow-hidden rounded-[6px] border border-[#e0e0e0] bg-white",
+        // Fluent card elevation: part of the native Teams look, not a console panel shadow.
         "shadow-[0_1.6px_3.6px_rgba(0,0,0,0.11),0_0.3px_0.9px_rgba(0,0,0,0.09)]",
         className,
       )}
-      style={{ fontFamily: MS_FONT }}
+      style={{ fontFamily: MS_FONT, color: MS_TEXT }}
     >
       <div className="h-1" style={{ background: TEAMS.purple }} aria-hidden="true" />
       <header className={cn("flex items-center gap-2 pt-2.5 pb-2", pad)}>

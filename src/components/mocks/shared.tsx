@@ -25,6 +25,16 @@ export const TEAMS = {
   stroke: "#e0e0e0",
 } as const;
 
+/**
+ * Root class for every Microsoft look-alike: the light token set even inside the dark console (theme-light),
+ * and headings in the Segoe stack instead of the console's wide grotesque. Because .theme-light sets the
+ * text colour, roots pass their own text colour inline (MS_TEXT) so it wins over the scope.
+ */
+export const MS_SCOPE = "theme-light [&_:is(h1,h2,h3,h4)]:[font-family:inherit] [&_:is(h1,h2,h3,h4)]:[font-stretch:100%]";
+
+/** Fluent body text colour, for the mock roots' inline style. */
+export const MS_TEXT = "#242424";
+
 export function usePeople(): Person[] {
   return useSandbox((s) => s.config.people);
 }

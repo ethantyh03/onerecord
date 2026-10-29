@@ -1,25 +1,25 @@
 "use client";
 
 import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from "react";
-import { CheckCircle2, ExternalLink, FlaskConical, ShieldQuestion } from "lucide-react";
+import { ExternalLink, FlaskConical } from "lucide-react";
 import Link from "next/link";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { SyntheticBadge } from "@/components/common";
+import { StatusText, SyntheticBadge, type StateTone } from "@/components/common";
 import { meta, type DataHonestyItem } from "@/data/contract";
 import { LINKS } from "@/lib/links";
-import { cn } from "@/lib/utils";
 import { MATCHER_CAVEAT, SEASON_CAVEAT } from "./caveats";
 
 type ShownStatus = DataHonestyItem["status"] | "limitation";
 type ShownItem = { item: string; status: ShownStatus; detail: string };
 
-const STATUS: Record<ShownStatus, { label: string; cls: string }> = {
-  synthetic: { label: "Synthetic", cls: "border-border-strong bg-muted text-secondary-foreground" },
-  assumption: { label: "Assumption", cls: "border-warn/50 bg-warn-soft text-warn-ink" },
-  validated: { label: "Validated here", cls: "border-ok/50 bg-ok-soft text-ok-ink" },
-  limitation: { label: "Limitation", cls: "border-warn bg-card text-warn-ink" },
-  needs_pilot: { label: "Needs a pilot", cls: "border-dashed border-phase2 bg-phase2-soft text-phase2-ink" },
+/** Status as text (glyph + word in the state's ink), not a tinted chip. Phase-2 violet for what needs a pilot. */
+const STATUS: Record<ShownStatus, { label: string; tone: StateTone; hollow?: boolean }> = {
+  synthetic: { label: "Synthetic", tone: "neutral" },
+  assumption: { label: "Assumption", tone: "warn", hollow: true },
+  validated: { label: "Validated here", tone: "ok" },
+  limitation: { label: "Limitation", tone: "warn" },
+  needs_pilot: { label: "Needs a pilot", tone: "phase2" },
 };
 
 const ORDER: ShownStatus[] = ["synthetic", "assumption", "validated", "limitation", "needs_pilot"];
@@ -84,16 +84,22 @@ export function DataHonestyProvider({ children }: { children: ReactNode }) {
 export function DataHonestyDrawer({
   label = "What's real here?",
   testId = "honesty-drawer-open",
+  variant = "outline",
+  icon = true,
   className,
 }: {
   label?: string;
   testId?: string;
+  /** "outline" (default) for the footer control; "ghost" where it sits in a line of quiet meta text */
+  variant?: "outline" | "ghost";
+  /** Lead with the flask (off when a provenance marker with its own flask sits right before it) */
+  icon?: boolean;
   className?: string;
 }) {
   const ctx = useHonestyDrawer();
   return (
-    <Button variant="outline" size="sm" data-testid={testId} className={className} onClick={() => ctx?.open()}>
-      <FlaskConical />
+    <Button variant={variant} size="sm" data-testid={testId} className={className} onClick={() => ctx?.open()}>
+      {icon ? <FlaskConical /> : null}
       {label}
     </Button>
   );
@@ -125,17 +131,17 @@ function HonestySheet({ open, onOpenChange }: { open: boolean; onOpenChange: (o:
 
         <div className="space-y-7 px-6 py-5">
           <Block title="What is synthetic, assumed or tested">
-            <ul className="divide-y rounded-lg border">
+            <ul className="divide-y divide-border border-y border-border">
               {items.map((it) => (
-                <li key={it.item} className="flex items-start gap-3 px-3.5 py-2.5">
-                  <span
-                    className={cn(
-                      "mt-0.5 inline-flex h-5 w-[6.75rem] shrink-0 items-center justify-center rounded-full border text-[0.6875rem] font-medium",
-                      STATUS[it.status].cls,
-                    )}
+                <li key={it.item} className="flex items-start gap-3 py-2.5">
+                  <StatusText
+                    size="sm"
+                    tone={STATUS[it.status].tone}
+                    hollow={STATUS[it.status].hollow}
+                    className="mt-0.5 w-[7.25rem]"
                   >
                     {STATUS[it.status].label}
-                  </span>
+                  </StatusText>
                   <div className="min-w-0 text-sm">
                     <div className="font-medium">{it.item}</div>
                     <div className="text-[0.8125rem] text-muted-foreground">{it.detail}</div>
@@ -149,11 +155,11 @@ function HonestySheet({ open, onOpenChange }: { open: boolean; onOpenChange: (o:
             title="Patterns we planted, and where each comes from"
             note="The generator checks each one before the data is accepted; if a check fails, the data is regenerated."
           >
-            <ul className="space-y-2">
+            <ul className="divide-y divide-border border-y border-border">
               {meta.plantedPatterns.map((p) => (
-                <li key={p.id} className="rounded-lg border px-3.5 py-2.5 text-sm">
+                <li key={p.id} className="py-2.5 text-sm">
                   <div className="font-medium">{p.name}</div>
-                  <p className="mt-0.5 text-[0.8125rem] leading-snug text-secondary-foreground">{p.description}</p>
+                  <p className="mt-0.5 text-sm leading-snug text-secondary-foreground">{p.description}</p>
                   <div className="mt-1.5 flex flex-wrap gap-x-4 gap-y-0.5 text-xs text-muted-foreground">
                     <span>
                       <span className="font-medium text-secondary-foreground">Source:</span> {p.source}
@@ -168,23 +174,21 @@ function HonestySheet({ open, onOpenChange }: { open: boolean; onOpenChange: (o:
           </Block>
 
           <Block title="Validated here vs needs a pilot">
-            <div className="grid gap-3 sm:grid-cols-2">
-              <div className="rounded-lg border border-ok/40 bg-ok-soft/50 px-3.5 py-3">
-                <div className="flex items-center gap-1.5 text-sm font-medium text-ok-ink">
-                  <CheckCircle2 className="size-4" aria-hidden />
+            <div className="grid gap-x-6 gap-y-4 sm:grid-cols-2 sm:divide-x sm:divide-border">
+              <div>
+                <StatusText tone="ok" className="text-sm">
                   Validated on synthetic data
-                </div>
+                </StatusText>
                 <ul className="mt-2 list-disc space-y-1 pl-4 text-[0.8125rem] text-secondary-foreground">
                   {meta.validatedVsPilot.validatedHere.map((v) => (
                     <li key={v}>{v}</li>
                   ))}
                 </ul>
               </div>
-              <div className="rounded-lg border border-dashed border-phase2 bg-phase2-soft/50 px-3.5 py-3">
-                <div className="flex items-center gap-1.5 text-sm font-medium text-phase2-ink">
-                  <ShieldQuestion className="size-4" aria-hidden />
+              <div className="sm:pl-6">
+                <StatusText tone="phase2" className="text-sm">
                   Needs real SAP B1 data
-                </div>
+                </StatusText>
                 <ul className="mt-2 list-disc space-y-1 pl-4 text-[0.8125rem] text-secondary-foreground">
                   {meta.validatedVsPilot.needsPilot.map((v) => (
                     <li key={v}>{v}</li>
@@ -195,10 +199,10 @@ function HonestySheet({ open, onOpenChange }: { open: boolean; onOpenChange: (o:
           </Block>
 
           <Block title={`Pilot plan · ${pilot.weeks} weeks`} note={pilot.summary}>
-            <div className="overflow-x-auto rounded-lg border">
+            <div className="overflow-x-auto scrollbar-thin">
               <table className="w-full min-w-[520px] text-sm">
-                <thead className="bg-muted/50 text-xs text-muted-foreground">
-                  <tr className="border-b">
+                <thead className="text-xs text-subtle">
+                  <tr className="border-b border-border-strong">
                     <th className="px-3 py-2 text-left font-medium">SAP B1 table</th>
                     <th className="px-3 py-2 text-left font-medium">Feeds</th>
                     <th className="px-3 py-2 text-left font-medium">Key fields</th>
@@ -206,16 +210,22 @@ function HonestySheet({ open, onOpenChange }: { open: boolean; onOpenChange: (o:
                 </thead>
                 <tbody>
                   {pilot.sapMapping.map((m) => (
-                    <tr key={m.sapTable} className="border-b align-top last:border-b-0">
+                    <tr key={m.sapTable} className="border-b border-border align-top last:border-b-0">
                       <td className="px-3 py-2">
-                        <div className="font-mono text-[0.8125rem] font-medium">{m.sapTable}</div>
+                        <div className="text-sm font-medium">
+                          <span className="mono-id">{m.sapTable}</span>
+                        </div>
                         <div className="text-xs text-muted-foreground">{m.sapDescription}</div>
                       </td>
                       <td className="px-3 py-2">
                         <div>{m.feeds}</div>
-                        <div className="font-mono text-xs text-muted-foreground">{m.ourFile}</div>
+                        <div className="text-sm text-muted-foreground">
+                          <span className="mono-id">{m.ourFile}</span>
+                        </div>
                       </td>
-                      <td className="px-3 py-2 font-mono text-xs text-secondary-foreground">{m.keyFields.join(", ")}</td>
+                      <td className="px-3 py-2 text-sm text-secondary-foreground">
+                        <span className="mono-id">{m.keyFields.join(", ")}</span>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -224,7 +234,7 @@ function HonestySheet({ open, onOpenChange }: { open: boolean; onOpenChange: (o:
             <ol className="space-y-1.5 text-[0.8125rem]">
               {pilot.steps.map((s) => (
                 <li key={s} className="flex gap-2">
-                  <span aria-hidden className="mt-1.5 size-1.5 shrink-0 rounded-full bg-primary" />
+                  <span aria-hidden className="mt-2 size-1.5 shrink-0 rounded-full bg-subtle" />
                   <span className="text-secondary-foreground">{s}</span>
                 </li>
               ))}

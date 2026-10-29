@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
-import { Chip, NativeSelect, PERSON_ROLES, roleLabel, useSaveConfig } from "./shared";
+import { NativeSelect, PERSON_ROLES, roleLabel, SectionHeader, useSaveConfig } from "./shared";
 
 function defaultDelegate(p: Person, people: Person[]): string | undefined {
   const ok = (id?: string) => !!id && id !== p.id && people.some((x) => x.id === id);
@@ -70,17 +70,15 @@ export function PeopleTab() {
 
   return (
     <div className="space-y-4">
-      <div>
-        <h2 className="text-base font-semibold text-foreground">People &amp; delegates</h2>
-        <p className="text-[0.8125rem] text-muted-foreground">
-          Roles decide which steps someone can approve. Mark someone out of office and their pending approvals move to the delegate at once.
-        </p>
-      </div>
+      <SectionHeader
+        title="People & delegates"
+        description="Roles decide which steps someone can approve. Mark someone out of office and their pending approvals move to the delegate at once."
+      />
 
-      <div className="overflow-hidden rounded-xl border border-border bg-card shadow-raised">
+      <div className="panel overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow className="bg-muted/50 hover:bg-muted/50">
+            <TableRow>
               <TableHead className="pl-4">Person</TableHead>
               <TableHead>BU · country</TableHead>
               <TableHead>Roles</TableHead>
@@ -93,7 +91,7 @@ export function PeopleTab() {
               const isEditing = editing?.id === p.id;
               const configured = config.businessUnits.some((b) => b.id === p.entity);
               return (
-                <TableRow key={p.id} data-testid={`admin-person-${p.id}`} className={cn(p.outOfOffice && "bg-warn-soft/40")}>
+                <TableRow key={p.id} data-testid={`admin-person-${p.id}`}>
                   <TableCell className="pl-4">
                     <div className="flex items-center gap-2.5">
                       <PersonAvatar person={p} size="md" away={p.outOfOffice} />
@@ -106,7 +104,7 @@ export function PeopleTab() {
                   <TableCell className="text-[0.8125rem]">
                     <span className={cn("font-mono text-xs font-semibold", configured ? "text-foreground" : "text-warn-ink")}>{p.entity}</span>
                     <span className="text-muted-foreground"> · {p.country}</span>
-                    {!configured ? <div className="text-[0.6875rem] text-warn-ink">BU not configured yet</div> : null}
+                    {!configured ? <div className="text-xs text-warn-ink">BU not configured yet</div> : null}
                   </TableCell>
                   <TableCell className="max-w-[22rem] whitespace-normal">
                     {isEditing ? (
@@ -120,8 +118,8 @@ export function PeopleTab() {
                               aria-pressed={on}
                               onClick={() => setEditing({ id: p.id, roles: on ? editing.roles.filter((x) => x !== r) : [...editing.roles, r] })}
                               className={cn(
-                                "h-6 rounded-full border px-2 text-[0.6875rem] font-medium transition-colors",
-                                on ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card text-muted-foreground hover:text-foreground",
+                                "h-6 rounded-sm border px-1.5 text-xs font-medium transition-colors",
+                                on ? "border-foreground/40 bg-primary-soft text-foreground" : "border-border bg-card text-muted-foreground hover:text-foreground",
                               )}
                             >
                               {roleLabel(r)}
@@ -136,13 +134,9 @@ export function PeopleTab() {
                         </Button>
                       </div>
                     ) : (
-                      <div className="flex flex-wrap items-center gap-1">
+                      <div className="flex flex-wrap items-center gap-x-1.5 gap-y-1">
                         {p.roles.length ? (
-                          p.roles.map((r) => (
-                            <Chip key={r} tone={r === "requestor" ? "neutral" : "brand"}>
-                              {roleLabel(r)}
-                            </Chip>
-                          ))
+                          <span className="text-[0.8125rem] text-secondary-foreground">{p.roles.map((r) => roleLabel(r)).join(" · ")}</span>
                         ) : (
                           <span className="text-xs text-muted-foreground">Escalations only</span>
                         )}

@@ -85,24 +85,26 @@ function trim(s: string): string {
 }
 
 /**
- * Diverging fill for YoY growth: teal (chart-1) for growth, sand (chart-3) for decline, card surface within ±3%.
- * Coral stays reserved for stuck demand and at-risk.
+ * Diverging fill for YoY growth: green (ok) for growth, coral (stuck: money at risk) for decline, card surface
+ * within ±3%. Teal is reserved for live data and amber for clock risk, so neither appears here. Capped at a
+ * 36% mix so the cells read as state, not as the loudest surfaces on the page.
  * Built with color-mix on theme variables so it follows light and dark mode.
  */
 export const YOY_BINS: { min: number; max: number; label: string; pct: number; pole: "pos" | "neg" | "mid" }[] = [
-  { min: -Infinity, max: -0.2, label: "≤ −20%", pct: 52, pole: "neg" },
-  { min: -0.2, max: -0.1, label: "−10 to −20%", pct: 38, pole: "neg" },
-  { min: -0.1, max: -0.03, label: "−3 to −10%", pct: 24, pole: "neg" },
+  { min: -Infinity, max: -0.2, label: "≤ −20%", pct: 36, pole: "neg" },
+  { min: -0.2, max: -0.1, label: "−10 to −20%", pct: 26, pole: "neg" },
+  { min: -0.1, max: -0.03, label: "−3 to −10%", pct: 16, pole: "neg" },
   { min: -0.03, max: 0.03, label: "within ±3%", pct: 0, pole: "mid" },
-  { min: 0.03, max: 0.1, label: "+3 to +10%", pct: 24, pole: "pos" },
-  { min: 0.1, max: 0.2, label: "+10 to +20%", pct: 38, pole: "pos" },
-  { min: 0.2, max: Infinity, label: "≥ +20%", pct: 52, pole: "pos" },
+  { min: 0.03, max: 0.1, label: "+3 to +10%", pct: 16, pole: "pos" },
+  { min: 0.1, max: 0.2, label: "+10 to +20%", pct: 26, pole: "pos" },
+  { min: 0.2, max: Infinity, label: "≥ +20%", pct: 36, pole: "pos" },
 ];
 
 export function binFill(bin: (typeof YOY_BINS)[number]): string {
-  if (bin.pole === "mid") return "color-mix(in oklch, var(--muted) 70%, var(--card))";
-  const hue = bin.pole === "pos" ? "var(--chart-1)" : "var(--chart-3)";
-  return `color-mix(in oklch, ${hue} ${bin.pct}%, var(--card))`;
+  // oklab, not oklch: mixing a hue into the slate card in oklch swings the hue through green on dark.
+  if (bin.pole === "mid") return "color-mix(in oklab, var(--muted) 70%, var(--card))";
+  const hue = bin.pole === "pos" ? "var(--ok)" : "var(--stuck)";
+  return `color-mix(in oklab, ${hue} ${bin.pct}%, var(--card))`;
 }
 
 export function yoyFill(yoy: number | null | undefined): string {

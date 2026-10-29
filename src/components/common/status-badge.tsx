@@ -1,63 +1,43 @@
-import {
-  Ban,
-  CircleCheck,
-  CircleDashed,
-  CircleDot,
-  CircleHelp,
-  CircleMinus,
-  CircleX,
-  Hourglass,
-  ShieldCheck,
-  type LucideIcon,
-} from "lucide-react";
-import { cn } from "@/lib/utils";
-import { statusMeta, type AnyStatus, type StatusMeta, type StatusTone } from "./status-meta";
+import { StatusText } from "./status-text";
+import { statusGlyphTone, statusMeta, type AnyStatus, type StatusTone } from "./status-meta";
 
-const ICONS: Record<StatusMeta["icon"], LucideIcon> = {
-  draft: CircleDashed,
-  progress: Hourglass,
-  question: CircleHelp,
-  rejected: CircleX,
-  review: ShieldCheck,
-  done: CircleCheck,
-  cancelled: Ban,
-  waiting: CircleDashed,
-  pending: CircleDot,
-  skipped: CircleMinus,
-};
-
+/**
+ * Text colour by status tone. Status is plain text now (no tinted chip), so these are inks only,
+ * kept for anything that colours a word by a status tone.
+ */
 export const TONE_CLASSES: Record<StatusTone, string> = {
-  neutral: "border-border bg-muted text-muted-foreground",
-  brand: "border-primary/20 bg-primary-soft text-accent-foreground",
-  warn: "border-warn/45 bg-warn-soft text-warn-ink",
-  stuck: "border-stuck/30 bg-stuck-soft text-stuck-ink",
-  ok: "border-ok/30 bg-ok-soft text-ok-ink",
+  neutral: "text-muted-foreground",
+  brand: "text-secondary-foreground",
+  warn: "text-warn-ink",
+  stuck: "text-stuck-ink",
+  ok: "text-ok-ink",
 };
 
 export interface StatusBadgeProps {
   status: AnyStatus;
   /** Override the default label, e.g. "Approved by Daniel" */
   label?: string;
+  /** "sm" for dense rows and cards (12px), "md" elsewhere (13px) */
   size?: "sm" | "md";
   className?: string;
 }
 
+/**
+ * A request or step status as a state square + label in the state's ink: no border, no fill.
+ * done → green, rejected → coral, question → amber, in progress → filled grey, not started → hollow grey.
+ * Keeps `data-status` (e2e reads it) and the description as a native tooltip.
+ */
 export function StatusBadge({ status, label, size = "md", className }: StatusBadgeProps) {
   const meta = statusMeta(status);
-  const Icon = ICONS[meta.icon];
   return (
-    <span
+    <StatusText
       title={meta.description}
       data-status={status}
-      className={cn(
-        "inline-flex shrink-0 items-center gap-1 rounded-full border font-medium whitespace-nowrap",
-        size === "sm" ? "h-5 px-1.5 text-[0.6875rem]" : "h-6 px-2 text-xs",
-        TONE_CLASSES[meta.tone],
-        className,
-      )}
+      tone={statusGlyphTone(status)}
+      size={size}
+      className={className}
     >
-      <Icon aria-hidden className={size === "sm" ? "size-3" : "size-3.5"} strokeWidth={2.25} />
       {label ?? meta.label}
-    </span>
+    </StatusText>
   );
 }

@@ -280,7 +280,7 @@ function BuForm({ editing, presetCode, onOpenChange, onSaved }: BuSheetProps) {
             </div>
             <div>
               <FieldLabel>Countries</FieldLabel>
-              <p className="rounded-lg border border-dashed border-border-strong px-2.5 py-1.5 text-xs leading-snug text-muted-foreground">
+              <p className="pt-1 text-xs leading-snug text-muted-foreground">
                 All five markets (SG, MY, TH, VN, MM). Each request carries its own country, so one BU can sell anywhere.
               </p>
             </div>
@@ -297,10 +297,10 @@ function BuForm({ editing, presetCode, onOpenChange, onSaved }: BuSheetProps) {
             </p>
           </div>
           <div className="grid gap-x-4 gap-y-2.5 sm:grid-cols-2">{BU_SPECIFIC_ROLES.map(roleSelect)}</div>
-          <div className="rounded-lg border border-border bg-muted/40">
+          <div className="border-y border-border">
             <button
               type="button"
-              className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-[0.8125rem] outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+              className="flex w-full items-center gap-3 py-2 text-left text-[0.8125rem] outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
               aria-expanded={showOtherRoles}
               aria-controls="bu-other-roles"
               onClick={() => setShowOtherRoles((v) => !v)}
@@ -317,7 +317,7 @@ function BuForm({ editing, presetCode, onOpenChange, onSaved }: BuSheetProps) {
               </span>
             </button>
             {showOtherRoles ? (
-              <div id="bu-other-roles" className="grid gap-x-4 gap-y-2.5 border-t border-border px-3 py-3 sm:grid-cols-2">
+              <div id="bu-other-roles" className="grid gap-x-4 gap-y-2.5 border-t border-border py-3 sm:grid-cols-2">
                 {otherRoles.map(roleSelect)}
               </div>
             ) : null}
@@ -343,7 +343,7 @@ function BuForm({ editing, presetCode, onOpenChange, onSaved }: BuSheetProps) {
             </Button>
           </div>
           {draft.extraStages.length === 0 ? (
-            <p className="rounded-lg border border-dashed border-border-strong px-3 py-3 text-[0.8125rem] text-muted-foreground">
+            <p className="border-y border-border py-3 text-[0.8125rem] text-muted-foreground">
               No extra stages. Requests follow the standard route for their type.
             </p>
           ) : (
@@ -367,7 +367,7 @@ function BuForm({ editing, presetCode, onOpenChange, onSaved }: BuSheetProps) {
         </section>
       </div>
 
-      <SheetFooter className="flex-row items-center justify-between gap-3 border-t border-border bg-muted/40 px-6 py-3.5">
+      <SheetFooter className="flex-row items-center justify-between gap-3 border-t border-border px-6 py-3.5">
         <p className="text-xs text-muted-foreground">Saving creates config v{config.version + 1}.</p>
         <div className="flex gap-2">
           <Button type="button" variant="ghost" onClick={() => onOpenChange(false)}>

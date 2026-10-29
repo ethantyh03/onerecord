@@ -2,10 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Database, Eye } from "lucide-react";
 import { useSandbox } from "@/lib/store";
 import { useCurrentPerson } from "@/lib/selectors";
-import { PageHeader } from "@/components/common";
+import { Notice, PageHeader, StatusText } from "@/components/common";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ApprovalRoutesTab } from "./approval-routes-tab";
@@ -59,41 +58,38 @@ export function AdminWorkspace() {
         title="Admin settings"
         subtitle="Change who approves what, which fields are required and how long approvers have. The MDM team does it here, with no IT ticket and no code change."
         meta={
-          <span
-            className="inline-flex h-6 items-center gap-1.5 rounded-full border border-ok/30 bg-ok-soft px-2.5 text-xs font-semibold text-ok-ink"
-            data-testid="admin-config-version"
-          >
-            <span className="size-1.5 rounded-full bg-ok" aria-hidden />
+          <StatusText tone="ok" data-testid="admin-config-version">
             Config v{config.version} live
-          </span>
+          </StatusText>
         }
       />
 
       {!isAdmin ? (
-        <div
-          className="flex flex-wrap items-center gap-3 rounded-xl border border-border bg-muted/60 px-4 py-2.5 text-[0.8125rem]"
+        // A ruled line directly under the title's hairline: who you are viewing as, and the one-click switch.
+        <Notice
+          ruled
+          tone="neutral"
+          className="-mt-6 border-t-0"
           data-testid="admin-non-admin-banner"
-          role="note"
+          action={
+            admins[0] ? (
+              <Button size="sm" variant="outline" onClick={() => setPersona(admins[0].id)} data-testid="admin-switch-to-admin">
+                Switch to {admins[0].name.split(" ")[0]}
+              </Button>
+            ) : null
+          }
         >
-          <Eye className="size-4 shrink-0 text-muted-foreground" aria-hidden />
-          <p className="min-w-0 flex-1 text-muted-foreground">
-            You&rsquo;re viewing as <span className="font-medium text-foreground">{me.name}</span>. Only the MDM team
-            {admins.length ? ` (${admins.map((a) => a.name).join(", ")})` : ""} changes these settings in production; in this prototype you can still try them.
-          </p>
-          {admins[0] ? (
-            <Button size="sm" variant="outline" onClick={() => setPersona(admins[0].id)} data-testid="admin-switch-to-admin">
-              Switch to {admins[0].name.split(" ")[0]}
-            </Button>
-          ) : null}
-        </div>
+          You&rsquo;re viewing as <span className="font-medium text-foreground">{me.name}</span>. Only the MDM team
+          {admins.length ? ` (${admins.map((a) => a.name).join(", ")})` : ""} changes these settings in production; in this prototype you can still try them.
+        </Notice>
       ) : null}
 
-      <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_400px]">
+      <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_340px] 2xl:grid-cols-[minmax(0,1fr)_400px]">
         <Tabs value={tab} onValueChange={(v) => changeTab(String(v))} className="min-w-0 gap-5">
           <div className="overflow-x-auto border-b border-border">
-            <TabsList variant="line" className="h-10 gap-1 pb-1">
+            <TabsList variant="line" className="h-10 gap-0 pb-1 2xl:gap-1">
               {ADMIN_TABS.map((t) => (
-                <TabsTrigger key={t.id} value={t.id} className="h-8 px-2.5" data-testid={`admin-tab-${t.id}`}>
+                <TabsTrigger key={t.id} value={t.id} className="h-8 px-2 2xl:px-2.5" data-testid={`admin-tab-${t.id}`}>
                   {t.label}
                 </TabsTrigger>
               ))}
@@ -121,16 +117,9 @@ export function AdminWorkspace() {
 
         <aside className="space-y-3 xl:sticky xl:top-20">
           <RouteTestPanel state={routeTest} onChange={setRouteTest} />
-          <p
-            className="flex gap-2 rounded-xl border border-dashed border-border-strong px-3.5 py-2.5 text-xs leading-relaxed text-muted-foreground"
-            data-testid="admin-production-note"
-          >
-            <Database className="mt-0.5 size-3.5 shrink-0" aria-hidden />
-            <span>
-              <span className="font-semibold text-foreground">In production:</span> these settings live in a SharePoint config list that the MDM team
-              edits; Power Automate reads them at run time.
-            </span>
-          </p>
+          <Notice size="sm" tone="neutral" lead="In production:" className="pt-1" data-testid="admin-production-note">
+            these settings live in a SharePoint config list that the MDM team edits; Power Automate reads them at run time.
+          </Notice>
         </aside>
       </div>
     </div>

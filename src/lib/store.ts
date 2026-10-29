@@ -48,7 +48,7 @@ import {
 } from "@/lib/seed";
 import { validateRequest } from "@/lib/engine/conditions";
 import { activateNext, applyDecision, buildRoute, expectedCompletion, isFinalStatus, MDM_STAGE_ID, newlyActivated } from "@/lib/engine/routing";
-import { slaTick } from "@/lib/engine/sla";
+import { slaTick, type SodSkip } from "@/lib/engine/sla";
 import { appendAudit } from "@/lib/engine/audit";
 import { assignSapCode } from "@/lib/engine/codes";
 import { buildDtwFiles } from "@/lib/engine/dtw";
@@ -265,6 +265,15 @@ function domainNoun(domain: DomainConfig | undefined): string {
     default:
       return "record";
   }
+}
+
+/** Why a person was passed over for an escalation, e.g. "Rachel Koh already holds Finance Director — credit limit above S$50k". */
+function sodSkipText(config: AppConfig, req: MdmRequest, k: SodSkip): string {
+  const who = personName(config, k.id);
+  if (k.reason === "requestor") return `${who} raised ${req.id}`;
+  if (k.reason === "requestor_delegate") return `${who} is ${personName(config, req.requestorId)}'s delegate`;
+  const verb = k.stepStatus === "approved" ? "approved" : k.stepStatus === "rejected" ? "rejected" : "holds";
+  return `${who} already ${verb} ${k.stepLabel ?? "another step on this request"}`;
 }
 
 function joinList(xs: string[]): string {
@@ -985,14 +994,18 @@ export const useSandbox = create<SandboxState>()(
                 const reassigned = !!step && step.assigneeId === ev.toId && ev.toId !== from;
                 const toName = personName(s.config, ev.toId);
                 const fromName = personName(s.config, from);
+                // Segregation of duties: who was passed over, and why (empty when the plain delegate/manager rule applied).
+                const sodWhy = ev.skipped?.length ? `segregation of duties: ${ev.skipped.map((k) => sodSkipText(s.config, req, k)).join("; ")}` : "";
                 drafts.push({
                   requestId: req.id,
                   at,
                   actorId: SYSTEM_ACTOR_ID,
                   action: "escalated",
                   detail: reassigned
-                    ? `${label}: no decision after ${sla.escalateAfterBusinessDays} business days → reassigned from ${fromName} to ${toName}`
-                    : `${label}: no decision after ${sla.escalateAfterBusinessDays} business days → ${toName} (MDM) alerted; ${fromName} has no delegate or manager`,
+                    ? `${label}: no decision after ${sla.escalateAfterBusinessDays} business days → reassigned from ${fromName} to ${toName}${sodWhy ? ` (${sodWhy})` : ""}`
+                    : sodWhy
+                      ? `${label}: no decision after ${sla.escalateAfterBusinessDays} business days → ${toName} (MDM) alerted; ${fromName}'s delegate or manager can't take it over (${sodWhy})`
+                      : `${label}: no decision after ${sla.escalateAfterBusinessDays} business days → ${toName} (MDM) alerted; ${fromName} has no delegate or manager`,
                 });
                 notes.push(
                   mkNotification({
@@ -1003,7 +1016,9 @@ export const useSandbox = create<SandboxState>()(
                     title: reassigned ? `Escalated to you · ${req.id}` : `Stalled approval · ${req.id}`,
                     body: reassigned
                       ? `${fromName} hasn't acted on ${req.title} for ${sla.escalateAfterBusinessDays} business days, so ${label} is now yours.`
-                      : `${label} on ${req.title} has waited ${sla.escalateAfterBusinessDays} business days with ${fromName}, who has no delegate or manager on file.`,
+                      : sodWhy
+                        ? `${label} on ${req.title} has waited ${sla.escalateAfterBusinessDays} business days with ${fromName}, and their delegate or manager can't take it over (${sodWhy}).`
+                        : `${label} on ${req.title} has waited ${sla.escalateAfterBusinessDays} business days with ${fromName}, who has no delegate or manager on file.`,
                     requestId: req.id,
                     stepId: ev.stepId,
                   }),

@@ -1,8 +1,8 @@
 "use client";
 
-import { CalendarClock, Gauge, Radar, UserRound } from "lucide-react";
+import { Gauge } from "lucide-react";
 import { actions, signals } from "@/data/contract";
-import { SyntheticBadge } from "@/components/common/badges";
+import { RowNumber } from "@/components/common/data-rows";
 import { cn } from "@/lib/utils";
 import { usePulse } from "./PulseContext";
 import { PULSE_COUNTRIES, countryName, formatIsoDate, sgdCompact } from "./pulse-format";
@@ -33,28 +33,32 @@ function firstSentence(text: string): [string, string] {
   return [m[1], text.slice(m[0].length)];
 }
 
-/** Component 10: one card per country. Implication in two lines, then bold one-line actions with owner, date and S$ chips. */
+/**
+ * Component 10: one ruled row per country. Implication in two lines, then bold one-line actions with owner, date and S$
+ * as quiet meta columns under each (no chips, no boxed numbers). The selected country is a raised row, not a rail.
+ */
 export function CountryActions() {
   const { country, setCountry } = usePulse();
   const conv = signals.assumptions;
 
   return (
-    <section id="pulse-actions" aria-labelledby="pulse-actions-title" className="scroll-mt-24 space-y-4">
-      <div className="flex flex-col gap-1">
-        <div className="flex flex-wrap items-center gap-2">
-          <h2 id="pulse-actions-title" className="text-lg font-semibold tracking-[-0.01em]">
-            What each country should do next
-          </h2>
-          <SyntheticBadge />
-        </div>
-        <p className="max-w-[90ch] text-sm text-muted-foreground">
+    <section
+      id="pulse-actions"
+      aria-labelledby="pulse-actions-title"
+      className="panel scroll-mt-24 overflow-hidden"
+    >
+      <div className="flex flex-col gap-1 border-b border-border px-4 py-3">
+        <h2 id="pulse-actions-title" className="panel-title flex min-h-7 items-center">
+          What each country should do next
+        </h2>
+        <p className="max-w-[96ch] text-sm leading-snug text-muted-foreground">
           Who does what, by when, and the measure to watch next quarter. S$ are addressable before conversion: we assume{" "}
           {Math.round(conv.dropOffSaveRate * 100)}% of at-risk accounts are saved and{" "}
           {Math.round(conv.crossSellConversion * 100)}% of cross-sell offers convert.
         </p>
       </div>
 
-      <div className="space-y-3">
+      <div className="divide-y divide-border">
         {PULSE_COUNTRIES.map((code) => {
           const card = actions.cards.find((c) => c.country === code);
           if (!card) return null;
@@ -64,20 +68,25 @@ export function CountryActions() {
             <article
               key={code}
               data-testid={`pulse-actions-${code}`}
-              className={cn(
-                "grid min-w-0 overflow-hidden rounded-xl border bg-card shadow-raised transition-colors lg:grid-cols-[minmax(0,1fr)_minmax(0,2.2fr)]",
-                selected ? "border-primary/60" : "border-border",
-              )}
+              data-selected={selected || undefined}
+              aria-current={selected ? "true" : undefined}
+              className="relative grid min-w-0 lg:grid-cols-[minmax(0,1fr)_minmax(0,2.2fr)]"
             >
-              <div className="flex flex-col border-b bg-muted/40 px-4 py-3.5 lg:border-r lg:border-b-0">
+              {/* The selected country (the one in the forecast chart) is a raised row header, not a rail. */}
+              <div
+                className={cn(
+                  "flex flex-col border-b border-border px-4 py-3.5 transition-colors lg:border-r lg:border-b-0",
+                  selected && "bg-secondary",
+                )}
+              >
                 <button
                   type="button"
                   onClick={() => setCountry(code)}
                   className="flex w-full items-baseline gap-2 text-left focus-visible:underline focus-visible:outline-none"
                   title={`Show ${countryName(code)} in the forecast`}
                 >
-                  <h3 className="text-lg font-semibold text-foreground">{countryName(code)}</h3>
-                  <span className="text-xs text-muted-foreground">{code}</span>
+                  <h3 className="font-wide text-base font-semibold text-foreground">{countryName(code)}</h3>
+                  <span className="text-xs text-subtle">{code}</span>
                 </button>
                 <p className="mt-1 line-clamp-3 text-[0.9375rem] leading-snug text-foreground" title={card.implication}>
                   {lead}
@@ -96,50 +105,50 @@ export function CountryActions() {
                     <span className="font-medium text-muted-foreground">Watch next quarter: </span>
                     {card.kpi}
                   </p>
-                  <p className="inline-flex items-center gap-1 text-muted-foreground">
-                    <Radar aria-hidden className="size-3" />
-                    Based on: {plainSource(card.signalSource)}
-                  </p>
+                  <p className="text-subtle">Based on: {plainSource(card.signalSource)}</p>
                 </div>
               </div>
 
               <ol
                 className={cn(
-                  "grid gap-px bg-border",
-                  card.actions.length >= 3 ? "md:grid-cols-3" : card.actions.length === 2 ? "md:grid-cols-2" : "",
+                  "grid divide-y divide-border md:divide-y-0",
+                  card.actions.length >= 3
+                    ? "md:grid-cols-3 md:divide-x"
+                    : card.actions.length === 2
+                      ? "md:grid-cols-2 md:divide-x"
+                      : "",
                 )}
               >
                 {card.actions.map((a, i) => {
                   const [head, why] = splitAction(a.action);
                   return (
-                    <li key={i} className="flex min-w-0 flex-col gap-2.5 bg-card px-4 py-3.5">
+                    <li key={i} className="flex min-w-0 flex-col gap-2 px-4 py-3.5">
                       <div className="flex items-start gap-2">
-                        <span className="num mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-primary-soft text-[0.6875rem] font-semibold text-accent-foreground">
-                          {i + 1}
-                        </span>
+                        <RowNumber n={i + 1} className="leading-snug" />
                         <p className="text-[0.9375rem] leading-snug font-semibold text-foreground" data-testid={`pulse-action-${code}-${i}`}>
                           {head}
                         </p>
                       </div>
-                      <div className="flex flex-wrap gap-1.5 pl-7 text-xs">
-                        <span className="inline-flex items-center gap-1 rounded-md border bg-muted/50 px-1.5 py-0.5 text-secondary-foreground">
-                          <UserRound aria-label="Owner" className="size-3.5 shrink-0" />
-                          {a.ownerRole}
-                        </span>
-                        <span className="inline-flex items-center gap-1 rounded-md border bg-muted/50 px-1.5 py-0.5 whitespace-nowrap text-secondary-foreground">
-                          <CalendarClock aria-label="By when" className="size-3.5 shrink-0" />
-                          By {formatIsoDate(a.byWhen)}
-                        </span>
+                      {/* Owner, date and value as quiet lines: the S$ is the one figure that stands out. */}
+                      <dl className="space-y-0.5 pl-7 text-xs leading-4">
+                        <div className="text-secondary-foreground">
+                          <dt className="sr-only">Owner</dt>
+                          <dd>{a.ownerRole}</dd>
+                        </div>
+                        <div className="text-muted-foreground">
+                          <dt className="sr-only">By when</dt>
+                          <dd className="num whitespace-nowrap">By {formatIsoDate(a.byWhen)}</dd>
+                        </div>
                         {a.sgdAddressable != null ? (
-                          <span
-                            className="inline-flex items-center rounded-md bg-ok-soft px-1.5 py-0.5 font-medium whitespace-nowrap text-ok-ink"
-                            title="Addressable before conversion"
-                          >
-                            <span className="num font-semibold">{sgdCompact(a.sgdAddressable)}</span>&nbsp;addressable
-                          </span>
+                          <div className="pt-1 text-muted-foreground">
+                            <dt className="sr-only">Addressable before conversion</dt>
+                            <dd className="num whitespace-nowrap" title="Addressable before conversion">
+                              <span className="text-[0.8125rem] font-semibold text-foreground">{sgdCompact(a.sgdAddressable)}</span> addressable
+                            </dd>
+                          </div>
                         ) : null}
-                      </div>
-                      <details className="group mt-auto pl-7 text-xs text-secondary-foreground">
+                      </dl>
+                      <details className="group mt-auto pt-1 pl-7 text-xs text-secondary-foreground">
                         <summary className="cursor-pointer list-none font-medium text-primary focus-visible:underline focus-visible:outline-none [&::-webkit-details-marker]:hidden">
                           <span className="group-open:hidden">Why ▸</span>
                           <span className="hidden group-open:inline">Why ▾</span>
@@ -163,7 +172,7 @@ export function CountryActions() {
           );
         })}
       </div>
-      <p className="text-xs text-muted-foreground">
+      <p className="border-t border-border px-4 py-3 text-xs text-muted-foreground">
         {conv.label} {actions.note}
       </p>
     </section>

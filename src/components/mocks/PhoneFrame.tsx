@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 import { BatteryFull, Bell, CalendarDays, Ellipsis, MessageSquare, SignalHigh, Users, Wifi } from "lucide-react";
 import { formatSgtTime } from "@/components/common/format";
 import { cn } from "@/lib/utils";
-import { MS_FONT, TEAMS, useSimNow } from "./shared";
+import { MS_FONT, MS_SCOPE, TEAMS, useSimNow } from "./shared";
 
 export interface PhoneFrameProps {
   children: ReactNode;
@@ -32,8 +32,9 @@ export function PhoneFrame({ children, caption, teamsChrome = true, height = 600
 
   return (
     <figure className={cn("inline-flex flex-col items-center gap-3", className)}>
+      {/* The device is a look-alike (light Teams mobile); the caption under it stays console text. */}
       <div
-        className="relative rounded-[46px] bg-[#16161a] p-[9px] shadow-[0_24px_48px_-12px_rgba(16,24,40,0.35),inset_0_0_0_1.5px_#3a3a40]"
+        className={cn(MS_SCOPE, "relative rounded-[46px] bg-[#16161a] p-[9px] shadow-[inset_0_0_0_1.5px_#4a4a52]")}
         style={{ width: width + 18 }}
       >
         {/* side buttons */}

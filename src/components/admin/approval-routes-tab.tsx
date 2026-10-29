@@ -5,9 +5,8 @@ import { Lock, Plus, RotateCcw, Save } from "lucide-react";
 import type { DomainConfig, StageDef } from "@/lib/types";
 import { useSandbox } from "@/lib/store";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import { StageEditor, newStage } from "./stage-editor";
-import { deepClone, useSaveConfig } from "./shared";
+import { deepClone, DomainSwitch, SectionHeader, useSaveConfig } from "./shared";
 
 function summarise(domain: DomainConfig, before: StageDef[], after: StageDef[]): string {
   const stepsOf = (stages: StageDef[]) => new Map(stages.flatMap((s) => s.steps.map((st) => [st.id, { ...st, stage: s.id }] as const)));
@@ -49,31 +48,17 @@ export function ApprovalRoutesTab() {
 
   return (
     <div className="space-y-4">
-      <div>
-        <h2 className="text-base font-semibold text-foreground">Approval routes</h2>
-        <p className="text-[0.8125rem] text-muted-foreground">
-          Stages run top to bottom. Steps in an &ldquo;all at once&rdquo; stage go out together; conditional steps join only when their rule holds.
-        </p>
-      </div>
+      <SectionHeader
+        title="Approval routes"
+        description={
+          <>
+            Stages run top to bottom. Steps in an &ldquo;all at once&rdquo; stage go out together; conditional steps join only when their rule
+            holds.
+          </>
+        }
+      />
 
-      <div className="flex flex-wrap gap-1.5" role="tablist" aria-label="Request type">
-        {config.domains.map((d) => (
-          <button
-            key={d.id}
-            type="button"
-            role="tab"
-            aria-selected={d.id === domain.id}
-            onClick={() => setDomainId(d.id)}
-            data-testid={`admin-routes-domain-${d.id}`}
-            className={cn(
-              "h-8 rounded-full border px-3 text-[0.8125rem] font-medium transition-colors",
-              d.id === domain.id ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card text-muted-foreground hover:text-foreground",
-            )}
-          >
-            {d.label}
-          </button>
-        ))}
-      </div>
+      <DomainSwitch domains={config.domains} value={domain.id} onChange={setDomainId} testIdPrefix="admin-routes-domain" />
 
       <div>
         {stages.map((stage, i) => (
@@ -87,14 +72,15 @@ export function ApprovalRoutesTab() {
             onRemove={stages.length > 1 ? () => setStages(stages.filter((_, j) => j !== i)) : undefined}
           />
         ))}
-        <div className="flex items-center gap-3 rounded-xl border border-dashed border-border-strong bg-muted/40 px-4 py-3 text-[0.8125rem]">
-          <Lock className="size-4 text-muted-foreground" aria-hidden />
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-y border-border px-4 py-3 text-[0.8125rem]">
+          <Lock className="size-4 shrink-0 text-subtle" aria-hidden />
           <span className="font-medium text-foreground">MDM final check</span>
           <span className="text-muted-foreground">Always last, added automatically. Business-unit stages run just before it.</span>
         </div>
       </div>
 
-      <div className="sticky bottom-3 z-10 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border bg-card/95 px-4 py-2.5 shadow-float backdrop-blur">
+      {/* Floats over the route while it scrolls, so it is an overlay: popover surface + the one crisp shadow. */}
+      <div className="sticky bottom-3 z-10 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border-strong bg-popover px-4 py-2.5 shadow-float">
         <Button variant="outline" size="sm" onClick={() => setStages([...stages, newStage(domain.id, "New stage")])} data-testid={`admin-route-${domain.id}-add-stage`}>
           <Plus /> Add stage
         </Button>

@@ -16,6 +16,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { useSandbox } from "@/lib/store";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Phase2Badge } from "@/components/common/badges";
 import { formatSgd } from "@/components/common/format";
@@ -116,28 +117,18 @@ const NODES: JourneyNode[] = [
 
 type MarkerState = "passed" | "active" | "upcoming";
 
-function Marker({ icon: Icon, state, pulsing }: { icon: LucideIcon; state: MarkerState; pulsing: boolean }) {
+/** A stage on the OneRecord path: a square stage box (records are square, people are round). */
+function Marker({ icon: Icon, state }: { icon: LucideIcon; state: MarkerState }) {
   return (
-    <span className="relative inline-flex size-10 shrink-0">
-      {pulsing ? (
-        <motion.span
-          aria-hidden
-          className="absolute inset-0 rounded-full bg-primary"
-          initial={{ opacity: 0.35, scale: 1 }}
-          animate={{ opacity: 0, scale: 1.7 }}
-          transition={{ duration: 1.6, repeat: Infinity, ease: "easeOut" }}
-        />
-      ) : null}
-      <span
-        className={cn(
-          "relative inline-flex size-10 items-center justify-center rounded-full border-2 transition-colors duration-500",
-          state === "active" && "border-primary bg-primary text-primary-foreground",
-          state === "passed" && "border-primary/45 bg-primary-soft text-primary",
-          state === "upcoming" && "border-border-strong bg-card text-muted-foreground",
-        )}
-      >
-        <Icon aria-hidden className="size-[1.125rem]" strokeWidth={2} />
-      </span>
+    <span
+      className={cn(
+        "relative inline-flex size-9 shrink-0 items-center justify-center rounded-md border transition-colors duration-500",
+        state === "active" && "border-signal bg-signal text-canvas",
+        state === "passed" && "border-signal/50 bg-signal-soft text-signal",
+        state === "upcoming" && "border-border-strong bg-card text-muted-foreground",
+      )}
+    >
+      <Icon aria-hidden className="size-[1.0625rem]" strokeWidth={2} />
     </span>
   );
 }
@@ -208,17 +199,17 @@ export function ProcessDiagram() {
     : { type: "spring" as const, stiffness: 140, damping: 22, mass: 0.9 };
 
   return (
-    <section aria-labelledby="journey-title" className="overflow-hidden rounded-2xl border bg-card shadow-raised">
-      <div className="flex flex-col gap-3 border-b px-5 py-4 sm:flex-row sm:items-start sm:justify-between lg:px-6">
+    <section aria-labelledby="journey-title" className="panel overflow-hidden">
+      <div className="flex flex-col gap-3 border-b border-border px-4 py-3 sm:flex-row sm:items-center sm:justify-between lg:px-5">
         <div className="min-w-0">
-          <h2 id="journey-title" className="text-lg font-semibold tracking-[-0.015em] text-foreground">
+          <h2 id="journey-title" className="panel-title text-base">
             From request to SAP B1, and back out as insight
           </h2>
-          <p className="mt-1 max-w-[80ch] text-sm text-muted-foreground">
+          <p className="mt-0.5 max-w-[80ch] text-sm text-muted-foreground">
             {isLive ? (
               <>
                 Follow {DEMO_REQUEST_ID}, a new dengue test kit for Malaysia. It is live in SAP B1 as{" "}
-                <span className="num font-mono text-[0.8125rem] text-foreground">{itemCode}</span>, and the{" "}
+                <span className="mono-id text-foreground">{itemCode}</span>, and the{" "}
                 {orderCount} hospital orders worth {released} it was holding back are moving again.
               </>
             ) : (
@@ -231,29 +222,20 @@ export function ProcessDiagram() {
         </div>
         <div className="flex shrink-0 items-center gap-1">
           {reduceMotion ? (
-            <button
-              type="button"
-              onClick={advance}
-              className="inline-flex h-8 items-center gap-1.5 rounded-lg border px-2.5 text-xs font-medium text-foreground outline-none hover:bg-muted focus-visible:ring-3 focus-visible:ring-ring/40"
-            >
+            <Button type="button" variant="outline" size="sm" onClick={advance}>
               Next step
-            </button>
+            </Button>
           ) : (
-            <button
-              type="button"
-              onClick={() => setPlaying((p) => !p)}
-              aria-pressed={!playing}
-              className="inline-flex h-8 items-center gap-1.5 rounded-lg border px-2.5 text-xs font-medium text-foreground outline-none hover:bg-muted focus-visible:ring-3 focus-visible:ring-ring/40"
-            >
+            <Button type="button" variant="outline" size="sm" onClick={() => setPlaying((p) => !p)} aria-pressed={!playing}>
               {playing ? <Pause aria-hidden className="size-3.5" /> : <Play aria-hidden className="size-3.5" />}
               {playing ? "Pause" : "Play"}
-            </button>
+            </Button>
           )}
         </div>
       </div>
 
       <div
-        className="bg-dot-grid px-2 pt-4 pb-3 lg:px-3"
+        className="bg-canvas bg-dot-grid px-2 pt-4 pb-3 lg:px-3"
         onMouseLeave={() => setHovering(false)}
         onBlur={(e) => {
           if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setHovering(false);
@@ -262,19 +244,15 @@ export function ProcessDiagram() {
         {/* The storyboard's "Clean in │ Money out" split: steps 1–5 clean the record, step 6 is the payoff. */}
         <div data-testid="home-split" className="mb-1 hidden grid-cols-6 xl:grid">
           <div className="col-span-5 px-3">
-            <p className="text-center text-[0.8125rem] font-semibold tracking-[0.06em] text-primary uppercase">
-              Clean in
-              <span className="ml-2 font-medium tracking-normal text-muted-foreground normal-case">
-                one complete, checked record per customer, vendor and item
-              </span>
+            <p className="text-center text-[0.8125rem] text-muted-foreground">
+              <span className="mr-2 font-semibold text-signal">Clean in</span>
+              one complete, checked record per customer, vendor and item
             </p>
-            <span aria-hidden className="mt-1.5 block h-2 rounded-t-md border-x-2 border-t-2 border-primary/35" />
+            <span aria-hidden className="mt-1.5 block h-2 rounded-t-sm border-x border-t border-signal/45" />
           </div>
           <div className="col-span-1 px-3">
-            <p className="text-center text-[0.8125rem] font-semibold tracking-[0.06em] text-ok-ink uppercase">
-              Money out
-            </p>
-            <span aria-hidden className="mt-1.5 block h-2 rounded-t-md border-x-2 border-t-2 border-ok/45" />
+            <p className="text-center text-[0.8125rem] font-semibold text-ok-ink">Money out</p>
+            <span aria-hidden className="mt-1.5 block h-2 rounded-t-sm border-x border-t border-ok/50" />
           </div>
         </div>
         <ol className="grid grid-cols-1 gap-y-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 xl:gap-y-0">
@@ -284,15 +262,15 @@ export function ProcessDiagram() {
             return (
               <li
                 key={node.id}
-                className={cn("relative", i === last && "xl:border-l-2 xl:border-dashed xl:border-ok/40 xl:pl-1")}
+                className={cn("relative", i === last && "xl:border-l xl:border-dashed xl:border-ok/50 xl:pl-1")}
               >
                 {i < last ? (
                   <span
                     aria-hidden
-                    className="pointer-events-none absolute top-[68px] right-[-7px] left-[59px] z-10 hidden h-[2px] overflow-hidden rounded-full bg-border-strong/70 xl:block"
+                    className="pointer-events-none absolute top-[66px] right-[-5px] left-[55px] z-10 hidden h-[2px] overflow-hidden bg-border-strong xl:block"
                   >
                     <motion.span
-                      className="absolute inset-0 origin-left bg-primary"
+                      className="absolute inset-0 origin-left bg-signal"
                       initial={false}
                       animate={{ scaleX: i < active ? 1 : 0 }}
                       transition={reduceMotion ? { duration: 0 } : { duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
@@ -311,11 +289,11 @@ export function ProcessDiagram() {
                     setActive(i);
                   }}
                   className={cn(
-                    "group/node relative flex h-full flex-col rounded-xl border p-3 outline-none transition-[background-color,border-color,box-shadow] duration-300",
-                    "focus-visible:ring-3 focus-visible:ring-ring/40",
+                    "group/node relative flex h-full flex-col rounded-lg border p-3 outline-none transition-[background-color,border-color] duration-300",
+                    "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
                     state === "active"
-                      ? "border-border bg-card shadow-float"
-                      : "border-transparent hover:border-border hover:bg-card/90",
+                      ? "border-border-strong bg-card"
+                      : "border-transparent hover:border-border hover:bg-card/80",
                   )}
                 >
                   <span className="mb-2 hidden h-7 items-end xl:flex">
@@ -327,34 +305,34 @@ export function ProcessDiagram() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={layoutTransition}
                         className={cn(
-                          "inline-flex h-7 items-center gap-1.5 rounded-full border px-2.5 text-xs font-semibold whitespace-nowrap shadow-float",
+                          "inline-flex h-6 items-center gap-1.5 rounded-sm border px-2 text-xs font-semibold whitespace-nowrap",
                           t.tone === "ok"
-                            ? "border-ok/35 bg-ok-soft text-ok-ink"
-                            : "border-primary/25 bg-card text-foreground",
+                            ? "border-ok/45 bg-ok-soft text-ok-ink"
+                            : "border-signal/45 bg-signal-soft text-foreground",
                         )}
                       >
                         <span
                           aria-hidden
-                          className={cn("size-1.5 rounded-full", t.tone === "ok" ? "bg-ok" : "bg-primary")}
+                          className={cn("size-1.5 rounded-full", t.tone === "ok" ? "bg-ok" : "bg-signal")}
                         />
-                        <span className={cn("num", t.mono && "font-mono text-[0.75rem] font-medium tracking-tight")}>
+                        <span className={cn("num", t.mono && "mono-id font-normal")}>
                           {t.label}
                         </span>
                       </motion.span>
                     ) : null}
                   </span>
 
-                  <Marker icon={node.icon} state={state} pulsing={state === "active" && autoplay} />
+                  <Marker icon={node.icon} state={state} />
 
                   <span className="mt-3 flex items-baseline gap-1.5">
                     <span className="num text-sm font-medium text-muted-foreground">{i + 1}</span>
-                    <span className="text-[0.975rem] leading-snug font-semibold text-foreground">{node.title}</span>
+                    <span className="text-[0.9375rem] leading-snug font-semibold text-foreground">{node.title}</span>
                     <ArrowUpRight
                       aria-hidden
                       className="ml-auto size-4 shrink-0 self-center text-muted-foreground opacity-0 transition-opacity group-hover/node:opacity-100 group-focus-visible/node:opacity-100"
                     />
                   </span>
-                  <span className="mt-0.5 text-[0.8125rem] font-medium text-accent-foreground">{node.surface}</span>
+                  <span className="mt-0.5 text-[0.8125rem] font-medium text-secondary-foreground">{node.surface}</span>
                   <span className="mt-1.5 text-[0.8125rem] leading-snug text-muted-foreground">{node.text(slaDays)}</span>
                   {node.phase2 ? <Phase2Badge label={node.phase2} className="mt-2 self-start" /> : null}
                   <span className="mt-auto pt-3">
@@ -368,7 +346,7 @@ export function ProcessDiagram() {
         </ol>
       </div>
 
-      <div className="flex min-h-[3.25rem] items-center border-t bg-canvas/60 px-5 py-3 lg:px-6">
+      <div className="flex min-h-[3.25rem] items-center border-t border-border px-4 py-3 lg:px-5">
         <motion.p
           key={active}
           initial={reduceMotion ? false : { opacity: 0 }}

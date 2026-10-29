@@ -18,19 +18,23 @@ export interface PersonAvatarProps {
   away?: boolean;
 }
 
-/** Initials disc in the person's colour (darkened so white initials always read). */
+/**
+ * Initials disc, neutral: the console's own grey with only a faint trace of the person's colour, so
+ * people never compete with state colour (coral, amber, green). People are round; records are square.
+ * The Microsoft look-alikes draw their own saturated avatars (mocks/shared.tsx).
+ */
 export function PersonAvatar({ person, size = "md", className, away }: PersonAvatarProps) {
   const color = person?.avatarColor || "#4b6470";
   return (
     <span
       aria-hidden
       className={cn(
-        "relative inline-flex shrink-0 items-center justify-center rounded-full font-semibold tracking-[0.02em] text-white select-none",
-        "shadow-[inset_0_0_0_1px_rgb(255_255_255/0.14)]",
+        "relative inline-flex shrink-0 items-center justify-center rounded-full font-semibold tracking-[0.02em] text-foreground select-none",
+        "shadow-[inset_0_0_0_1px_var(--border-strong)]",
         SIZES[size],
         className,
       )}
-      style={{ background: `color-mix(in oklch, ${color} 74%, black)` }}
+      style={{ background: `color-mix(in oklch, ${color} 14%, var(--secondary))` }}
     >
       {person ? initials(person.name) : "?"}
       {away ? (

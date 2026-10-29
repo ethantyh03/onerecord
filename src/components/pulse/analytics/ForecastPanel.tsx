@@ -13,9 +13,9 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { Info, Pause, Play, RotateCcw } from "lucide-react";
+import { Pause, Play, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { formatSgd } from "@/components/common";
+import { Notice, formatSgd } from "@/components/common";
 import { usePulse } from "@/components/pulse/core/PulseContext";
 import { backtest, backtestCell, type MethodId } from "@/data/contract";
 import type { CountryCode, ProductGroup } from "@/lib/types";
@@ -227,13 +227,13 @@ export function ForecastPanel() {
                 </li>
                 {SERIES.map((s) => (
                   <li key={s.key} className="flex items-center gap-1.5" title={s.key === "ets" ? ETS_HINT : undefined}>
-                    <span aria-hidden className="inline-block size-2.5 rounded-full" style={{ background: s.color }} />
+                    <span aria-hidden className="inline-block size-2.5 rounded-full border-2 border-card" style={{ background: s.color, boxShadow: `0 0 0 1px ${s.color}` }} />
                     {s.label}
                   </li>
                 ))}
                 {!isC ? (
                   <li className="flex items-center gap-1.5">
-                    <span aria-hidden className="inline-block h-2.5 w-3.5 rounded-[3px] opacity-25" style={{ background: VIZ.ours }} />
+                    <span aria-hidden className="inline-block h-2.5 w-3.5 rounded-[2px] opacity-30" style={{ background: VIZ.ours }} />
                     {RANGE_LABEL}
                   </li>
                 ) : null}
@@ -418,7 +418,7 @@ export function ForecastPanel() {
               )}
             </p>
             {!isC ? (
-              <p className="mt-1 text-[0.8125rem] font-medium text-secondary-foreground" data-testid="forecast-season-caveat">
+              <p className="mt-1 text-sm font-medium text-secondary-foreground" data-testid="forecast-season-caveat">
                 {product === "A" && oursWins
                   ? "In the dengue-season rise ours follows the turn; the rolling average lags behind it. "
                   : ""}
@@ -430,22 +430,18 @@ export function ForecastPanel() {
           <aside className="space-y-4 xl:border-l xl:pl-5">
             {isC ? (
               <div className="space-y-3">
-                <div className="rounded-lg border border-warn/40 bg-warn-soft px-3.5 py-3">
-                  <p className="flex items-start gap-2 text-sm font-medium text-warn-ink">
-                    <Info className="mt-0.5 size-4 shrink-0" aria-hidden />
-                    Neither method is good for instruments.
-                  </p>
-                  <p className="mt-1.5 text-[0.8125rem] leading-snug text-secondary-foreground">{backtest.productC.note}</p>
-                </div>
+                <Notice tone="warn" lead="Neither method is good for instruments." className="leading-snug">
+                  <span className="mt-1.5 block">{backtest.productC.note}</span>
+                </Notice>
                 <PlainLine>
                   In this cell today&apos;s method is off by <strong className="num">{per100(baseW)}</strong> units per 100
                   ordered; ours by <strong className="num">{per100(oursW)}</strong>. Shown so you can see it, not used.
                 </PlainLine>
                 {plan ? (
-                  <div className="rounded-lg border bg-muted/40 px-3.5 py-3">
+                  <div className="border-t border-border pt-3">
                     <div className="text-xs font-medium text-muted-foreground">Planned from the tender pipeline instead</div>
-                    <div className="num mt-1 text-2xl font-semibold tracking-[-0.02em]">{formatSgd(plan.expectedSgd, { compact: true })}</div>
-                    <p className="mt-1 text-[0.8125rem] leading-snug text-muted-foreground">
+                    <div className="num font-wide mt-1 text-2xl font-semibold">{formatSgd(plan.expectedSgd, { compact: true })}</div>
+                    <p className="mt-1 text-sm leading-snug text-muted-foreground">
                       Open PR/tender value for instruments ({formatSgd(plan.pipelineCSgd, { compact: true })}) × historical
                       PR→PO conversion in {COUNTRY_NAME[country]} ({Math.round(plan.conversion * 100)}%). Pipeline-weighted, not
                       a time-series model. C&apos;s share of the open pipeline is assumed equal to its share of 12-month orders (
@@ -473,7 +469,7 @@ export function ForecastPanel() {
                       ? "Ours is closer here."
                       : "Today's method is closer here. This is one of the cells we lose, and it stays on the scorecard."}
                   </p>
-                  <p className="mt-1.5 text-[0.8125rem] text-muted-foreground">
+                  <p className="mt-1.5 text-sm text-muted-foreground">
                     Today&apos;s method {biasWords(cell.scores.rolling12.bias)}; ours {biasWords(cell.scores.etsDamped.bias)}.
                   </p>
                 </div>

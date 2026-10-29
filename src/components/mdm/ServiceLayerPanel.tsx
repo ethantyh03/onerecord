@@ -28,21 +28,21 @@ export function ServiceLayerPanel({
   return (
     <div data-testid="mdm-sl-panel" className="space-y-3">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex min-w-0 items-center gap-2">
-          <span
-            className={cn(
-              "rounded-md px-2 py-0.5 font-mono text-xs font-bold",
-              payload.method === "PATCH" ? "bg-warn-soft text-warn-ink" : "bg-ok-soft text-ok-ink",
-            )}
-          >
-            {payload.method}
-          </span>
-          <code className="truncate font-mono text-[0.8125rem] font-medium text-foreground">{payload.path}</code>
+        <div className="flex min-w-0 flex-wrap items-center gap-2 text-sm">
+          <code className="mono-id font-semibold text-foreground">{payload.method}</code>
+          <code className="mono-id truncate text-foreground">{payload.path}</code>
           <Phase2Badge label="— not sent" />
         </div>
         <Tooltip>
-          <TooltipTrigger render={<span tabIndex={0} className="inline-flex rounded-lg outline-none focus-visible:ring-3 focus-visible:ring-ring/50" />}>
-            <Button size="sm" disabled data-testid="mdm-sl-send" aria-describedby="sl-send-why">
+          <TooltipTrigger
+            render={
+              <span
+                tabIndex={0}
+                className="inline-flex rounded-md outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+              />
+            }
+          >
+            <Button size="sm" variant="outline" disabled data-testid="mdm-sl-send" aria-describedby="sl-send-why">
               <Send aria-hidden />
               Send to Service Layer
             </Button>
@@ -54,28 +54,30 @@ export function ServiceLayerPanel({
         </Tooltip>
       </div>
 
-      <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_280px]">
-        <pre className="max-h-[360px] overflow-auto rounded-lg border bg-muted/50 px-4 py-3 font-mono text-[0.75rem] leading-relaxed text-foreground">
+      <div className="grid gap-x-6 gap-y-4 lg:grid-cols-[minmax(0,1fr)_280px]">
+        <pre className="max-h-[360px] overflow-auto rounded-sm bg-canvas px-4 py-3 font-mono text-[0.75rem] leading-relaxed text-secondary-foreground scrollbar-thin [font-variant-ligatures:none]">
           {json}
         </pre>
-        <div className="rounded-lg border px-3 py-2.5">
-          <p className="text-[0.8125rem] font-semibold text-foreground">Field-length validator</p>
-          <p className="mb-2 text-xs text-muted-foreground">
-            {failing ? `${failing} field${failing === 1 ? "" : "s"} too long` : "All checked fields fit"} · SAP B1 10.0 SDK limits
-          </p>
+        <div className="flex flex-col">
+          <div className="border-b border-border-strong pb-2">
+            <p className="text-sm font-semibold text-foreground">Field-length validator</p>
+            <p className={cn("text-xs", failing ? "text-stuck-ink" : "text-muted-foreground")}>
+              {failing ? `${failing} field${failing === 1 ? "" : "s"} too long` : "All checked fields fit"} · SAP B1 10.0 SDK limits
+            </p>
+          </div>
           {checks.length === 0 ? (
-            <p className="text-xs text-muted-foreground">No length-limited fields in this payload.</p>
+            <p className="py-2.5 text-xs text-muted-foreground">No length-limited fields in this payload.</p>
           ) : (
-            <ul className="space-y-1">
+            <ul className="divide-y divide-border">
               {checks.map((c) => (
-                <li key={c.property} className="flex items-center justify-between gap-2 text-xs">
+                <li key={c.property} className="flex items-center justify-between gap-2 py-1.5 text-[0.8125rem]">
                   <span className="flex min-w-0 items-center gap-1.5">
                     {c.check.ok ? (
                       <Check aria-label="Fits" className="size-3.5 shrink-0 text-ok-ink" />
                     ) : (
                       <X aria-label="Too long" className="size-3.5 shrink-0 text-stuck-ink" />
                     )}
-                    <code className="truncate font-mono text-foreground">{c.property}</code>
+                    <code className="mono-id truncate text-foreground">{c.property}</code>
                   </span>
                   <span className={cn("num shrink-0 font-medium", c.check.ok ? "text-ok-ink" : "text-stuck-ink")}>
                     {c.check.length}/{c.check.exact ? `=${c.check.max}` : c.check.max}
@@ -87,8 +89,8 @@ export function ServiceLayerPanel({
         </div>
       </div>
       <p className="text-xs text-muted-foreground">
-        In phase 2, a business partner and its child rows go in one <code className="font-mono">$batch</code> request so they
-        are created together or not at all.
+        In phase 2, a business partner and its child rows go in one <code className="mono-id text-secondary-foreground">$batch</code>{" "}
+        request so they are created together or not at all.
       </p>
     </div>
   );

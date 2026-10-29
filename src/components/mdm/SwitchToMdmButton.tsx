@@ -19,7 +19,7 @@ export function SwitchToMdmButton({ className }: { className?: string }) {
       variant="outline"
       size="sm"
       data-testid="mdm-switch-persona"
-      className={cn("shrink-0 bg-card", className)}
+      className={cn("shrink-0", className)}
       onClick={() => setPersona(mdmPerson.id)}
     >
       <UserRoundCheck aria-hidden />

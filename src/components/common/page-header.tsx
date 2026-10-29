@@ -6,12 +6,20 @@ export interface PageHeaderProps {
   subtitle?: ReactNode;
   /** Buttons aligned right on wide screens, below the title on narrow ones */
   actions?: ReactNode;
-  /** Small badges next to the title, e.g. <SyntheticBadge /> or a status */
+  /**
+   * Quiet text beside the title, after a hairline: provenance ("Synthetic, illustrative data"), a
+   * production note, an ID + status. Rendered as plain 12px subtle text: any chip passed here loses
+   * its border, fill and padding, so pass plain text or an <IllustrativeMarker />.
+   */
   meta?: ReactNode;
   className?: string;
 }
 
-/** Page title block. Pages render it first inside the shell's content area. */
+/**
+ * The console title row: page title (28/32, semi-expanded, 600), quiet meta after a vertical
+ * hairline (the Gotham meta-column idiom), a one-line purpose under it, page-level controls on the
+ * right, and a hairline closing the row. Pages render it first inside the shell's content area.
+ */
 export function PageHeader({ title, subtitle, actions, meta, className }: PageHeaderProps) {
   return (
     <header
@@ -21,11 +29,22 @@ export function PageHeader({ title, subtitle, actions, meta, className }: PageHe
       )}
     >
       <div className="min-w-0 space-y-1.5">
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
-          <h1 className="text-[1.625rem] leading-tight font-semibold tracking-[-0.02em] text-foreground">{title}</h1>
-          {meta ? <div className="flex flex-wrap items-center gap-1.5">{meta}</div> : null}
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
+          <h1 className="font-wide text-[1.75rem] leading-8 font-semibold text-foreground">{title}</h1>
+          {meta ? (
+            <div
+              className={cn(
+                "flex min-h-5 flex-wrap items-center gap-x-3 gap-y-1 border-l border-border-strong pl-4 text-xs leading-4 text-subtle",
+                // De-box whatever is passed: chips become quiet text (no border, fill or padding).
+                "[&>*]:h-auto [&>*]:rounded-none [&>*]:border-0 [&>*]:bg-transparent [&>*]:px-0 [&>*]:py-0",
+                "[&>a>*]:h-auto [&>a>*]:border-0 [&>a>*]:bg-transparent [&>a>*]:px-0 [&>a>*]:py-0 [&>a]:hover:underline [&>a]:underline-offset-4",
+              )}
+            >
+              {meta}
+            </div>
+          ) : null}
         </div>
-        {subtitle ? <p className="max-w-[72ch] text-[0.9375rem] text-muted-foreground">{subtitle}</p> : null}
+        {subtitle ? <p className="max-w-[76ch] text-[0.9375rem] leading-6 text-muted-foreground">{subtitle}</p> : null}
       </div>
       {actions ? <div className="flex shrink-0 flex-wrap items-center gap-2">{actions}</div> : null}
     </header>

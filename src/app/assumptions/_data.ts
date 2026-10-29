@@ -26,27 +26,27 @@ export interface AssumptionGroup {
 export const TAG_META: Record<AssumptionTag, { label: string; cls: string; hint: string }> = {
   illustrative: {
     label: "Illustrative",
-    cls: "border-border-strong bg-muted text-secondary-foreground",
+    cls: "border-border bg-secondary text-secondary-foreground",
     hint: "A plausible value we chose to make the prototype concrete. Replace with real figures in the pilot.",
   },
   research: {
     label: "From research",
-    cls: "border-ok/50 bg-ok-soft text-ok-ink",
+    cls: "border-ok/40 bg-ok-soft text-ok-ink",
     hint: "Taken from a cited public source in our research log.",
   },
   "team-estimate": {
     label: "Team estimate",
-    cls: "border-warn/50 bg-warn-soft text-warn-ink",
+    cls: "border-border-strong text-foreground",
     hint: "Our own estimate, shown with its arithmetic so it can be challenged.",
   },
   amended: {
     label: "Amended 28 Oct",
-    cls: "border-primary/40 bg-primary-soft text-primary",
+    cls: "border-foreground/35 text-foreground",
     hint: "Changed from the original design after review.",
   },
   policy: {
     label: "Policy choice",
-    cls: "border-dashed border-phase2 bg-phase2-soft text-phase2-ink",
+    cls: "border-warn/40 bg-warn-soft text-warn-ink",
     hint: "A process decision Lives Group would need to agree, not a fact.",
   },
   "low-confidence": {

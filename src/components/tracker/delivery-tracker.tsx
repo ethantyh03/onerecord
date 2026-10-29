@@ -4,7 +4,6 @@ import type { ReactNode } from "react";
 import {
   BellRing,
   Check,
-  CircleCheck,
   CircleAlert,
   CornerDownRight,
   Database,
@@ -12,7 +11,6 @@ import {
   Pause,
   Send,
   ShieldCheck,
-  Sparkles,
   UserRoundCog,
   X,
 } from "lucide-react";
@@ -22,6 +20,7 @@ import { useSandbox } from "@/lib/store";
 import { personById, useNow } from "@/lib/selectors";
 import { cn } from "@/lib/utils";
 import {
+  Notice,
   PersonAvatar,
   SapCode,
   SlaChip,
@@ -36,49 +35,53 @@ import { businessStages, mdmStep, subDayDuration, type LinkedDemand } from "./tr
 
 type NodeState = "done" | "active" | "paused" | "failed" | "upcoming" | "unreached";
 
+/** The spine is a 1px rule: solid for the path already travelled, dashed for what is still to come. State lives at the nodes. */
 const RAIL: Record<NodeState, string> = {
-  done: "border-solid border-ok/55",
-  active: "border-dashed border-primary/40",
-  paused: "border-dashed border-warn/60",
-  failed: "border-dashed border-border-strong",
+  done: "border-solid border-border-strong",
+  active: "border-dashed border-border-strong",
+  paused: "border-dashed border-border-strong",
+  failed: "border-dashed border-border",
   upcoming: "border-dashed border-border-strong",
   unreached: "border-dashed border-border",
 };
 
+/** Square nodes (the glyph vocabulary at timeline size): green done, bright current, amber paused, coral stopped, hollow to come. */
 function Node({ state, n }: { state: NodeState; n: number }) {
-  const base = "relative z-10 inline-flex size-9 items-center justify-center rounded-full text-sm font-semibold";
+  const base = "relative z-10 inline-flex size-6 items-center justify-center rounded-[3px] text-xs font-semibold";
   switch (state) {
     case "done":
       return (
         <span className={cn(base, "bg-ok text-ok-foreground")}>
-          <Check aria-hidden className="size-4.5" strokeWidth={2.75} />
+          <Check aria-hidden className="size-3.5" strokeWidth={3} />
         </span>
       );
     case "active":
       return (
-        <span className={cn(base, "bg-primary text-primary-foreground")}>
-          <span aria-hidden className="absolute -inset-1.5 -z-10 rounded-full bg-primary/25 motion-safe:animate-pulse" />
+        <span className={cn(base, "bg-foreground text-background")}>
           <span className="num">{n}</span>
         </span>
       );
     case "paused":
       return (
         <span className={cn(base, "bg-warn text-warn-foreground")}>
-          <span aria-hidden className="absolute -inset-1.5 -z-10 rounded-full bg-warn/30 motion-safe:animate-pulse" />
-          <Pause aria-hidden className="size-4" strokeWidth={2.5} />
+          <Pause aria-hidden className="size-3" strokeWidth={3} />
         </span>
       );
     case "failed":
       return (
         <span className={cn(base, "bg-stuck text-stuck-foreground")}>
-          <X aria-hidden className="size-4.5" strokeWidth={2.75} />
+          <X aria-hidden className="size-3.5" strokeWidth={3} />
         </span>
       );
     case "unreached":
-      return <span className={cn(base, "border border-dashed border-border-strong bg-card text-muted-foreground/70")}><span className="num">{n}</span></span>;
+      return (
+        <span className={cn(base, "border border-dashed border-border-strong bg-card text-subtle")}>
+          <span className="num">{n}</span>
+        </span>
+      );
     default:
       return (
-        <span className={cn(base, "border-2 border-border-strong bg-card text-muted-foreground")}>
+        <span className={cn(base, "border border-border-strong bg-card text-muted-foreground")}>
           <span className="num">{n}</span>
         </span>
       );
@@ -115,19 +118,17 @@ function Milestone({
 }) {
   return (
     <li
-      className="relative grid grid-cols-[2.25rem_minmax(0,1fr)] gap-x-4 pb-7 last:pb-0"
+      className="relative grid grid-cols-[1.5rem_minmax(0,1fr)] gap-x-4 pb-6 last:pb-0"
       data-testid={testid}
       data-state={state}
       aria-current={state === "active" || state === "paused" ? "step" : undefined}
     >
-      {!last ? (
-        <span aria-hidden className={cn("absolute top-10 bottom-1 left-[1.125rem] -translate-x-1/2 border-l-2", RAIL[state])} />
-      ) : null}
+      {!last ? <span aria-hidden className={cn("absolute top-7 bottom-1 left-3 border-l", RAIL[state])} /> : null}
       <Node state={state} n={n} />
-      <div className={cn("min-w-0 pt-1.5", state === "unreached" && "opacity-55")}>
+      <div className={cn("min-w-0 pt-0.5", state === "unreached" && "opacity-60")}>
         <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
           <div className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
-            <h3 className="text-[0.9375rem] font-semibold text-foreground">{title}</h3>
+            <h3 className="font-wide text-[0.9375rem] font-semibold text-foreground">{title}</h3>
             {meta ? <span className="text-xs text-muted-foreground">{meta}</span> : null}
             <span className="sr-only">{STATE_SR[state]}</span>
           </div>
@@ -169,13 +170,30 @@ function latestDecision(steps: ApprovalStep[]): string | undefined {
 
 // ---------------------------------------------------------------------------------------------
 
-function StepCard({ step, req, now, people }: { step: ApprovalStep; req: MdmRequest; now: string; people: { config: AppConfig } }) {
+/**
+ * One approver's step, as a column of plain text (no card, no tint): who, status in words, the SLA reading, then any
+ * routing reason, escalation, comment and question as lines under it. `ruled` (parallel approvers) puts a hairline on
+ * the left of every column except the first in its row, so the approvers read as Gotham meta columns and the
+ * timeline spine stays the only vertical line at the left edge.
+ */
+function StepCard({
+  step,
+  req,
+  now,
+  people,
+  ruled,
+}: {
+  step: ApprovalStep;
+  req: MdmRequest;
+  now: string;
+  people: { config: AppConfig };
+  ruled?: boolean;
+}) {
   const assignee = personById(people, step.assigneeId);
   const original = personById(people, step.originalAssigneeId);
   const requestor = personById(people, req.requestorId);
   const escalateAfter = useSandbox((s) => s.config.sla.escalateAfterBusinessDays);
   const elapsed = stepElapsedBusinessDays(step, now);
-  const active = step.status === "pending" || step.status === "question";
   const decided = (step.status === "approved" || step.status === "rejected") && !!step.activatedAt && !!step.decidedAt;
   // "Done in 0d" reads like a glitch on camera: say "26 min" / "3 h" for decisions inside one business day.
   const quickDecision = decided ? subDayDuration(stepElapsedBusinessDays(step, step.decidedAt!)) : null;
@@ -204,26 +222,17 @@ function StepCard({ step, req, now, people }: { step: ApprovalStep; req: MdmRequ
       data-testid={`tracker-step-${step.id}`}
       data-status={step.status}
       className={cn(
-        "relative flex min-w-0 flex-col gap-2.5 rounded-lg border bg-card p-3.5",
-        step.status === "pending" && "border-primary/35 bg-primary-soft/45",
-        step.status === "question" && "border-warn/50 bg-warn-soft/50",
-        step.status === "rejected" && "border-stuck/40 bg-stuck-soft/60",
-        step.status === "approved" && "border-ok/25",
-        (step.status === "waiting" || step.status === "skipped") && "border-dashed",
+        "relative flex min-w-0 flex-col gap-2",
+        // Rule between columns only: 2 per row from sm, 3 per row from 2xl (matches the stage grid).
+        ruled &&
+          "border-border-strong sm:max-2xl:even:border-l sm:max-2xl:even:pl-4 2xl:[&:not(:nth-child(3n+1))]:border-l 2xl:[&:not(:nth-child(3n+1))]:pl-4",
+        (step.status === "waiting" || step.status === "skipped") && "text-muted-foreground",
       )}
     >
       <div className="flex items-start gap-2.5">
-        <span className="relative">
-          <PersonAvatar person={assignee} size="lg" away={assignee?.outOfOffice} />
-          {active ? (
-            <span aria-hidden className="absolute -top-0.5 -right-0.5 flex size-3">
-              <span className="absolute inset-0 rounded-full bg-primary/50 motion-safe:animate-ping [animation-duration:2s]" />
-              <span className="relative size-3 rounded-full border-2 border-card bg-primary" />
-            </span>
-          ) : null}
-        </span>
+        <PersonAvatar person={assignee} size="lg" away={assignee?.outOfOffice} />
         <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-1">
+          <div className="flex flex-wrap items-baseline justify-between gap-x-2 gap-y-0.5">
             <span className="truncate text-sm font-semibold text-foreground">{assignee?.name ?? "Unassigned"}</span>
             <StatusBadge status={step.status} size="sm" />
           </div>
@@ -231,26 +240,23 @@ function StepCard({ step, req, now, people }: { step: ApprovalStep; req: MdmRequ
         </div>
       </div>
 
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
         {quickDecision ? (
           <span
-            className="num inline-flex h-6 shrink-0 items-center gap-1 rounded-md border border-border bg-transparent px-1.5 text-xs font-medium whitespace-nowrap text-muted-foreground"
+            className="num shrink-0 text-[0.8125rem] leading-5 font-medium whitespace-nowrap text-muted-foreground"
             title={`Decided ${quickDecision} after the step opened, well inside the business-day target.`}
           >
-            <CircleCheck aria-hidden className="size-3.5" strokeWidth={2.25} />
+            {/* Plain timing: the status beside the name already carries the one coloured marker. */}
             Done in {quickDecision}
           </span>
         ) : (
-          <SlaChip step={step} />
+          <SlaChip step={step} quietWhenDone />
         )}
-        <span className="num text-xs text-secondary-foreground">{waiting}</span>
+        <span className="num text-xs font-normal text-secondary-foreground">{waiting}</span>
       </div>
 
       {step.addedBecause ? (
-        <span className="inline-flex w-fit max-w-full items-start gap-1.5 rounded-md border border-primary/20 bg-primary-soft px-2 py-1 text-xs text-accent-foreground">
-          <Sparkles aria-hidden className="mt-px size-3.5 shrink-0" />
-          <span className="text-pretty">Added because {step.addedBecause}</span>
-        </span>
+        <p className="text-xs leading-snug text-pretty text-muted-foreground">Added because {step.addedBecause}</p>
       ) : null}
 
       {step.escalatedAt || step.originalAssigneeId || step.reminderSentAt ? (
@@ -281,18 +287,19 @@ function StepCard({ step, req, now, people }: { step: ApprovalStep; req: MdmRequ
       ) : null}
 
       {step.comment && step.comment !== step.question?.text ? (
-        <p className="border-l-2 border-border-strong pl-2.5 text-[0.8125rem] text-secondary-foreground italic">“{step.comment}”</p>
+        <p className="text-sm leading-snug text-pretty text-secondary-foreground">“{step.comment}”</p>
       ) : null}
 
+      {/* The question thread as lines (icon marks the question, avatar marks the answer), not a box inside the step. */}
       {step.question ? (
-        <div className="space-y-2 rounded-md border border-border bg-background/70 p-2.5" data-testid={`tracker-question-${step.id}`}>
+        <div className="space-y-2 pt-1" data-testid={`tracker-question-${step.id}`}>
           <div className="flex items-start gap-2">
             <MessageCircleQuestion aria-hidden className="mt-0.5 size-4 shrink-0 text-warn-ink" />
             <div className="min-w-0">
               <p className="text-xs text-muted-foreground">
                 {assignee ? firstName(assignee.name) : "Approver"} asked · <span className="num">{formatSgtDateTime(step.question.askedAt)}</span>
               </p>
-              <p className="text-[0.8125rem] text-foreground text-pretty">{step.question.text}</p>
+              <p className="text-sm text-pretty text-foreground">{step.question.text}</p>
             </div>
           </div>
           {step.question.answer ? (
@@ -303,12 +310,12 @@ function StepCard({ step, req, now, people }: { step: ApprovalStep; req: MdmRequ
                   {requestor ? firstName(requestor.name) : "Requestor"} answered ·{" "}
                   <span className="num">{step.question.answeredAt ? formatSgtDateTime(step.question.answeredAt) : ""}</span>
                 </p>
-                <p className="text-[0.8125rem] text-foreground text-pretty">{step.question.answer}</p>
+                <p className="text-sm text-foreground text-pretty">{step.question.answer}</p>
                 <p className="mt-1 text-xs text-muted-foreground">Back with the same approver; the chain did not restart.</p>
               </div>
             </div>
           ) : (
-            <p className="ml-6 text-xs text-warn-ink">
+            <p className="ml-6 text-xs font-medium text-warn-ink">
               Waiting for {requestor ? firstName(requestor.name) : "the requestor"}&apos;s answer. The SLA clock is paused.
             </p>
           )}
@@ -430,9 +437,9 @@ export function DeliveryTracker({ request: req, domain, demand }: DeliveryTracke
         meta={parallel ? `In parallel · ${stage.steps.length} approvers` : stage.steps.length > 1 ? "One after another" : undefined}
         time={decided ? formatSgtDateTime(decided) : undefined}
       >
-        <div className={cn("grid gap-3", parallel ? "sm:grid-cols-2 2xl:grid-cols-3" : "")}>
+        <div className={cn("grid gap-x-6 gap-y-5", parallel ? "sm:grid-cols-2 2xl:grid-cols-3" : "")}>
           {stage.steps.map((step) => (
-            <StepCard key={step.id} step={step} req={req} now={now} people={view} />
+            <StepCard key={step.id} step={step} req={req} now={now} people={view} ruled={parallel} />
           ))}
         </div>
       </Milestone>,
@@ -457,7 +464,7 @@ export function DeliveryTracker({ request: req, domain, demand }: DeliveryTracke
         {mdm ? <StepCard step={mdm} req={req} now={now} people={view} /> : null}
         {req.dtwGeneratedAt && !created ? (
           <p className="mt-2 flex items-center gap-2 text-xs text-secondary-foreground">
-            <Database aria-hidden className="size-3.5 text-primary" />
+            <Database aria-hidden className="size-3.5 text-muted-foreground" />
             SAP B1 import file (DTW) generated {formatSgtDateTime(req.dtwGeneratedAt)}
           </p>
         ) : null}
@@ -522,7 +529,7 @@ export function DeliveryTracker({ request: req, domain, demand }: DeliveryTracke
     >
       {created ? (
         <p className="flex items-center gap-2 text-sm text-secondary-foreground">
-          <Send aria-hidden className="size-4 text-primary" />
+          <Send aria-hidden className="size-4 text-muted-foreground" />
           {requestor?.name ?? "The requestor"} was told in Teams and Outlook (simulated) with the new code.
         </p>
       ) : (
@@ -534,41 +541,42 @@ export function DeliveryTracker({ request: req, domain, demand }: DeliveryTracke
   );
 
   return (
-    <section className="overflow-hidden rounded-xl border bg-card shadow-raised" aria-labelledby="tracker-heading">
-      <div className="flex flex-col gap-3 border-b border-border px-5 py-4 md:flex-row md:items-start md:justify-between">
-        <div className="space-y-1">
-          <h2 id="tracker-heading" className="text-base font-semibold text-foreground">
+    <section className="panel overflow-hidden" aria-labelledby="tracker-heading">
+      <div className="panel-header flex-wrap py-2.5">
+        <div className="min-w-0">
+          <h2 id="tracker-heading" className="panel-title">
             Delivery tracker
           </h2>
-          <p className="text-sm text-muted-foreground">Where this request is right now, and who it is waiting on.</p>
+          <p className="text-[0.8125rem] leading-5 text-muted-foreground">Where this request is right now, and who it is waiting on.</p>
         </div>
         <span
           data-testid="tracker-sla-rule"
-          className="inline-flex h-7 w-fit shrink-0 items-center gap-1.5 rounded-full border border-border-strong bg-background px-3 text-xs font-medium text-secondary-foreground"
+          className="inline-flex w-fit shrink-0 items-center gap-1.5 text-xs leading-4 text-muted-foreground"
         >
-          <BellRing aria-hidden className="size-3.5 text-warn-ink" />
+          <BellRing aria-hidden className="size-3.5 text-subtle" />
           Reminder after {sla.reminderAfterBusinessDays} business day{sla.reminderAfterBusinessDays === 1 ? "" : "s"} · escalation after{" "}
           {sla.escalateAfterBusinessDays}
         </span>
       </div>
 
+      {/* Outcome notices as lines under the header (state in the ink, no tinted band). */}
       {req.status === "rejected" && rejectedStep ? (
-        <div role="status" className="flex items-start gap-2 border-b border-stuck/25 bg-stuck-soft px-5 py-3 text-sm text-stuck-ink">
-          <X aria-hidden className="mt-0.5 size-4 shrink-0" />
+        <Notice role="status" tone="stuck" icon={<X />} className="border-b border-border px-4 py-3">
           <span className="text-pretty">
-            Rejected by {rejectedBy?.name ?? "an approver"} at “{rejectedStep.label}”
+            <span className="font-medium text-stuck-ink">
+              Rejected by {rejectedBy?.name ?? "an approver"} at “{rejectedStep.label}”
+            </span>
             {rejectedStep.comment ? `: “${rejectedStep.comment}”` : ""}. Sent back to {reqFirst} with the reason.
           </span>
-        </div>
+        </Notice>
       ) : null}
       {req.status === "cancelled" ? (
-        <div role="status" className="flex items-start gap-2 border-b border-border bg-muted px-5 py-3 text-sm text-secondary-foreground">
-          <CircleAlert aria-hidden className="mt-0.5 size-4 shrink-0" />
+        <Notice role="status" tone="waiting" icon={<CircleAlert />} className="border-b border-border px-4 py-3">
           Withdrawn by the requestor{req.closedAt ? ` on ${formatSgtDateTime(req.closedAt)}` : ""}. Nothing was created in SAP B1.
-        </div>
+        </Notice>
       ) : null}
 
-      <ol className="px-5 py-6" data-testid="tracker-timeline" aria-label="Delivery tracker">
+      <ol className="px-4 py-5" data-testid="tracker-timeline" aria-label="Delivery tracker">
         {items}
       </ol>
     </section>

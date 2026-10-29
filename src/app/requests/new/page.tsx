@@ -13,13 +13,13 @@ function IntakeLoading() {
     <div className="space-y-5" aria-busy="true" aria-label="Loading the request form">
       <Skeleton className="h-9 w-72 max-w-full" />
       <Skeleton className="h-5 w-[32rem] max-w-full" />
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_400px]">
-        <div className="space-y-4">
-          <Skeleton className="h-24 w-full rounded-xl" />
-          <Skeleton className="h-44 w-full rounded-xl" />
-          <Skeleton className="h-80 w-full rounded-xl" />
+      <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_clamp(340px,28vw,410px)]">
+        <div className="space-y-5">
+          <Skeleton className="h-20 w-full rounded-none" />
+          <Skeleton className="h-44 w-full" />
+          <Skeleton className="h-80 w-full" />
         </div>
-        <Skeleton className="h-[520px] w-full rounded-xl" />
+        <Skeleton className="h-[520px] w-full" />
       </div>
     </div>
   );

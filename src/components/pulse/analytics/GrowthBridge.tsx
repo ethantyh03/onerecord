@@ -192,7 +192,7 @@ export function GrowthBridge() {
                     width={56}
                   />
                   <Tooltip
-                    cursor={{ fill: "var(--muted)", opacity: 0.5 }}
+                    cursor={{ fill: "var(--secondary)", opacity: 0.6 }}
                     content={({ active, payload }) => {
                       const r = payload?.[0]?.payload as Row | undefined;
                       if (!active || !r) return null;
@@ -205,7 +205,7 @@ export function GrowthBridge() {
                     }}
                   />
                   <Bar dataKey="base" stackId="w" fill="transparent" isAnimationActive={false} />
-                  <Bar dataKey="value" stackId="w" radius={[4, 4, 0, 0]} isAnimationActive={false}>
+                  <Bar dataKey="value" stackId="w" radius={[2, 2, 0, 0]} isAnimationActive={false}>
                     {rows.map((r) => (
                       <Cell key={r.key} fill={r.color} />
                     ))}
@@ -225,7 +225,7 @@ export function GrowthBridge() {
               <div className="text-xs font-medium text-muted-foreground">
                 12-month growth, {view === "merged" ? "merged customers" : "raw SAP records"}
               </div>
-              <div className="num mt-1 text-[1.75rem] leading-none font-semibold tracking-[-0.02em]">
+              <div className="num font-wide mt-1 text-[1.75rem] leading-none font-semibold">
                 {growth == null ? "—" : `${growth >= 0 ? "+" : "−"}${Math.abs(growth * 100).toFixed(1)}%`}
               </div>
               <p className="mt-1 text-xs text-muted-foreground">
@@ -252,9 +252,9 @@ export function GrowthBridge() {
               <PlainLine className="text-sm">Merging duplicates does not change who is new or lost in this country.</PlainLine>
             )}
             {cb.example ? (
-              <div className="rounded-lg border bg-muted/30 px-3 py-2.5">
+              <div className="border-t border-border pt-3">
                 <div className="text-xs font-medium text-muted-foreground">{cb.example.title}</div>
-                <p className="mt-1 text-[0.8125rem] leading-snug text-secondary-foreground">
+                <p className="mt-1 text-sm leading-snug text-secondary-foreground">
                   {view === "merged" ? cb.example.dedupStory : cb.example.rawStory}
                 </p>
               </div>

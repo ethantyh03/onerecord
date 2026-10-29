@@ -64,7 +64,7 @@ export function ConditionEditor({
   const needsValue = condition.op !== "isEmpty" && condition.op !== "notEmpty";
   const text = valueToText(condition);
   return (
-    <div className="flex flex-wrap items-center gap-1.5 rounded-md border border-dashed border-border-strong bg-muted/50 px-2 py-1.5 text-[0.8125rem]">
+    <div className="flex flex-wrap items-center gap-1.5 text-[0.8125rem]">
       <span className="text-muted-foreground">Only when</span>
       <NativeSelect
         size="sm"
@@ -152,11 +152,9 @@ export function StageEditor({
 
   return (
     <div className="relative">
-      <div className="rounded-xl border border-border bg-card shadow-raised" data-testid={`${testIdPrefix}-stage-${index}`}>
+      <div className="panel overflow-hidden" data-testid={`${testIdPrefix}-stage-${index}`}>
         <div className="flex flex-wrap items-center gap-3 border-b border-border px-4 py-3">
-          <span className="inline-flex size-6 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground tabular-nums">
-            {index + 1}
-          </span>
+          <span className="num w-5 shrink-0 text-sm font-semibold text-subtle">{index + 1}</span>
           <Input
             value={stage.label}
             placeholder="Stage name, e.g. Regulatory pre-check"
@@ -165,7 +163,7 @@ export function StageEditor({
             onChange={(e) => onChange({ ...stage, label: e.target.value })}
             data-testid={`${testIdPrefix}-stage-${index}-label`}
           />
-          <div className="inline-flex rounded-lg bg-muted p-[3px]" role="radiogroup" aria-label="Stage mode">
+          <div className="inline-flex rounded-lg border border-border bg-canvas p-0.5" role="radiogroup" aria-label="Stage mode">
             {(["parallel", "sequential"] as const).map((m) => (
               <button
                 key={m}
@@ -176,7 +174,7 @@ export function StageEditor({
                 data-testid={`${testIdPrefix}-stage-${index}-mode-${m}`}
                 className={cn(
                   "h-7 rounded-md px-2.5 text-[0.8125rem] font-medium transition-colors",
-                  stage.mode === m ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground",
+                  stage.mode === m ? "bg-secondary text-foreground ring-1 ring-border-strong" : "text-muted-foreground hover:text-foreground",
                 )}
               >
                 {m === "parallel" ? "All at once" : "One after another"}

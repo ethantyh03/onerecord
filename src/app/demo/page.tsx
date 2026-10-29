@@ -4,9 +4,9 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Clapperboard, ExternalLink, Loader2, Play, RotateCcw } from "lucide-react";
+import { ExternalLink, Loader2, Play, RotateCcw } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { PageHeader, PersonAvatar } from "@/components/common";
+import { PageHeader, PersonAvatar, RowNumber, StatusText } from "@/components/common";
 import { useSandbox } from "@/lib/store";
 import { SCENES, loadScene, nudgeClock, type Scene, type SceneId } from "@/lib/scenes";
 import { cn } from "@/lib/utils";
@@ -174,7 +174,7 @@ export default function DemoConsolePage() {
   }
 
   return (
-    <div className="pb-10">
+    <div className="w-full space-y-6 pb-10">
       <PageHeader
         title="Director's console"
         subtitle="Every scene resets the sandbox, then replays the same scripted steps, so each retake starts from an identical state. Load a scene, follow its checklist, and read the line under it."
@@ -191,23 +191,25 @@ export default function DemoConsolePage() {
         }
       />
 
-      <section
-        aria-label="Recording setup"
-        className="mb-8 flex flex-wrap items-start gap-x-8 gap-y-3 rounded-lg border border-border bg-card px-5 py-4 text-sm shadow-raised"
-      >
-        <div className="flex items-center gap-2 font-semibold text-foreground">
-          <Clapperboard aria-hidden className="size-4 text-primary" />
-          Before you record
+      <section aria-label="Recording setup" className="panel flex flex-col overflow-hidden text-sm lg:flex-row lg:items-stretch">
+        <div className="flex shrink-0 items-center border-b border-border px-4 py-2.5 lg:border-r lg:border-b-0">
+          <span className="panel-title">Before you record</span>
         </div>
-        <ul className="flex flex-1 flex-wrap gap-x-8 gap-y-1.5 text-muted-foreground">
-          <li>Screen 1920×1080, browser zoom 125%</li>
-          <li>Load every scene once first, so nothing shows a loading state on camera</li>
-          <li>Hard ceiling 2:55 for the cut</li>
-          <li>The clock, Teams, Outlook and SAP B1 are simulated</li>
+        <ul className="flex flex-1 flex-col divide-y divide-border text-secondary-foreground xl:flex-row xl:divide-x xl:divide-y-0">
+          {[
+            "Screen 1920×1080, browser zoom 125%",
+            "Load every scene once first, so nothing shows a loading state on camera",
+            "Hard ceiling 2:55 for the cut",
+            "The clock, Teams, Outlook and SAP B1 are simulated",
+          ].map((item) => (
+            <li key={item} className="flex flex-1 items-center px-4 py-2.5">
+              {item}
+            </li>
+          ))}
         </ul>
       </section>
 
-      <ol className="relative space-y-4" aria-label="Storyboard">
+      <ol className="panel divide-y divide-border overflow-hidden" aria-label="Storyboard">
         {BEATS.map((beat) => {
           const isScene = beat.kind === "scene";
           const title = isScene ? beat.scene.title : beat.title;
@@ -219,116 +221,117 @@ export default function DemoConsolePage() {
           const route = isScene ? beat.scene.route.replace(/=$/, "=…") : beat.href;
           const loading = busy === beat.key;
           const wasLast = lastLoaded === beat.key;
+          const [from, to] = timecode.split("–");
 
           return (
             <li
               key={beat.key}
-              className={cn(
-                "grid gap-x-6 gap-y-4 rounded-lg border bg-card p-5 shadow-raised lg:grid-cols-[6.5rem_minmax(0,1fr)_auto]",
-                wasLast ? "border-primary/60 ring-2 ring-primary/15" : "border-border",
-              )}
+              aria-current={wasLast ? "step" : undefined}
+              className={cn("scroll-mt-24", wasLast && "bg-secondary/40")}
               data-testid={`demo-beat-${beat.key}`}
             >
-              <div className="flex items-baseline gap-3 lg:block">
-                <div className="text-lg font-semibold tracking-[-0.01em] text-foreground tabular-nums">{timecode.split("–")[0]}</div>
-                <div className="text-xs text-muted-foreground tabular-nums">to {timecode.split("–")[1]}</div>
-              </div>
-
-              <div className="min-w-0">
-                <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
-                  <h2 className="text-base font-semibold text-foreground">{title}</h2>
-                  {wasLast ? (
-                    <span className="rounded-full bg-primary-soft px-2 py-0.5 text-[0.6875rem] font-medium text-primary">
-                      Loaded last
+              <header className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 px-4 pt-3.5">
+                <div className="flex min-w-0 flex-wrap items-baseline gap-x-4 gap-y-1">
+                  <span className="flex shrink-0 items-baseline gap-2 text-[0.9375rem]">
+                    <code className="mono-id font-medium text-foreground">{from}</code>
+                    <span className="text-xs text-subtle">
+                      to <code className="mono-id">{to}</code>
                     </span>
+                  </span>
+                  <h2 className="panel-title">{title}</h2>
+                  {wasLast ? (
+                    <StatusText tone="neutral" className="self-center">
+                      Loaded last
+                    </StatusText>
                   ) : null}
                 </div>
-                <div className="mt-1.5 flex flex-wrap items-center gap-x-4 gap-y-1 text-[0.8125rem] text-muted-foreground">
+                <div className="flex shrink-0 flex-wrap items-center gap-2">
+                  {!isScene && beat.extraLink ? (
+                    <Link
+                      href={beat.extraLink.href}
+                      className={buttonVariants({ variant: "ghost", size: "sm" })}
+                      data-testid={`beat-still-${beat.key}`}
+                    >
+                      {beat.extraLink.label}
+                    </Link>
+                  ) : null}
+                  {isScene ? (
+                    <Button
+                      onClick={() => onLoadScene(beat.key)}
+                      disabled={!!busy}
+                      data-testid={`scene-load-${beat.key}`}
+                      className="min-w-32"
+                    >
+                      {loading ? <Loader2 aria-hidden className="animate-spin" /> : <Play aria-hidden />}
+                      {loading ? "Loading…" : "Load scene"}
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="outline"
+                      onClick={() => onOpen(beat)}
+                      disabled={!!busy}
+                      data-testid={`beat-open-${beat.key}`}
+                      className="min-w-32"
+                    >
+                      <ExternalLink aria-hidden />
+                      {beat.resetAs ? "Reset and open" : "Open"}
+                    </Button>
+                  )}
+                </div>
+              </header>
+
+              <div className="px-4 pt-2 pb-4">
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[0.8125rem] text-muted-foreground">
                   {persona ? (
                     <span className="inline-flex items-center gap-1.5">
                       <PersonAvatar person={persona} size="xs" />
                       <span className="text-foreground">{persona.name}</span>
                     </span>
                   ) : null}
-                  <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs text-foreground">{route}</code>
+                  <span className="text-sm">
+                    <code className="mono-id text-foreground">{route}</code>
+                  </span>
                   {isScene ? <span>Clock: Wed 28 Oct, {beat.scene.clock} SGT (simulated)</span> : null}
                 </div>
                 <p className="mt-2 max-w-[80ch] text-sm text-muted-foreground">{description}</p>
 
-                <div className="mt-4 grid gap-5 xl:grid-cols-2">
+                <div className="mt-3 grid gap-x-6 gap-y-4 border-t border-border pt-3 xl:grid-cols-2">
                   <div>
-                    <h3 className="mb-2 text-xs font-semibold text-foreground">What to click</h3>
+                    <h3 className="mb-2 text-xs font-semibold text-muted-foreground">What to click</h3>
                     <ol className="space-y-1.5 text-sm text-foreground">
                       {checklist.map((step, i) => (
-                        <li key={step} className="flex gap-2.5">
-                          <span className="mt-px inline-flex size-5 shrink-0 items-center justify-center rounded-full bg-muted text-[0.6875rem] font-semibold text-muted-foreground tabular-nums">
-                            {i + 1}
-                          </span>
+                        <li key={step} className="flex gap-2">
+                          <RowNumber n={i + 1} />
                           <span className="min-w-0">{step}</span>
                         </li>
                       ))}
                     </ol>
                   </div>
-                  <figure className="border-l-2 border-primary/50 pl-4">
-                    <figcaption className="mb-2 text-xs font-semibold text-foreground">Voice-over</figcaption>
-                    <blockquote className="max-w-[68ch] text-[0.9375rem] leading-relaxed text-foreground/90">
-                      “{voiceOf(beat)}”
-                    </blockquote>
+                  <figure className="border-l border-border-strong pl-4">
+                    <figcaption className="mb-2 text-xs font-semibold text-muted-foreground">Voice-over</figcaption>
+                    <blockquote className="max-w-[68ch] text-[0.9375rem] leading-relaxed text-foreground">“{voiceOf(beat)}”</blockquote>
                   </figure>
                 </div>
-              </div>
-
-              <div className="flex flex-row gap-2 lg:flex-col lg:items-stretch">
-                {isScene ? (
-                  <Button
-                    onClick={() => onLoadScene(beat.key)}
-                    disabled={!!busy}
-                    data-testid={`scene-load-${beat.key}`}
-                    className="min-w-32"
-                  >
-                    {loading ? <Loader2 aria-hidden className="animate-spin" /> : <Play aria-hidden />}
-                    {loading ? "Loading…" : "Load scene"}
-                  </Button>
-                ) : (
-                  <Button
-                    variant="outline"
-                    onClick={() => onOpen(beat)}
-                    disabled={!!busy}
-                    data-testid={`beat-open-${beat.key}`}
-                    className="min-w-32"
-                  >
-                    <ExternalLink aria-hidden />
-                    {beat.resetAs ? "Reset and open" : "Open"}
-                  </Button>
-                )}
-                {!isScene && beat.extraLink ? (
-                  <Link
-                    href={beat.extraLink.href}
-                    className={buttonVariants({ variant: "ghost", size: "sm" })}
-                    data-testid={`beat-still-${beat.key}`}
-                  >
-                    {beat.extraLink.label}
-                  </Link>
-                ) : null}
               </div>
             </li>
           );
         })}
       </ol>
 
-      <section id="script" className="mt-10 scroll-mt-24 rounded-lg border border-border bg-card p-6 shadow-raised">
-        <div className="flex flex-wrap items-baseline justify-between gap-2">
-          <h2 className="text-lg font-semibold text-foreground">Full voice-over script</h2>
-          <p className="text-sm text-muted-foreground tabular-nums">
-            {totalWords} words, about {Math.floor(minutes)}:{String(Math.round((minutes % 1) * 60)).padStart(2, "0")} at 150
-            words a minute before pauses
+      <section id="script" aria-labelledby="script-title" className="panel scroll-mt-24 overflow-hidden">
+        <header className="panel-header flex-wrap py-2.5">
+          <h2 id="script-title" className="panel-title">
+            Full voice-over script
+          </h2>
+          <p className="num text-[0.8125rem] text-muted-foreground">
+            {totalWords} words, about {Math.floor(minutes)}:{String(Math.round((minutes % 1) * 60)).padStart(2, "0")} at 150 words a minute before pauses
           </p>
-        </div>
-        <ol className="mt-4 space-y-3">
+        </header>
+        <ol className="divide-y divide-border">
           {BEATS.map((b) => (
-            <li key={b.key} className="grid gap-x-4 sm:grid-cols-[5.5rem_minmax(0,1fr)]">
-              <span className="text-sm font-medium text-muted-foreground tabular-nums">
-                {(b.kind === "scene" ? b.scene.timecode : b.timecode).split("–")[0]}
+            <li key={b.key} className="grid gap-x-4 px-4 py-2.5 sm:grid-cols-[5.5rem_minmax(0,1fr)]">
+              <span className="pt-0.5 text-[0.9375rem]">
+                <code className="mono-id text-muted-foreground">{(b.kind === "scene" ? b.scene.timecode : b.timecode).split("–")[0]}</code>
               </span>
               <p className="max-w-[80ch] text-[0.9375rem] leading-relaxed text-foreground">{voiceOf(b)}</p>
             </li>

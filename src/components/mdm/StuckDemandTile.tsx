@@ -1,10 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { AlertTriangle } from "lucide-react";
 import { useSandbox } from "@/lib/store";
 import { useStuckDemand } from "@/lib/selectors";
-import { formatSgd, KpiTile, SapCode } from "@/components/common";
+import { formatSgd, LiveMark, Readout, ReadoutDelta, SapCode } from "@/components/common";
 import { cn } from "@/lib/utils";
 
 /**
@@ -58,20 +57,12 @@ function useCountDown(target: number): { shown: number; dropping: boolean } {
   return { shown, dropping };
 }
 
-/** Same red "Live" tag the Home and Pulse stuck-demand tiles carry. */
-function LiveBadge() {
-  return (
-    <span className="inline-flex h-5 items-center gap-1.5 rounded-full border border-stuck/30 bg-stuck-soft px-2 text-[0.6875rem] font-medium text-stuck-ink">
-      <span className="relative flex size-1.5">
-        <span className="absolute inline-flex size-full animate-ping rounded-full bg-stuck opacity-60 motion-reduce:hidden" />
-        <span className="relative inline-flex size-1.5 rounded-full bg-stuck" />
-      </span>
-      Live
-    </span>
-  );
-}
-
-/** Live stuck-demand tile: customer orders blocked by missing master data. Counts down when MDM releases them. */
+/**
+ * Live stuck-demand readout: customer orders blocked by missing master data. A readout cell (Gotham meta
+ * column: a hairline on the left, no box, no rail, no icon): the coral figure is the state, the teal
+ * square says it is read live from the sandbox, and the release shows inline after the figure.
+ * Counts down when MDM releases orders. Render it as a direct child of a ReadoutStrip to lead the row.
+ */
 export function StuckDemandTile({ className }: { className?: string }) {
   const stuck = useStuckDemand();
   const lastUnblock = useSandbox((s) => s.lastUnblock);
@@ -82,14 +73,14 @@ export function StuckDemandTile({ className }: { className?: string }) {
   const released = lastUnblock ? lastUnblock.beforeSgd - lastUnblock.afterSgd : 0;
 
   return (
-    <KpiTile
-      className={cn("min-h-[148px]", className)}
+    <Readout
+      lead
+      className={className}
       tone="stuck"
-      icon={AlertTriangle}
       label="Stuck demand"
-      badge={<LiveBadge />}
+      marker={<LiveMark />}
       value={
-        <span className="flex items-baseline gap-3">
+        <>
           <span
             data-testid="stuck-demand-value"
             data-value={stuck.totalSgd}
@@ -99,16 +90,11 @@ export function StuckDemandTile({ className }: { className?: string }) {
             {formatSgd(shown)}
           </span>
           {released > 0 ? (
-            <span
-              className={cn(
-                "rounded-full border border-ok/30 bg-ok-soft px-2 py-0.5 text-sm font-semibold tracking-normal text-ok-ink transition-opacity duration-700",
-                dropping ? "opacity-100" : "opacity-90",
-              )}
-            >
+            <ReadoutDelta tone="ok" className={cn("transition-opacity duration-700", dropping ? "opacity-100" : "opacity-90")}>
               −{formatSgd(released)}
-            </span>
+            </ReadoutDelta>
           ) : null}
-        </span>
+        </>
       }
       caption={
         <>
@@ -123,7 +109,7 @@ export function StuckDemandTile({ className }: { className?: string }) {
             {lastCode ? (
               <>
                 {" "}
-                (<SapCode code={lastCode} variant="plain" />)
+                (<SapCode code={lastCode} variant="plain" className="text-muted-foreground" />)
               </>
             ) : null}{" "}
             went live in SAP B1.

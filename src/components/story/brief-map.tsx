@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { SectionHeading } from "./story-ui";
+import { cn } from "@/lib/utils";
+import { LINK, Panel, T } from "./story-ui";
 
 interface Row {
   brief: string;
@@ -163,11 +164,7 @@ function RouteLinks({ links }: { links: Row["links"] }) {
   return (
     <span className="flex flex-wrap gap-x-3 gap-y-0.5">
       {links.map((l) => (
-        <Link
-          key={l.href + l.label}
-          href={l.href}
-          className="inline-flex items-center gap-0.5 font-medium whitespace-nowrap text-primary underline-offset-4 hover:underline"
-        >
+        <Link key={l.href + l.label} href={l.href} className={cn("inline-flex items-center gap-0.5 font-medium whitespace-nowrap", LINK)}>
           {l.label}
           <ArrowUpRight aria-hidden className="size-3.5" />
         </Link>
@@ -178,9 +175,8 @@ function RouteLinks({ links }: { links: Row["links"] }) {
 
 function MiniTable({ title, rows, briefHead }: { title: string; rows: Row[]; briefHead: string }) {
   return (
-    <div className="overflow-hidden rounded-xl border bg-card shadow-raised">
-      <p className="border-b bg-muted/40 px-4 py-2.5 text-sm font-semibold text-foreground">{title}</p>
-      <table className="w-full text-[0.8125rem]">
+    <Panel title={title} level={3} flush>
+      <table className={T.table}>
         <thead className="sr-only">
           <tr>
             <th>{briefHead}</th>
@@ -189,9 +185,9 @@ function MiniTable({ title, rows, briefHead }: { title: string; rows: Row[]; bri
         </thead>
         <tbody>
           {rows.map((r) => (
-            <tr key={r.brief} className="border-t align-top first:border-t-0">
-              <td className="w-[44%] px-4 py-2.5 text-secondary-foreground">{r.brief}</td>
-              <td className="px-4 py-2.5 text-foreground">
+            <tr key={r.brief} className={T.row}>
+              <td className={cn(T.cell, "w-[44%] text-secondary-foreground")}>{r.brief}</td>
+              <td className={cn(T.cell, "text-foreground")}>
                 {r.answer}
                 <span className="mt-1 block">
                   <RouteLinks links={r.links} />
@@ -201,50 +197,53 @@ function MiniTable({ title, rows, briefHead }: { title: string; rows: Row[]; bri
           ))}
         </tbody>
       </table>
-    </div>
+    </Panel>
   );
 }
 
 /** "What the brief asked → where OneRecord answers it": §4 pain points, §5 prompts and Appendix B personas, each linked to its screen. */
 export function BriefMap() {
   return (
-    <section aria-labelledby="brief-map-title" data-testid="scope-brief-map">
-      <SectionHeading
-        id="brief-map-title"
+    <section aria-labelledby="brief-map-title" data-testid="scope-brief-map" className="space-y-4">
+      <Panel
+        as="div"
+        titleId="brief-map-title"
         title="What the brief asked → where OneRecord answers it"
-        subtitle="Every pain point in Section 4, every design prompt in Section 5 and every Appendix B persona, with the screen that answers it."
-      />
-      <div className="overflow-x-auto rounded-xl border bg-card shadow-raised">
-        <table className="w-full min-w-[860px] text-sm">
-          <thead className="bg-muted/60 text-left text-[0.8125rem] text-muted-foreground">
-            <tr>
-              <th className="w-[16%] px-4 py-2.5 font-medium">Brief, Section 4</th>
-              <th className="w-[30%] px-4 py-2.5 font-medium">Pain point</th>
-              <th className="px-4 py-2.5 font-medium">What OneRecord does</th>
-              <th className="w-[17%] px-4 py-2.5 font-medium">See it</th>
-            </tr>
-          </thead>
-          <tbody>
-            {PAIN_POINTS.flatMap((g) =>
-              g.rows.map((r, i) => (
-                <tr key={r.brief} className="border-t align-top">
-                  {i === 0 ? (
-                    <th scope="row" rowSpan={g.rows.length} className="px-4 py-2.5 text-left font-semibold text-foreground">
-                      {g.group}
-                    </th>
-                  ) : null}
-                  <td className="px-4 py-2.5 text-secondary-foreground">{r.brief}</td>
-                  <td className="px-4 py-2.5 text-foreground">{r.answer}</td>
-                  <td className="px-4 py-2.5">
-                    <RouteLinks links={r.links} />
-                  </td>
-                </tr>
-              )),
-            )}
-          </tbody>
-        </table>
-      </div>
-      <div className="mt-4 grid gap-4 lg:grid-cols-2">
+        description="Every pain point in Section 4, every design prompt in Section 5 and every Appendix B persona, with the screen that answers it."
+        flush
+      >
+        <div className="scrollbar-thin relative overflow-x-auto">
+          <table className={cn(T.table, "min-w-[860px]")}>
+            <thead>
+              <tr className={T.headRow}>
+                <th className={cn(T.head, "w-[16%]")}>Brief, Section 4</th>
+                <th className={cn(T.head, "w-[30%]")}>Pain point</th>
+                <th className={T.head}>What OneRecord does</th>
+                <th className={cn(T.head, "w-[17%]")}>See it</th>
+              </tr>
+            </thead>
+            <tbody>
+              {PAIN_POINTS.flatMap((g) =>
+                g.rows.map((r, i) => (
+                  <tr key={r.brief} className={cn("border-border", i === 0 ? "border-t first:border-t-0" : "border-t border-border/60")}>
+                    {i === 0 ? (
+                      <th scope="row" rowSpan={g.rows.length} className={cn(T.cell, "border-r border-border text-left font-semibold text-foreground")}>
+                        {g.group}
+                      </th>
+                    ) : null}
+                    <td className={cn(T.cell, "text-secondary-foreground")}>{r.brief}</td>
+                    <td className={cn(T.cell, "text-foreground")}>{r.answer}</td>
+                    <td className={T.cell}>
+                      <RouteLinks links={r.links} />
+                    </td>
+                  </tr>
+                )),
+              )}
+            </tbody>
+          </table>
+        </div>
+      </Panel>
+      <div className="grid items-start gap-4 lg:grid-cols-2">
         <MiniTable title="Section 5 design prompts" briefHead="Design prompt" rows={PROMPTS} />
         <MiniTable title="Appendix B personas" briefHead="Persona" rows={PERSONAS} />
       </div>

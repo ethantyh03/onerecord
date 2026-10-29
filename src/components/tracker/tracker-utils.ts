@@ -105,6 +105,80 @@ export function searchText(req: MdmRequest, requestorName: string): string {
   return `${req.id} ${req.title} ${requestorName} ${req.entity} ${req.country} ${req.sapCode ?? ""}`.toLowerCase();
 }
 
+// ---------------------------------------------------------------------------------------------
+// Stage board: the pipeline columns a request moves through. Derived from the status and the DTW
+// timestamp only, so the board shows exactly what the list and the tracker show.
+// ---------------------------------------------------------------------------------------------
+
+export type BoardColumnId = "draft" | "approval" | "mdm" | "ready" | "created" | "stopped";
+
+export interface BoardColumn {
+  id: BoardColumnId;
+  label: string;
+  /** Pipeline stages are always shown; Draft and Stopped sit outside it and appear only when they hold something. */
+  pipeline: boolean;
+  hint: string;
+}
+
+export const BOARD_COLUMNS: readonly BoardColumn[] = [
+  { id: "draft", label: "Draft", pipeline: false, hint: "Not yet submitted." },
+  { id: "approval", label: "In approval", pipeline: true, hint: "Approvers are reviewing it." },
+  { id: "mdm", label: "MDM final check", pipeline: true, hint: "Business approvals are done; waiting on the MDM final check." },
+  { id: "ready", label: "Ready for SAP B1", pipeline: true, hint: "MDM has generated the SAP B1 import file (DTW); waiting to be loaded." },
+  { id: "created", label: "Created in SAP B1", pipeline: true, hint: "Live in SAP Business One." },
+  { id: "stopped", label: "Stopped", pipeline: false, hint: "Rejected or withdrawn. Nothing was created in SAP B1." },
+];
+
+export function boardColumnOf(req: MdmRequest): BoardColumnId {
+  switch (req.status) {
+    case "draft":
+      return "draft";
+    case "in_approval":
+    case "needs_info":
+      return "approval";
+    case "mdm_review":
+      return req.dtwGeneratedAt ? "ready" : "mdm";
+    case "created":
+      return "created";
+    default:
+      return "stopped";
+  }
+}
+
+export type StageProgress = "done" | "active" | "paused" | "failed" | "upcoming";
+
+function progressOf(steps: ApprovalStep[]): StageProgress {
+  if (steps.some((s) => s.status === "rejected")) return "failed";
+  if (steps.every((s) => s.status === "approved" || s.status === "skipped")) return "done";
+  if (steps.some((s) => s.status === "question")) return "paused";
+  if (steps.some((s) => s.status === "pending")) return "active";
+  return "upcoming";
+}
+
+/** One segment per business stage plus the MDM final check: the small route meter on board cards. */
+export function stageProgress(req: MdmRequest): { label: string; state: StageProgress }[] {
+  const out = businessStages(req).map((s) => ({ label: s.label, state: progressOf(s.steps) }));
+  const mdm = mdmStep(req);
+  if (mdm) out.push({ label: "MDM final check", state: req.status === "created" ? "done" : progressOf([mdm]) });
+  return out;
+}
+
+/**
+ * Order inside a board column (ascending): in flight, the step that has used the most of its SLA comes first
+ * (paused questions after running steps); once closed, the most recent first.
+ */
+export function boardSortKey(req: MdmRequest, nowIso: string): number {
+  const col = boardColumnOf(req);
+  if (col === "approval" || col === "mdm" || col === "ready") {
+    const worst = worstActiveStep(req, nowIso);
+    if (!worst) return 1e6;
+    const used = stepElapsedBusinessDays(worst, nowIso);
+    return worst.status === "question" ? 1e3 - used : -used;
+  }
+  const at = req.sapCreatedAt ?? req.closedAt ?? req.submittedAt ?? req.createdAt;
+  return -Date.parse(at);
+}
+
 /**
  * Wall-clock label for a decision that took under one business day ("26 min", "3 h"), so the tracker never says
  * "Done in 0d". Returns null for a day or more (the SLA chip's "Done in 1.2d" reads fine there).

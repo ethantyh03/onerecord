@@ -1,10 +1,11 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { motion, useReducedMotion } from "motion/react";
 import { Download, FileWarning, Link2, RotateCcw, ShieldAlert, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
 import type { AuditEvent } from "@/lib/types";
-import { verifyChain } from "@/lib/engine/audit";
+import { GENESIS_HASH, hashEvent, verifyChain } from "@/lib/engine/audit";
 import { useSandbox } from "@/lib/store";
 import { personById } from "@/lib/selectors";
 import { cn } from "@/lib/utils";
@@ -67,9 +68,46 @@ function csvCell(v: string): string {
 
 type CheckResult = { kind: "ok"; total: number } | { kind: "broken"; at: number; total: number } | null;
 
+/** State of one link of the chain as the verifier last saw it. */
+type LinkState = "unchecked" | "ok" | "broken";
+
+const RAIL: Record<LinkState, string> = {
+  unchecked: "border-l border-border-strong",
+  ok: "border-l border-ok/80",
+  broken: "border-l-[1.5px] border-dashed border-stuck",
+};
+
 /**
- * Append-only audit trail for one request, oldest first, with the hash-chain controls:
- * Verify chain, Simulate tamper (on a copy, never the stored log) and Export CSV.
+ * One half of the chain rail beside a record (top half = the link into it, bottom half = the link out of it).
+ * After a verify, the coloured rail runs down the chain in order: the verifier walking the links.
+ */
+function RailSegment({ half, state, delay, walk }: { half: "top" | "bottom"; state: LinkState; delay: number; walk: number }) {
+  const reduce = useReducedMotion();
+  const pos = half === "top" ? "top-0 h-4" : "top-4 bottom-0";
+  if (state === "unchecked" || reduce) {
+    return <span aria-hidden className={cn("absolute left-1/2 -translate-x-1/2", pos, RAIL[state])} />;
+  }
+  return (
+    <>
+      {/* Grey rail under a solid segment while it draws; a dashed (broken) segment shows nothing through its gaps. */}
+      {state === "ok" ? <span aria-hidden className={cn("absolute left-1/2 -translate-x-1/2", pos, RAIL.unchecked)} /> : null}
+      <motion.span
+        key={walk}
+        aria-hidden
+        className={cn("absolute left-1/2 origin-top -translate-x-1/2", pos, RAIL[state])}
+        initial={{ scaleY: 0 }}
+        animate={{ scaleY: 1 }}
+        transition={{ duration: 0.12, delay, ease: "linear" }}
+      />
+    </>
+  );
+}
+
+/**
+ * Append-only audit trail for one request, oldest first, drawn as a chain of records: each record carries the
+ * SHA-256 fingerprint of itself plus the one before it. Hash-chain controls: Verify chain, Simulate tamper
+ * (on a copy, never the stored log) and Export CSV. A broken link turns the record coral, shows the
+ * fingerprint recomputed from the edited entry next to the stored one, and every link after it goes dashed.
  */
 export function AuditTimeline({ requestId, bare = false, className }: AuditTimelineProps) {
   const audit = useSandbox((s) => s.audit);
@@ -77,17 +115,29 @@ export function AuditTimeline({ requestId, bare = false, className }: AuditTimel
 
   // Simulate tamper works on a copy of the whole chain; the stored log is never touched.
   const [tampered, setTampered] = useState<{ chain: AuditEvent[]; seq: number; original: string } | null>(null);
-  const [check, setCheck] = useState<{ result: CheckResult; auditLen: number } | null>(null);
+  const [check, setCheck] = useState<{ result: CheckResult; auditLen: number; walk: number } | null>(null);
 
   const chain = tampered?.chain ?? audit;
   const events = useMemo(() => chain.filter((e) => e.requestId === requestId), [chain, requestId]);
   const result = check && (tampered || check.auditLen === audit.length) ? check.result : null;
   const brokenSeq = result?.kind === "broken" ? result.at : null;
+  const walk = check?.walk ?? 0;
+
+  /** What exactly failed at the broken record: its own fingerprint, its link to the record before, or both. */
+  const breakDetail = useMemo(() => {
+    if (brokenSeq === null) return null;
+    const ev = chain[brokenSeq];
+    if (!ev) return null;
+    const { hash, ...rest } = ev;
+    const recomputed = hashEvent(rest);
+    const expectedPrev = brokenSeq === 0 ? GENESIS_HASH : chain[brokenSeq - 1]?.hash;
+    return { recomputed, hashMismatch: recomputed !== hash, prevMismatch: ev.prevHash !== expectedPrev };
+  }, [brokenSeq, chain]);
 
   function runVerify(target: AuditEvent[] = chain) {
     const v = verifyChain(target);
     const r: CheckResult = v.ok ? { kind: "ok", total: target.length } : { kind: "broken", at: v.brokenAt ?? 0, total: target.length };
-    setCheck({ result: r, auditLen: audit.length });
+    setCheck((c) => ({ result: r, auditLen: audit.length, walk: (c?.walk ?? 0) + 1 }));
     return r;
   }
 
@@ -136,12 +186,27 @@ export function AuditTimeline({ requestId, bare = false, className }: AuditTimel
     }
   }
 
+  /** The link into event `e` (from the record before it in the shared log). */
+  function linkInto(e: AuditEvent): LinkState {
+    if (!result) return "unchecked";
+    if (result.kind === "ok" || brokenSeq === null) return "ok";
+    if (e.seq < brokenSeq) return "ok";
+    if (e.seq === brokenSeq) return breakDetail?.prevMismatch ? "broken" : "ok";
+    return "broken";
+  }
+
+  function nodeState(e: AuditEvent): "unchecked" | "ok" | "broken" | "after" {
+    if (!result) return "unchecked";
+    if (result.kind === "ok" || brokenSeq === null || e.seq < brokenSeq) return "ok";
+    return e.seq === brokenSeq ? "broken" : "after";
+  }
+
   const body = (
     <>
-      <div className="flex flex-col gap-3 border-b border-border px-5 py-4 @3xl:flex-row @3xl:items-start @3xl:justify-between">
+      <div className="flex flex-col gap-3 border-b border-border px-4 py-3 @3xl:flex-row @3xl:items-start @3xl:justify-between">
         <div className="min-w-0 space-y-1">
-          <h2 className="text-base font-semibold text-foreground">Audit trail</h2>
-          <p className="max-w-[64ch] text-sm text-muted-foreground">
+          <h2 className="panel-title">Audit trail</h2>
+          <p className="max-w-[64ch] text-sm leading-5 text-muted-foreground">
             Every action on {requestId}, oldest first. Each entry carries a SHA-256 fingerprint of itself plus the entry
             before it, so an edit after the fact breaks the chain.
           </p>
@@ -162,7 +227,7 @@ export function AuditTimeline({ requestId, bare = false, className }: AuditTimel
               Simulate tamper
             </Button>
           )}
-          <Button variant="outline" size="sm" onClick={exportCsv} disabled={events.length === 0} data-testid="audit-export">
+          <Button variant="ghost" size="sm" onClick={exportCsv} disabled={events.length === 0} data-testid="audit-export">
             <Download aria-hidden />
             Export CSV
           </Button>
@@ -175,7 +240,7 @@ export function AuditTimeline({ requestId, bare = false, className }: AuditTimel
             role="status"
             data-testid="audit-result"
             data-result="ok"
-            className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-ok/25 bg-ok-soft px-5 py-2.5 text-sm"
+            className="flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b border-border px-4 py-2.5 text-sm"
           >
             <span className="font-semibold text-ok-ink">✓ Chain intact · {result.total} events</span>
             <span className="text-secondary-foreground">
@@ -187,7 +252,7 @@ export function AuditTimeline({ requestId, bare = false, className }: AuditTimel
             role="alert"
             data-testid="audit-result"
             data-result="broken"
-            className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-stuck/30 bg-stuck-soft px-5 py-2.5 text-sm"
+            className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-border px-4 py-2.5 text-sm"
           >
             <span className="inline-flex items-center gap-1.5 font-semibold text-stuck-ink">
               <ShieldAlert aria-hidden className="size-4" />
@@ -201,32 +266,44 @@ export function AuditTimeline({ requestId, bare = false, className }: AuditTimel
       ) : null}
 
       {events.length === 0 ? (
-        <p className="px-5 py-8 text-center text-sm text-muted-foreground">No audit events for {requestId} yet.</p>
+        <p className="px-4 py-8 text-center text-sm text-muted-foreground">No audit events for {requestId} yet.</p>
       ) : (
-        <ol className="divide-y divide-border" aria-label={`Audit events for ${requestId}`}>
-          {events.map((e) => {
+        <ol className="py-1" aria-label={`Audit events for ${requestId}`}>
+          {events.map((e, i) => {
             const actor = personById({ config }, e.actorId);
             const broken = brokenSeq === e.seq;
             const isTamperedRow = tampered?.seq === e.seq;
+            const node = nodeState(e);
+            const next = events[i + 1];
             return (
               <li
                 key={e.seq}
                 data-testid={`audit-event-${e.seq + 1}`}
                 data-broken={broken || undefined}
-                className={cn(
-                  "grid grid-cols-[3.25rem_minmax(0,1fr)] gap-x-3 gap-y-1 px-5 py-3 transition-colors @2xl:grid-cols-[3.25rem_minmax(0,1fr)_13rem]",
-                  broken && "bg-stuck-soft shadow-[inset_3px_0_0_var(--stuck)]",
-                )}
+                data-link={node}
+                className="relative grid grid-cols-[3.5rem_minmax(0,1fr)] gap-x-2 pr-4 pl-1"
               >
-                <span
-                  className={cn(
-                    "num pt-0.5 font-mono text-xs font-medium",
-                    broken ? "text-stuck-ink" : "text-muted-foreground",
-                  )}
-                >
-                  #{e.seq + 1}
-                </span>
-                <div className="min-w-0 space-y-1">
+                {/* The chain: the record number is the link node, the rail is the chain of fingerprints. Only the
+                    tamper moment (the broken entry and the ones after it) earns a box; verified entries are bare numerals. */}
+                <div className="relative">
+                  {i > 0 ? <RailSegment half="top" state={linkInto(e)} delay={i * 0.06} walk={walk} /> : null}
+                  {next ? <RailSegment half="bottom" state={linkInto(next)} delay={i * 0.06 + 0.03} walk={walk} /> : null}
+                  <span
+                    className={cn(
+                      "relative z-10 mx-auto mt-2 flex h-5 w-fit min-w-9 items-center justify-center rounded-sm border px-1 font-mono text-xs leading-none tabular-nums [font-stretch:100%]",
+                      node === "broken"
+                        ? "border-stuck bg-stuck font-semibold text-stuck-foreground"
+                        : node === "after"
+                          ? "border-dashed border-stuck/70 bg-card text-stuck-ink"
+                          : node === "ok"
+                            ? "border-transparent bg-card text-ok-ink"
+                            : "border-transparent bg-card text-muted-foreground",
+                    )}
+                  >
+                    #{e.seq + 1}
+                  </span>
+                </div>
+                <div className="min-w-0 space-y-1 py-2.5">
                   <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
                     <PersonAvatar person={actor} size="xs" />
                     <span className="text-sm font-medium text-foreground">{actor?.name ?? e.actorId}</span>
@@ -236,25 +313,39 @@ export function AuditTimeline({ requestId, bare = false, className }: AuditTimel
                     <span className="num text-xs text-muted-foreground">{formatSgtDateTime(e.at)}</span>
                   </div>
                   {e.detail ? (
-                    <p className={cn("text-sm text-pretty", broken ? "text-stuck-ink" : "text-secondary-foreground")}>{e.detail}</p>
+                    <p className={cn("text-[0.8125rem] leading-5 text-pretty", broken ? "font-medium text-stuck-ink" : "text-secondary-foreground")}>
+                      {e.detail}
+                    </p>
                   ) : null}
                   {isTamperedRow ? (
                     <p className="text-xs text-stuck-ink">
                       Edited on a copy. Originally: <span className="italic">{tampered.original || "—"}</span>
                     </p>
                   ) : null}
-                </div>
-                <div
-                  className="col-start-2 flex flex-wrap items-center gap-1.5 font-mono text-[0.6875rem] text-muted-foreground @2xl:col-start-3 @2xl:flex-col @2xl:items-end @2xl:gap-0.5"
-                  title={`hash ${e.hash}\nprev ${e.prevHash}`}
-                >
-                  <span className={cn("num rounded-[4px] border px-1 py-px", broken ? "border-stuck/40 text-stuck-ink" : "border-border bg-muted/60 text-foreground")}>
-                    {short(e.hash)}
-                  </span>
-                  <span className="num inline-flex items-center gap-1">
-                    <Link2 aria-hidden className="size-3" />
-                    prev {short(e.prevHash)}
-                  </span>
+                  <div
+                    className="flex flex-wrap items-center gap-x-2.5 gap-y-1 pt-0.5 font-mono text-xs text-muted-foreground [font-stretch:100%]"
+                    title={`hash ${e.hash}\nprev ${e.prevHash}`}
+                  >
+                    <span className={cn("num", broken ? "font-semibold text-stuck-ink" : "text-secondary-foreground")}>
+                      {short(e.hash)}
+                    </span>
+                    {broken && breakDetail?.hashMismatch ? (
+                      <span
+                        className="inline-flex items-center gap-1.5 text-stuck-ink"
+                        title={`Fingerprint recomputed from the entry as it reads now: ${breakDetail.recomputed}`}
+                      >
+                        <span aria-hidden className="text-sm leading-none font-semibold">≠</span>
+                        <span className="num font-semibold text-stuck-ink">
+                          {short(breakDetail.recomputed)}
+                        </span>
+                        <span className="font-sans text-xs">recomputed</span>
+                      </span>
+                    ) : null}
+                    <span className={cn("num inline-flex items-center gap-1", broken && breakDetail?.prevMismatch && "text-stuck-ink")}>
+                      <Link2 aria-hidden className="size-3" />
+                      prev {short(e.prevHash)}
+                    </span>
+                  </div>
                 </div>
               </li>
             );
@@ -262,7 +353,7 @@ export function AuditTimeline({ requestId, bare = false, className }: AuditTimel
         </ol>
       )}
 
-      <p className="border-t border-border px-5 py-2.5 text-xs text-muted-foreground">
+      <p className="border-t border-border px-4 py-2.5 text-xs leading-relaxed text-subtle">
         Prototype: hash chain kept and checked in this browser. In production: SharePoint version history, Purview approval
         logs and a hash column.
       </p>
@@ -270,7 +361,7 @@ export function AuditTimeline({ requestId, bare = false, className }: AuditTimel
   );
 
   if (bare) return <div className={cn("@container", className)}>{body}</div>;
-  return <section className={cn("@container overflow-hidden rounded-xl border bg-card shadow-raised", className)}>{body}</section>;
+  return <section className={cn("@container panel overflow-hidden", className)}>{body}</section>;
 }
 
 export default AuditTimeline;

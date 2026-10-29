@@ -1,15 +1,15 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { AlertTriangle, Building2, Pencil, Plus } from "lucide-react";
+import { Pencil, Plus } from "lucide-react";
 import type { BusinessUnit } from "@/lib/types";
 import { PRODUCT_LABELS } from "@/lib/types";
 import { useSandbox } from "@/lib/store";
-import { PersonChip } from "@/components/common";
+import { Notice, PersonChip } from "@/components/common";
 import { Button } from "@/components/ui/button";
 import { BuSheet } from "./bu-sheet";
 import { pendingEntityLabel } from "./bu-template";
-import { Chip, describeRule, roleLabel } from "./shared";
+import { describeRule, roleLabel, SectionHeader } from "./shared";
 
 export function BusinessUnitsTab({ onBuSaved }: { onBuSaved?: (buId: string) => void }) {
   const config = useSandbox((s) => s.config);
@@ -39,86 +39,88 @@ export function BusinessUnitsTab({ onBuSaved }: { onBuSaved?: (buId: string) => 
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h2 className="text-base font-semibold text-foreground">Business units</h2>
-          <p className="text-[0.8125rem] text-muted-foreground">
-            Each BU decides who approves its requests and can add its own stages. Add a newly joined business in under a minute.
-          </p>
-        </div>
-        <Button onClick={() => setSheet({ open: true })} data-testid="admin-add-bu">
-          <Plus /> Add business unit
-        </Button>
-      </div>
+      <SectionHeader
+        title="Business units"
+        description="Each BU decides who approves its requests and can add its own stages. Add a newly joined business in under a minute."
+        actions={
+          <Button onClick={() => setSheet({ open: true })} data-testid="admin-add-bu">
+            <Plus /> Add business unit
+          </Button>
+        }
+      />
 
       {unconfigured.map(([entity, ids]) => (
-        <div
+        <Notice
           key={entity}
-          className="flex flex-wrap items-center gap-3 rounded-xl border border-warn/40 bg-warn-soft px-4 py-3"
+          ruled
+          tone="warn"
           data-testid={`admin-bu-unconfigured-${entity}`}
+          action={
+            <Button variant="outline" size="sm" onClick={() => setSheet({ open: true, presetCode: entity })} data-testid={`admin-setup-bu-${entity}`}>
+              Set up {entity}
+            </Button>
+          }
         >
-          <AlertTriangle className="size-5 shrink-0 text-warn-ink" aria-hidden />
-          <div className="min-w-0 flex-1 text-[0.8125rem] text-warn-ink">
-            <p className="font-semibold">{pendingEntityLabel(entity)} has people but no business-unit setup</p>
-            <p>
-              {ids.map((id) => config.people.find((p) => p.id === id)?.name ?? id).join(", ")} can raise requests, but they go to whoever
-              holds each role first, not to {entity}&rsquo;s own approvers.
-            </p>
-          </div>
-          <Button variant="outline" size="sm" onClick={() => setSheet({ open: true, presetCode: entity })} data-testid={`admin-setup-bu-${entity}`}>
-            Set up {entity}
-          </Button>
-        </div>
+          <p className="font-medium text-warn-ink">{pendingEntityLabel(entity)} has people but no business-unit setup</p>
+          <p>
+            {ids.map((id) => config.people.find((p) => p.id === id)?.name ?? id).join(", ")} can raise requests, but they go to whoever
+            holds each role first, not to {entity}&rsquo;s own approvers.
+          </p>
+        </Notice>
       ))}
 
-      <div className="grid gap-3 xl:grid-cols-2">
+      {/* One panel, one business unit per hairline-divided row: identity, then its facts as meta columns. */}
+      <div className="panel divide-y divide-border overflow-hidden">
         {config.businessUnits.map((bu) => (
-          <article key={bu.id} className="flex flex-col rounded-xl border border-border bg-card shadow-raised" data-testid={`admin-bu-${bu.id}`}>
-            <header className="flex items-start gap-3 border-b border-border px-4 py-3">
-              <span className="inline-flex h-8 min-w-11 items-center justify-center rounded-md bg-primary px-1.5 font-mono text-xs font-semibold text-primary-foreground">
-                {bu.id}
-              </span>
+          <article key={bu.id} className="px-4 pt-3.5 pb-4" data-testid={`admin-bu-${bu.id}`}>
+            <header className="flex items-start gap-3">
               <div className="min-w-0 flex-1">
-                <h3 className="truncate text-[0.9375rem] font-semibold text-foreground">{bu.name}</h3>
-                <p className="line-clamp-2 text-xs text-muted-foreground">{bu.description || "No description"}</p>
+                <div className="flex flex-wrap items-baseline gap-x-3 gap-y-0.5">
+                  {bu.name.startsWith(bu.id) ? null : <span className="mono-id text-muted-foreground">{bu.id}</span>}
+                  <h3 className="panel-title truncate">{bu.name}</h3>
+                </div>
+                <p className="mt-1 line-clamp-2 text-[0.8125rem] leading-snug text-muted-foreground">{bu.description || "No description"}</p>
               </div>
-              <Button variant="ghost" size="sm" onClick={() => setSheet({ open: true, editing: bu })} aria-label={`Edit ${bu.name}`}>
+              <Button variant="ghost" size="sm" className="-mr-2 text-muted-foreground" onClick={() => setSheet({ open: true, editing: bu })} aria-label={`Edit ${bu.name}`}>
                 <Pencil /> Edit
               </Button>
             </header>
-            <dl className="grid flex-1 grid-cols-2 gap-x-4 gap-y-2.5 px-4 py-3 text-[0.8125rem]">
+            <dl className="mt-3.5 grid grid-cols-2 gap-y-3 text-[0.8125rem] md:grid-cols-[repeat(3,minmax(0,1fr))_auto] [&>div]:min-w-0 [&>div]:border-l [&>div]:border-border-strong [&>div]:pr-5 [&>div]:pl-3">
               <div>
-                <dt className="text-xs text-muted-foreground">{roleLabel("bu_head")}</dt>
-                <dd className="mt-0.5">{bu.roleAssignments.bu_head ? <PersonChip personId={bu.roleAssignments.bu_head} /> : "Not set"}</dd>
+                <dt className="text-xs text-subtle">{roleLabel("bu_head")}</dt>
+                <dd className="mt-1">{bu.roleAssignments.bu_head ? <PersonChip personId={bu.roleAssignments.bu_head} /> : <span className="text-muted-foreground">Not set</span>}</dd>
               </div>
               <div>
-                <dt className="text-xs text-muted-foreground">{roleLabel("business_support")}</dt>
-                <dd className="mt-0.5">
-                  {bu.roleAssignments.business_support ? <PersonChip personId={bu.roleAssignments.business_support} /> : "Group default"}
+                <dt className="text-xs text-subtle">{roleLabel("business_support")}</dt>
+                <dd className="mt-1">
+                  {bu.roleAssignments.business_support ? (
+                    <PersonChip personId={bu.roleAssignments.business_support} />
+                  ) : (
+                    <span className="text-muted-foreground">Group default</span>
+                  )}
                 </dd>
               </div>
               <div>
-                <dt className="text-xs text-muted-foreground">Main product</dt>
-                <dd className="mt-0.5 text-foreground">{bu.mainProduct ? PRODUCT_LABELS[bu.mainProduct] : "Mixed"}</dd>
+                <dt className="text-xs text-subtle">Main product</dt>
+                <dd className="mt-1 text-foreground">{bu.mainProduct ? PRODUCT_LABELS[bu.mainProduct] : "Mixed"}</dd>
               </div>
               <div>
-                <dt className="text-xs text-muted-foreground">Requests in flight</dt>
-                <dd className="mt-0.5 font-medium text-foreground tabular-nums">{inFlight(bu.id)}</dd>
+                <dt className="text-xs text-subtle">Requests in flight</dt>
+                <dd className="num mt-1 font-medium text-foreground">{inFlight(bu.id)}</dd>
               </div>
             </dl>
-            <footer className="flex flex-wrap items-center gap-1.5 border-t border-border px-4 py-2.5">
-              <Building2 className="size-3.5 text-muted-foreground" aria-hidden />
+            <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-[0.8125rem]">
               {bu.extraStages.length ? (
                 bu.extraStages.map((s) => (
-                  <Chip key={s.id} tone="brand">
-                    + {s.label}
+                  <span key={s.id} className="text-secondary-foreground">
+                    <span className="font-medium text-foreground">+ {s.label}</span>
                     {s.steps.some((st) => st.condition) ? ` · only when ${s.steps.map((st) => describeRule(st.condition, fieldLabel)).filter(Boolean).join(" / ")}` : ""}
-                  </Chip>
+                  </span>
                 ))
               ) : (
-                <span className="text-xs text-muted-foreground">Standard routes, no extra stages</span>
+                <span className="text-xs text-subtle">Standard routes, no extra stages</span>
               )}
-            </footer>
+            </div>
           </article>
         ))}
       </div>

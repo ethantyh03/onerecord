@@ -1,9 +1,21 @@
 "use client";
 
-import { Bell, CalendarDays, CheckCircle2, CircleDashed, ClipboardCheck, Clock3, MessageCircleQuestion, MessageSquare, Search, Users, XCircle } from "lucide-react";
+import {
+  Bell,
+  CalendarDays,
+  CheckCircle2,
+  CircleDashed,
+  ClipboardCheck,
+  Clock3,
+  MessageCircleQuestion,
+  MessageSquare,
+  Search,
+  Users,
+  XCircle,
+} from "lucide-react";
 import type { ReactNode } from "react";
 import Link from "next/link";
-import { SlaChip } from "@/components/common";
+import { LightScope, SlaChip } from "@/components/common";
 import { formatSgtTime } from "@/components/common/format";
 import { MS_FONT, MsAvatar, TEAMS } from "@/components/mocks/shared";
 import { TeamsApprovalCard } from "@/components/mocks/TeamsApprovalCard";
@@ -27,8 +39,9 @@ export function TeamsWindow({ request, step, me }: { request: MdmRequest; step: 
   const sentAt = step.activatedAt ?? request.submittedAt ?? request.createdAt;
 
   return (
-    <div
-      className="overflow-hidden rounded-xl border border-[#d6d6d6] bg-[#f5f5f5] text-[#242424] shadow-float"
+    // A look-alike of a real Microsoft product: it keeps its native light look inside the dark console.
+    <LightScope
+      className="overflow-hidden rounded-xl border border-[#d6d6d6] bg-[#f5f5f5] text-[#242424]"
       style={{ fontFamily: MS_FONT }}
       aria-label="Microsoft Teams (simulated)"
     >
@@ -61,7 +74,10 @@ export function TeamsWindow({ request, step, me }: { request: MdmRequest; step: 
             return (
               <span
                 key={item.label}
-                className={cn("relative flex w-full flex-col items-center gap-0.5 py-1.5 text-[10px]", active ? "font-semibold" : "text-[#616161]")}
+                className={cn(
+                  "relative flex w-full flex-col items-center gap-0.5 py-1.5 text-[10px]",
+                  active ? "font-semibold" : "text-[#616161]",
+                )}
                 style={active ? { color: TEAMS.purple } : undefined}
               >
                 {active ? <span className="absolute inset-y-1.5 left-0 w-[3px] rounded-r" style={{ background: TEAMS.purple }} /> : null}
@@ -80,7 +96,11 @@ export function TeamsWindow({ request, step, me }: { request: MdmRequest; step: 
         {/* chat with the Approvals app */}
         <div className="flex min-w-0 flex-1 flex-col">
           <div className="flex items-center gap-2.5 border-b border-[#e0e0e0] bg-white px-4 py-1.5">
-            <span className="inline-flex size-6 items-center justify-center rounded-[5px] text-white" style={{ background: TEAMS.purple }} aria-hidden="true">
+            <span
+              className="inline-flex size-6 items-center justify-center rounded-[5px] text-white"
+              style={{ background: TEAMS.purple }}
+              aria-hidden="true"
+            >
               <ClipboardCheck className="size-3.5" />
             </span>
             <p className="min-w-0 truncate text-[13px]">
@@ -97,7 +117,11 @@ export function TeamsWindow({ request, step, me }: { request: MdmRequest; step: 
 
           <div className="flex-1 px-4 py-3 md:px-6">
             <div className="flex gap-3">
-              <span className="mt-5 inline-flex size-8 shrink-0 items-center justify-center rounded-[6px] text-white" style={{ background: TEAMS.purple }} aria-hidden="true">
+              <span
+                className="mt-5 inline-flex size-8 shrink-0 items-center justify-center rounded-[6px] text-white"
+                style={{ background: TEAMS.purple }}
+                aria-hidden="true"
+              >
                 <ClipboardCheck className="size-4" />
               </span>
               <div className="min-w-0 max-w-[640px] flex-1">
@@ -131,17 +155,17 @@ export function TeamsWindow({ request, step, me }: { request: MdmRequest; step: 
           </div>
         </div>
       </div>
-    </div>
+    </LightScope>
   );
 }
 
 const STEP_ICON: Record<ApprovalStep["status"], ReactNode> = {
   approved: <CheckCircle2 className="size-4 text-ok" aria-hidden="true" />,
   rejected: <XCircle className="size-4 text-stuck" aria-hidden="true" />,
-  pending: <Clock3 className="size-4 text-primary" aria-hidden="true" />,
-  question: <MessageCircleQuestion className="size-4 text-warn" aria-hidden="true" />,
-  waiting: <CircleDashed className="size-4 text-muted-foreground" aria-hidden="true" />,
-  skipped: <CircleDashed className="size-4 text-muted-foreground/60" aria-hidden="true" />,
+  pending: <Clock3 className="size-4 text-muted-foreground" aria-hidden="true" />,
+  question: <MessageCircleQuestion className="size-4 text-warn-ink" aria-hidden="true" />,
+  waiting: <CircleDashed className="size-4 text-subtle" aria-hidden="true" />,
+  skipped: <CircleDashed className="size-4 text-subtle" aria-hidden="true" />,
 };
 
 /** The strip's caption, true to the stages shown: only mention parallel or one-after-another steps that exist. */
@@ -158,39 +182,51 @@ function routeCaption(stages: { mode: string; steps: ApprovalStep[] }[]): string
 
 /** Where the selected request goes: every stage and step with who holds it and its SLA. */
 export function RouteStrip({ request, people, highlightStepId }: { request: MdmRequest; people: Person[]; highlightStepId: string }) {
-  const stages: { id: string; label: string; mode: string; steps: ApprovalStep[] }[] = [];
+  const stages: {
+    id: string;
+    label: string;
+    mode: string;
+    steps: ApprovalStep[];
+  }[] = [];
   for (const step of request.steps) {
     if (step.status === "skipped") continue;
     let stage = stages.find((s) => s.id === step.stageId);
     if (!stage) {
-      stage = { id: step.stageId, label: step.stageLabel, mode: step.stageMode, steps: [] };
+      stage = {
+        id: step.stageId,
+        label: step.stageLabel,
+        mode: step.stageMode,
+        steps: [],
+      };
       stages.push(stage);
     }
     stage.steps.push(step);
   }
 
   return (
-    <section aria-labelledby="route-heading" className="rounded-xl border border-border bg-card p-4 shadow-raised">
-      <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        <h3 id="route-heading" className="text-[0.9375rem] font-semibold">
-          Route for {request.id}
+    <section aria-labelledby="route-heading" className="panel overflow-hidden">
+      <div className="panel-header flex-wrap justify-start gap-y-0.5 py-2.5">
+        <h3 id="route-heading" className="panel-title">
+          Route for <span className="mono-id">{request.id}</span>
         </h3>
-        <p className="text-xs text-muted-foreground">{routeCaption(stages)}</p>
+        <p className="text-[0.8125rem] text-muted-foreground">{routeCaption(stages)}</p>
       </div>
-      <ol className="mt-3 grid gap-3 md:grid-flow-col md:auto-cols-fr">
+      {/* Stages as ruled columns (Gotham meta columns), not boxes; the open step is the raised row. */}
+      <ol className="grid gap-x-6 gap-y-4 p-4 md:grid-flow-col md:auto-cols-fr">
         {stages.map((stage, i) => (
-          <li key={stage.id} className="min-w-0 rounded-lg border border-border bg-background/60 p-3">
+          <li key={stage.id} className="min-w-0 border-l border-border-strong pl-4">
             <p className="text-xs font-medium text-muted-foreground">
               Stage {i + 1} · {stage.label}
               {stage.steps.length > 1 ? (stage.mode === "parallel" ? " · in parallel" : " · one after another") : ""}
             </p>
-            <ul className="mt-2 space-y-2">
+            <ul className="mt-2 space-y-1">
               {stage.steps.map((step) => {
                 const who = people.find((p) => p.id === step.assigneeId);
                 return (
                   <li
                     key={step.id}
-                    className={cn("flex items-start gap-2 rounded-md p-1.5", step.id === highlightStepId && "bg-primary-soft ring-1 ring-primary/30")}
+                    aria-current={step.id === highlightStepId ? "step" : undefined}
+                    className={cn("-mx-1.5 flex items-start gap-2 rounded-sm p-1.5", step.id === highlightStepId && "bg-secondary")}
                   >
                     <span className="mt-0.5">{STEP_ICON[step.status]}</span>
                     <span className="min-w-0 flex-1">

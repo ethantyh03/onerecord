@@ -1,17 +1,29 @@
 "use client";
 
+import { StateGlyph } from "@/components/common";
+import { cn } from "@/lib/utils";
+
 /**
- * "How it lands in SAP B1": the production target as one swimlane, colour-coded by who builds each box.
- * Inline SVG so it scales crisply in a 1080p recording; theme colours come from CSS variables.
- * The phase-1 golden path pulses box by box; the phase-2 Service Layer route is dashed and never animated.
+ * "How it lands in SAP B1": the production target as one system map, read left to right, lane by lane.
+ * No cards: each lane is a column between hairlines (the Gotham meta-column idiom). The phase-1 golden path is
+ * one teal (signal) track across the top with a square station per lane, and a request steps along it. Under
+ * the track each lane names the platform (UI face: product names are not identifiers), the part, who builds it
+ * (one small square per builder, coloured by who builds it) and, on a ruled last line, the new spend it needs.
+ * The phase-2 Service Layer is a dashed violet branch under the MDM and SAP lanes, never animated.
+ * HTML rather than SVG so the text stays at real pixel sizes on a 1280-wide projector.
  */
 
 type Builder = "mdm" | "lean" | "outside";
 
+/**
+ * Who builds each part. Colours deliberately avoid teal signal (the OneRecord path) and violet (phase 2):
+ * bright neutral = configuration only (it has to read against the border on a projector, so not mid-grey),
+ * amber = the lean team's build, coral = paid outside help.
+ */
 export const BUILDER_META: Record<Builder, { color: string; label: string; detail: string }> = {
-  mdm: { color: "var(--chart-1)", label: "MDM team configures", detail: "fields, routes, business units; loads the daily import" },
+  mdm: { color: "var(--foreground)", label: "MDM team configures", detail: "fields, routes, business units; loads the daily import" },
   lean: { color: "var(--chart-3)", label: "Lean team builds", detail: "1 citizen developer + 1 analyst, ~6 weeks" },
-  outside: { color: "oklch(0.56 0.15 266)", label: "Outside help", detail: "SAP partner ~15 days · data-science contractor ~15 days" },
+  outside: { color: "var(--chart-2)", label: "Outside help", detail: "SAP partner ~15 days · data-science contractor ~15 days" },
 };
 
 interface Lane {
@@ -21,10 +33,13 @@ interface Lane {
 
 interface Box {
   lane: number;
+  /** The platform the part runs on, as named in the prototype → production table */
+  system: string;
+  /** Shorter form of `system` for when the map is narrow (a 1280-wide projector) */
+  short?: string;
   title: string;
   who: string;
   lines: string[];
-  mono?: number[]; // indexes of lines set in monospace
   cost: string;
   builders: Builder[];
 }
@@ -41,6 +56,7 @@ const LANES: Lane[] = [
 const BOXES: Box[] = [
   {
     lane: 0,
+    system: "Power Apps",
     title: "Power Apps form",
     who: "Lean team + MDM",
     lines: ["Structured form. Paste", "an email; rules fill it", "(in-tenant AI: phase 2).", "MDM edits fields, rules."],
@@ -49,6 +65,8 @@ const BOXES: Box[] = [
   },
   {
     lane: 1,
+    system: "Microsoft Graph",
+    short: "MS Graph",
     title: "Duplicate check",
     who: "DS contractor + lean",
     lines: ["Required fields and the", "IVD rule block submit.", "A nightly matcher writes", "match keys to SharePoint."],
@@ -57,6 +75,8 @@ const BOXES: Box[] = [
   },
   {
     lane: 2,
+    system: "Power Automate",
+    short: "Automate",
     title: "Teams approvals",
     who: "Lean team + MDM",
     lines: ["Power Automate standard", "Approvals, in parallel:", "2-day SLA, reminder,", "escalation. Outlook too."],
@@ -65,6 +85,7 @@ const BOXES: Box[] = [
   },
   {
     lane: 3,
+    system: "SharePoint",
     title: "SharePoint List",
     who: "Lean team + MDM",
     lines: ["One final review of a", "complete record. Bank", "and credit fields sit in", "a restricted list."],
@@ -73,6 +94,7 @@ const BOXES: Box[] = [
   },
   {
     lane: 4,
+    system: "SAP B1",
     title: "DTW import file",
     who: "MDM team, no build",
     lines: ["Daily batch with SAP's", "own field names, loaded", "by MDM after the final", "check."],
@@ -81,6 +103,7 @@ const BOXES: Box[] = [
   },
   {
     lane: 5,
+    system: "Power BI",
     title: "Power BI report",
     who: "Analyst + contractor",
     lines: ["Reads orders, quotes,", "customers and items", "from SAP B1, with each", "hospital counted once."],
@@ -91,6 +114,7 @@ const BOXES: Box[] = [
 
 const PHASE2: Box = {
   lane: 4,
+  system: "SAP B1",
   title: "Service Layer",
   who: "SAP partner, ~15 days",
   lines: ["Approved records post", "straight into SAP B1", "through its API. Only", "if the pilot proves it."],
@@ -98,296 +122,269 @@ const PHASE2: Box = {
   builders: ["outside"],
 };
 
-const W = 1320;
-const H = 572;
-const LANE_W = W / LANES.length; // 220
-const PAD = 12;
-const BOX_W = LANE_W - PAD * 2; // 196
-const ROW1_Y = 92;
-const ROW1_H = 214;
-const ROW2_Y = ROW1_Y + ROW1_H + 26;
-const ROW2_H = 222;
-const MID_Y = ROW1_Y + ROW1_H / 2;
-const PULSE_STEP_S = 0.7;
-const PULSE_CYCLE_S = PULSE_STEP_S * BOXES.length + 1.4;
+/** One golden-path step: how long a request "sits" at each station before stepping on. */
+const STEP_S = 0.8;
+const CYCLE_S = STEP_S * BOXES.length + 1.6;
+const pct = (s: number) => `${((s / CYCLE_S) * 100).toFixed(2)}%`;
 
-function BoxShape({ box, y, h, index, phase2 }: { box: Box; y: number; h: number; index?: number; phase2?: boolean }) {
-  const x = box.lane * LANE_W + PAD;
-  const stripeW = BOX_W / box.builders.length;
-  const bodyStart = y + (phase2 ? 113 : 88);
-  const lineH = phase2 ? 19.5 : 21;
+/*
+ * Stations are solid teal squares; while the request sits at one, a 1px outline locks on around it (hard
+ * on/off, no fade), then the bead (a small teal square) runs along the segment to the next station.
+ * Under reduced motion the path is static.
+ */
+const CSS = `
+.sl-station { outline: 1px solid transparent; outline-offset: 3px; animation: sl-station ${CYCLE_S}s steps(1, end) infinite backwards; }
+@keyframes sl-station {
+  0%, ${pct(STEP_S * 1.2)}, 100% { outline-color: transparent; }
+  ${pct(0.12)} { outline-color: var(--signal); }
+}
+.sl-bead { opacity: 0; left: 0; animation: sl-bead ${CYCLE_S}s linear infinite; }
+@keyframes sl-bead {
+  0%, ${pct(STEP_S * 0.5)} { opacity: 0; left: 0; }
+  ${pct(STEP_S * 0.52)} { opacity: 1; left: 0; }
+  ${pct(STEP_S)} { opacity: 1; left: calc(100% - 0.5rem); }
+  ${pct(STEP_S * 1.04)}, 100% { opacity: 0; left: calc(100% - 0.5rem); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sl-station { animation: none; }
+  .sl-bead { display: none; }
+}
+`;
+
+/** One square per builder, in the builder's colour. */
+function BuilderMarks({ builders, className }: { builders: Builder[]; className?: string }) {
   return (
-    <g>
-      {!phase2 ? (
-        <rect
-          className="sl-glow"
-          x={x - 4}
-          y={y - 4}
-          width={BOX_W + 8}
-          height={h + 8}
-          rx={13}
-          fill="none"
-          stroke="var(--primary)"
-          strokeWidth={3}
-          style={{ animationDelay: `${(index ?? 0) * PULSE_STEP_S}s` }}
-        />
-      ) : null}
-      <rect
-        x={x}
-        y={y}
-        width={BOX_W}
-        height={h}
-        rx={10}
-        fill="var(--card)"
-        stroke={phase2 ? "var(--phase2)" : "var(--primary)"}
-        strokeOpacity={phase2 ? 1 : 0.55}
-        strokeWidth={phase2 ? 1.75 : 1.5}
-        strokeDasharray={phase2 ? "6 5" : undefined}
+    <span aria-hidden className={cn("inline-flex shrink-0 gap-[3px]", className)}>
+      {builders.map((b) => (
+        <span key={b} className="size-2.5 rounded-[1px]" style={{ background: BUILDER_META[b].color }} />
+      ))}
+    </span>
+  );
+}
+
+function SystemName({ box }: { box: Box }) {
+  return (
+    <p className="truncate text-xs leading-4 text-subtle" title={box.system}>
+      {box.short ? (
+        <>
+          <span className="@min-[1120px]:hidden">{box.short}</span>
+          <span className="hidden @min-[1120px]:inline">{box.system}</span>
+        </>
+      ) : (
+        box.system
+      )}
+    </p>
+  );
+}
+
+/** The track row of one lane: its station, and (except the last lane) the segment and arrow to the next station. */
+function Track({ index, last }: { index: number; last: boolean }) {
+  return (
+    <div aria-hidden className="relative h-8">
+      <span
+        className="sl-station absolute top-1/2 left-4 z-10 size-2.5 -translate-y-1/2 rounded-[1px] bg-signal"
+        style={{ animationDelay: `${index * STEP_S}s` }}
       />
-      <clipPath id={`sl-clip-${box.lane}-${phase2 ? "p2" : "p1"}`}>
-        <rect x={x} y={y} width={BOX_W} height={h} rx={10} />
-      </clipPath>
-      <g clipPath={`url(#sl-clip-${box.lane}-${phase2 ? "p2" : "p1"})`}>
-        {box.builders.map((b, i) => (
-          <rect key={b} x={x + i * stripeW} y={y} width={stripeW} height={8} fill={BUILDER_META[b].color} />
-        ))}
-      </g>
-      <text x={x + 14} y={y + 38} fontSize={17} fontWeight={650} fill="var(--foreground)">
-        {box.title}
-      </text>
-      <g>
-        {box.builders.map((b, i) => (
-          <circle key={b} cx={x + 18 + i * 12} cy={y + 56} r={4.5} fill={BUILDER_META[b].color} stroke="var(--card)" strokeWidth={1.5} />
-        ))}
-        <text x={x + 14 + box.builders.length * 12 + 6} y={y + 60.5} fontSize={12.5} fill="var(--muted-foreground)">
-          {box.who}
-        </text>
-      </g>
-      {box.lines.map((line, i) => {
-        const mono = box.mono?.includes(i);
-        return (
-          <text
-            key={i}
-            x={x + 14}
-            y={bodyStart + i * lineH}
-            fontSize={mono ? 11.5 : phase2 ? 13.5 : 14.5}
-            fontFamily={mono ? "var(--font-mono)" : undefined}
-            fill={mono ? "var(--phase2-ink)" : "var(--secondary-foreground)"}
-          >
-            {line}
-          </text>
-        );
-      })}
-      <rect
-        x={x + 8}
-        y={y + h - 40}
-        width={BOX_W - 16}
-        height={28}
-        rx={14}
-        fill={phase2 ? "var(--phase2-soft)" : box.cost.startsWith("S$0") ? "var(--ok-soft)" : "var(--muted)"}
-        stroke={phase2 ? "var(--phase2)" : box.cost.startsWith("S$0") ? "var(--ok)" : "none"}
-        strokeOpacity={0.6}
-      />
-      <text
-        x={x + BOX_W / 2}
-        y={y + h - 21.5}
-        fontSize={12.5}
-        fontWeight={600}
-        textAnchor="middle"
-        fill={phase2 ? "var(--phase2-ink)" : box.cost.startsWith("S$0") ? "var(--ok-ink)" : "var(--secondary-foreground)"}
-      >
-        {box.cost}
-      </text>
-      {phase2 ? (
-        <g>
-          <rect x={x + 12} y={y + 69} width={120} height={22} rx={11} fill="var(--phase2-soft)" stroke="var(--phase2)" strokeDasharray="3 2" />
-          <text x={x + 72} y={y + 84} fontSize={12} fontWeight={650} textAnchor="middle" fill="var(--phase2-ink)">
+      {last ? null : (
+        <span className="absolute top-1/2 left-[1.875rem] -right-3 z-10 flex -translate-y-1/2 items-center">
+          <span className="h-0.5 flex-1 bg-signal" />
+          <svg viewBox="0 0 6 8" className="h-2 w-1.5 shrink-0 overflow-visible">
+            <path d="M0 0 L6 4 L0 8 z" fill="var(--signal)" />
+          </svg>
+          <span className="sl-bead absolute top-1/2 size-2 -translate-y-1/2 rounded-[1px] bg-signal" style={{ animationDelay: `${index * STEP_S}s` }} />
+        </span>
+      )}
+    </div>
+  );
+}
+
+function CostLine({ cost, tone }: { cost: string; tone: "ok" | "phase2" | "default" }) {
+  return (
+    <p
+      className={cn(
+        "mx-4 mt-3 mb-4 border-t border-border pt-2 text-[0.8125rem] leading-5 font-medium",
+        tone === "ok" && "text-ok-ink",
+        tone === "phase2" && "text-phase2-ink",
+        tone === "default" && "text-secondary-foreground",
+      )}
+    >
+      {cost}
+    </p>
+  );
+}
+
+function Legend() {
+  return (
+    <div className="grid gap-x-8 gap-y-4 sm:grid-cols-2">
+      <div>
+        <p className="text-sm font-semibold text-foreground">Who builds it</p>
+        <ul className="mt-2.5 space-y-2.5">
+          {(Object.keys(BUILDER_META) as Builder[]).map((b) => (
+            <li key={b} className="grid grid-cols-[0.625rem_1fr] gap-x-2.5">
+              <span aria-hidden className="mt-[0.3125rem] size-2.5 rounded-[1px]" style={{ background: BUILDER_META[b].color }} />
+              <span>
+                <span className="block text-sm leading-5 font-semibold text-foreground">{BUILDER_META[b].label}</span>
+                <span className="block text-[0.8125rem] leading-[1.125rem] text-secondary-foreground">{BUILDER_META[b].detail}</span>
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <ul className="space-y-2.5 sm:pt-[1.875rem]">
+        <li className="grid grid-cols-[2.25rem_1fr] gap-x-2.5">
+          <span aria-hidden className="relative mt-[0.3125rem] block h-2.5 w-9">
+            <span className="absolute top-0 left-0 size-2.5 rounded-[1px] bg-signal" />
+            <span className="absolute top-1/2 right-0 left-3.5 h-[1.5px] -translate-y-1/2 bg-signal" />
+          </span>
+          <span>
+            <span className="block text-sm leading-5 font-semibold text-foreground">Phase 1 golden path</span>
+            <span className="block text-[0.8125rem] leading-[1.125rem] text-secondary-foreground">about 4 business days end to end</span>
+          </span>
+        </li>
+        <li className="grid grid-cols-[2.25rem_1fr] gap-x-2.5">
+          <span aria-hidden className="mt-2.5 block w-9 border-t-2 border-dashed border-phase2" />
+          <span>
+            <span className="block text-sm leading-5 font-semibold text-foreground">Phase 2, not built</span>
+            <span className="block text-[0.8125rem] leading-[1.125rem] text-secondary-foreground">only if same-day posting is worth it</span>
+          </span>
+        </li>
+        <li className="grid grid-cols-[2.25rem_1fr] gap-x-2.5">
+          <span aria-hidden className="mt-2.5 block w-9 border-t border-border-strong" />
+          <span>
+            <span className="block text-sm leading-5 font-semibold text-foreground">Cost on each box</span>
+            <span className="block text-[0.8125rem] leading-[1.125rem] text-secondary-foreground">new spend that box needs</span>
+          </span>
+        </li>
+      </ul>
+    </div>
+  );
+}
+
+/**
+ * The phase-2 branch, under the MDM and SAP lanes: a dashed violet line drops from the MDM lane and runs
+ * right into a hollow violet station, where the Service Layer entry sits under the SAP lane.
+ */
+function Phase2Branch() {
+  return (
+    <div className="relative col-span-2 grid grid-cols-2 border-l border-border">
+      {/* the elbow: down from the MDM lane, then right to the SAP lane's station */}
+      <span aria-hidden className="absolute top-0 left-[1.3125rem] h-8 border-l-2 border-dashed border-phase2" />
+      <span aria-hidden className="absolute top-8 left-[1.3125rem] right-[calc(50%-0.75rem)] flex -translate-y-1/2 items-center">
+        <span className="flex-1 border-t-2 border-dashed border-phase2" />
+        <svg viewBox="0 0 6 8" className="h-2 w-1.5 shrink-0 overflow-visible">
+          <path d="M0 0 L6 4 L0 8 z" fill="var(--phase2)" />
+        </svg>
+      </span>
+
+      <div className="px-4 pt-11 pb-4">
+        <p className="pl-5 text-[0.8125rem] leading-[1.125rem] text-phase2-ink">
+          <span className="font-semibold">Phase 2:</span> record posts itself to SAP
+        </p>
+      </div>
+
+      <div className="flex flex-col border-l border-border">
+        <div aria-hidden className="relative h-10">
+          <span className="absolute top-8 left-4 size-2.5 -translate-y-1/2 rounded-[1px] border-[1.5px] border-phase2 bg-card" />
+        </div>
+        <div className="px-4">
+          <SystemName box={PHASE2} />
+          <h3 className="font-wide mt-1 text-[0.9375rem] leading-5 font-semibold text-foreground">{PHASE2.title}</h3>
+          <p className="mt-1 text-[0.8125rem] leading-5 text-muted-foreground">{PHASE2.who}</p>
+          <span className="mt-2 inline-flex items-center gap-1.5 text-xs leading-4 font-semibold whitespace-nowrap text-phase2-ink">
+            <StateGlyph tone="phase2" />
             Phase 2 · not built
-          </text>
-        </g>
-      ) : null}
-    </g>
+          </span>
+          <p className="mt-2 text-sm leading-[1.45] text-secondary-foreground">{PHASE2.lines.join(" ")}</p>
+        </div>
+        <div className="mt-auto">
+          <CostLine cost={PHASE2.cost} tone="phase2" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Phase1Numbers() {
+  const rows = [
+    ["~6 weeks", "to the pilot"],
+    ["S$39.9k", "one-off"],
+    ["S$0", "new workflow licences"],
+  ] as const;
+  return (
+    <div className="flex flex-col border-l border-border px-4 pt-4 pb-4">
+      <p className="font-wide text-sm leading-5 font-semibold text-foreground">Phase 1 in numbers</p>
+      <div className="mt-2 space-y-1">
+        {rows.map(([big, small]) => (
+          <p key={big} className="text-[0.8125rem] leading-6 text-secondary-foreground">
+            <span className="num font-wide text-[1.0625rem] font-semibold text-foreground">{big}</span> {small}
+          </p>
+        ))}
+        <p className="text-xs leading-4 text-subtle">Power BI Pro only if not owned</p>
+        <p className="pt-1.5 text-[0.8125rem] leading-6 text-secondary-foreground">
+          <span className="num font-wide text-[1.0625rem] font-semibold text-foreground">≈6 months</span> payback
+        </p>
+      </div>
+      <p className="mt-auto pt-3 text-xs leading-4 text-subtle">At 80 requests a month (/impact)</p>
+    </div>
   );
 }
 
 export function Swimlane() {
   return (
-    <figure
-      data-testid="arch-swimlane"
-      className="overflow-hidden rounded-xl border bg-card shadow-raised"
-      aria-labelledby="swimlane-caption"
-    >
-      <svg
-        viewBox={`0 0 ${W} ${H}`}
-        role="img"
-        aria-labelledby="swimlane-title swimlane-desc"
-        className="block h-auto w-full"
-        style={{ fontFamily: "var(--font-sans)" }}
-      >
-        <title id="swimlane-title">How a OneRecord request lands in SAP Business One</title>
-        <desc id="swimlane-desc">
-          Requestor fills a Power Apps form; OneRecord checks for duplicates and missing fields; approvers decide in Teams or Outlook through Power
-          Automate standard Approvals; MDM gives a final check in a SharePoint List; phase 1 loads a DTW import file into SAP B1 daily, phase 2 posts
-          through the Service Layer; Regional Pulse reports in Power BI on SAP B1 extracts.
-        </desc>
-        <defs>
-          <marker id="sl-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-            <path d="M0,0 L10,5 L0,10 z" fill="var(--primary)" />
-          </marker>
-          <marker id="sl-arrow-p2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-            <path d="M0,0 L10,5 L0,10 z" fill="var(--phase2)" />
-          </marker>
-          <style>{`
-            .sl-flow { stroke-dasharray: 7 5; animation: sl-dash 0.9s linear infinite; }
-            @keyframes sl-dash { to { stroke-dashoffset: -12; } }
-            .sl-glow { opacity: 0; animation: sl-glow ${PULSE_CYCLE_S}s ease-in-out infinite; }
-            @keyframes sl-glow {
-              0% { opacity: 0; }
-              6% { opacity: 0.9; }
-              18% { opacity: 0; }
-              100% { opacity: 0; }
-            }
-            @media (prefers-reduced-motion: reduce) {
-              .sl-flow { animation: none; }
-              .sl-glow { animation: none; opacity: 0; }
-            }
-          `}</style>
-        </defs>
+    <figure data-testid="arch-swimlane" aria-labelledby="swimlane-title" aria-describedby="swimlane-desc" className="panel flex flex-col overflow-hidden">
+      <style>{CSS}</style>
+      <header className="panel-header py-2.5">
+        <h2 id="swimlane-title" className="panel-title">
+          How a OneRecord request lands in SAP Business One
+        </h2>
+      </header>
+      <p id="swimlane-desc" className="sr-only">
+        Requestor fills a Power Apps form; OneRecord checks for duplicates and missing fields; approvers decide in Teams or Outlook through Power
+        Automate standard Approvals; MDM gives a final check in a SharePoint List; phase 1 loads a DTW import file into SAP B1 daily, phase 2 posts
+        through the Service Layer; Regional Pulse reports in Power BI on SAP B1 extracts.
+      </p>
 
-        {/* lanes */}
-        {LANES.map((lane, i) => (
-          <g key={lane.name}>
-            <rect x={i * LANE_W} y={0} width={LANE_W} height={H} fill={i % 2 ? "var(--muted)" : "var(--card)"} opacity={i % 2 ? 0.55 : 1} />
-            {i > 0 ? <line x1={i * LANE_W} x2={i * LANE_W} y1={0} y2={H} stroke="var(--border)" strokeWidth={1} /> : null}
-            <text x={i * LANE_W + PAD + 2} y={34} fontSize={16.5} fontWeight={700} fill="var(--foreground)">
-              {lane.name}
-            </text>
-            <text x={i * LANE_W + PAD + 2} y={56} fontSize={12.5} fill="var(--muted-foreground)">
-              {lane.actor}
-            </text>
-          </g>
-        ))}
-        <line x1={0} x2={W} y1={72} y2={72} stroke="var(--border)" />
+      <div className="scrollbar-thin relative overflow-x-auto">
+        <div className="@container relative min-w-[940px]">
+          {/* six lanes, each a ruled column on a shared subgrid: head, track, identity, description, cost */}
+          <div className="grid grid-cols-6 grid-rows-[auto_auto_auto_1fr_auto]">
+            {LANES.map((lane, i) => {
+              const box = BOXES[i];
+              const costTone = box.cost.startsWith("S$0") ? "ok" : "default";
+              return (
+                <div key={lane.name} className={cn("row-span-5 grid min-w-0 grid-rows-subgrid", i > 0 && "border-l border-border")}>
+                  <div className="border-b border-border px-4 pt-3 pb-2.5">
+                    <p className="font-wide text-[0.9375rem] leading-5 font-semibold text-foreground">{lane.name}</p>
+                    <p className="mt-0.5 text-[0.8125rem] leading-5 text-muted-foreground">{lane.actor}</p>
+                  </div>
+                  <Track index={i} last={i === BOXES.length - 1} />
+                  <div className="min-w-0 px-4">
+                    <SystemName box={box} />
+                    <h3 className="font-wide mt-1 text-[0.9375rem] leading-5 font-semibold text-foreground">{box.title}</h3>
+                    <p className="mt-1 text-[0.8125rem] leading-5 text-muted-foreground">
+                      <BuilderMarks builders={box.builders} className="mr-2 align-[-0.0625rem]" />
+                      {box.who}
+                    </p>
+                  </div>
+                  <p className="px-4 pt-2.5 text-sm leading-[1.45] text-secondary-foreground">{box.lines.join(" ")}</p>
+                  <CostLine cost={box.cost} tone={costTone} />
+                </div>
+              );
+            })}
+          </div>
 
-        {/* golden path connectors (phase 1) */}
-        {BOXES.slice(0, -1).map((b) => {
-          const x1 = b.lane * LANE_W + PAD + BOX_W;
-          const x2 = (b.lane + 1) * LANE_W + PAD - 2;
-          return (
-            <line
-              key={`c-${b.lane}`}
-              className="sl-flow"
-              x1={x1}
-              x2={x2}
-              y1={MID_Y}
-              y2={MID_Y}
-              stroke="var(--primary)"
-              strokeWidth={3}
-              markerEnd="url(#sl-arrow)"
-            />
-          );
-        })}
+          {/* legend, the phase-2 branch, phase 1 in numbers */}
+          <div className="grid grid-cols-6 border-t border-border">
+            <div className="col-span-3 px-4 py-4">
+              <Legend />
+            </div>
+            <Phase2Branch />
+            <Phase1Numbers />
+          </div>
+        </div>
+      </div>
 
-        {/* phase-2 route: from the MDM check straight into the Service Layer */}
-        <path
-          d={`M ${3 * LANE_W + LANE_W / 2} ${ROW1_Y + ROW1_H} V ${ROW2_Y + 110} H ${4 * LANE_W + PAD - 2}`}
-          fill="none"
-          stroke="var(--phase2)"
-          strokeWidth={2.25}
-          strokeDasharray="6 5"
-          markerEnd="url(#sl-arrow-p2)"
-        />
-        <text x={3 * LANE_W + LANE_W / 2 - 10} y={ROW2_Y + 54} fontSize={13} fontWeight={600} textAnchor="end" fill="var(--phase2-ink)">
-          Phase 2:
-        </text>
-        <text x={3 * LANE_W + LANE_W / 2 - 10} y={ROW2_Y + 72} fontSize={13} textAnchor="end" fill="var(--phase2-ink)">
-          record posts
-        </text>
-        <text x={3 * LANE_W + LANE_W / 2 - 10} y={ROW2_Y + 90} fontSize={13} textAnchor="end" fill="var(--phase2-ink)">
-          itself to SAP
-        </text>
-
-        {BOXES.map((b, i) => (
-          <BoxShape key={b.lane} box={b} y={ROW1_Y} h={ROW1_H} index={i} />
-        ))}
-        <BoxShape box={PHASE2} y={ROW2_Y} h={ROW2_H} phase2 />
-
-        {/* legend: who builds it */}
-        <g transform={`translate(${PAD + 2}, ${ROW2_Y + 6})`}>
-          <text x={0} y={16} fontSize={15} fontWeight={700} fill="var(--foreground)">
-            Who builds it
-          </text>
-          {(Object.keys(BUILDER_META) as Builder[]).map((b, i) => (
-            <g key={b} transform={`translate(0, ${40 + i * 38})`}>
-              <rect x={0} y={-12} width={16} height={16} rx={4} fill={BUILDER_META[b].color} />
-              <text x={26} y={1} fontSize={14} fontWeight={650} fill="var(--foreground)">
-                {BUILDER_META[b].label}
-              </text>
-              <text x={26} y={18} fontSize={12.5} fill="var(--secondary-foreground)">
-                {BUILDER_META[b].detail}
-              </text>
-            </g>
-          ))}
-          <g transform="translate(330, 40)">
-            <line x1={0} x2={34} y1={-4} y2={-4} stroke="var(--primary)" strokeWidth={3} className="sl-flow" />
-            <text x={44} y={1} fontSize={14} fontWeight={650} fill="var(--foreground)">
-              Phase 1 golden path
-            </text>
-            <text x={44} y={18} fontSize={12.5} fill="var(--secondary-foreground)">
-              about 4 business days end to end
-            </text>
-          </g>
-          <g transform="translate(330, 78)">
-            <line x1={0} x2={34} y1={-4} y2={-4} stroke="var(--phase2)" strokeWidth={2.25} strokeDasharray="6 5" />
-            <text x={44} y={1} fontSize={14} fontWeight={650} fill="var(--foreground)">
-              Phase 2, not built
-            </text>
-            <text x={44} y={18} fontSize={12.5} fill="var(--secondary-foreground)">
-              only if same-day posting is worth it
-            </text>
-          </g>
-          <g transform="translate(330, 116)">
-            <rect x={0} y={-12} width={34} height={16} rx={8} fill="var(--ok-soft)" stroke="var(--ok)" strokeOpacity={0.6} />
-            <text x={44} y={1} fontSize={14} fontWeight={650} fill="var(--foreground)">
-              Cost on each box
-            </text>
-            <text x={44} y={18} fontSize={12.5} fill="var(--secondary-foreground)">
-              new spend that box needs
-            </text>
-          </g>
-          
-        </g>
-
-        {/* phase-1 summary card */}
-        <g transform={`translate(${5 * LANE_W + PAD}, ${ROW2_Y})`}>
-          <rect x={0} y={0} width={BOX_W} height={ROW2_H} rx={10} fill="var(--primary-soft)" stroke="var(--primary)" strokeOpacity={0.3} />
-          <text x={14} y={30} fontSize={15} fontWeight={700} fill="var(--primary)">
-            Phase 1 in numbers
-          </text>
-          {(
-            [
-              ["~6 weeks", "to the pilot", 60],
-              ["S$39.9k", "one-off", 88],
-              ["S$0", "new workflow licences", 116],
-              ["≈6 months", "payback", 162],
-            ] as const
-          ).map(([big, small, ty]) => (
-            <text key={big} x={14} y={ty} fontSize={14} fill="var(--secondary-foreground)">
-              <tspan fontWeight={700} fontSize={17} fill="var(--foreground)">
-                {big}
-              </tspan>{" "}
-              {small}
-            </text>
-          ))}
-          <text x={14} y={134} fontSize={11.5} fill="var(--muted-foreground)">
-            Power BI Pro only if not owned
-          </text>
-          <text x={14} y={ROW2_H - 14} fontSize={11.5} fill="var(--muted-foreground)">
-            At 80 requests a month (/impact)
-          </text>
-        </g>
-      </svg>
-      <figcaption id="swimlane-caption" className="flex flex-wrap items-center gap-x-4 gap-y-1 border-t bg-muted/40 px-4 py-2.5 text-[0.8125rem] text-muted-foreground">
+      <figcaption className="flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-border px-4 py-2.5 text-[0.8125rem] text-muted-foreground">
         <span>Production target on Microsoft 365 and SAP Business One.</span>
         <span>In this prototype, Teams, Outlook, SAP B1 and the clock are simulated in your browser.</span>
       </figcaption>

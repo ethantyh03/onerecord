@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Clock3, FilePlus2, Hourglass, Inbox, Search, ShoppingCart, Siren, X } from "lucide-react";
+import { FilePlus2, Inbox, Kanban, List, Search, X } from "lucide-react";
 import type { MdmRequest, RequestStatus } from "@/lib/types";
 import { COUNTRIES } from "@/lib/types";
 import { useHasHydrated, useSandbox } from "@/lib/store";
@@ -15,10 +15,13 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import {
+  Count,
   EmptyState,
-  KpiTile,
   PageHeader,
   PersonAvatar,
+  Readout,
+  ReadoutStrip,
+  ReadoutUnit,
   SapCode,
   SlaChip,
   StatusBadge,
@@ -36,8 +39,14 @@ import {
   worstActiveStep,
   type LinkedDemand,
 } from "./tracker-utils";
+import { StageBoard } from "./stage-board";
 
 type TabId = "mine" | "all";
+type ViewId = "board" | "list";
+const VIEWS = [
+  { id: "board", label: "Board", icon: Kanban },
+  { id: "list", label: "List", icon: List },
+] as const;
 const REQUEST_STATUSES: RequestStatus[] = ["in_approval", "needs_info", "mdm_review", "created", "rejected", "cancelled", "draft"];
 
 interface Filters {
@@ -70,9 +79,9 @@ function FilterSelect({
         onChange={(e) => onChange(e.target.value)}
         data-testid={testid}
         className={cn(
-          "h-8 min-w-36 rounded-lg border border-input bg-card px-2 text-sm text-foreground outline-none transition-colors",
-          "focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50",
-          value && "border-primary/40 bg-primary-soft/50",
+          "h-8 min-w-36 rounded-md border border-input bg-secondary px-2 text-sm text-foreground outline-none transition-colors",
+          "focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/40",
+          value && "border-primary/50 bg-primary-soft",
         )}
       >
         <option value="">All</option>
@@ -152,9 +161,11 @@ function RequestRow({ req, now, demand, onOpen }: { req: MdmRequest; now: string
       }}
       className="cursor-pointer"
     >
-      <TableCell className="max-w-[22rem] py-3">
+      <TableCell className="max-w-[22rem] py-2.5">
         <Link href={href} className="group/link block min-w-0 outline-none focus-visible:ring-2 focus-visible:ring-ring/50">
-          <span className="num font-mono text-xs text-muted-foreground">{req.id}</span>
+          <span className="text-sm">
+            <SapCode code={req.id} variant="plain" className="text-muted-foreground" />
+          </span>
           <span className="block truncate text-sm font-medium text-foreground group-hover/link:underline group-hover/link:underline-offset-4">
             {req.title}
           </span>
@@ -196,6 +207,7 @@ export function RequestsWorkspace() {
   const hydrated = useHasHydrated();
   const [tab, setTab] = useState<TabId>(params.get("tab") === "all" ? "all" : "mine");
   const [filters, setFilters] = useState<Filters>(NO_FILTERS);
+  const [view, setView] = useState<ViewId>(params.get("view") === "list" ? "list" : "board");
 
   const requests = useSandbox((s) => s.requests);
   const prs = useSandbox((s) => s.prs);
@@ -240,9 +252,17 @@ export function RequestsWorkspace() {
   const filtersOn = tab === "all" && Object.values(filters).some(Boolean);
   const set = (k: keyof Filters) => (v: string) => setFilters((f) => ({ ...f, [k]: v }));
   const open = (id: string) => router.push(`/requests/view?id=${encodeURIComponent(id)}`);
+  function chooseView(next: ViewId) {
+    setView(next);
+    const q = new URLSearchParams(params.toString());
+    if (next === "list") q.set("view", "list");
+    else q.delete("view");
+    const qs = q.toString();
+    router.replace(qs ? `/requests?${qs}` : "/requests", { scroll: false });
+  }
 
   return (
-    <div className="mx-auto w-full max-w-[1320px] pb-6">
+    <div className="w-full pb-6">
       <PageHeader
         title="Requests"
         subtitle="Every master-data request: where it is, who it is waiting on, and which customer orders it holds up."
@@ -254,108 +274,137 @@ export function RequestsWorkspace() {
         }
       />
 
-      <div className="mb-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <KpiTile
-          label="In flight"
-          icon={Hourglass}
-          tone="brand"
-          value={hydrated ? stats.inFlight : "—"}
-          caption="In approval, waiting on an answer, or at the MDM final check"
-        />
-        <KpiTile
-          label="SLA breached"
-          icon={Siren}
-          tone={hydrated && stats.breached > 0 ? "warn" : "ok"}
-          value={hydrated ? stats.breached : "—"}
-          caption={`Requests with a step open more than ${config.sla.stepBusinessDays} business days`}
-        />
-        <KpiTile
-          label="Median time to create"
-          icon={Clock3}
-          value={hydrated ? `${formatDays(stats.medianDaysToCreate)} d` : "—"}
-          caption="Business days from submission to live in SAP B1"
-          footnote="Today by email: median 14 days (Amy's took 18) → ≤ 4 business days"
-        />
-        <KpiTile
+      {/* Readouts, not tiles: the money waiting leads (wider, first); the pipeline counts follow on hairline rules. */}
+      <ReadoutStrip as="section" aria-label="Pipeline readouts" className="mb-7" data-testid="requests-readouts">
+        <Readout
+          lead
           label="Orders waiting on master data"
-          icon={ShoppingCart}
           tone="stuck"
           value={hydrated ? formatSgd(stuck.totalSgd) : "—"}
           caption={hydrated ? `${stuck.count} customer purchase requests can't convert yet` : " "}
           href="/pulse"
         />
-      </div>
+        <Readout
+          label="In flight"
+          value={hydrated ? stats.inFlight : "—"}
+          caption="In approval, waiting on an answer, or at the MDM final check"
+        />
+        <Readout
+          label="SLA breached"
+          tone={hydrated && stats.breached > 0 ? "warn" : "ok"}
+          value={hydrated ? stats.breached : "—"}
+          caption={`Requests with a step open more than ${config.sla.stepBusinessDays} business days`}
+        />
+        <Readout
+          label="Median time to create"
+          value={
+            hydrated ? (
+              // One span so the unit sits 4px after the figure, not a flex gap away.
+              <span>
+                {formatDays(stats.medianDaysToCreate)}
+                <ReadoutUnit>d</ReadoutUnit>
+              </span>
+            ) : (
+              "—"
+            )
+          }
+          caption="Business days from submission to live in SAP B1"
+          footnote="Today by email: median 14 days (Amy's took 18) → ≤ 4 business days"
+        />
+      </ReadoutStrip>
 
-      <Tabs value={tab} onValueChange={(v) => setTab(v as TabId)} className="gap-0">
-        <div className="flex flex-col gap-3 rounded-t-xl border border-b-0 bg-card px-4 pt-3 pb-3 shadow-raised lg:flex-row lg:items-end lg:justify-between">
-          <TabsList className="h-9">
+      <Tabs value={tab} onValueChange={(v) => setTab(v as TabId)} className="panel gap-0 overflow-hidden">
+        <div className="flex min-h-12 flex-wrap items-center gap-x-4 gap-y-2 border-b border-border px-4 py-2">
+          <TabsList className="h-8 shrink-0">
             <TabsTrigger value="mine" data-testid="requests-tab-mine" className="px-3">
               My requests
-              <span className="num ml-1 rounded-full bg-muted px-1.5 text-xs text-muted-foreground">{hydrated ? mine.length : 0}</span>
+              <Count className="ml-0.5 text-xs">{hydrated ? mine.length : 0}</Count>
             </TabsTrigger>
             <TabsTrigger value="all" data-testid="requests-tab-all" className="px-3">
               All requests
-              <span className="num ml-1 rounded-full bg-muted px-1.5 text-xs text-muted-foreground">{hydrated ? all.length : 0}</span>
+              <Count className="ml-0.5 text-xs">{hydrated ? all.length : 0}</Count>
             </TabsTrigger>
           </TabsList>
 
-          {tab === "all" ? (
-            <div className="flex flex-wrap items-end gap-2.5">
-              <label className="flex min-w-0 flex-col gap-1">
-                <span className="text-xs text-muted-foreground">Search</span>
-                <span className="relative">
-                  <Search aria-hidden className="pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
-                  <Input
-                    value={filters.q}
-                    onChange={(e) => set("q")(e.target.value)}
-                    placeholder="ID, title or requestor"
-                    className="h-8 w-56 pl-8"
-                    data-testid="requests-search"
-                  />
-                </span>
-              </label>
-              <FilterSelect
-                label="Type"
-                value={filters.domain}
-                onChange={set("domain")}
-                testid="requests-filter-domain"
-                options={config.domains.map((d) => ({ value: d.id, label: d.label }))}
-              />
-              <FilterSelect
-                label="Country"
-                value={filters.country}
-                onChange={set("country")}
-                testid="requests-filter-country"
-                options={COUNTRIES.map((c) => ({ value: c.code, label: c.name }))}
-              />
-              <FilterSelect
-                label="Status"
-                value={filters.status}
-                onChange={set("status")}
-                testid="requests-filter-status"
-                options={REQUEST_STATUSES.map((s) => ({ value: s, label: statusMeta(s).label }))}
-              />
-              <FilterSelect label="BU" value={filters.bu} onChange={set("bu")} testid="requests-filter-bu" options={buOptions} />
-              {filtersOn ? (
+          <div className="flex min-w-0 flex-1 items-center justify-end gap-x-4">
+            {tab === "mine" ? (
+              <p className="min-w-0 text-right text-[0.8125rem] leading-5 text-muted-foreground">
+                {me ? `Requests raised by ${me.name}.` : null} Switch persona in the top bar to see someone else&apos;s.
+              </p>
+            ) : null}
+            <div role="group" aria-label="View" className="inline-flex h-8 shrink-0 items-center gap-0.5 rounded-md border border-border bg-canvas p-0.5">
+              {VIEWS.map(({ id, label, icon: Icon }) => (
                 <button
+                  key={id}
                   type="button"
-                  onClick={() => setFilters(NO_FILTERS)}
-                  className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "h-8")}
-                  data-testid="requests-clear-filters"
+                  aria-pressed={view === id}
+                  onClick={() => chooseView(id)}
+                  data-testid={`requests-view-${id}`}
+                  className={cn(
+                    "inline-flex h-full items-center gap-1.5 rounded-sm border px-2.5 text-sm font-medium transition-colors outline-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-ring",
+                    view === id ? "border-border-strong bg-card text-foreground" : "border-transparent text-muted-foreground hover:text-foreground",
+                  )}
                 >
-                  <X aria-hidden />
-                  Clear
+                  <Icon aria-hidden className="size-4" />
+                  {label}
                 </button>
-              ) : null}
+              ))}
             </div>
-          ) : (
-            <p className="text-sm text-muted-foreground">
-              {me ? `Requests raised by ${me.name}.` : null} Switch persona in the top bar to see someone else&apos;s.
-            </p>
-          )}
+          </div>
         </div>
 
-        <div className="overflow-hidden rounded-b-xl border bg-card shadow-raised">
+        {tab === "all" ? (
+          <div className="flex flex-wrap items-end gap-2.5 border-b border-border px-4 pt-2.5 pb-3">
+            <label className="flex min-w-0 flex-col gap-1">
+              <span className="text-xs text-muted-foreground">Search</span>
+              <span className="relative">
+                <Search aria-hidden className="pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  value={filters.q}
+                  onChange={(e) => set("q")(e.target.value)}
+                  placeholder="ID, title or requestor"
+                  className="h-8 w-56 pl-8"
+                  data-testid="requests-search"
+                />
+              </span>
+            </label>
+            <FilterSelect
+              label="Type"
+              value={filters.domain}
+              onChange={set("domain")}
+              testid="requests-filter-domain"
+              options={config.domains.map((d) => ({ value: d.id, label: d.label }))}
+            />
+            <FilterSelect
+              label="Country"
+              value={filters.country}
+              onChange={set("country")}
+              testid="requests-filter-country"
+              options={COUNTRIES.map((c) => ({ value: c.code, label: c.name }))}
+            />
+            <FilterSelect
+              label="Status"
+              value={filters.status}
+              onChange={set("status")}
+              testid="requests-filter-status"
+              options={REQUEST_STATUSES.map((s) => ({ value: s, label: statusMeta(s).label }))}
+            />
+            <FilterSelect label="BU" value={filters.bu} onChange={set("bu")} testid="requests-filter-bu" options={buOptions} />
+            {filtersOn ? (
+              <button
+                type="button"
+                onClick={() => setFilters(NO_FILTERS)}
+                className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "h-8")}
+                data-testid="requests-clear-filters"
+              >
+                <X aria-hidden />
+                Clear
+              </button>
+            ) : null}
+          </div>
+        ) : null}
+
+        <div>
           {!hydrated ? (
             <div className="space-y-2 p-4">
               {Array.from({ length: 6 }, (_, i) => (
@@ -395,10 +444,12 @@ export function RequestsWorkspace() {
                 }
               />
             )
+          ) : view === "board" ? (
+            <StageBoard rows={rows} now={now} demandMap={demandMap} />
           ) : (
             <Table data-testid="requests-table">
               <TableHeader>
-                <TableRow className="bg-muted/40 hover:bg-muted/40">
+                <TableRow className="hover:bg-transparent">
                   <TableHead className="pl-4">Request</TableHead>
                   <TableHead>Type</TableHead>
                   <TableHead>Entity</TableHead>
@@ -419,7 +470,7 @@ export function RequestsWorkspace() {
             </Table>
           )}
           {hydrated && rows.length > 0 ? (
-            <p className="border-t border-border px-4 py-2 text-xs text-muted-foreground">
+            <p className="border-t border-border px-4 py-2.5 text-xs leading-4 text-subtle">
               {rows.length} request{rows.length === 1 ? "" : "s"} · age in business days (Mon–Fri, SGT) on the simulated clock · synthetic,
               illustrative data
             </p>

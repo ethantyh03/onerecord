@@ -53,24 +53,26 @@ function DtwGrid({
   canSee: boolean;
   canDownload: boolean;
 }) {
-  const gutter = "sticky left-0 z-10 w-10 min-w-10 border-r bg-muted px-2 text-center text-[0.6875rem] font-medium text-muted-foreground";
-  const cell = "border-r border-b px-2.5 py-1.5 whitespace-nowrap";
+  const gutter = "sticky left-0 z-10 w-10 min-w-10 border-r border-border-strong bg-secondary px-2 text-center text-xs font-normal text-subtle";
+  const cell = "border-r border-b border-border px-2.5 py-1.5 whitespace-nowrap";
   const masked = (h: string) => !canSee && sensitive.has(h);
   // Wide templates (OITM has 20+ columns) scroll sideways: fade the right edge until the user reaches the end.
   const wide = file.headers.length > 6;
   const [atEnd, setAtEnd] = useState(false);
 
   return (
-    <div className="overflow-hidden rounded-lg border">
-      <div className="flex flex-wrap items-center justify-between gap-2 border-b bg-muted/60 px-3 py-2">
-        <div className="flex items-center gap-2">
-          <FileSpreadsheet aria-hidden className="size-4 text-ok-ink" />
-          <code className="font-mono text-[0.8125rem] font-semibold text-foreground">{file.fileName}</code>
-          <span className="text-xs text-muted-foreground">
+    <div>
+      <div className="flex min-h-10 flex-wrap items-center justify-between gap-2 pb-2">
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+          <FileSpreadsheet aria-hidden className="size-4 text-subtle" />
+          <span className="text-sm">
+            <code className="mono-id font-medium text-foreground">{file.fileName}</code>
+          </span>
+          <span className="num text-xs text-subtle">
             {file.headers.length} columns · {file.rows.length} data row{file.rows.length === 1 ? "" : "s"}
           </span>
           {wide ? (
-            <span className="inline-flex items-center gap-1 rounded-full border bg-card px-2 py-px text-[0.6875rem] font-medium text-secondary-foreground">
+            <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
               Scroll for all {file.headers.length} columns
               <ArrowRight aria-hidden className="size-3" />
             </span>
@@ -86,7 +88,7 @@ function DtwGrid({
           Download CSV
         </Button>
       </div>
-      <div className="relative">
+      <div className="relative overflow-hidden rounded-sm border border-border-strong">
       <div
         className="overflow-x-auto"
         onScroll={
@@ -98,34 +100,35 @@ function DtwGrid({
             : undefined
         }
       >
-        <table className="border-separate border-spacing-0 font-mono text-[0.75rem]">
+        <table className="border-separate border-spacing-0 font-mono text-[0.75rem] [font-variant-ligatures:none]">
           <thead>
             <tr>
               <th className={cn(gutter, "border-b")} aria-label="Row" />
               {file.headers.map((_, i) => (
-                <th key={i} className={cn(cell, "bg-muted py-1 text-center text-[0.6875rem] font-medium text-muted-foreground")}>
+                <th key={i} className={cn(cell, "bg-secondary py-1 text-center text-xs font-normal text-subtle")}>
                   {columnLetter(i)}
                 </th>
               ))}
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <th scope="row" className={cn(gutter, "border-b bg-primary-soft text-accent-foreground")} title="Row 1: DI/Service Layer property names">
+            {/* The two DTW header rows: a step lighter than the data, ruled off from it, numbered like the legend. */}
+            <tr data-dtw-header="1">
+              <th scope="row" className={cn(gutter, "border-b bg-foreground/[0.14] font-semibold text-foreground")} title="Row 1: DI/Service Layer property names">
                 1
               </th>
               {file.headers.map((h, i) => (
-                <td key={i} className={cn(cell, "bg-primary-soft font-semibold text-accent-foreground")}>
+                <td key={i} className={cn(cell, "bg-foreground/[0.09] font-semibold text-foreground")}>
                   {h}
                 </td>
               ))}
             </tr>
-            <tr>
-              <th scope="row" className={cn(gutter, "border-b bg-warn-soft text-warn-ink")} title="Row 2: database column names">
+            <tr data-dtw-header="2">
+              <th scope="row" className={cn(gutter, "border-b-2 border-b-subtle bg-foreground/[0.14] font-semibold text-foreground")} title="Row 2: database column names">
                 2
               </th>
               {file.dbHeaders.map((h, i) => (
-                <td key={i} className={cn(cell, "bg-warn-soft text-warn-ink")}>
+                <td key={i} className={cn(cell, "border-b-2 border-b-subtle bg-foreground/[0.05] text-secondary-foreground italic")}>
                   {h}
                 </td>
               ))}
@@ -156,13 +159,26 @@ function DtwGrid({
         <div
           aria-hidden
           className={cn(
-            "pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-card via-card/70 to-transparent transition-opacity duration-300",
+            // A scroll edge, not decoration: cut-off columns fade out until the user reaches the last one.
+            "pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-card to-transparent transition-opacity duration-300",
             atEnd ? "opacity-0" : "opacity-100",
           )}
         />
       ) : null}
       </div>
     </div>
+  );
+}
+
+/** The legend's key for a header row: the same numbered gutter cell the grid uses, so it reads as a key, not a checkbox. */
+function RowKey({ n }: { n: 1 | 2 }) {
+  return (
+    <span
+      aria-hidden
+      className="inline-flex h-5 min-w-6 items-center justify-center rounded-[2px] bg-foreground/[0.14] px-1 font-mono text-xs font-semibold text-foreground"
+    >
+      {n}
+    </span>
   );
 }
 
@@ -179,14 +195,14 @@ export function DtwPreview({
   canDownload: boolean;
 }) {
   return (
-    <div data-testid="mdm-dtw-preview" className="space-y-3">
+    <div data-testid="mdm-dtw-preview" className="space-y-5">
       <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-secondary-foreground">
         <span className="inline-flex items-center gap-1.5">
-          <span aria-hidden className="size-3 rounded-sm border border-primary/30 bg-primary-soft" />
+          <RowKey n={1} />
           <strong className="font-semibold text-foreground">Row 1:</strong> DI/Service Layer property names
         </span>
         <span className="inline-flex items-center gap-1.5">
-          <span aria-hidden className="size-3 rounded-sm border border-warn/50 bg-warn-soft" />
+          <RowKey n={2} />
           <strong className="font-semibold text-foreground">Row 2:</strong> database column names (per DTW template convention;
           confirm against the installed DTW Templates folder)
         </span>

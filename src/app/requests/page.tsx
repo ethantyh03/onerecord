@@ -10,14 +10,18 @@ export const metadata: Metadata = {
 
 function RequestsLoading() {
   return (
-    <div className="mx-auto w-full max-w-[1320px] space-y-5" aria-busy="true" aria-label="Loading requests">
+    <div className="w-full space-y-5" aria-busy="true" aria-label="Loading requests">
       <Skeleton className="h-9 w-64" />
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-6 sm:grid-cols-2 lg:flex">
         {Array.from({ length: 4 }, (_, i) => (
-          <Skeleton key={i} className="h-32 rounded-xl" />
+          <div key={i} className="min-w-0 space-y-3 border-l border-border-strong pl-4 lg:flex-1 lg:first:flex-[1.45]">
+            <Skeleton className="h-4 w-32" />
+            <Skeleton className="h-9 w-28" />
+            <Skeleton className="h-4 w-48 max-w-full" />
+          </div>
         ))}
       </div>
-      <Skeleton className="h-[420px] w-full rounded-xl" />
+      <Skeleton className="h-[420px] w-full" />
     </div>
   );
 }

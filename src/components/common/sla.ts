@@ -1,5 +1,6 @@
 import type { ApprovalStep, SlaConfig } from "@/lib/types";
 import { formatDays } from "./format";
+import type { StateTone } from "./glyph";
 
 export type SlaTone = "idle" | "ok" | "warn" | "stuck" | "paused" | "done";
 
@@ -81,3 +82,17 @@ export function readSla(step: ApprovalStep, elapsedBd: number | null, sla: SlaCo
       return { tone: "idle", label: "—", detail: "" };
   }
 }
+
+/**
+ * The state square for each SLA reading. Colour only where the clock is a risk: on track and paused
+ * are grey, a reminder due is amber, overdue / escalated is coral, a decided step is green, a step
+ * that has not started is hollow grey.
+ */
+export const SLA_GLYPH: Record<SlaTone, StateTone> = {
+  idle: "waiting",
+  ok: "neutral",
+  warn: "warn",
+  stuck: "stuck",
+  paused: "neutral",
+  done: "ok",
+};

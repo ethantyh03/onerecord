@@ -1,12 +1,11 @@
 "use client";
 
 import { useMemo } from "react";
-import { PackageCheck, ShoppingCart } from "lucide-react";
 import type { MdmRequest } from "@/lib/types";
 import { useSandbox } from "@/lib/store";
 import { selectPrsForRequest, useNow } from "@/lib/selectors";
 import { cn } from "@/lib/utils";
-import { formatSgd } from "@/components/common";
+import { PanelFootnote, StatusText, formatSgd } from "@/components/common";
 
 const DAY_MS = 86_400_000;
 
@@ -24,31 +23,31 @@ export function BlockedOrdersCard({ request }: { request: MdmRequest }) {
   const nowMs = Date.parse(now);
 
   return (
-    <section data-testid="blocked-orders" className="overflow-hidden rounded-xl border bg-card shadow-raised" aria-labelledby="blocked-heading">
-      <span aria-hidden className={cn("block h-1", blocked.length ? "bg-stuck" : linked.length ? "bg-ok" : "bg-border")} />
-      <div className="px-5 pt-4 pb-3">
-        <h2 id="blocked-heading" className="flex items-center gap-2 text-base font-semibold text-foreground">
-          <ShoppingCart aria-hidden className="size-4 text-muted-foreground" />
+    <section data-testid="blocked-orders" className="panel overflow-hidden" aria-labelledby="blocked-heading">
+      <div className="panel-header">
+        <h2 id="blocked-heading" className="panel-title">
           Waiting on this record
         </h2>
+      </div>
+      <div className="px-4 pt-3.5 pb-3.5">
         {linked.length === 0 ? (
-          <p className="mt-2 text-sm text-muted-foreground">No customer orders are waiting on this record.</p>
+          <p className="text-sm text-muted-foreground">No customer orders are waiting on this record.</p>
         ) : blocked.length ? (
           <>
-            <p className="num mt-2 text-[2rem] leading-none font-semibold tracking-[-0.025em] text-stuck" data-testid="blocked-orders-total">
+            <p className="num font-wide text-[2.25rem] leading-none font-semibold text-stuck" data-testid="blocked-orders-total">
               {formatSgd(blockedSgd)}
             </p>
-            <p className="mt-1.5 text-sm text-secondary-foreground">
+            <p className="mt-2.5 text-sm leading-snug text-secondary-foreground">
               of customer orders ({blocked.length} purchase request{blocked.length === 1 ? "" : "s"}) can&apos;t become sales orders until this
               record is live in SAP B1.
             </p>
           </>
         ) : (
           <>
-            <p className="num mt-2 text-[2rem] leading-none font-semibold tracking-[-0.025em] text-ok-ink" data-testid="blocked-orders-total">
+            <p className="num font-wide text-[2.25rem] leading-none font-semibold text-ok-ink" data-testid="blocked-orders-total">
               {formatSgd(releasedSgd)}
             </p>
-            <p className="mt-1.5 text-sm text-secondary-foreground">
+            <p className="mt-2.5 text-sm leading-snug text-secondary-foreground">
               of customer orders released when the record went live. They can now be converted.
             </p>
           </>
@@ -61,11 +60,11 @@ export function BlockedOrdersCard({ request }: { request: MdmRequest }) {
             const isBlocked = p.status === "blocked";
             const days = Math.max(0, Math.floor((nowMs - Date.parse(p.createdAt)) / DAY_MS));
             return (
-              <li key={p.id} className="grid grid-cols-[minmax(0,1fr)_auto] gap-x-3 px-5 py-2.5" data-testid={`blocked-pr-${p.id}`}>
+              <li key={p.id} className="grid grid-cols-[minmax(0,1fr)_auto] gap-x-3 px-4 py-2.5" data-testid={`blocked-pr-${p.id}`}>
                 <div className="min-w-0">
                   <p className="truncate text-sm font-medium text-foreground">{p.customerName}</p>
                   <p className="truncate text-xs text-muted-foreground">
-                    <span className="num font-mono">{p.id}</span> · {p.itemName}
+                    <span className="mono-id">{p.id}</span> · {p.itemName}
                   </p>
                 </div>
                 <div className="text-right">
@@ -76,10 +75,9 @@ export function BlockedOrdersCard({ request }: { request: MdmRequest }) {
                         blocked {days} day{days === 1 ? "" : "s"}
                       </span>
                     ) : (
-                      <span className="inline-flex items-center gap-1 text-ok-ink">
-                        <PackageCheck aria-hidden className="size-3" />
+                      <StatusText tone="ok" size="sm">
                         released
-                      </span>
+                      </StatusText>
                     )}
                   </p>
                 </div>
@@ -89,7 +87,7 @@ export function BlockedOrdersCard({ request }: { request: MdmRequest }) {
         </ul>
       ) : null}
       {linked.length ? (
-        <p className="border-t border-border px-5 py-2 text-xs text-muted-foreground">Synthetic, illustrative orders.</p>
+        <PanelFootnote>Synthetic, illustrative orders.</PanelFootnote>
       ) : null}
     </section>
   );

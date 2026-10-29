@@ -172,7 +172,60 @@ export function FieldLabel({ htmlFor, children, hint }: { htmlFor?: string; chil
   );
 }
 
-/** Small rounded chip used for roles, modes and reasons. */
+/** A tab's own heading row: section title (panel-title scale) and one line of purpose, controls on the right. */
+export function SectionHeader({ title, description, actions }: { title: ReactNode; description?: ReactNode; actions?: ReactNode }) {
+  return (
+    <div className="flex flex-wrap items-end justify-between gap-3">
+      <div className="min-w-0">
+        <h2 className="panel-title">{title}</h2>
+        {description ? <p className="mt-0.5 text-sm leading-5 text-muted-foreground">{description}</p> : null}
+      </div>
+      {actions}
+    </div>
+  );
+}
+
+/**
+ * Request-type switcher (Item / Customer / Vendor ...): a segmented control in a canvas well, the selected
+ * segment raised. role="tab" keeps the existing test hooks and keyboard semantics.
+ */
+export function DomainSwitch({
+  domains,
+  value,
+  onChange,
+  testIdPrefix,
+}: {
+  domains: { id: string; label: string }[];
+  value: string;
+  onChange: (id: string) => void;
+  testIdPrefix: string;
+}) {
+  return (
+    <div className="inline-flex max-w-full flex-wrap gap-0.5 rounded-lg border border-border bg-canvas p-0.5" role="tablist" aria-label="Request type">
+      {domains.map((d) => {
+        const on = d.id === value;
+        return (
+          <button
+            key={d.id}
+            type="button"
+            role="tab"
+            aria-selected={on}
+            onClick={() => onChange(d.id)}
+            data-testid={`${testIdPrefix}-${d.id}`}
+            className={cn(
+              "h-7 rounded-md px-3 text-[0.8125rem] font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-ring",
+              on ? "bg-secondary text-foreground ring-1 ring-border-strong" : "text-muted-foreground hover:bg-secondary/50 hover:text-foreground",
+            )}
+          >
+            {d.label}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+/** Small chip used for roles, modes and reasons. */
 export function Chip({
   children,
   tone = "neutral",
@@ -183,8 +236,8 @@ export function Chip({
   className?: string;
 }) {
   const tones: Record<string, string> = {
-    neutral: "border-border bg-muted text-secondary-foreground",
-    brand: "border-primary/20 bg-primary-soft text-primary",
+    neutral: "border-border-strong bg-secondary text-secondary-foreground",
+    brand: "border-foreground/25 bg-primary-soft text-foreground",
     warn: "border-warn/30 bg-warn-soft text-warn-ink",
     ok: "border-ok/30 bg-ok-soft text-ok-ink",
     stuck: "border-stuck/30 bg-stuck-soft text-stuck-ink",
@@ -193,7 +246,7 @@ export function Chip({
   return (
     <span
       className={cn(
-        "inline-flex h-5 max-w-full items-center gap-1 rounded-full border px-2 text-[0.6875rem] font-medium whitespace-nowrap",
+        "inline-flex h-5 max-w-full items-center gap-1 rounded-sm border px-1.5 text-xs font-medium whitespace-nowrap",
         tones[tone],
         className,
       )}

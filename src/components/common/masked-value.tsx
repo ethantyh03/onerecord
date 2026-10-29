@@ -50,7 +50,7 @@ export function MaskedValue({ value, requestId, fieldKey, className }: MaskedVal
     <span className={cn("inline-flex items-center gap-1.5 align-middle", className)}>
       <span
         className={cn(
-          "num font-mono text-[0.8125rem] tracking-tight",
+          "font-mono text-[0.8125rem] tracking-normal tabular-nums",
           revealed ? "text-foreground" : "text-muted-foreground",
         )}
         aria-label={revealed ? undefined : "Masked value"}
@@ -65,7 +65,7 @@ export function MaskedValue({ value, requestId, fieldKey, className }: MaskedVal
               <button
                 type="button"
                 onClick={revealed ? () => setRevealedFor(null) : reveal}
-                className="inline-flex size-6 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:outline-none"
+                className="inline-flex size-6 items-center justify-center rounded-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-ring"
                 aria-label={revealed ? "Hide value" : "Reveal value (recorded in the audit trail)"}
               />
             }
@@ -80,7 +80,7 @@ export function MaskedValue({ value, requestId, fieldKey, className }: MaskedVal
             render={
               <span
                 tabIndex={0}
-                className="inline-flex size-6 items-center justify-center rounded-md text-muted-foreground/80 outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+                className="inline-flex size-6 items-center justify-center rounded-sm text-subtle outline-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-ring"
                 aria-label="Visible to Finance & MDM only"
               />
             }

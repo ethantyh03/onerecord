@@ -1,4 +1,3 @@
-import { useId } from "react";
 import { cn } from "@/lib/utils";
 
 export interface SparklineProps {
@@ -19,7 +18,6 @@ const W = 120;
 
 /** 24-month trend line. Fixed internal width, stretches to its container; strokes don't scale. */
 export function Sparkline({ values, splitAt, color = "var(--foreground)", area = false, height = 28, className, label }: SparklineProps) {
-  const gradId = useId();
   if (values.length < 2) return <div style={{ height }} className={className} />;
   const max = Math.max(...values);
   const min = Math.min(0, ...values);
@@ -48,17 +46,7 @@ export function Sparkline({ values, splitAt, color = "var(--foreground)", area =
       className={cn("block w-full overflow-visible", className)}
       style={{ height }}
     >
-      {area ? (
-        <>
-          <defs>
-            <linearGradient id={gradId} x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor={color} stopOpacity={0.16} />
-              <stop offset="100%" stopColor={color} stopOpacity={0} />
-            </linearGradient>
-          </defs>
-          <path d={areaPath} fill={`url(#${gradId})`} stroke="none" />
-        </>
-      ) : null}
+      {area ? <path d={areaPath} fill={color} fillOpacity={0.12} stroke="none" /> : null}
       {split ? (
         <path
           d={path(0, split - 1)}

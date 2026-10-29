@@ -5,6 +5,7 @@ import { Inbox } from "lucide-react";
 import { OutlookMessage } from "@/components/mocks/OutlookMessage";
 import { MS_FONT } from "@/components/mocks/shared";
 import { useSandbox } from "@/lib/store";
+import { LightScope } from "@/components/common";
 import type { AppNotification, ApprovalStep, MdmRequest, Person } from "@/lib/types";
 
 /**
@@ -37,7 +38,8 @@ export function OutlookView({ request, step, me }: { request: MdmRequest; step: 
   };
 
   return (
-    <div className="overflow-hidden rounded-xl border border-[#d6d6d6] bg-white shadow-float" style={{ fontFamily: MS_FONT }}>
+    // A look-alike of a real Microsoft product: it keeps its native light look inside the dark console.
+    <LightScope className="overflow-hidden rounded-xl border border-[#d6d6d6] bg-white text-[#242424]" style={{ fontFamily: MS_FONT }}>
       <div className="flex items-center gap-2 bg-[#0f6cbd] px-3 py-2 text-white">
         <Inbox className="size-4" aria-hidden="true" />
         <span className="text-[14px] font-semibold tracking-tight">Outlook</span>
@@ -45,6 +47,6 @@ export function OutlookView({ request, step, me }: { request: MdmRequest; step: 
         <span className="ml-auto rounded-full bg-white/90 px-2 py-px text-[11px] font-semibold text-[#5c4300]">Simulated</span>
       </div>
       <OutlookMessage key={message.id} notification={message} markReadOnView={Boolean(stored)} className="min-h-[520px]" />
-    </div>
+    </LightScope>
   );
 }

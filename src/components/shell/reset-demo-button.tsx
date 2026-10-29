@@ -32,7 +32,7 @@ export function ResetDemoButton() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger
-        render={<Button variant="ghost" size="lg" className="h-10 gap-1.5 px-3 text-muted-foreground hover:text-foreground" />}
+        render={<Button variant="ghost" size="lg" className="h-9 gap-1.5 px-2.5 text-muted-foreground hover:text-foreground" />}
       >
         <RotateCcw aria-hidden className="size-4" />
         <span className="hidden xl:inline">Reset demo</span>

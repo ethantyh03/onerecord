@@ -2,13 +2,20 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-@custom-variant dark (&:is(.dark *));
+/*
+ * dark: utilities apply under html.dark, but never inside a .theme-light subtree (the Microsoft 365 /
+ * SAP Business One look-alikes and /pitch/* keep their native light look inside the dark console).
+ */
+@custom-variant dark (&:where(.dark, .dark *):not(:where(.theme-light, .theme-light *)));
 
 /*
- * OneRecord design tokens.
- * Brand: deep ink teal. Semantics: stuck demand / at risk = coral red, SLA warning = amber,
- * success = green, Phase 2 = muted violet. Every token is exposed as a Tailwind colour
- * (bg-stuck, text-warn-ink, border-phase2 ...), so every page inherits the look.
+ * OneRecord design tokens: an operations console for master data.
+ * Dark near-black monochrome is the default (html.dark); light is the bright-room fallback (:root) and is
+ * re-declared by .theme-light so a subtree always renders light.
+ * Colour is state, never decoration: primary (light grey in dark) = buttons and active nav, signal (teal)
+ * = live data only (request arcs, the OneRecord path, the duplicate lock-on, chart series 1) and the focus
+ * ring, coral (stuck) = money waiting, amber (warn) = clock risk, green (ok) = done, violet (phase2) = not
+ * built yet. Everything else is grey. Every token is a Tailwind colour (bg-stuck, text-warn-ink, text-subtle ...).
  */
 @theme inline {
   --font-sans: var(--font-ui), ui-sans-serif, system-ui, sans-serif;
@@ -29,6 +36,7 @@
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
+  --color-subtle: var(--subtle);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
@@ -36,6 +44,8 @@
   --color-border-strong: var(--border-strong);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-signal: var(--signal);
+  --color-signal-soft: var(--signal-soft);
 
   --color-stuck: var(--stuck);
   --color-stuck-foreground: var(--stuck-foreground);
@@ -71,21 +81,37 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+  /* Radii by role, not one radius for everything: chips 3px (sm), controls 4px (md, lg),
+     panels 6px (xl, 2xl). Resolved per element, so /pitch/* (.pitch-legacy) keeps its original radii. */
+  --radius-sm: var(--r-sm);
+  --radius-md: var(--r-md);
+  --radius-lg: var(--r-lg);
+  --radius-xl: var(--r-xl);
+  --radius-2xl: var(--r-2xl);
+  --radius-3xl: var(--r-3xl);
+  --radius-4xl: var(--r-4xl);
 
-  --shadow-raised: 0 1px 0 oklch(0.26 0.03 220 / 4%), 0 1px 3px oklch(0.26 0.03 220 / 6%);
-  --shadow-float: 0 1px 2px oklch(0.26 0.03 220 / 6%), 0 12px 32px -12px oklch(0.26 0.03 220 / 22%);
+  /* Panels have no drop shadow (depth = surface steps + hairlines). shadow-raised is kept as a
+     no-op so existing markup inherits the flat look; shadow-float is the one crisp overlay shadow. */
+  --shadow-raised: var(--elev-raised);
+  --shadow-float: var(--elev-float);
 }
 
+/* ---------- Shape (both themes) ---------- */
 :root {
-  --radius: 0.5rem;
+  --radius: 0.375rem;
+  --r-sm: 3px;
+  --r-md: 4px;
+  --r-lg: 4px;
+  --r-xl: 6px;
+  --r-2xl: 6px;
+  --r-3xl: 8px;
+  --r-4xl: 10px;
+}
 
+/* ---------- Light: the bright-room fallback, and every .theme-light subtree ---------- */
+:root,
+.theme-light {
   /* Surfaces: cool, faintly mineral whites */
   --background: oklch(0.976 0.004 210);
   --canvas: oklch(0.962 0.006 210);
@@ -104,16 +130,22 @@
   --secondary-foreground: oklch(0.3 0.035 220);
   --muted: oklch(0.952 0.006 210);
   --muted-foreground: oklch(0.49 0.022 222);
+  --subtle: oklch(0.52 0.02 222);
   --accent: oklch(0.945 0.024 200);
   --accent-foreground: oklch(0.32 0.06 212);
   --destructive: oklch(0.57 0.2 25);
 
   --border: oklch(0.905 0.009 215);
   --border-strong: oklch(0.82 0.014 215);
-  --input: oklch(0.88 0.011 215);
+  /* Form-control borders: >= 3:1 on white (WCAG 1.4.11), so empty fields still read on a projector */
+  --input: #8a9599;
   --ring: oklch(0.56 0.09 208);
+  --signal: oklch(0.47 0.08 210);
+  --signal-soft: oklch(0.95 0.022 205);
 
   /* Semantics */
+  /* Kept at 0.6 here because /pitch/* (.theme-light) must render exactly as exported; the app's own
+     light theme darkens it to 0.55 in :root:not(.dark) below, for >= 4.5:1 on small figures. */
   --stuck: oklch(0.6 0.19 25);
   --stuck-foreground: oklch(0.99 0.005 25);
   --stuck-soft: oklch(0.962 0.024 22);
@@ -151,61 +183,119 @@
   --sidebar-accent-foreground: oklch(0.98 0.01 200);
   --sidebar-border: oklch(1 0 0 / 9%);
   --sidebar-ring: oklch(0.86 0.085 188);
+
+  /* Utility inks */
+  --grid-dot: oklch(0.42 0.075 212 / 14%);
+  --selection: oklch(0.86 0.085 188 / 55%);
+  --elev-raised: 0 0 #0000;
+  --elev-float: 0 1px 2px oklch(0.26 0.03 220 / 8%), 0 12px 32px -12px oklch(0.26 0.03 220 / 26%);
 }
 
+.theme-light {
+  color-scheme: light;
+  color: var(--foreground);
+}
+
+/*
+ * The app's own light theme (html without .dark): coral one step darker, so small money figures
+ * (S$70,000 at 14px) clear 4.5:1 on white. .theme-light subtrees (/pitch/*, the look-alikes) keep the
+ * original value above, so the exported pitch frames render exactly as before.
+ */
+:root:not(.dark) {
+  --stuck: oklch(0.55 0.19 25);
+}
+
+/* ---------- Dark console (default): near-black monochrome (client feedback #2) ---------- */
 .dark {
-  --background: oklch(0.2 0.02 222);
-  --canvas: oklch(0.18 0.02 222);
-  --foreground: oklch(0.95 0.008 210);
-  --card: oklch(0.235 0.022 222);
-  --card-foreground: oklch(0.95 0.008 210);
-  --popover: oklch(0.25 0.022 222);
-  --popover-foreground: oklch(0.95 0.008 210);
-  --primary: oklch(0.78 0.09 195);
-  --primary-foreground: oklch(0.22 0.04 216);
-  --primary-soft: oklch(0.3 0.04 210);
-  --secondary: oklch(0.29 0.02 222);
-  --secondary-foreground: oklch(0.92 0.01 210);
-  --muted: oklch(0.28 0.02 222);
-  --muted-foreground: oklch(0.72 0.02 215);
-  --accent: oklch(0.31 0.035 210);
-  --accent-foreground: oklch(0.94 0.02 200);
-  --destructive: oklch(0.7 0.17 25);
-  --border: oklch(1 0 0 / 10%);
-  --border-strong: oklch(1 0 0 / 18%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.7 0.09 200);
-  --stuck: oklch(0.7 0.17 25);
-  --stuck-foreground: oklch(0.2 0.03 25);
-  --stuck-soft: oklch(0.3 0.06 25);
-  --stuck-ink: oklch(0.8 0.12 25);
-  --warn: oklch(0.8 0.14 75);
-  --warn-foreground: oklch(0.22 0.04 60);
-  --warn-soft: oklch(0.31 0.05 75);
-  --warn-ink: oklch(0.85 0.12 80);
-  --ok: oklch(0.72 0.13 158);
-  --ok-foreground: oklch(0.2 0.03 158);
-  --ok-soft: oklch(0.3 0.05 158);
-  --ok-ink: oklch(0.82 0.11 158);
-  --phase2: oklch(0.72 0.1 295);
-  --phase2-soft: oklch(0.3 0.04 295);
-  --phase2-ink: oklch(0.82 0.08 295);
-  --teams: oklch(0.68 0.13 277);
-  --outlook: oklch(0.68 0.12 252);
-  --chart-1: oklch(0.75 0.09 195);
-  --chart-2: oklch(0.72 0.16 28);
-  --chart-3: oklch(0.8 0.13 75);
-  --chart-4: oklch(0.72 0.1 295);
-  --chart-5: oklch(0.7 0.03 230);
-  --sidebar: oklch(0.17 0.025 220);
-  --sidebar-foreground: oklch(0.93 0.015 205);
-  --sidebar-muted: oklch(0.68 0.025 210);
-  --sidebar-primary: oklch(0.82 0.085 188);
-  --sidebar-primary-foreground: oklch(0.2 0.04 216);
-  --sidebar-accent: oklch(0.25 0.035 216);
-  --sidebar-accent-foreground: oklch(0.98 0.01 200);
-  --sidebar-border: oklch(1 0 0 / 8%);
-  --sidebar-ring: oklch(0.82 0.085 188);
+  color-scheme: dark;
+
+  --background: #0c0d0f;
+  --canvas: #060708;
+  --foreground: #e6e7e9;
+  --card: #131518;
+  --card-foreground: #e6e7e9;
+  --popover: #191b1f;
+  --popover-foreground: #e6e7e9;
+
+  /* Primary: monochrome light grey (buttons, active nav). Teal lives in --signal, for live data only. */
+  --primary: #e6e7e9;
+  --primary-foreground: #0c0d0f;
+  --primary-soft: #1f2226;
+
+  /* Raised: hover rows, selected items, inputs */
+  --secondary: #1b1e22;
+  --secondary-foreground: #c8cbcf;
+  --muted: #1b1e22;
+  --muted-foreground: #a0a5ab;
+  --subtle: #81878e;
+  --accent: #22262a;
+  --accent-foreground: #e6e7e9;
+  --destructive: #f06a5e;
+
+  --border: #24272b;
+  --border-strong: #33373c;
+  /* Form-control borders: >= 3:1 on the panel (#131518), so empty fields still read on a projector */
+  --input: #5f646a;
+  --ring: #67b6c1;
+  --signal: #67b6c1;
+  --signal-soft: #15282b;
+
+  --stuck: #f07a62;
+  --stuck-foreground: #2a0d07;
+  --stuck-soft: #2e1c18;
+  --stuck-ink: #f5a391;
+  --warn: #e3aa4c;
+  --warn-foreground: #2a1c05;
+  --warn-soft: #2d2617;
+  --warn-ink: #edc77f;
+  --ok: #4db385;
+  --ok-foreground: #052015;
+  --ok-soft: #15271e;
+  --ok-ink: #86d2ae;
+  --phase2: #a193e0;
+  --phase2-soft: #211f30;
+  --phase2-ink: #c4baf0;
+
+  --teams: #7b83eb;
+  --outlook: #3a8ee6;
+
+  --chart-1: #67b6c1;
+  --chart-2: #f07a62;
+  --chart-3: #e3aa4c;
+  --chart-4: #a193e0;
+  --chart-5: #8a8f96;
+
+  --sidebar: #08090a;
+  --sidebar-foreground: #c9ccd0;
+  --sidebar-muted: #80868d;
+  --sidebar-primary: #e6e7e9;
+  --sidebar-primary-foreground: #0c0d0f;
+  --sidebar-accent: #16181b;
+  --sidebar-accent-foreground: #f0f1f2;
+  --sidebar-border: #1d2023;
+  --sidebar-ring: #67b6c1;
+
+  --grid-dot: rgb(160 165 171 / 11%);
+  --selection: rgb(103 182 193 / 28%);
+  --elev-raised: 0 0 #0000;
+  --elev-float: 0 18px 40px -12px rgb(2 6 10 / 72%), 0 2px 8px -2px rgb(2 6 10 / 55%);
+}
+
+/*
+ * /pitch/* was exported to the submitted PDF: it keeps the original radii and soft shadows.
+ * Applied by src/app/pitch/layout.tsx together with .theme-light and the original fonts.
+ */
+.pitch-legacy {
+  --radius: 0.5rem;
+  --r-sm: calc(0.5rem * 0.6);
+  --r-md: calc(0.5rem * 0.8);
+  --r-lg: 0.5rem;
+  --r-xl: calc(0.5rem * 1.4);
+  --r-2xl: calc(0.5rem * 1.8);
+  --r-3xl: calc(0.5rem * 2.2);
+  --r-4xl: calc(0.5rem * 2.6);
+  --elev-raised: 0 1px 0 oklch(0.26 0.03 220 / 4%), 0 1px 3px oklch(0.26 0.03 220 / 6%);
+  --elev-float: 0 1px 2px oklch(0.26 0.03 220 / 6%), 0 12px 32px -12px oklch(0.26 0.03 220 / 22%);
 }
 
 @layer base {
@@ -239,19 +329,73 @@
     @apply font-mono;
   }
   ::selection {
-    background: oklch(0.86 0.085 188 / 55%);
+    background: var(--selection);
   }
 }
 
-/* Lining numerals for figures. Not tabular-nums: Schibsted Grotesk's tnum feature also widens
-   "," "." and ":" to full figure width, which renders S$70,000 as "S$70 , 000" and 01:24 as "01 : 24". */
+/* Lining, tabular figures for numbers that change or line up (KPI values, table columns, counts). */
 @utility num {
-  font-variant-numeric: lining-nums;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+/* Semi-expanded width for page titles, panel titles and KPI figures (Archivo's wdth axis).
+   The wide grotesque is the vernacular of shipping labels and pallet tags. */
+@utility font-wide {
+  font-stretch: 112%;
+  letter-spacing: -0.01em;
+}
+
+/* Identifiers and machine values only (REQ-1042, C-SG-00017, tax IDs, SAP codes, field keys,
+   status-bar timestamps). Martian Mono is wide, so it sits at 0.9em of the surrounding text. */
+@utility mono-id {
+  font-family: var(--font-mono);
+  /* Never below the 12px meta floor: identifiers are what the audience reads. */
+  font-size: max(12px, 0.9em);
+  font-stretch: 100%;
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+  font-variant-ligatures: none;
+}
+
+/* A panel without the Card component: surface + hairline outline + 6px radius, no shadow. */
+@utility panel {
+  background-color: var(--card);
+  color: var(--card-foreground);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+}
+
+/* The panel header bar: title left, controls right, hairline under it. */
+@utility panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-height: 2.75rem;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Panel / section title: 15/20 semibold, semi-expanded, sentence case. */
+@utility panel-title {
+  font-size: 0.9375rem;
+  line-height: 1.25rem;
+  font-weight: 600;
+  font-stretch: 112%;
+  letter-spacing: -0.01em;
+  color: var(--foreground);
+}
+
+/* A well: the darkest surface, behind boards, maps and diagrams. */
+@utility well {
+  background-color: var(--canvas);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
 }
 
 /* Faint dot grid behind process diagrams (reads as a flow-designer canvas) */
 @utility bg-dot-grid {
-  background-image: radial-gradient(oklch(0.42 0.075 212 / 14%) 1px, transparent 1.3px);
+  background-image: radial-gradient(var(--grid-dot) 1px, transparent 1.3px);
   background-size: 18px 18px;
   background-position: -9px -9px;
 }
@@ -259,6 +403,16 @@
 @utility scrollbar-thin {
   scrollbar-width: thin;
   scrollbar-color: var(--border-strong) transparent;
+}
+
+/*
+ * Keyboard focus. Tailwind v4's `outline-none` sets --tw-outline-style: none, and `focus-visible:outline-2`
+ * only sets the width (its style is var(--tw-outline-style)), so the ring never showed. Unlayered, so it
+ * wins over the utilities: every control that asks for a focus-visible outline gets a solid one.
+ */
+[class*="focus-visible:outline-2"]:focus-visible,
+[class*="focus-visible:outline-1"]:focus-visible {
+  outline-style: solid;
 }
 
 @media (prefers-reduced-motion: reduce) {

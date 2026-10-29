@@ -19,7 +19,7 @@ import { useSandbox } from "@/lib/store";
 import { useApprovalActions } from "@/components/approvals/use-approval-actions";
 import type { AppNotification, ApprovalStep, MdmRequest } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { MS_FONT, MsAvatar, TEAMS, findPerson, formatAgo, usePeople, useSimNow } from "./shared";
+import { MS_FONT, MS_SCOPE, MS_TEXT, MsAvatar, TEAMS, findPerson, formatAgo, usePeople, useSimNow } from "./shared";
 import { TeamsApprovalCard } from "./TeamsApprovalCard";
 import { TeamsQuestionCard } from "./TeamsQuestionCard";
 
@@ -128,8 +128,8 @@ export function TeamsPanel({ personId, variant = "desktop", limit, className }: 
   return (
     <section
       aria-label={`Teams activity for ${owner?.name ?? "this user"}`}
-      className={cn("flex min-h-0 flex-col overflow-hidden text-[#242424]", mobile ? "bg-white" : "rounded-[8px] border border-[#e0e0e0] bg-[#f5f5f5]", className)}
-      style={{ fontFamily: MS_FONT }}
+      className={cn(MS_SCOPE, "flex min-h-0 flex-col overflow-hidden", mobile ? "bg-white" : "rounded-[8px] border border-[#e0e0e0] bg-[#f5f5f5]", className)}
+      style={{ fontFamily: MS_FONT, color: MS_TEXT }}
     >
       {mobile ? (
         <div className="flex items-center gap-2.5 border-b border-[#ebebeb] bg-white px-4 pt-2 pb-2.5">

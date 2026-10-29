@@ -34,7 +34,7 @@ function PersonRow({ person, current, does }: { person: Person; current: boolean
       <span className="flex min-w-0 flex-1 flex-col leading-tight">
         <span className="truncate text-sm font-medium text-foreground">
           {person.name}
-          {does ? <span className="font-normal text-primary"> · {does}</span> : null}
+          {does ? <span className="font-normal text-muted-foreground"> · {does}</span> : null}
         </span>
         <span className="truncate text-xs text-muted-foreground">{person.title}</span>
       </span>
@@ -76,31 +76,31 @@ export function PersonaSwitcher({ className }: { className?: string }) {
     <DropdownMenu>
       <DropdownMenuTrigger
         className={cn(
-          "group/persona flex h-12 max-w-[18rem] min-w-0 items-center gap-2.5 rounded-lg border border-transparent py-1 pr-2 pl-1 text-left outline-none transition-colors",
-          "hover:border-border hover:bg-muted/60 focus-visible:ring-3 focus-visible:ring-ring/40 data-popup-open:border-border data-popup-open:bg-muted/60",
+          "group/persona flex h-full max-w-[24rem] min-w-0 items-center gap-2.5 px-3 text-left outline-none transition-colors sm:px-4",
+          "hover:bg-secondary/70 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring data-popup-open:bg-secondary/70",
           className,
         )}
         aria-label={current ? `Viewing as ${current.name}. Switch persona` : "Choose a persona"}
       >
         <PersonAvatar person={current} size="md" away={current?.outOfOffice} />
         <span className="hidden min-w-0 flex-col leading-tight sm:flex">
-          <span className="text-[0.625rem] font-semibold tracking-[0.08em] text-muted-foreground uppercase">
-            Viewing as
+          <span className="text-xs text-subtle">Viewing as</span>
+          <span className="flex min-w-0 items-baseline gap-2">
+            <span className="shrink-0 text-sm font-semibold text-foreground">{current?.name ?? "Choose a persona"}</span>
+            <span className="hidden truncate text-xs text-muted-foreground xl:inline">{current?.title ?? ""}</span>
           </span>
-          <span className="truncate text-sm font-semibold text-foreground">{current?.name ?? "Choose a persona"}</span>
-          <span className="truncate text-xs text-muted-foreground">{current?.title ?? ""}</span>
         </span>
-        <ChevronsUpDown aria-hidden className="size-4 shrink-0 text-muted-foreground" />
+        <ChevronsUpDown aria-hidden className="size-4 shrink-0 text-subtle group-hover/persona:text-muted-foreground" />
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent align="start" sideOffset={6} className="max-h-[min(36rem,80dvh)] w-[22rem] overflow-y-auto p-1.5">
+      <DropdownMenuContent align="start" sideOffset={6} className="max-h-[min(36rem,80dvh)] w-[24rem] overflow-y-auto p-1.5">
         <DropdownMenuGroup>
-          <DropdownMenuLabel className="px-2 pt-1.5 pb-1">The four in the story</DropdownMenuLabel>
+          <DropdownMenuLabel className="px-2 pt-2 pb-1">The four in the story</DropdownMenuLabel>
           {story.map(({ person, does }) => (
             <DropdownMenuItem
               key={person.id}
               onClick={() => choose(person)}
-              className="gap-2.5 rounded-md px-2 py-1.5"
+              className="gap-2.5 px-2 py-1.5"
             >
               <PersonRow person={person} current={person.id === personaId} does={does} />
             </DropdownMenuItem>
@@ -113,7 +113,7 @@ export function PersonaSwitcher({ className }: { className?: string }) {
               closeOnClick={false}
               onClick={() => setShowMore((v) => !v)}
               aria-expanded={expanded}
-              className="rounded-md px-2 py-1.5 text-xs font-medium text-muted-foreground"
+              className="px-2 py-1.5 text-[0.8125rem] font-medium text-muted-foreground"
             >
               <ChevronDown aria-hidden className={cn("size-3.5 transition-transform", expanded && "rotate-180")} />
               {expanded ? "Hide other people" : `Show ${moreCount} other people (approvers and requestors)`}
@@ -122,9 +122,9 @@ export function PersonaSwitcher({ className }: { className?: string }) {
         ) : null}
         {expanded && approvers.length > 0 ? (
           <DropdownMenuGroup>
-            <DropdownMenuLabel className="px-2 pt-1.5 pb-1">Other approvers</DropdownMenuLabel>
+            <DropdownMenuLabel className="px-2 pt-2 pb-1">Other approvers</DropdownMenuLabel>
             {approvers.map((p) => (
-              <DropdownMenuItem key={p.id} onClick={() => choose(p)} className="gap-2.5 rounded-md px-2 py-1.5">
+              <DropdownMenuItem key={p.id} onClick={() => choose(p)} className="gap-2.5 px-2 py-1.5">
                 <PersonRow person={p} current={p.id === personaId} />
               </DropdownMenuItem>
             ))}
@@ -132,9 +132,9 @@ export function PersonaSwitcher({ className }: { className?: string }) {
         ) : null}
         {expanded && others.length > 0 ? (
           <DropdownMenuGroup>
-            <DropdownMenuLabel className="px-2 pt-1.5 pb-1">Everyone else</DropdownMenuLabel>
+            <DropdownMenuLabel className="px-2 pt-2 pb-1">Everyone else</DropdownMenuLabel>
             {others.map((p) => (
-              <DropdownMenuItem key={p.id} onClick={() => choose(p)} className="gap-2.5 rounded-md px-2 py-1.5">
+              <DropdownMenuItem key={p.id} onClick={() => choose(p)} className="gap-2.5 px-2 py-1.5">
                 <PersonRow person={p} current={p.id === personaId} />
               </DropdownMenuItem>
             ))}

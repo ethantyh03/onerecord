@@ -1,16 +1,15 @@
 "use client";
 
 import { useMemo } from "react";
-import { AlertTriangle, CalendarClock, FlaskConical, Route } from "lucide-react";
 import type { ApprovalStep, FieldDef, FieldValue } from "@/lib/types";
 import { useSandbox } from "@/lib/store";
 import { useNow } from "@/lib/selectors";
-import { buildRoute, expectedCompletion, MDM_STAGE_ID } from "@/lib/engine/routing";
+import { buildRoute, expectedCompletion } from "@/lib/engine/routing";
 import { IVD_CONSUMABLE_CATEGORY } from "@/config/default-config";
-import { PersonAvatar, formatSgtDay } from "@/components/common";
+import { IllustrativeMarker, Notice, PersonAvatar, Tag, formatSgtDay } from "@/components/common";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { Chip, FieldLabel, NativeSelect, roleLabel } from "./shared";
+import { FieldLabel, NativeSelect, roleLabel } from "./shared";
 import { pendingEntityName } from "./bu-template";
 
 export interface RouteTestState {
@@ -85,16 +84,17 @@ export function RouteTestPanel({ state, onChange }: { state: RouteTestState; onC
   return (
     <section
       aria-labelledby="route-test-title"
-      className="overflow-hidden rounded-xl border border-border bg-card shadow-raised"
+      className="panel overflow-hidden"
       data-testid="admin-route-test"
     >
-      <header className="flex items-start gap-2.5 border-b border-border bg-primary-soft/60 px-4 py-3">
-        <Route className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden />
+      <header className="flex min-h-11 items-start border-b border-border px-4 py-2.5">
         <div className="min-w-0">
-          <h2 id="route-test-title" className="text-[0.9375rem] font-semibold text-foreground">
+          <h2 id="route-test-title" className="panel-title">
             Test a route
           </h2>
-          <p className="text-xs text-muted-foreground">Pick a request type and business unit to see who would approve it, live from the current config.</p>
+          <p className="mt-0.5 text-xs leading-snug text-muted-foreground">
+            Pick a request type and business unit to see who would approve it, live from the current config.
+          </p>
         </div>
       </header>
 
@@ -170,84 +170,68 @@ export function RouteTestPanel({ state, onChange }: { state: RouteTestState; onC
         ) : null}
 
         {!bu ? (
-          <div
-            className="flex gap-2 rounded-lg border border-warn/40 bg-warn-soft px-3 py-2 text-[0.8125rem] text-warn-ink"
-            data-testid="admin-route-test-unconfigured"
-          >
-            <AlertTriangle className="mt-0.5 size-4 shrink-0" aria-hidden />
-            <p>
-              <span className="font-semibold">BU not configured yet — ask MDM to add it.</span> Until then each step goes to the first
-              person who holds the role, which is how Marcus&rsquo;s requests got misrouted.
-            </p>
-          </div>
+          <Notice size="sm" tone="warn" lead="BU not configured yet — ask MDM to add it." data-testid="admin-route-test-unconfigured">
+            Until then each step goes to the first person who holds the role, which is how Marcus&rsquo;s requests got misrouted.
+          </Notice>
         ) : null}
       </div>
 
-      <ol className="space-y-0 border-t border-border px-4 py-3" data-testid="admin-route-test-result" aria-label="Resulting route">
+      <ol className="border-t border-border px-4 pt-3 pb-1" data-testid="admin-route-test-result" aria-label="Resulting route">
         {stages.map((list, i) => {
           const first = list[0];
           const fromBu = buStageIds.has(first.stageId);
-          const isMdm = first.stageId === MDM_STAGE_ID;
           return (
-            <li key={first.stageId + i} className="relative pb-3 pl-7 last:pb-0">
-              {i < stages.length - 1 ? <span aria-hidden className="absolute top-6 bottom-0 left-[11px] w-px bg-border-strong" /> : null}
-              <span
-                aria-hidden
-                className={cn(
-                  "absolute top-0.5 left-0 inline-flex size-[23px] items-center justify-center rounded-full border text-[0.6875rem] font-semibold tabular-nums",
-                  fromBu ? "border-primary bg-primary text-primary-foreground" : isMdm ? "border-border-strong bg-muted text-foreground" : "border-primary/30 bg-primary-soft text-primary",
-                )}
-              >
+            <li key={first.stageId + i} className="grid grid-cols-[1.25rem_minmax(0,1fr)] gap-x-2 border-b border-border pb-2.5 not-first:pt-2.5 last:border-b-0">
+              <span aria-hidden className={cn("num pt-px text-sm font-semibold", fromBu ? "text-foreground" : "text-subtle")}>
                 {i + 1}
               </span>
-              <div className="flex flex-wrap items-center gap-1.5">
-                <span className="text-[0.8125rem] font-semibold text-foreground">{first.stageLabel}</span>
-                {list.length > 1 ? <Chip>{first.stageMode === "parallel" ? "in parallel" : "one after another"}</Chip> : null}
-                {fromBu ? <Chip tone="brand">{bu?.id} rule</Chip> : null}
-              </div>
-              <ul className="mt-1.5 space-y-1.5">
-                {list.map((s) => {
-                  const person = people.find((p) => p.id === s.assigneeId);
-                  return (
-                    <li key={s.id} className="rounded-lg border border-border bg-background px-2.5 py-1.5" data-testid={`admin-route-test-step-${s.id}`}>
-                      <div className="flex items-center gap-2">
-                        <PersonAvatar person={person} size="sm" away={person?.outOfOffice} />
-                        <div className="min-w-0 flex-1 leading-tight">
-                          <div className="truncate text-[0.8125rem] font-medium text-foreground">{person?.name ?? "Unassigned"}</div>
-                          <div className="truncate text-xs text-muted-foreground">
-                            {roleLabel(s.role)} · {s.label.replace(/^[^—]+—\s*/, "")}
+              <div className="min-w-0">
+                <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                  <span className="text-[0.8125rem] font-semibold text-foreground">{first.stageLabel}</span>
+                  {list.length > 1 ? (
+                    <span className="text-xs text-muted-foreground">{first.stageMode === "parallel" ? "in parallel" : "one after another"}</span>
+                  ) : null}
+                  {fromBu ? <Tag>{bu?.id} rule</Tag> : null}
+                </div>
+                <ul className="mt-1.5 space-y-2">
+                  {list.map((s) => {
+                    const person = people.find((p) => p.id === s.assigneeId);
+                    return (
+                      <li key={s.id} className="min-w-0" data-testid={`admin-route-test-step-${s.id}`}>
+                        <div className="flex items-center gap-2">
+                          <PersonAvatar person={person} size="sm" away={person?.outOfOffice} />
+                          <div className="min-w-0 flex-1 leading-tight">
+                            <div className="truncate text-[0.8125rem] font-medium text-foreground">{person?.name ?? "Unassigned"}</div>
+                            <div className="truncate text-xs text-muted-foreground">
+                              {roleLabel(s.role)} · {s.label.replace(/^[^—]+—\s*/, "")}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      {s.addedBecause || s.originalAssigneeId ? (
-                        <div className="mt-1.5 flex flex-wrap gap-1">
-                          {s.addedBecause?.split("; ").map((r) => (
-                            <Chip key={r} tone={fromBu ? "brand" : "warn"} className="h-auto py-0.5 whitespace-normal">
-                              {r}
-                            </Chip>
-                          ))}
-                          {s.originalAssigneeId ? (
-                            <Chip tone="neutral">Delegate for {people.find((p) => p.id === s.originalAssigneeId)?.name ?? s.originalAssigneeId}</Chip>
-                          ) : null}
-                        </div>
-                      ) : null}
-                    </li>
-                  );
-                })}
-              </ul>
+                        {s.addedBecause || s.originalAssigneeId ? (
+                          <div className="mt-1 space-y-0.5 pl-8 text-xs leading-snug text-secondary-foreground">
+                            {s.addedBecause?.split("; ").map((r) => (
+                              <p key={r}>{r}</p>
+                            ))}
+                            {s.originalAssigneeId ? (
+                              <p>Delegate for {people.find((p) => p.id === s.originalAssigneeId)?.name ?? s.originalAssigneeId}</p>
+                            ) : null}
+                          </div>
+                        ) : null}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
             </li>
           );
         })}
       </ol>
 
-      <footer className="flex flex-wrap items-center justify-between gap-2 border-t border-border bg-muted/40 px-4 py-2.5 text-xs text-muted-foreground">
-        <span className="inline-flex items-center gap-1.5">
-          <CalendarClock className="size-3.5" aria-hidden />
-          Expected live if submitted now: <span className="font-semibold text-foreground">{formatSgtDay(expected)}</span>
+      <footer className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 border-t border-border px-4 py-2.5 text-xs text-muted-foreground">
+        <span>
+          Expected live if submitted now: <span className="num font-semibold text-foreground">{formatSgtDay(expected)}</span>
         </span>
-        <span className="inline-flex items-center gap-1">
-          <FlaskConical className="size-3" aria-hidden /> Preview only · nothing is submitted
-        </span>
+        <IllustrativeMarker label="Preview only · nothing is submitted" />
       </footer>
     </section>
   );

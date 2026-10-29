@@ -19,21 +19,22 @@ import { countryName, demandFor, linkedDemandByRequest } from "./tracker-utils";
 
 export function RequestDetailSkeleton() {
   return (
-    <div className="mx-auto w-full max-w-[1320px] space-y-5" aria-busy="true" aria-label="Loading request">
+    <div className="w-full space-y-5" aria-busy="true" aria-label="Loading request">
       <Skeleton className="h-9 w-[28rem] max-w-full" />
-      <Skeleton className="h-20 w-full rounded-xl" />
+      <Skeleton className="h-12 w-full" />
       <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_22rem]">
-        <Skeleton className="h-[560px] rounded-xl" />
-        <Skeleton className="h-72 rounded-xl" />
+        <Skeleton className="h-[560px]" />
+        <Skeleton className="h-72" />
       </div>
     </div>
   );
 }
 
+/** One Gotham meta column: a hairline rule on its left, a quiet label, the value. No box around the row. */
 function Fact({ label, children, className }: { label: string; children: React.ReactNode; className?: string }) {
   return (
-    <div className={cn("min-w-0 space-y-1 px-4 py-3", className)}>
-      <dt className="text-xs text-muted-foreground">{label}</dt>
+    <div className={cn("min-w-0 space-y-1 border-l border-border-strong pr-4 pl-3", className)}>
+      <dt className="text-xs leading-4 text-subtle">{label}</dt>
       <dd className="min-w-0 text-sm font-medium text-foreground">{children}</dd>
     </div>
   );
@@ -94,7 +95,7 @@ export function RequestDetail() {
 
   if (!req) {
     return (
-      <div className="mx-auto w-full max-w-[1320px]">
+      <div className="w-full">
         <PageHeader title="Request not found" subtitle={id ? `There is no request ${id} in this sandbox.` : "No request id was given."} />
         <EmptyState
           icon={FileSearch}
@@ -117,7 +118,7 @@ export function RequestDetail() {
   const filming = isFilming(params);
 
   return (
-    <div className="mx-auto w-full max-w-[1320px] pb-6" data-testid="request-detail" data-request-id={req.id}>
+    <div className="w-full pb-6" data-testid="request-detail" data-request-id={req.id}>
       <Link
         href="/requests"
         className="mb-3 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
@@ -155,7 +156,7 @@ export function RequestDetail() {
         className="mb-5"
       />
 
-      <dl className="mb-5 grid grid-cols-2 divide-border overflow-hidden rounded-xl border bg-card shadow-raised md:grid-cols-5 md:divide-x">
+      <dl className="mb-6 grid grid-cols-2 gap-y-4 md:grid-cols-5" aria-label="Request facts">
         <Fact label="Requestor" className="col-span-2 md:col-span-1">
           <RequestorCell personId={req.requestorId} />
         </Fact>
@@ -173,7 +174,7 @@ export function RequestDetail() {
           {created && req.sapCreatedAt ? (
             <span className="num text-ok-ink">{formatSgtDay(req.sapCreatedAt)}</span>
           ) : req.expectedBy && req.status !== "rejected" && req.status !== "cancelled" ? (
-            <span className="num text-[1.0625rem] font-semibold text-primary" data-testid="request-expected">
+            <span className="num font-wide text-[1.125rem] leading-6 font-semibold text-foreground" data-testid="request-expected">
               {formatSgtDay(req.expectedBy)}
             </span>
           ) : (
@@ -182,7 +183,7 @@ export function RequestDetail() {
         </Fact>
       </dl>
 
-      <div className="grid items-start gap-5 xl:grid-cols-[minmax(0,1fr)_22rem]">
+      <div className="grid items-start gap-5 xl:grid-cols-[minmax(0,1fr)_23rem]">
         <div className="min-w-0 space-y-5">
           <DeliveryTracker request={req} domain={domain} demand={demand} />
         </div>

@@ -1,7 +1,7 @@
 "use client";
 
-import { Check, Info, TriangleAlert } from "lucide-react";
-import { formatSgd } from "@/components/common";
+import { Info } from "lucide-react";
+import { StatusText, formatSgd } from "@/components/common";
 import { usePulse } from "@/components/pulse/core/PulseContext";
 import { backtest, type BacktestCell } from "@/data/contract";
 import { cn } from "@/lib/utils";
@@ -28,10 +28,10 @@ function DeltaBar({ pts, max }: { pts: number; max: number }) {
   const w = Math.min(1, Math.abs(pts) / max) * 50;
   const better = pts < 0;
   return (
-    <div className="relative h-2.5 w-24" aria-hidden>
+    <div className="relative h-2 w-24" aria-hidden>
       <div className="absolute inset-y-0 left-1/2 w-px bg-border-strong" />
       <div
-        className="absolute inset-y-0 rounded-[3px]"
+        className="absolute inset-y-0 rounded-[2px]"
         style={{
           background: better ? VIZ.ours : VIZ.today,
           width: `${w}%`,
@@ -42,7 +42,10 @@ function DeltaBar({ pts, max }: { pts: number; max: number }) {
   );
 }
 
-/** Component 7: backtest scorecard. Losses are highlighted, never hidden. Product C sits in its own group. */
+/**
+ * Component 7: backtest scorecard. Losses are shown, never hidden: the result word is amber and the difference bar
+ * points the other way (no row tint). Product C sits in its own group.
+ */
 export function Scorecard() {
   const { country, product, setCountry, setProduct } = usePulse();
   const headlineCells = sortCells(backtest.cells.filter((c) => c.inHeadline && c.product !== "C"));
@@ -56,10 +59,11 @@ export function Scorecard() {
     setProduct(c.product);
   };
 
+  const isSelected = (c: BacktestCell) => c.country === country && c.product === product;
   const rowCls = (c: BacktestCell) =>
     cn(
-      "cursor-pointer border-b transition-colors last:border-b-0 hover:bg-muted/50 focus-visible:bg-muted/60 focus-visible:outline-none",
-      c.country === country && c.product === product && "outline-2 -outline-offset-2 outline-ring/60",
+      "h-10 cursor-pointer border-b border-border transition-colors last:border-b-0 hover:bg-secondary/50 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring",
+      isSelected(c) && "bg-secondary hover:bg-secondary",
     );
 
   return (
@@ -93,23 +97,21 @@ export function Scorecard() {
             {wl.sentence}
           </p>
         </div>
-        <div className="flex gap-2 text-sm">
-          <span className="inline-flex items-center gap-1.5 rounded-full border bg-card px-2.5 py-1">
-            <Check className="size-3.5 text-ok-ink" aria-hidden />
+        <div className="flex gap-5 text-sm md:pb-0.5">
+          <StatusText tone="ok" className="text-sm">
             <span className="num font-semibold">{wl.oursWins}</span> ours closer
-          </span>
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-warn/50 bg-warn-soft px-2.5 py-1 text-warn-ink">
-            <TriangleAlert className="size-3.5" aria-hidden />
+          </StatusText>
+          <StatusText tone="warn" className="text-sm">
             <span className="num font-semibold">{wl.baselineWins}</span> today&apos;s closer
-          </span>
+          </StatusText>
         </div>
       </div>
 
-      <div className="overflow-x-auto rounded-lg border">
+      <div className="overflow-x-auto scrollbar-thin">
         <table className="w-full min-w-[760px] text-sm">
           <caption className="sr-only">Forecast error by country and product</caption>
-          <thead className="bg-muted/50 text-xs text-muted-foreground">
-            <tr className="border-b">
+          <thead className="text-xs text-subtle">
+            <tr className="border-b border-border-strong">
               <th className="px-3 py-2 text-left font-medium">Cell</th>
               <th className="px-3 py-2 text-right font-medium">Today&apos;s method (rolling 12)</th>
               <th className="px-3 py-2 text-right font-medium" title="Damped Holt-Winters exponential smoothing (ETS)">
@@ -123,8 +125,8 @@ export function Scorecard() {
             </tr>
           </thead>
           <tbody>
-            <tr className="border-b bg-muted/25">
-              <th colSpan={6} className="px-3 py-1.5 text-left text-xs font-semibold text-secondary-foreground">
+            <tr className="border-b border-border">
+              <th colSpan={6} className="px-3 pt-3 pb-1.5 text-left text-xs font-semibold text-foreground">
                 Products A and B · in the headline
               </th>
             </tr>
@@ -137,7 +139,8 @@ export function Scorecard() {
                   onClick={() => select(c)}
                   onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), select(c))}
                   data-testid={`scorecard-row-${c.country}-${c.product}`}
-                  className={cn(rowCls(c), loss && "bg-warn-soft/70 hover:bg-warn-soft")}
+                  aria-current={isSelected(c) ? "true" : undefined}
+                  className={rowCls(c)}
                 >
                   <td className="px-3 py-2">
                     <span className="font-medium">{COUNTRY_NAME[c.country]}</span>
@@ -148,7 +151,9 @@ export function Scorecard() {
                   <td className="px-3 py-2">
                     <div className="flex items-center gap-2">
                       <DeltaBar pts={c.deltaWapePts} max={maxPts} />
-                      <span className="num text-xs text-secondary-foreground">{signedPts(c.deltaWapePts)}</span>
+                      <span className={cn("num text-xs", loss ? "font-medium text-warn-ink" : "text-secondary-foreground")}>
+                        {signedPts(c.deltaWapePts)}
+                      </span>
                     </div>
                   </td>
                   <td className="num px-3 py-2 text-right text-xs text-muted-foreground">
@@ -156,22 +161,20 @@ export function Scorecard() {
                   </td>
                   <td className="px-3 py-2">
                     {loss ? (
-                      <span className="inline-flex items-center gap-1 text-xs font-medium text-warn-ink">
-                        <TriangleAlert className="size-3.5" aria-hidden />
+                      <StatusText size="sm" tone="warn">
                         Today&apos;s method wins
-                      </span>
+                      </StatusText>
                     ) : (
-                      <span className="inline-flex items-center gap-1 text-xs font-medium text-ok-ink">
-                        <Check className="size-3.5" aria-hidden />
+                      <StatusText size="sm" tone="ok">
                         Ours wins
-                      </span>
+                      </StatusText>
                     )}
                   </td>
                 </tr>
               );
             })}
-            <tr className="border-b bg-muted/25">
-              <th colSpan={6} className="px-3 py-1.5 text-left text-xs font-semibold text-secondary-foreground">
+            <tr className="border-b border-border">
+              <th colSpan={6} className="px-3 pt-5 pb-1.5 text-left text-xs font-semibold text-foreground">
                 Product C · instruments · planned from tender pipeline; neither method is good
               </th>
             </tr>
@@ -184,6 +187,7 @@ export function Scorecard() {
                   onClick={() => select(c)}
                   onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), select(c))}
                   data-testid={`scorecard-row-${c.country}-${c.product}`}
+                  aria-current={isSelected(c) ? "true" : undefined}
                   className={cn(rowCls(c), "text-muted-foreground")}
                 >
                   <td className="px-3 py-2">

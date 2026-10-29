@@ -6,6 +6,9 @@ import { cn } from "@/lib/utils";
 /** Classic B1 desktop-client stack: Tahoma at 11–12px. */
 export const SAP_FONT = 'Tahoma, Verdana, "Segoe UI", Geneva, sans-serif';
 
+/** Codes inside the B1 window use the Windows system mono, not the console's identifier face. */
+const SAP_MONO = 'Consolas, "Cascadia Mono", "Lucida Console", ui-monospace, monospace';
+
 /**
  * Window chrome for a B1 form: grey-blue title bar, menu strip, toolbar slot and status bar.
  * Generic styling only; no SAP marks.
@@ -28,11 +31,12 @@ export function SapWindow({
   return (
     <div
       className={cn(
-        "overflow-hidden rounded-[6px] border border-[#5d7690] bg-[#eef2f6] text-[12px] text-[#1c2a39]",
-        "shadow-[0_10px_30px_-12px_rgba(20,40,70,0.45),0_1px_0_rgba(255,255,255,0.6)_inset]",
+        "overflow-hidden rounded-[6px] border border-[#5d7690] bg-[#eef2f6] text-[12px]",
+        // Headings inside the window are B1 form captions: Tahoma, no console tracking.
+        "[&_:is(h1,h2,h3,h4)]:[font-family:inherit] [&_:is(h1,h2,h3,h4)]:tracking-normal",
         className,
       )}
-      style={{ fontFamily: SAP_FONT }}
+      style={{ fontFamily: SAP_FONT, color: "#1c2a39", "--font-code": SAP_MONO } as React.CSSProperties}
     >
       <div className="flex h-8 items-center gap-2 bg-gradient-to-b from-[#5a7a99] to-[#3c5a78] px-3 text-white">
         <span className="inline-flex h-4 shrink-0 items-center rounded-[3px] border border-white/35 bg-white/10 px-1.5 text-[9px] font-semibold tracking-[0.08em] text-white/90">

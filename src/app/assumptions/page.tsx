@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function AssumptionsPage() {
   return (
-    <div className="mx-auto w-full max-w-[1280px] pb-6">
+    <div className="w-full pb-6">
       <PageHeader
         title="Assumptions register"
         meta={<SyntheticBadge label="Illustrative where marked" />}

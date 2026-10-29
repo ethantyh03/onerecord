@@ -1,16 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import type { ReactNode } from "react";
-import { BookOpenText, CalendarRange, ChevronRight, Sigma, TrendingUp } from "lucide-react";
+import { useRef, useState, type ReactNode } from "react";
+import { ArrowDown, ArrowUpRight, ChevronRight } from "lucide-react";
 import { bridge, meta, matrix } from "@/data/contract";
 import { SyntheticBadge } from "@/components/common/badges";
+import { RowNumber } from "@/components/common/data-rows";
+import { SectionTitle } from "@/components/common/section";
 import { formatSgd } from "@/components/common/format";
 import { DataHonestyDrawer } from "@/components/pulse/analytics/DataHonestyDrawer";
 import { useStuckDemand } from "@/lib/selectors";
 import { cn } from "@/lib/utils";
 import { usePulse, type PulseMeasure, type PulseView } from "./PulseContext";
+import { RegionMap, type MapFocus } from "./RegionMap";
 import { formatMonth, formatPct } from "./pulse-format";
+import { useUnblockCountdown } from "./use-unblock-countdown";
 
 interface SegOption<T extends string> {
   value: T;
@@ -31,9 +35,9 @@ function Segmented<T extends string>({
   options: SegOption<T>[];
 }) {
   return (
-    <div className="flex flex-col gap-1.5">
-      <span className="text-xs font-medium text-muted-foreground">{label}</span>
-      <div role="group" aria-label={label} className="inline-flex rounded-lg border bg-muted p-0.5">
+    <div className="flex items-center gap-2">
+      <span className="text-[0.8125rem] font-medium text-muted-foreground">{label}</span>
+      <div role="group" aria-label={label} className="inline-flex gap-0.5 rounded-md border border-border bg-canvas p-0.5">
         {options.map((o) => {
           const active = o.value === value;
           return (
@@ -45,8 +49,8 @@ function Segmented<T extends string>({
               data-testid={o.testId}
               onClick={() => onChange(o.value)}
               className={cn(
-                "h-8 rounded-md px-3 text-sm font-medium whitespace-nowrap transition-colors focus-visible:ring-3 focus-visible:ring-ring/40 focus-visible:outline-none",
-                active ? "bg-card text-foreground shadow-raised" : "text-muted-foreground hover:text-foreground",
+                "h-8 rounded-sm border px-3 text-sm font-medium whitespace-nowrap transition-colors focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-ring",
+                active ? "border-border-strong bg-card text-foreground" : "border-transparent text-muted-foreground hover:text-foreground",
               )}
             >
               {o.label}
@@ -78,14 +82,12 @@ const MEASURE_OPTIONS: SegOption<PulseMeasure>[] = [
   { value: "units", label: "Units", hint: "Units ordered, compared within each product", testId: "pulse-measure-units" },
 ];
 
-function Definition({ icon: Icon, term, children }: { icon: typeof Sigma; term: string; children: ReactNode }) {
+/** One term of "How we count": the term, then its definition. No icon: the term says what it is. */
+function Definition({ term, children }: { term: string; children: ReactNode }) {
   return (
-    <div className="flex gap-3">
-      <Icon aria-hidden className="mt-0.5 size-4 shrink-0 text-primary" strokeWidth={2} />
-      <div className="min-w-0">
-        <dt className="text-xs font-semibold text-foreground">{term}</dt>
-        <dd className="mt-0.5 text-[0.8125rem] leading-snug text-secondary-foreground">{children}</dd>
-      </div>
+    <div className="min-w-0">
+      <dt className="text-[0.8125rem] font-semibold text-foreground">{term}</dt>
+      <dd className="mt-0.5 text-sm leading-snug text-secondary-foreground">{children}</dd>
     </div>
   );
 }
@@ -102,25 +104,34 @@ function sgdMillions(v: number): string {
 
 const noSept = (s: string) => s.replace(/\bSept\b/g, "Sep");
 
-/** Component 1: title, the one-line growth definition, what the page tells you, and the two view toggles. */
+/**
+ * Component 1: title, the growth definition as ruled meta columns, then the region map beside what the page
+ * tells you (three numbered findings) and how we count. One box on this screen: the map.
+ */
 export function PulseHeader() {
   const { view, setView, measure, setMeasure } = usePulse();
+  const [focus, setFocus] = useState<MapFocus | null>(null);
   const w = meta.window;
   const stuck = useStuckDemand();
   const my = bridge.countries.find((c) => c.country === "MY");
   const hero = my?.topAccounts.dedup.find((a) => a.hero);
   const heroRank = my && hero ? my.topAccounts.dedup.indexOf(hero) + 1 : 0;
   const misSgd = Number(meta.params.misattributionSgd12m) || 0;
+  // Takeaway 3 is on the first screen at presenter size: after an SAP release (Beat 7's bridge) it counts
+  // down from the old stuck figure to the new one, so the drop is seen without scrolling to the tile.
+  const stuckTakeRef = useRef<HTMLLIElement>(null);
+  const shownStuck = useUnblockCountdown(stuck.totalSgd, "onerecord-pulse-unblock-seen-takeaway", stuckTakeRef);
 
-  const takeaways: { href: string; testId: string; body: ReactNode }[] = [
+  const takeaways: { href: string; testId: string; focus: MapFocus; body: ReactNode }[] = [
     {
       href: "#pulse-hero",
       testId: "pulse-takeaway-hero",
+      focus: "hero",
       body: hero ? (
         <>
           Malaysia&apos;s #{heroRank} hospital is shrinking{" "}
-          <strong className="num">{formatPct(hero.yoy).replace("−", "")}</strong>, hidden behind a &ldquo;new&rdquo; customer
-          record.
+          <strong className="num font-semibold text-stuck-ink">{formatPct(hero.yoy).replace("−", "")}</strong>, hidden behind a
+          &ldquo;new&rdquo; customer record.
         </>
       ) : (
         "Duplicate records hide a shrinking Malaysian account."
@@ -129,19 +140,23 @@ export function PulseHeader() {
     {
       href: "#pulse-matrix",
       testId: "pulse-takeaway-matrix",
+      focus: "flows",
       body: (
         <>
-          <strong className="num">{sgdMillions(misSgd)}</strong> of Malaysian and Vietnamese orders sit on Singapore records.
+          <strong className="num font-semibold text-foreground">{sgdMillions(misSgd)}</strong> of Malaysian and Vietnamese orders
+          sit on Singapore records.
         </>
       ),
     },
     {
       href: "/mdm",
       testId: "pulse-takeaway-stuck",
+      focus: "stuck",
       body:
         stuck.count > 0 ? (
           <>
-            <strong className="num">{formatSgd(stuck.totalSgd)}</strong> of customer orders wait on a record setup today.
+            <strong className="num font-semibold text-stuck-ink">{formatSgd(shownStuck)}</strong> of customer orders wait on a
+            record setup today.
           </>
         ) : (
           "No customer orders are waiting on a record setup right now."
@@ -150,100 +165,130 @@ export function PulseHeader() {
   ];
 
   return (
-    <header className="mb-6 space-y-5 border-b border-border pb-6">
-      <div className="flex flex-col gap-5 xl:flex-row xl:items-end xl:justify-between">
+    <div className="space-y-5">
+      <header className="flex flex-col gap-4 border-b border-border pb-4 min-[1440px]:flex-row min-[1440px]:items-end min-[1440px]:justify-between">
         <div className="min-w-0 space-y-1.5">
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
-            <h1 className="text-[1.625rem] leading-tight font-semibold tracking-[-0.02em] text-foreground">Regional Pulse</h1>
-            <SyntheticBadge />
-            <DataHonestyDrawer label="What's real here? (limits & caveats)" />
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
+            <h1 className="font-wide text-[1.75rem] leading-8 font-semibold text-foreground">Regional Pulse</h1>
+            <div className="flex items-center">
+              <SyntheticBadge />
+              <span aria-hidden className="mx-2.5 h-3.5 w-px bg-border-strong" />
+              <DataHonestyDrawer
+                variant="ghost"
+                icon={false}
+                label="What's real here? (limits & caveats)"
+                className="h-6 px-0 text-xs font-medium text-muted-foreground underline decoration-border-strong underline-offset-4 hover:bg-transparent hover:text-foreground hover:decoration-foreground"
+              />
+            </div>
           </div>
-          <p className="max-w-[72ch] text-[0.9375rem] text-muted-foreground">
+          <p className="max-w-[76ch] text-[0.9375rem] leading-6 text-muted-foreground">
             Customer orders across five countries and three product groups, counted on clean customer records. In
             production this is a Power BI report on SAP B1 extracts.
           </p>
         </div>
-        <div className="flex flex-wrap items-end gap-4">
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
           <Segmented label="Customers" value={view} onChange={setView} options={VIEW_OPTIONS} />
           <Segmented label="Measure" value={measure} onChange={setMeasure} options={MEASURE_OPTIONS} />
         </div>
-      </div>
+      </header>
 
-      <div
-        className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-xl border bg-card px-5 py-3.5 shadow-raised"
+      {/* How growth is counted, as meta columns: one hairline rule between terms, no box, no icon. It sits under the
+          title at every width, so it is on the first screen at 1280x720 too. */}
+      <p
+        className="flex flex-wrap items-baseline gap-y-1.5 text-sm leading-5 text-secondary-foreground [&>span]:border-l [&>span]:border-border-strong [&>span]:px-4 [&>span:first-child]:border-l-0 [&>span:first-child]:pl-0"
         data-testid="pulse-definition"
       >
-        <Sigma aria-hidden className="size-5 shrink-0 text-primary" strokeWidth={2} />
-        <p className="text-lg leading-snug font-semibold text-foreground">
+        <span className="text-[0.9375rem] font-semibold text-foreground">
           Growth = {monthOnly(w.start)} {w.start.slice(0, 4)}–{formatMonth(w.end)} vs {monthOnly(w.priorStart)}{" "}
           {w.priorStart.slice(0, 4)}–{formatMonth(w.priorEnd)}
-          <span className="font-normal text-muted-foreground"> · </span>
-          de-duplicated customers
-          <span className="font-normal text-muted-foreground"> · </span>
-          confirmed POs only
-        </p>
-        <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/40 bg-primary-soft px-3 py-1 text-sm font-semibold text-accent-foreground">
-          <TrendingUp aria-hidden className="size-4" />
+          <span className="sr-only">, </span>
+        </span>
+        <span>
+          de-duplicated customers<span className="sr-only">, </span>
+        </span>
+        <span>
+          confirmed POs only<span className="sr-only">. </span>
+        </span>
+        <span className="text-muted-foreground">
           Momentum = {monthOnly(w.momentumStart)}–{monthOnly(w.momentumEnd)} YoY
         </span>
-      </div>
+      </p>
 
-      <div>
-        <h2 className="text-sm font-semibold text-foreground">What this page tells you</h2>
-        <ol className="mt-2 grid gap-2 md:grid-cols-3">
-          {takeaways.map((t, i) => (
-            <li key={t.testId}>
-              <a
-                href={t.href}
-                data-testid={t.testId}
-                className="flex h-full gap-2.5 rounded-lg border bg-card px-3.5 py-2.5 text-[0.9375rem] leading-snug text-foreground transition-colors hover:border-border-strong focus-visible:ring-3 focus-visible:ring-ring/40 focus-visible:outline-none"
-              >
-                <span className="num flex size-5 shrink-0 items-center justify-center rounded-full bg-primary-soft text-xs font-semibold text-accent-foreground">
-                  {i + 1}
-                </span>
-                <span>{t.body}</span>
-              </a>
-            </li>
-          ))}
-        </ol>
-      </div>
-
-      <details className="group rounded-lg border bg-muted/30" data-testid="pulse-how-we-count">
-        <summary className="flex cursor-pointer list-none items-center gap-2 px-4 py-2.5 text-sm font-medium text-foreground focus-visible:ring-3 focus-visible:ring-ring/40 focus-visible:outline-none [&::-webkit-details-marker]:hidden">
-          <ChevronRight aria-hidden className="size-4 text-muted-foreground transition-transform group-open:rotate-90" />
-          How we count: exact formulas, time window, and why not half-years
-        </summary>
-        <div className="space-y-4 border-t px-4 py-4">
-          <dl className="grid gap-x-8 gap-y-4 md:grid-cols-2">
-            <Definition icon={CalendarRange} term="Time window">
-              {formatMonth(w.start)} – {formatMonth(w.end)} (12 months), compared with the same 12 months a year earlier:{" "}
-              {formatMonth(w.priorStart)} – {formatMonth(w.priorEnd)}.
-            </Definition>
-            <Definition icon={Sigma} term="Growth (headline)">
-              {noSept(meta.growthFormula)}
-            </Definition>
-            <Definition icon={TrendingUp} term="Momentum (latest quarter)">
-              {noSept(meta.momentumFormula)}
-            </Definition>
-            <Definition icon={BookOpenText} term="Why not half-years">
-              {meta.seasonalityNote}
-            </Definition>
-          </dl>
-          <div className="flex flex-col gap-2 text-xs text-muted-foreground md:flex-row md:items-center md:justify-between">
-            <p className="max-w-[110ch]">
-              {noSept(matrix.measureNote)} The 6–12-month limit is a spreadsheet habit, not a data limit: SAP B1 already
-              holds 24–36 months of PO history (assumption A27).
-            </p>
-            <Link
-              href="/assumptions"
-              className="shrink-0 font-medium text-primary underline-offset-4 hover:underline focus-visible:underline focus-visible:outline-none"
-              data-testid="pulse-assumptions-link"
-            >
-              See every assumption behind these numbers
-            </Link>
-          </div>
+      {/* The map leads; beside it (under it below 1440px) the three findings and how we count, as ruled rows. */}
+      <div className="grid gap-x-7 gap-y-5 [grid-template-areas:'map'_'take'_'how'] min-[1440px]:grid-cols-[minmax(0,1fr)_minmax(20rem,24rem)] min-[1440px]:grid-rows-[auto_minmax(0,1fr)] min-[1440px]:gap-y-0 min-[1440px]:[grid-template-areas:'map_take'_'map_how']">
+        <div className="min-w-0 [grid-area:map]">
+          <RegionMap focus={focus} />
         </div>
-      </details>
-    </header>
+
+        <section aria-labelledby="pulse-takeaways-title" className="flex min-w-0 flex-col [grid-area:take]">
+          <SectionTitle id="pulse-takeaways-title" title="What this page tells you" />
+          <ol className="mt-1 flex flex-col divide-y divide-border border-b border-border lg:max-[1439px]:mt-2 lg:max-[1439px]:grid lg:max-[1439px]:grid-cols-3 lg:max-[1439px]:divide-y-0 lg:max-[1439px]:border-b-0">
+            {takeaways.map((t, i) => (
+              <li
+                key={t.testId}
+                ref={t.focus === "stuck" ? stuckTakeRef : undefined}
+                className={cn("flex", i > 0 && "lg:max-[1439px]:border-l lg:max-[1439px]:border-border")}
+              >
+                <a
+                  href={t.href}
+                  data-testid={t.testId}
+                  onMouseEnter={() => setFocus(t.focus)}
+                  onMouseLeave={() => setFocus(null)}
+                  onFocus={() => setFocus(t.focus)}
+                  onBlur={() => setFocus(null)}
+                  className={cn(
+                    "group/take flex flex-1 items-start gap-3 py-[1.125rem] pr-1 text-base leading-6 text-secondary-foreground transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+                    "lg:max-[1439px]:px-4 lg:max-[1439px]:py-2",
+                    i === 0 && "lg:max-[1439px]:pl-0",
+                  )}
+                >
+                  <RowNumber n={i + 1} className="leading-6" />
+                  <span className="min-w-0 flex-1">{t.body}</span>
+                  {t.href.startsWith("#") ? (
+                    <ArrowDown aria-hidden className="mt-1 size-4 shrink-0 text-subtle transition-colors group-hover/take:text-foreground" />
+                  ) : (
+                    <ArrowUpRight aria-hidden className="mt-1 size-4 shrink-0 text-subtle transition-colors group-hover/take:text-foreground" />
+                  )}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        <details
+          className="group min-w-0 self-start border-b border-border [grid-area:how] max-[1439px]:border-t"
+          data-testid="pulse-how-we-count"
+        >
+          <summary className="flex min-h-11 cursor-pointer list-none items-center gap-2.5 py-2.5 text-sm font-medium text-secondary-foreground transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring [&::-webkit-details-marker]:hidden">
+            <ChevronRight aria-hidden className="size-4 shrink-0 text-subtle transition-transform group-open:rotate-90" />
+            How we count: exact formulas, time window, and why not half-years
+          </summary>
+          <div className="space-y-4 pb-4 pl-6.5">
+            <dl className="grid gap-x-8 gap-y-3.5 lg:max-[1439px]:grid-cols-2">
+              <Definition term="Time window">
+                {formatMonth(w.start)} – {formatMonth(w.end)} (12 months), compared with the same 12 months a year earlier:{" "}
+                {formatMonth(w.priorStart)} – {formatMonth(w.priorEnd)}.
+              </Definition>
+              <Definition term="Growth (headline)">{noSept(meta.growthFormula)}</Definition>
+              <Definition term="Momentum (latest quarter)">{noSept(meta.momentumFormula)}</Definition>
+              <Definition term="Why not half-years">{meta.seasonalityNote}</Definition>
+            </dl>
+            <div className="flex flex-col gap-2 border-t border-border pt-3 text-xs text-muted-foreground">
+              <p>
+                {noSept(matrix.measureNote)} The 6–12-month limit is a spreadsheet habit, not a data limit: SAP B1 already
+                holds 24–36 months of PO history (assumption A27).
+              </p>
+              <Link
+                href="/assumptions"
+                className="w-fit font-medium text-foreground underline decoration-border-strong underline-offset-4 hover:decoration-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                data-testid="pulse-assumptions-link"
+              >
+                See every assumption behind these numbers
+              </Link>
+            </div>
+          </div>
+        </details>
+      </div>
+    </div>
   );
 }
