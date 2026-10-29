@@ -67,3 +67,6 @@ __pycache__/
 /docs/superpowers/
 /deliverables/PRESENTER-GUIDE.*
 /deliverables/guide-parts/
+
+# Finals rehearsal clips (large, local only)
+/deliverables/finals/clips/
