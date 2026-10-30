@@ -12,7 +12,10 @@ import { ENVIRONMENT_TAG_DETAIL, ENVIRONMENT_TAG_QUALIFIER, ENVIRONMENT_TAG_SHOR
  */
 export function EnvironmentTag({ className }: { className?: string }) {
   return (
-    <Tooltip>
+    // The tooltip opens to the left, inside the top bar, and closes the moment the pointer leaves the tag:
+    // opened below, it covered the page's top-right controls (e.g. Regional Pulse's "Raw SAP records") and
+    // swallowed the next click.
+    <Tooltip disableHoverablePopup>
       <TooltipTrigger
         render={
           <span
@@ -33,7 +36,7 @@ export function EnvironmentTag({ className }: { className?: string }) {
         </span>
         <span className="sr-only">. {ENVIRONMENT_TAG_DETAIL}</span>
       </TooltipTrigger>
-      <TooltipContent side="bottom" className="max-w-64 text-pretty">
+      <TooltipContent side="left" className="max-w-64 text-pretty">
         {ENVIRONMENT_TAG_DETAIL}
       </TooltipContent>
     </Tooltip>
