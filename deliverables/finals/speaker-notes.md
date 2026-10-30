@@ -40,8 +40,8 @@ All data is synthetic and illustrative; every figure is in the numbers ledger of
 
 ## 2. Before you go on (by 14:30)
 
-1. **Freeze `src` by 14:00** and present from a production build (Vercel after commit + push, or `npm run build` then
-   `npm run start -- -p 3200`). From `next dev`, a teammate's save can reload the page mid-demo.
+1. Present from the live site **https://onerecord-lives-dsa26.vercel.app/deck** (final version, deployed the morning of
+   30 Oct). Fresh incognito window. Have the venue Wi-Fi or a phone hotspot ready; the deck PDF is the offline backup.
 2. Chrome, **zoom 125%** on the deck's address (Ctrl + `+` twice). Pre-warm every scene once, then **Reset sandbox**.
 3. **Tab 1:** `/deck?standby=1` (the return tab). **Tab 2:** `/deck` (present from here). Then **F11**.
 4. Do not press **N** on stage (mirrored screen: the notes would go on the projector). Use this card.
