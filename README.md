@@ -1,6 +1,6 @@
-# OneRecord
+# Tesseract
 
-**One hospital. One record.** OneRecord is a workflow for Lives Group's master data: a team member requests a new customer, item, vendor or cost centre, approvers sign off, and the approved record is handed to SAP Business One. It also includes the regional business view that clean master data makes possible.
+**One hospital. One record.** Tesseract is a workflow for Lives Group's master data: a team member requests a new customer, item, vendor or cost centre, approvers sign off, and the approved record is handed to SAP Business One. It also includes the regional business view that clean master data makes possible.
 
 Built by **Team CTFudders** for the SMU Data Science & Analytics case competition 2026.
 
