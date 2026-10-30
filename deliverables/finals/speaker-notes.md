@@ -1,4 +1,4 @@
-# OneRecord finals: speaker notes and run card
+# Tesseract finals: speaker notes and run card
 
 **Fri 30 Oct 2026, 14:50–15:10 SGT** · CTFudders (Joash, Ethan) · 15:00 max talk + 5:00 Q&A · one screen, mirrored.
 Plan **13:26** (slides 4:08 → live demo 5:00 → slides 4:18). Realistic 13:30–14:30: the demo decides it.
@@ -11,13 +11,13 @@ All data is synthetic and illustrative; every figure is in the numbers ledger of
 
 | # | Who | Clock | Presses | Open with |
 |---|---|---|---|---|
-| 1 OneRecord | Joash | 0:00–0:10 | 2 (build) | Good afternoon. We're Joash and Ethan from CTFudders. |
+| 1 Tesseract | Joash | 0:00–0:10 | 2 (build) | Good afternoon. We're Joash and Ethan from CTFudders. |
 | 2 Amy needed one item code | Joash | 0:10–0:45 | 1 | Amy is a product manager. She needed one new item code for a lab consumable her team was importing. |
 | 3 One hospital, three customers | Joash | 0:45–1:10 | 1 | The same email habit creates customer records. |
 | 4 Merged: Malaysia's #2 account, down 32% | Joash | 1:10–1:38 | 1 | Merge them, and it's one hospital: Malaysia's second-biggest account, down thirty-two percent. |
 | 5 One root cause, five symptoms | Joash | 1:38–2:13 | 1 | We read the brief as one root cause with five symptoms. |
 | 6 Four rules for a good fix | Ethan | 2:13–2:53 | 1 | Thanks, Joash. Before building anything, we set four rules. |
-| 7 OneRecord in one picture | Ethan | 2:53–3:48 | 2 (build) | Here's OneRecord in one picture. Amy's email becomes a form that knows an IVD item needs a licence number, and the bank details are stripped out. |
+| 7 Tesseract in one picture | Ethan | 2:53–3:48 | 2 (build) | Here's Tesseract in one picture. Amy's email becomes a form that knows an IVD item needs a licence number, and the bank details are stripped out. |
 | 8 Now the live demo | Ethan | 3:48–4:08 | 1 → demo | Now the live demo. Five people, one request, about five minutes. |
 | **LIVE DEMO** (5 beats) | Ethan | 4:08–9:08 | | "She pastes her old email, and the form fills itself." Back with **Ctrl+1** → slide 9 |
 | 9 What Regional Pulse tells a manager | Ethan | 9:08–9:53 | 1 | Here's what you just saw, the way a manager reads it. |
@@ -68,7 +68,7 @@ hold; → shrinks them). The [→] in the script below marks the press.
 
 ## 4. Slide by slide
 
-### 1 · OneRecord
+### 1 · Tesseract
 
 **Joash** · 10 s · clock 0:00–0:10 · 22 words · 2 presses
 
@@ -114,13 +114,13 @@ hold; → shrinks them). The [→] in the script below marks the press.
 
 > Thanks, Joash. Before building anything, we set four rules. One: use what Lives already owns. Microsoft 365 is the front door, and SAP Business One stays the system of record, because its built-in approvals are document-centric. Two: one record per real customer. Three: fix the process before buying software, so approvers decide in parallel. Four: the MDM team owns the rules, not IT. A better template, or Teams Approvals alone, each fix half of this. We wanted both halves.
 
-### 7 · OneRecord in one picture
+### 7 · Tesseract in one picture
 
 **Ethan** · 55 s · clock 2:53–3:48 · 106 words · 2 presses
 
 *On screen / cue:* Two presses. Arriving from slide 6 plays T3 (≈2 s): Amy's email fills the form, the bank number is struck out, “Regulatory licence no.” shows Needed, and it HOLDS. Say the first two sentences, pointing at Needed and the struck-out number. Press → on “That form is step one”: the form shrinks into step 1 and the flow draws (≈1.5 s).
 
-> Here's OneRecord in one picture. Amy's email becomes a form that knows an IVD item needs a licence number, and the bank details are stripped out. **[→]** That form is step one. Before any approver sees it, we check that it's complete and not a duplicate. Approvers decide in parallel, on a Teams card, with a two-business-day clock. MDM does one final check, and SAP gets an import file through its own import tool. Once every hospital is one record, the regional numbers can be trusted. A lean team of two builds it, with about fifteen days of outside help and no new licences for the workflow.
+> Here's Tesseract in one picture. Amy's email becomes a form that knows an IVD item needs a licence number, and the bank details are stripped out. **[→]** That form is step one. Before any approver sees it, we check that it's complete and not a duplicate. Approvers decide in parallel, on a Teams card, with a two-business-day clock. MDM does one final check, and SAP gets an import file through its own import tool. Once every hospital is one record, the regional numbers can be trusted. A lean team of two builds it, with about fifteen days of outside help and no new licences for the workflow.
 
 ### 8 · Now the live demo
 
@@ -173,7 +173,7 @@ If the live demo breaks: play `deliverables/video/OneRecord-demo.mp4` (2:54), th
 
 *On screen / cue:* If the demo ended after 9:40, skip slide 13: say “The biggest risk is habit, so after four weeks the MDM mailbox auto-replies with the form link.” here, then press End for the close.
 
-> We'd prove it in six weeks, in Singapore and Malaysia, on customers and items, for two business units. In week one we rerun our analysis on real SAP extracts, so every number today gets re-measured. Success is ninety percent of requests through OneRecord, a four-business-day median, and fewer than fifteen percent bounced. At week six there's a gate: if the median is over six business days, or adoption is under seventy percent, we fix it or stop. If it works, we roll out to the other three countries, then add in-tenant AI and automatic posting.
+> We'd prove it in six weeks, in Singapore and Malaysia, on customers and items, for two business units. In week one we rerun our analysis on real SAP extracts, so every number today gets re-measured. Success is ninety percent of requests through Tesseract, a four-business-day median, and fewer than fifteen percent bounced. At week six there's a gate: if the median is over six business days, or adoption is under seventy percent, we fix it or stop. If it works, we roll out to the other three countries, then add in-tenant AI and automatic posting.
 
 ### 13 · Risks and adoption
 
@@ -232,7 +232,7 @@ If the live demo breaks: play `deliverables/video/OneRecord-demo.mp4` (2:54), th
 
 ### A7 · Bank data, duties, escalation (Ethan)
 
-> Credit terms and bank details never appear in a message; the card links back to OneRecord, where only Finance and MDM can open them, and every view is logged. In production they sit in a restricted SharePoint list behind Entra ID. Nobody can approve their own request, and nobody can hold two steps of the same request. If an approver doesn't act, there's a reminder after one business day and an escalation after three, and the escalation follows the same rules.
+> Credit terms and bank details never appear in a message; the card links back to Tesseract, where only Finance and MDM can open them, and every view is logged. In production they sit in a restricted SharePoint list behind Entra ID. Nobody can approve their own request, and nobody can hold two steps of the same request. If an approver doesn't act, there's a reminder after one business day and an escalation after three, and the escalation follows the same rules.
 
 ### A8 · Import file now, and what we left out (Joash)
 

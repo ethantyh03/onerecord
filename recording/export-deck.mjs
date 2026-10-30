@@ -1,5 +1,5 @@
 // Exports the finals deck (/deck?print=1) to deliverables/finals/:
-//   OneRecord-finals-deck.pdf (one 1920×1080 page per slide, end state of every transition) + slides/NN.png.
+//   Tesseract-finals-deck.pdf (one 1920×1080 page per slide, end state of every transition) + slides/NN.png.
 // Usage: node recording/export-deck.mjs [baseUrl]   (default http://localhost:3200)
 // The dev server must be running; nothing else depends on this script.
 import { chromium } from "@playwright/test";
@@ -68,7 +68,7 @@ try {
 
   await page.emulateMedia({ media: "print" });
   await page.pdf({
-    path: path.join(OUT, "OneRecord-finals-deck.pdf"),
+    path: path.join(OUT, "Tesseract-finals-deck.pdf"),
     width: "1920px",
     height: "1080px",
     printBackground: true,
