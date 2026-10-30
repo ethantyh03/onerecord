@@ -63,7 +63,12 @@ export function S01Title({ mode, step, play, position }: SlideProps) {
         className="pointer-events-none invisible absolute top-0 left-0 font-medium whitespace-nowrap"
         style={{ ...MARK_TYPE, fontSize: PROBE }}
       >
-        Tesseract
+        {/* Measured glyph by glyph, the way DecodeText draws it (separate boxes, so no kerning between letters). */}
+        {"Tesseract".split("").map((ch, i) => (
+          <span key={i} className="inline-block">
+            {ch}
+          </span>
+        ))}
       </span>
       <p
         aria-hidden
