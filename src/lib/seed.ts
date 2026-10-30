@@ -1,12 +1,12 @@
 /**
- * Seed scenario for the OneRecord sandbox.
+ * Seed scenario for the Tesseract sandbox.
  *
  * buildSeed(nowIso) produces a self-consistent world relative to "now":
  * - 30 completed requests over the past ~90 days (REQ-1001…1030), median ≈ 3–4 business days to SAP B1
  * - 14 recent requests (REQ-1031…1044) across every domain, country and status, including the pinned
  *   demo requests REQ-1038 (customer pending Wei Jie) and REQ-1042 (item at MDM review)
  * - 15 purchase requests blocked by MDM setup (≈ S$346k across all five countries; 3 K2EDTA PRs not yet linked) and 20 open/converted PRs
- * - SAP B1 records (pre-OneRecord masters plus everything created through OneRecord)
+ * - SAP B1 records (pre-Tesseract masters plus everything created through Tesseract)
  * - a verifiable hash-chained audit trail and Teams / Outlook notifications
  *
  * Pure: no store, no browser APIs, deterministic for a given nowIso.
@@ -136,7 +136,7 @@ export function sapFieldsFor(
   if (domain.sapObject === "oProfitCenter" && !isBlank(req.data.centreCode)) {
     f.U_ProposedCode = String(req.data.centreCode).trim();
   }
-  f.U_OneRecordRef = req.id;
+  f.U_TesseractRef = req.id;
   return f;
 }
 
@@ -168,7 +168,7 @@ export function applyExtension(rec: SapRecord, data: Record<string, FieldValue>,
     fields.ShipToDefault = `SHIP-${String(data.extendToEntity ?? "").trim() || "NEW"}`;
     fields.U_ShipToAddress = String(data.newShipToAddress).trim();
   }
-  fields.U_OneRecordRef = requestId;
+  fields.U_TesseractRef = requestId;
   return { ...rec, fields };
 }
 
@@ -511,7 +511,7 @@ function baselineSapRecords(): SapRecord[] {
   return recs;
 }
 
-/** Code floors for numbering issued before OneRecord went live (not every legacy record is in this extract). */
+/** Code floors for numbering issued before Tesseract went live (not every legacy record is in this extract). */
 const LEGACY_CODE_FLOORS = [
   "C-SG-00118",
   "C-MY-00119",
@@ -529,7 +529,7 @@ const LEGACY_CODE_FLOORS = [
 ];
 
 // =============================================================================================
-// Historical requests (completed through OneRecord)
+// Historical requests (completed through Tesseract)
 // =============================================================================================
 
 interface HistSpec {

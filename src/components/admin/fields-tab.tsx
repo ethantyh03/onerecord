@@ -126,7 +126,7 @@ export function FieldsTab() {
                   {f.sapField ? (
                     <SapCode code={f.sapField} className="text-[0.75rem]" />
                   ) : (
-                    <span className="text-xs text-muted-foreground">Attached in OneRecord</span>
+                    <span className="text-xs text-muted-foreground">Attached in Tesseract</span>
                   )}
                 </TableCell>
                 <TableCell className="num pr-4 text-right text-muted-foreground">{f.maxLength ?? "—"}</TableCell>

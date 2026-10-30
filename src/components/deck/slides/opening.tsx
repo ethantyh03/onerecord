@@ -43,7 +43,7 @@ export function S01Title({ mode, step, play, position }: SlideProps) {
   return (
     <SlideFrame position={position} footerClassName="hidden">
       <Headline size={64} className="max-w-[1180px]">
-        Messy master data hides money. OneRecord fixes it at the front door.
+        Messy master data hides money. Tesseract fixes it at the front door.
       </Headline>
 
       <MetaColumns
@@ -56,14 +56,14 @@ export function S01Title({ mode, step, play, position }: SlideProps) {
         ]}
       />
 
-      <h1 className="sr-only">OneRecord</h1>
+      <h1 className="sr-only">Tesseract</h1>
       <span
         ref={probeRef}
         aria-hidden
         className="pointer-events-none invisible absolute top-0 left-0 font-medium whitespace-nowrap"
         style={{ ...MARK_TYPE, fontSize: PROBE }}
       >
-        OneRecord
+        Tesseract
       </span>
       <p
         aria-hidden
@@ -76,7 +76,7 @@ export function S01Title({ mode, step, play, position }: SlideProps) {
           transform: "translateY(0.13em)",
         }}
       >
-        <DecodeText text="OneRecord" play={mode === "live" && play && step >= 1} hidden={!shown} />
+        <DecodeText text="Tesseract" play={mode === "live" && play && step >= 1} hidden={!shown} />
       </p>
     </SlideFrame>
   );

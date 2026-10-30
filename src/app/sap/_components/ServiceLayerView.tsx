@@ -171,7 +171,7 @@ export function ServiceLayerView({
             url={`${SL_HOST}/b1s/v2/Login`}
             note="Returns SessionId and SessionTimeout: 30 (minutes idle), plus the B1SESSION and ROUTEID cookies every later call sends."
           >
-            {highlightJson(JSON.stringify({ CompanyDB: "LIVES_PROD", UserName: "svc_onerecord", Password: "<from Azure Key Vault>" }, null, 2))}
+            {highlightJson(JSON.stringify({ CompanyDB: "LIVES_PROD", UserName: "svc_tesseract", Password: "<from Azure Key Vault>" }, null, 2))}
           </Call>
 
           <Call
@@ -207,7 +207,7 @@ export function ServiceLayerView({
             <ul className="space-y-1 rounded-[3px] border border-[#c3ced9] bg-white px-4 py-3 text-[11.5px] text-[#2c3e50]">
               <li className="flex gap-2">
                 <KeyRound className="mt-0.5 size-3.5 shrink-0 text-[#5b6f83]" aria-hidden="true" />
-                One integration user, credentials in Azure Key Vault. The approver&apos;s identity and the request ID travel in U_OneRecordRef,
+                One integration user, credentials in Azure Key Vault. The approver&apos;s identity and the request ID travel in U_TesseractRef,
                 because B1 records the integration user as the creator.
               </li>
               <li className="pl-5.5">Business partners post with their addresses, contacts and bank rows in one $batch changeset, so a failed child row rolls the whole record back.</li>

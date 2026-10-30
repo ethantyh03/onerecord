@@ -1,11 +1,11 @@
 {
-  "about": "SAP Business One Service Layer calls for OneRecord Phase 2 (automatic creation after MDM approval). OData v4 endpoints (/b1s/v2). Replace <b1-server> with the Service Layer host. All business data is fictional.",
+  "about": "SAP Business One Service Layer calls for Tesseract Phase 2 (automatic creation after MDM approval). OData v4 endpoints (/b1s/v2). Replace <b1-server> with the Service Layer host. All business data is fictional.",
   "baseUrl": "https://<b1-server>:50000/b1s/v2",
   "assumptions": [
     "SAP Business One 10.0 FP 2405 or later, on Microsoft SQL Server or SAP HANA",
     "One dedicated integration user; credentials held in Azure Key Vault, never in the flow",
-    "UDF U_OneRecordRef exists on OCRD, OITM and OPRC to carry the OneRecord request ID",
-    "Codes follow the OneRecord numbering convention and are assigned before the call"
+    "UDF U_TesseractRef exists on OCRD, OITM and OPRC to carry the Tesseract request ID",
+    "Codes follow the Tesseract numbering convention and are assigned before the call"
   ],
   "requests": [
     {
@@ -57,7 +57,7 @@
         "SupplierCatalogNo": "DGC-30T",
         "LeadTime": 21,
         "MinOrderQuantity": 10,
-        "U_OneRecordRef": "REQ-1042"
+        "U_TesseractRef": "REQ-1042"
       },
       "response": { "status": 201, "body": { "ItemCode": "I-A-000813", "ItemName": "Dengue IgG/IgM Combo 30T" } },
       "notes": "Batch management is on because reagent lot and expiry traceability is required. ItemCode is the key; the smallest valid payload is ItemCode, ItemName and ItemType."
@@ -81,7 +81,7 @@
         "EmailAddress": "accounts@harbourfront-clinic.example",
         "PayTermsGrpCode": 3,
         "CreditLimit": 30000,
-        "U_OneRecordRef": "REQ-1051",
+        "U_TesseractRef": "REQ-1051",
         "BPAddresses": [
           {
             "AddressName": "BILL TO",
@@ -130,7 +130,7 @@
         "Phone1": "+60 3 7955 2100",
         "EmailAddress": "ar@meridianbio.example",
         "PayTermsGrpCode": 4,
-        "U_OneRecordRef": "REQ-1047",
+        "U_TesseractRef": "REQ-1047",
         "BPAddresses": [
           {
             "AddressName": "BILL TO",
@@ -170,10 +170,10 @@
         "EffectiveFrom": "2026-11-01",
         "GroupCode": "SPD",
         "Active": "tYES",
-        "U_OneRecordRef": "REQ-1049"
+        "U_TesseractRef": "REQ-1049"
       },
       "response": { "status": 201, "body": { "CenterCode": "SG-0031" } },
-      "notes": "CenterCode is limited to 8 characters (OPRC.PrcCode) and CenterName to 30. The OneRecord display code CC-SG-0031 is posted as SG-0031; see README. Dimension design: 1 = Country, 2 = Business unit, 3 = Department."
+      "notes": "CenterCode is limited to 8 characters (OPRC.PrcCode) and CenterName to 30. The Tesseract display code CC-SG-0031 is posted as SG-0031; see README. Dimension design: 1 = Country, 2 = Business unit, 3 = Department."
     },
     {
       "name": "Extend existing customer (add a ship-to address)",
@@ -206,7 +206,7 @@
         "Content-Type": "multipart/mixed;boundary=batch_or1051",
         "Cookie": "B1SESSION=<SessionId>; ROUTEID=.node1"
       },
-      "body": "--batch_or1051\r\nContent-Type: multipart/mixed;boundary=changeset_or1051\r\n\r\n--changeset_or1051\r\nContent-Type: application/http\r\nContent-Transfer-Encoding: binary\r\nContent-ID: 1\r\n\r\nPOST /b1s/v2/BusinessPartners\r\nContent-Type: application/json\r\n\r\n{\"CardCode\":\"C-SG-00123\",\"CardName\":\"Harbourfront Specialist Clinic Pte Ltd\",\"CardType\":\"cCustomer\",\"Currency\":\"SGD\",\"U_OneRecordRef\":\"REQ-1051\"}\r\n\r\n--changeset_or1051\r\nContent-Type: application/http\r\nContent-Transfer-Encoding: binary\r\nContent-ID: 2\r\n\r\nPATCH /b1s/v2/BusinessPartners('C-SG-00123')\r\nContent-Type: application/json\r\n\r\n{\"BPAddresses\":[{\"AddressName\":\"BILL TO\",\"AddressType\":\"bo_BillTo\",\"Street\":\"1 Maritime Square #09-12\",\"ZipCode\":\"099253\",\"Country\":\"SG\"}]}\r\n\r\n--changeset_or1051--\r\n--batch_or1051--\r\n",
+      "body": "--batch_or1051\r\nContent-Type: multipart/mixed;boundary=changeset_or1051\r\n\r\n--changeset_or1051\r\nContent-Type: application/http\r\nContent-Transfer-Encoding: binary\r\nContent-ID: 1\r\n\r\nPOST /b1s/v2/BusinessPartners\r\nContent-Type: application/json\r\n\r\n{\"CardCode\":\"C-SG-00123\",\"CardName\":\"Harbourfront Specialist Clinic Pte Ltd\",\"CardType\":\"cCustomer\",\"Currency\":\"SGD\",\"U_TesseractRef\":\"REQ-1051\"}\r\n\r\n--changeset_or1051\r\nContent-Type: application/http\r\nContent-Transfer-Encoding: binary\r\nContent-ID: 2\r\n\r\nPATCH /b1s/v2/BusinessPartners('C-SG-00123')\r\nContent-Type: application/json\r\n\r\n{\"BPAddresses\":[{\"AddressName\":\"BILL TO\",\"AddressType\":\"bo_BillTo\",\"Street\":\"1 Maritime Square #09-12\",\"ZipCode\":\"099253\",\"Country\":\"SG\"}]}\r\n\r\n--changeset_or1051--\r\n--batch_or1051--\r\n",
       "response": { "status": 202 },
       "notes": "All operations inside one changeset commit or roll back together, so a failed address never leaves a half-created partner."
     },

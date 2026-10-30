@@ -80,7 +80,7 @@ export function PastePanel({
       {collapsed ? null : (
         <div className="px-4 pt-3 pb-4">
           <p className="text-sm text-muted-foreground">
-            Paste an email or spreadsheet row. OneRecord fills what it can and shows what is still missing.
+            Paste an email or spreadsheet row. Tesseract fills what it can and shows what is still missing.
           </p>
           <Textarea
             data-testid="paste-input"

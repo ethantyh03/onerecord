@@ -9,11 +9,11 @@
 @custom-variant dark (&:where(.dark, .dark *):not(:where(.theme-light, .theme-light *)));
 
 /*
- * OneRecord design tokens: an operations console for master data.
+ * Tesseract design tokens: an operations console for master data.
  * Dark near-black monochrome is the default (html.dark); light is the bright-room fallback (:root) and is
  * re-declared by .theme-light so a subtree always renders light.
  * Colour is state, never decoration: primary (light grey in dark) = buttons and active nav, signal (teal)
- * = live data only (request arcs, the OneRecord path, the duplicate lock-on, chart series 1) and the focus
+ * = live data only (request arcs, the Tesseract path, the duplicate lock-on, chart series 1) and the focus
  * ring, coral (stuck) = money waiting, amber (warn) = clock risk, green (ok) = done, violet (phase2) = not
  * built yet. Everything else is grey. Every token is a Tailwind colour (bg-stuck, text-warn-ink, text-subtle ...).
  */

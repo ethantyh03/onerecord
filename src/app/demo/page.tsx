@@ -71,7 +71,7 @@ const BEATS: Beat[] = [
       "Point at the status line above it: Connected · Microsoft 365 · SAP Business One (LIVES_SANDBOX).",
     ],
     voiceover:
-      "Lives Group's master data is created by email. Records arrive incomplete and duplicated, so the regional numbers built on them can't be trusted. OneRecord fixes both ends.",
+      "Lives Group's master data is created by email. Records arrive incomplete and duplicated, so the regional numbers built on them can't be trusted. Tesseract fixes both ends.",
   },
   sceneBeat("amy-intake"),
   sceneBeat("admin-marcus"),

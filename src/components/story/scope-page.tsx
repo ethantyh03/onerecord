@@ -33,7 +33,7 @@ export function ScopePage() {
     },
     {
       title: "A separate security model",
-      why: "Single sign-on, encryption and data-loss prevention already come from Microsoft 365 and Entra ID. OneRecord adds role masking and a restricted list for bank and credit fields.",
+      why: "Single sign-on, encryption and data-loss prevention already come from Microsoft 365 and Entra ID. Tesseract adds role masking and a restricted list for bank and credit fields.",
     },
     {
       title: "A drag-and-drop workflow designer",

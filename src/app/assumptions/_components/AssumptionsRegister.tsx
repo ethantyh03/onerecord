@@ -113,7 +113,7 @@ export function AssumptionsRegister() {
           ))}
         </ul>
         <div className="mt-5 hidden space-y-2 border-t border-border pt-4 text-xs leading-5 text-muted-foreground lg:block">
-          <p>Every number in OneRecord that is not a cited fact traces back to one of these.</p>
+          <p>Every number in Tesseract that is not a cited fact traces back to one of these.</p>
           <p>Change an assumption here first, then rerun the pipeline.</p>
         </div>
       </nav>

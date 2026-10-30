@@ -7,7 +7,7 @@ import { formatSgd } from "@/components/common/format";
 /** The production Adaptive Card template (integrations/teams/approval-card.json), unbound. */
 export const APPROVAL_CARD_TEMPLATE: unknown = cardTemplate;
 
-export const DETAILS_BASE_URL = "https://onerecord.livesgroup.example";
+export const DETAILS_BASE_URL = "https://tesseract.livesgroup.example";
 
 type Scope = Record<string, unknown>;
 

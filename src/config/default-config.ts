@@ -2,7 +2,7 @@ import type { AppConfig, BusinessUnit, DomainConfig, FieldDef, RoleId } from "@/
 import { PEOPLE } from "@/config/people";
 
 /**
- * Default OneRecord configuration (version 1).
+ * Default Tesseract configuration (version 1).
  *
  * Field keys are the shared vocabulary for intake, routing, masking, DTW export and seed data.
  * `sapField` is the SAP Business One DI API / Service Layer / DTW property the field lands in.
@@ -820,7 +820,7 @@ export const NEW_BU_TEMPLATE: BusinessUnit = {
 // App config
 // ---------------------------------------------------------------------------------------------
 
-/** OneRecord went live 90 days before the demo window; version 1 is the go-live configuration. */
+/** Tesseract went live 90 days before the demo window; version 1 is the go-live configuration. */
 export const CONFIG_GO_LIVE_AT = "2026-07-27T01:00:00.000Z";
 
 export const DEFAULT_CONFIG: AppConfig = {

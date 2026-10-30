@@ -16,7 +16,7 @@ import { cn } from "@/lib/utils";
 type Builder = "mdm" | "lean" | "outside";
 
 /**
- * Who builds each part. Colours deliberately avoid teal signal (the OneRecord path) and violet (phase 2):
+ * Who builds each part. Colours deliberately avoid teal signal (the Tesseract path) and violet (phase 2):
  * bright neutral = configuration only (it has to read against the border on a projector, so not mid-grey),
  * amber = the lean team's build, coral = paid outside help.
  */
@@ -46,7 +46,7 @@ interface Box {
 
 const LANES: Lane[] = [
   { name: "Requestor", actor: "Sales, product, support" },
-  { name: "OneRecord checks", actor: "Before anyone approves" },
+  { name: "Tesseract checks", actor: "Before anyone approves" },
   { name: "Approvers", actor: "BU head, Finance, QA/RA" },
   { name: "MDM final check", actor: "MDM team" },
   { name: "SAP Business One", actor: "System of record" },
@@ -335,11 +335,11 @@ export function Swimlane() {
       <style>{CSS}</style>
       <header className="panel-header py-2.5">
         <h2 id="swimlane-title" className="panel-title">
-          How a OneRecord request lands in SAP Business One
+          How a Tesseract request lands in SAP Business One
         </h2>
       </header>
       <p id="swimlane-desc" className="sr-only">
-        Requestor fills a Power Apps form; OneRecord checks for duplicates and missing fields; approvers decide in Teams or Outlook through Power
+        Requestor fills a Power Apps form; Tesseract checks for duplicates and missing fields; approvers decide in Teams or Outlook through Power
         Automate standard Approvals; MDM gives a final check in a SharePoint List; phase 1 loads a DTW import file into SAP B1 daily, phase 2 posts
         through the Service Layer; Regional Pulse reports in Power BI on SAP B1 extracts.
       </p>

@@ -32,7 +32,7 @@ const RAIL = [
   { label: "Approvals", icon: ClipboardCheck, active: true },
 ] as const;
 
-/** A Teams desktop window (no logos) with the OneRecord Approvals app open on the selected card. */
+/** A Teams desktop window (no logos) with the Tesseract Approvals app open on the selected card. */
 export function TeamsWindow({ request, step, me }: { request: MdmRequest; step: ApprovalStep; me: Person }) {
   const actions = useApprovalActions();
   const unread = useUnreadCounts(me.id).teams;
@@ -104,7 +104,7 @@ export function TeamsWindow({ request, step, me }: { request: MdmRequest; step: 
               <ClipboardCheck className="size-3.5" />
             </span>
             <p className="min-w-0 truncate text-[13px]">
-              <span className="font-semibold">OneRecord Approvals</span>
+              <span className="font-semibold">Tesseract Approvals</span>
               <span className="text-[11px] text-[#616161]"> · App · posts approval cards and reminders</span>
             </p>
             <span className="ml-auto flex gap-4 text-[13px]" aria-hidden="true">
@@ -126,7 +126,7 @@ export function TeamsWindow({ request, step, me }: { request: MdmRequest; step: 
               </span>
               <div className="min-w-0 max-w-[640px] flex-1">
                 <p className="mb-1 text-[12px] text-[#616161]">
-                  <span className="font-semibold text-[#424242]">OneRecord Approvals</span> {formatSgtTime(sentAt)}
+                  <span className="font-semibold text-[#424242]">Tesseract Approvals</span> {formatSgtTime(sentAt)}
                 </p>
                 <TeamsApprovalCard
                   key={`${request.id}:${step.id}`}

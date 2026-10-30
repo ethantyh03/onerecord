@@ -22,8 +22,8 @@ const codeFont = Martian_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "OneRecord · Lives Group master data",
-    template: "%s · OneRecord",
+    default: "Tesseract · Lives Group master data",
+    template: "%s · Tesseract",
   },
   description: "Request, approve and load customer, vendor, item and cost-centre master data into SAP Business One.",
   robots: { index: false, follow: false },

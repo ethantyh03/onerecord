@@ -61,7 +61,7 @@ function CloseFrame() {
     >
       <div className="flex items-center gap-3 text-white">
         <BrandMark className="size-[clamp(28px,2.2vw,44px)] text-sidebar-primary" />
-        <span className="text-[clamp(18px,1.35vw,26px)] font-semibold tracking-[-0.01em]">OneRecord</span>
+        <span className="text-[clamp(18px,1.35vw,26px)] font-semibold tracking-[-0.01em]">Tesseract</span>
       </div>
 
       <div className="mt-auto grid grid-cols-3 gap-x-[3.2vw]">

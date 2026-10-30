@@ -1,5 +1,5 @@
 /**
- * OneRecord sandbox store: every piece of mutable demo state, persisted per visitor in localStorage.
+ * Tesseract sandbox store: every piece of mutable demo state, persisted per visitor in localStorage.
  *
  * SSR-safe for the Next.js App Router:
  * - On the server there is no storage, so persistence is disabled and the store holds an empty, un-hydrated
@@ -250,7 +250,7 @@ function mkNotification(n: Omit<AppNotification, "id" | "read"> & { read?: boole
 
 function personName(config: AppConfig, id: string | undefined): string {
   if (!id) return "Someone";
-  if (id === SYSTEM_ACTOR_ID) return "OneRecord automation";
+  if (id === SYSTEM_ACTOR_ID) return "Tesseract automation";
   return config.people.find((p) => p.id === id)?.name ?? id;
 }
 

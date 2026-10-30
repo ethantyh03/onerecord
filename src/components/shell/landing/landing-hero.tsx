@@ -69,7 +69,7 @@ function useFitWordmark(sectionRef: RefObject<HTMLElement | null>, markRef: RefO
   }, [sectionRef, markRef]);
 }
 
-const WORDMARK = "OneRecord";
+const WORDMARK = "Tesseract";
 
 /**
  * The wordmark flickers in once on load, like a screen powering on (as "Gotham" does on the reference):
@@ -111,7 +111,7 @@ function useFlickerIn(markRef: RefObject<HTMLElement | null>) {
 
 /**
  * Sizes that scale with the hero's width (the section is the size container). The copy column is wide
- * enough for each line of the headline to hold on one line. `--mark` starts as an estimate ("OneRecord"
+ * enough for each line of the headline to hold on one line. `--mark` starts as an estimate ("Tesseract"
  * is about 5.55em wide at this tracking) and is then set from a measurement.
  */
 const HERO_VARS = {
@@ -124,7 +124,7 @@ const HERO_VARS = {
 /**
  * Landing hero, after the Gotham site's hero but with our content: a full-bleed globe of Lives Group's
  * customer records and live requests (the region fitted into the right-hand zone, the horizon arcing
- * over it), what OneRecord does and the two ways in at the top left, the facts the globe shows in
+ * over it), what Tesseract does and the two ways in at the top left, the facts the globe shows in
  * columns between thin rules above the right of the wordmark, and the product name as a giant wordmark
  * across the full width.
  * The open-request queue (each row is one arc; pointing at a row lights it) follows as its own section.
@@ -228,7 +228,7 @@ export function LandingHero() {
                 <span className="block lg:whitespace-nowrap">customer, item and vendor.</span>
               </h1>
               <p className="mt-5 max-w-[60ch] text-[0.9375rem] leading-[1.6] text-pretty text-secondary-foreground @min-[75rem]:text-base">
-                Request a new customer, vendor, item or cost centre in one form. OneRecord checks it for duplicates and
+                Request a new customer, vendor, item or cost centre in one form. Tesseract checks it for duplicates and
                 missing fields, approvers decide in Teams or Outlook, and the MDM team loads the approved record into
                 SAP Business One.
               </p>

@@ -56,12 +56,12 @@ export function TopBar({ navOpen, onToggleNav, toggleRef, showBrand }: TopBarPro
         <div inert={!showBrand} className={cn("flex shrink-0 overflow-hidden", showBrand ? "lg:w-[184px]" : "invisible w-0")}>
           <Link
             href="/"
-            aria-label="OneRecord home"
+            aria-label="Tesseract home"
             className="flex shrink-0 items-center gap-2.5 pr-3 pl-1 outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring sm:pr-4 lg:w-[184px] lg:pr-2"
           >
             <RecordMark className="size-7 shrink-0 text-foreground" />
             <span className="hidden min-w-0 flex-col leading-none sm:flex">
-              <span className="font-wide text-[1.0625rem] font-semibold text-foreground">OneRecord</span>
+              <span className="font-wide text-[1.0625rem] font-semibold text-foreground">Tesseract</span>
               <span className="mt-1 hidden truncate text-xs text-muted-foreground lg:block dark:text-sidebar-muted">
                 Lives Group master data
               </span>

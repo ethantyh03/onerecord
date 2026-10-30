@@ -54,7 +54,7 @@ export function selectNow(s: ClockView): string {
   return new Date(simNowMs(s)).toISOString();
 }
 
-/** Person by id. "system" resolves to the OneRecord automation actor used on reminders and escalations. */
+/** Person by id. "system" resolves to the Tesseract automation actor used on reminders and escalations. */
 export function personById(s: Pick<SandboxView, "config">, id: string | undefined): Person | undefined {
   if (!id) return undefined;
   if (id === SYSTEM_ACTOR_ID) return SYSTEM_PERSON;

@@ -11,7 +11,7 @@ export const DEMO_ROUTE = "/requests/new?domain=item";
 const BEATS: { who: string; what: string }[] = [
   { who: "Amy", what: "pastes her old email; the form fills and routes itself" },
   { who: "Marcus", what: "is stopped from creating a duplicate customer" },
-  { who: "Wei Jie", what: "approves in Teams; credit terms never leave OneRecord" },
+  { who: "Wei Jie", what: "approves in Teams; credit terms never leave Tesseract" },
   { who: "Priya", what: "sends it to SAP; S$36,000 of waiting orders are released" },
   { who: "Regional Pulse", what: "merge the duplicates, and the hidden decline appears" },
 ];
@@ -58,7 +58,7 @@ function LiveFrame({ live, handoff, onOpen }: { live: boolean; handoff: boolean;
           <iframe
             onLoad={hideDevBadge}
             src={DEMO_ROUTE}
-            title="OneRecord live app: New request"
+            title="Tesseract live app: New request"
             tabIndex={-1}
             inert
             aria-hidden

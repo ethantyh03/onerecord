@@ -180,7 +180,7 @@ function MiniTable({ title, rows, briefHead }: { title: string; rows: Row[]; bri
         <thead className="sr-only">
           <tr>
             <th>{briefHead}</th>
-            <th>Where OneRecord covers it</th>
+            <th>Where Tesseract covers it</th>
           </tr>
         </thead>
         <tbody>
@@ -218,7 +218,7 @@ export function BriefMap() {
               <tr className={T.headRow}>
                 <th className={cn(T.head, "w-[16%]")}>Area</th>
                 <th className={cn(T.head, "w-[30%]")}>Problem today</th>
-                <th className={T.head}>What OneRecord does</th>
+                <th className={T.head}>What Tesseract does</th>
                 <th className={cn(T.head, "w-[17%]")}>See it</th>
               </tr>
             </thead>

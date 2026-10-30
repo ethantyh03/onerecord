@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 
 /**
- * Original OneRecord mark: three offset strokes resolving into one solid record, in a rounded tile.
+ * Original Tesseract mark: three offset strokes resolving into one solid record, in a rounded tile.
  * Kept unchanged for the /pitch/* frames (exported to the submitted PDF). The console uses RecordMark.
  */
 export function BrandMark({ className }: { className?: string }) {

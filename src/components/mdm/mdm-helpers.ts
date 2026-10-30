@@ -102,7 +102,7 @@ export interface FieldReviewRow {
   sensitive: boolean;
   isFile: boolean;
   length?: LengthCheck;
-  /** Row added by OneRecord (the assigned SAP code), not typed by the requestor. */
+  /** Row added by Tesseract (the assigned SAP code), not typed by the requestor. */
   system?: boolean;
 }
 
@@ -141,7 +141,7 @@ export function buildFieldReview(
     const limit = limitFor(codeProp);
     rows.push({
       key: "__code",
-      label: domain.id === "extend" ? "Existing SAP code (kept)" : "SAP code (assigned by OneRecord)",
+      label: domain.id === "extend" ? "Existing SAP code (kept)" : "SAP code (assigned by Tesseract)",
       sapProperty: codeProp,
       object: domain.sapObject,
       dbColumn: hit?.db ?? PROPERTY_TO_COLUMN[codeProp] ?? codeProp,

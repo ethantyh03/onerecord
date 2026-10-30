@@ -89,7 +89,7 @@ const ALT_LABEL: Record<string, string> = {
   "teams-approvals": "Teams Approvals only",
   "power-platform": "Power Platform workflow only",
   "mdm-suite": "Buy an MDM suite / B1 add-on",
-  onerecord: "OneRecord",
+  onerecord: "Tesseract",
 };
 const ALT_COST: Record<string, string> = {
   "status-quo": "~S$0",
@@ -145,7 +145,7 @@ function SlideHeader({ kicker, title, page }: { kicker: string; title: ReactNode
     <header className="border-b border-border pb-[16px]">
       <div className="flex items-center gap-3 text-[18px] text-muted-foreground">
         <BrandMark className="size-[30px] text-primary" />
-        <span className="font-semibold text-foreground">OneRecord</span>
+        <span className="font-semibold text-foreground">Tesseract</span>
         <span aria-hidden>·</span>
         <span>{kicker}</span>
         <span className="ml-auto">
@@ -175,7 +175,7 @@ function Slide1() {
   const max = wf.beforeDays;
   return (
     <Slide id="summary-slide-1">
-      <SlideHeader kicker="2-slide summary" title="Messy master data hides money. OneRecord fixes it at the front door." page="1 / 2" />
+      <SlideHeader kicker="2-slide summary" title="Messy master data hides money. Tesseract fixes it at the front door." page="1 / 2" />
 
       <div className="mt-[24px] grid min-h-0 flex-1 grid-cols-[540px_620px_1fr] gap-[44px]">
         {/* PROBLEM */}
@@ -466,7 +466,7 @@ function Slide2() {
           </p>
           <ul className="mt-2.5 space-y-1.5 text-[18px] leading-snug">
             {[
-              ["≥90%", "of requests through OneRecord by week 6"],
+              ["≥90%", "of requests through Tesseract by week 6"],
               ["≤4", "business days median setup (baseline 14 days)"],
               ["<15%", "bounce rate (baseline 40%)"],
               ["Count", "duplicates stopped at intake, weekly"],

@@ -16,7 +16,7 @@ export interface FieldMapRow {
   label: string;
   required: "always" | "conditional" | "optional";
   sensitive: boolean;
-  /** Who fills it: the requestor (form field) or OneRecord itself. */
+  /** Who fills it: the requestor (form field) or Tesseract itself. */
   source: "form" | "system";
   /** DI API / Service Layer property, e.g. "CardName" or "BPAddresses.Street". */
   sapProperty: string | null;
@@ -129,7 +129,7 @@ export function buildFieldMap(domain: DomainConfig): FieldMapRow[] {
       sapProperty: keyCol,
       dtwFile: parent.fileName,
       dbColumn: `${table}.${parent.dbHeaders[0] ?? keyCol}`,
-      note: domain.id === "extend" ? "Update row keyed by the existing code" : "Assigned by OneRecord when the import file is generated",
+      note: domain.id === "extend" ? "Update row keyed by the existing code" : "Assigned by Tesseract when the import file is generated",
     });
   }
 
@@ -149,7 +149,7 @@ export function buildFieldMap(domain: DomainConfig): FieldMapRow[] {
         sapProperty: null,
         dtwFile: null,
         dbColumn: null,
-        note: f.type === "file" ? "Attachment kept with the request in SharePoint" : "Kept in OneRecord for approvers",
+        note: f.type === "file" ? "Attachment kept with the request in SharePoint" : "Kept in Tesseract for approvers",
       });
       continue;
     }
@@ -163,17 +163,17 @@ export function buildFieldMap(domain: DomainConfig): FieldMapRow[] {
     });
   }
 
-  if (parent && parent.headers.includes("U_OneRecordRef")) {
+  if (parent && parent.headers.includes("U_TesseractRef")) {
     const table = SAP_TABLES[parent.object] ?? parent.object;
     rows.push({
       key: "__ref",
-      label: "OneRecord request ID",
+      label: "Tesseract request ID",
       required: "always",
       sensitive: false,
       source: "system",
-      sapProperty: "U_OneRecordRef",
+      sapProperty: "U_TesseractRef",
       dtwFile: parent.fileName,
-      dbColumn: `${table}.U_OneRecordRef`,
+      dbColumn: `${table}.U_TesseractRef`,
       note: "Links the SAP record back to its approvals and audit trail",
     });
   }

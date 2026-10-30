@@ -12,7 +12,7 @@ import { MS_FONT, MS_SCOPE, MS_TEXT, findPerson, firstName, formatAgo, usePeople
 import { buildKeyFacts, countryName, formatFactValue } from "./teams-helpers";
 import { CARD_MASK_TEXT } from "./TeamsApprovalCard";
 
-export const OUTLOOK_SENDER = { name: "OneRecord Approvals", email: "approvals@livesgroup.example" } as const;
+export const OUTLOOK_SENDER = { name: "Tesseract Approvals", email: "approvals@livesgroup.example" } as const;
 
 const OUTLOOK = { blue: "#0f6cbd" } as const;
 
@@ -24,8 +24,8 @@ export interface OutlookMessageProps {
 }
 
 /**
- * Outlook reading pane for one OneRecord email, with an actionable-message card
- * (Approve / Open in OneRecord) when the recipient holds a pending step.
+ * Outlook reading pane for one Tesseract email, with an actionable-message card
+ * (Approve / Open in Tesseract) when the recipient holds a pending step.
  */
 export function OutlookMessage({ notification: n, markReadOnView = true, className }: OutlookMessageProps) {
   const people = usePeople();
@@ -47,7 +47,7 @@ export function OutlookMessage({ notification: n, markReadOnView = true, classNa
   const requestor = findPerson(people, request?.requestorId);
   const isApprover = Boolean(step && (step.assigneeId === n.toId || step.originalAssigneeId === n.toId));
   const pendingForRecipient = isApprover && step?.status === "pending" && step.assigneeId === n.toId;
-  /** Vendor bank details need the call-back tick, which lives on the Teams card and in OneRecord, not in email. */
+  /** Vendor bank details need the call-back tick, which lives on the Teams card and in Tesseract, not in email. */
   const callbackRequired = Boolean(request && step && pendingForRecipient && needsCallbackCheck(request, step));
   const canApprove = pendingForRecipient && !callbackRequired;
   const facts = useMemo(
@@ -71,7 +71,7 @@ export function OutlookMessage({ notification: n, markReadOnView = true, classNa
       <header className="border-b border-[#ebebeb] px-5 pt-4 pb-3">
         <h2 className="text-[18px] leading-snug font-semibold">{n.title}</h2>
         <div className="mt-1.5 flex flex-wrap gap-1.5">
-          <span className="rounded-[3px] bg-[#e8ebfa] px-1.5 py-px text-[11px] font-semibold text-[#444791]">OneRecord</span>
+          <span className="rounded-[3px] bg-[#e8ebfa] px-1.5 py-px text-[11px] font-semibold text-[#444791]">Tesseract</span>
           {pendingForRecipient ? (
             <span className="rounded-[3px] bg-[#fff4ce] px-1.5 py-px text-[11px] font-semibold text-[#835b00]">Action required</span>
           ) : null}
@@ -111,7 +111,7 @@ export function OutlookMessage({ notification: n, markReadOnView = true, classNa
           >
             <div className="flex items-center gap-2 border-b border-[#ebebeb] bg-[#fafafa] px-4 py-2">
               <ClipboardCheck className="size-4" style={{ color: OUTLOOK.blue }} aria-hidden="true" />
-              <span className="text-[12px] font-semibold">OneRecord · {pendingForRecipient ? "Approval needed" : "Request update"}</span>
+              <span className="text-[12px] font-semibold">Tesseract · {pendingForRecipient ? "Approval needed" : "Request update"}</span>
               <span className="ml-auto text-[11px] text-[#616161] tabular-nums">{request.id}</span>
             </div>
             <div className="px-4 py-3">
@@ -161,7 +161,7 @@ export function OutlookMessage({ notification: n, markReadOnView = true, classNa
                     <Info className="size-4" />
                   )}
                   {step.status === "approved"
-                    ? `Approved${step.decidedAt ? ` ${formatAgo(step.decidedAt, now)}` : ""}. Recorded in the OneRecord audit trail.`
+                    ? `Approved${step.decidedAt ? ` ${formatAgo(step.decidedAt, now)}` : ""}. Recorded in the Tesseract audit trail.`
                     : step.status === "rejected"
                       ? "Rejected. The requestor has the reason."
                       : step.status === "question"
@@ -207,7 +207,7 @@ export function OutlookMessage({ notification: n, markReadOnView = true, classNa
                     href={`/requests/view?id=${encodeURIComponent(request.id)}`}
                     className="inline-flex h-8 items-center gap-1 rounded-[4px] border border-[#d1d1d1] bg-white px-3 text-[13px] font-semibold text-[#242424] transition-colors hover:bg-[#f5f5f5]"
                   >
-                    Open in OneRecord
+                    Open in Tesseract
                     <ArrowUpRight className="size-3.5" aria-hidden="true" />
                   </Link>
                 ) : null}
@@ -215,7 +215,7 @@ export function OutlookMessage({ notification: n, markReadOnView = true, classNa
               {callbackRequired ? (
                 <p className="mt-3 flex items-start gap-1.5 rounded-[4px] border border-[#f2c661] bg-[#fffaeb] px-2.5 py-1.5 text-[12px] text-[#5c4300]">
                   <PhoneCall className="mt-0.5 size-3.5 shrink-0" aria-hidden="true" />
-                  New supplier bank details: approve from Teams or OneRecord, where you confirm the call-back to an independently
+                  New supplier bank details: approve from Teams or Tesseract, where you confirm the call-back to an independently
                   sourced number. Email approval is switched off for this step.
                 </p>
               ) : null}
@@ -230,8 +230,8 @@ export function OutlookMessage({ notification: n, markReadOnView = true, classNa
 
         <p className="mt-5 flex items-start gap-1.5 border-t border-[#ebebeb] pt-3 text-[11px] leading-snug text-[#8a8886]">
           <Paperclip className="mt-px size-3 shrink-0" aria-hidden="true" />
-          Sent by the OneRecord approval flow (Power Automate). Buttons in this email are an actionable message and need
-          Exchange Online. If they don&apos;t show, use Open in OneRecord.
+          Sent by the Tesseract approval flow (Power Automate). Buttons in this email are an actionable message and need
+          Exchange Online. If they don&apos;t show, use Open in Tesseract.
         </p>
       </div>
     </article>
@@ -264,7 +264,7 @@ export interface OutlookPanelProps {
   className?: string;
 }
 
-/** Outlook inbox (message list + reading pane) for one person's OneRecord emails. */
+/** Outlook inbox (message list + reading pane) for one person's Tesseract emails. */
 export function OutlookPanel({ personId, className }: OutlookPanelProps) {
   const currentId = useSandbox((s) => s.personaId);
   const ownerId = personId ?? currentId;
@@ -290,7 +290,7 @@ export function OutlookPanel({ personId, className }: OutlookPanelProps) {
       {mail.length === 0 ? (
         <div className="flex flex-1 flex-col items-center justify-center gap-1 px-6 py-12 text-center">
           <p className="text-[13px] font-semibold">Nothing in Focused</p>
-          <p className="text-[12px] text-[#616161]">OneRecord emails for this person appear here.</p>
+          <p className="text-[12px] text-[#616161]">Tesseract emails for this person appear here.</p>
         </div>
       ) : (
         <div className="grid min-h-0 flex-1 grid-rows-[minmax(120px,40%)_1fr] @2xl:grid-cols-[280px_1fr] @2xl:grid-rows-1">

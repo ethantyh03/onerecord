@@ -2,7 +2,7 @@ import type { DtwFile } from "@/lib/types";
 
 /**
  * Data Transfer Workbench "Simulate" for the sandbox: the checks DTW itself would fail an import on,
- * run against the files OneRecord generated. Pure; no store access.
+ * run against the files Tesseract generated. Pure; no store access.
  */
 
 export interface DtwIssue {

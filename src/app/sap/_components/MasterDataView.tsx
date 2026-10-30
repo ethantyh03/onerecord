@@ -145,7 +145,7 @@ export function MasterDataView({
           <div className="flex h-full min-h-[320px] flex-col items-center justify-center gap-1 rounded-[3px] border border-dashed border-[#a9b7c5] bg-white/60 text-center">
             <p className="text-[12.5px] font-semibold text-[#14202c]">Choose a record from the list</p>
             <p className="max-w-sm text-[11.5px] text-[#4a5d70]">
-              Records created through OneRecord carry the request ID in the user-defined field U_OneRecordRef, so every one traces back to its approvals.
+              Records created through Tesseract carry the request ID in the user-defined field U_TesseractRef, so every one traces back to its approvals.
             </p>
           </div>
         )}
@@ -163,7 +163,7 @@ function RecordForm({ record, onClose }: { record: SapRecord; onClose: () => voi
     [domain],
   );
   const kind = objectKind(record.object);
-  const reqId = record.requestId ?? pick(fields, "U_OneRecordRef");
+  const reqId = record.requestId ?? pick(fields, "U_TesseractRef");
   const auditKey = reqId ?? record.code;
 
   /** Value cell: masked when the column is sensitive, otherwise plain. */
@@ -224,7 +224,7 @@ type Getter = (...names: string[]) => React.ReactNode | undefined;
 
 function RequestLink({ reqId }: { reqId?: string }) {
   return (
-    <SapField label="OneRecord request (U_OneRecordRef)" linked={Boolean(reqId)}>
+    <SapField label="Tesseract request (U_TesseractRef)" linked={Boolean(reqId)}>
       {reqId ? (
         <Link href={`/requests/view?id=${encodeURIComponent(reqId)}`} className="font-mono text-[11px] text-[#1d5fa8] underline-offset-2 hover:underline">
           {reqId}

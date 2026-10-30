@@ -140,7 +140,7 @@ export const SCENES: Scene[] = [
     description:
       "MLS already added. Marcus has a New Customer draft for “Natl Univ Hosp” (SG, tax ID 198500123K, entity MLS). The duplicate check fires against National University Hospital (C-SG-00017).",
     voiceoverHint:
-      "When he requests a hospital that already exists under another name, OneRecord catches it before any approver sees it, and he extends the existing record instead.",
+      "When he requests a hospital that already exists under another name, Tesseract catches it before any approver sees it, and he extends the existing record instead.",
     checklist: [
       "Hold while the page scrolls down to the amber duplicate card (the check runs on load).",
       "Hold on the amber card: National University Hospital · C-SG-00017 · same tax ID.",
@@ -159,7 +159,7 @@ export const SCENES: Scene[] = [
     voiceoverHint:
       "Approvals arrive in Teams, where approvers already work, with reminders before anything goes stale. Credit terms and bank details never travel in the message. Only Finance and the MDM team can see them, and every view and decision is logged. Marcus always knows where his request stands.",
     checklist: [
-      "REQ-1101 (National University Hospital → MLS) is preselected; check the Teams card title before you start. Credit terms show “•••• · view in OneRecord”.",
+      "REQ-1101 (National University Hospital → MLS) is preselected; check the Teams card title before you start. Credit terms show “•••• · view in Tesseract”.",
       "Open the details: the values are visible to Wei Jie (Finance).",
       "2-second flip: switch persona to Amy (values masked), then back to Wei Jie.",
       "Click Approve. The tracker step turns green; the chip reads “Reminder after 1 business day”.",

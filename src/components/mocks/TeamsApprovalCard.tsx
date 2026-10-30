@@ -28,7 +28,7 @@ import { MS_FONT, MS_SCOPE, MS_TEXT, MsAvatar, TEAMS, findPerson, formatAgo, for
 import { buildKeyFacts, countryName, formatFactValue, teamsSla, type TeamsSlaTone } from "./teams-helpers";
 
 /** What a sensitive field shows on any card or message: never the value, for anyone (final model decision 4). */
-export const CARD_MASK_TEXT = "•••• · view in OneRecord (Finance and MDM only)";
+export const CARD_MASK_TEXT = "•••• · view in Tesseract (Finance and MDM only)";
 
 export interface TeamsApprovalCardProps {
   request: MdmRequest;
@@ -58,7 +58,7 @@ const INPUT_CLS =
  * integrations/teams/approval-card.json; this renders the same content in-app:
  * fact set, a comment box behind "Add comment" (opened automatically to reject), Approve / Reject,
  * and "Ask a question" as a show-card. Sensitive values are never in the message: Finance and MDM
- * can pull them from OneRecord into their own view of the card ("view in OneRecord"), and each view is logged.
+ * can pull them from Tesseract into their own view of the card ("view in Tesseract"), and each view is logged.
  */
 export function TeamsApprovalCard({
   request,
@@ -81,7 +81,7 @@ export function TeamsApprovalCard({
   const [question, setQuestion] = useState("");
   const [calledBack, setCalledBack] = useState(false);
   const [commentOpen, setCommentOpen] = useState(false);
-  /** Who pulled the sensitive values from OneRecord; any other viewer sees them masked. */
+  /** Who pulled the sensitive values from Tesseract; any other viewer sees them masked. */
   const [revealedFor, setRevealedFor] = useState<string | null>(null);
   const commentId = useId();
   const questionId = useId();
@@ -189,7 +189,7 @@ export function TeamsApprovalCard({
           <ClipboardCheck className="size-3.5" strokeWidth={2.25} />
         </span>
         <span className="text-[12px] font-semibold text-[#424242]">Approvals</span>
-        <span className="text-[11px] text-[#616161]">· OneRecord</span>
+        <span className="text-[11px] text-[#616161]">· Tesseract</span>
         {step.activatedAt ? (
           <span className="ml-auto text-[11px] text-[#616161]">{formatAgo(step.activatedAt, now)}</span>
         ) : null}
@@ -272,13 +272,13 @@ export function TeamsApprovalCard({
                         data-testid="teams-masked"
                         onClick={revealSensitive}
                         className="inline-flex items-center gap-1 rounded-[3px] text-left text-[#616161] outline-none hover:text-[#444791] focus-visible:outline-2 focus-visible:outline-[#5b5fc7]"
-                        title="Show the values from OneRecord. The view is recorded in the audit trail."
+                        title="Show the values from Tesseract. The view is recorded in the audit trail."
                       >
                         <Lock className="size-3 shrink-0" aria-hidden="true" />
                         <span>
                           •••• ·{" "}
                           <span className="font-semibold underline underline-offset-2" style={{ color: TEAMS.purple }}>
-                            view in OneRecord
+                            view in Tesseract
                           </span>{" "}
                           (Finance and MDM only)
                         </span>
@@ -311,7 +311,7 @@ export function TeamsApprovalCard({
             <p data-testid="teams-reveal-note" className="mt-2 flex items-center gap-1.5 text-[11px] text-[#0e5c0e]">
               <Eye className="size-3 shrink-0" aria-hidden="true" />
               <span>
-                Pulled from OneRecord for {viewerPerson?.name ?? "you"} ({viewerRole}) · view logged · never stored in the
+                Pulled from Tesseract for {viewerPerson?.name ?? "you"} ({viewerRole}) · view logged · never stored in the
                 Teams message.{" "}
                 <button type="button" className="font-semibold underline underline-offset-2" onClick={() => setRevealedFor(null)}>
                   Hide
@@ -327,13 +327,13 @@ export function TeamsApprovalCard({
               style={{ color: TEAMS.purple }}
             >
               <Eye className="size-3.5" aria-hidden="true" />
-              {sensitiveFacts.length === 1 ? "View the masked value in OneRecord" : `View the ${sensitiveFacts.length} masked values in OneRecord`}
+              {sensitiveFacts.length === 1 ? "View the masked value in Tesseract" : `View the ${sensitiveFacts.length} masked values in Tesseract`}
               <span className="font-normal text-[#616161]">· every view is logged</span>
             </button>
           ) : (
             <p data-testid="teams-mask-note" className="mt-2 flex items-center gap-1.5 text-[11px] text-[#616161]">
               <Lock className="size-3 shrink-0" aria-hidden="true" />
-              Credit terms and bank details stay in OneRecord. Only Finance and MDM can view them.
+              Credit terms and bank details stay in Tesseract. Only Finance and MDM can view them.
             </p>
           )
         ) : null}

@@ -34,7 +34,7 @@ function StripFootnote() {
   const honesty = useHonestyDrawer();
   return (
     <span className="flex flex-wrap items-center gap-x-5 gap-y-1.5">
-      <LiveMark label="Live from OneRecord" />
+      <LiveMark label="Live from Tesseract" />
       <button
         type="button"
         onClick={() => honesty?.open()}
@@ -159,7 +159,7 @@ export function PulseKpis() {
                 </span>
               </span>
             ) : (
-              "Live from OneRecord. Open the MDM console to clear it."
+              "Live from Tesseract. Open the MDM console to clear it."
             )
           }
         />
@@ -170,7 +170,7 @@ export function PulseKpis() {
         marker={<LiveMark />}
         value={inFlight.count}
         caption={`Customer, item and vendor setups being approved. Median age ${oneDp(inFlight.medianAge)} business days; ${inFlight.atMdm} waiting for the MDM final check. Internal MDM work, not demand.`}
-        footnote="Live from OneRecord."
+        footnote="Live from Tesseract."
       />
       <Readout
         size="sm"

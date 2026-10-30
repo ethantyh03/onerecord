@@ -57,7 +57,7 @@ export const SLIDES: SlideMeta[] = [
   {
     id: "s01-title",
     label: "1",
-    title: "OneRecord",
+    title: "Tesseract",
     speaker: "Joash",
     seconds: 10,
     clock: ["0:00", "0:10"],
@@ -118,14 +118,14 @@ export const SLIDES: SlideMeta[] = [
   {
     id: "s07-one-picture",
     label: "7",
-    title: "OneRecord in one picture",
+    title: "Tesseract in one picture",
     speaker: "Ethan",
     seconds: 55,
     clock: ["2:53", "3:48"],
     steps: 2,
     playFrom: ["s06-principles"],
     cue: "Two presses. Arriving from slide 6 plays T3 (≈2 s): Amy's email fills the form, the bank number is struck out, “Regulatory licence no.” shows Needed, and it HOLDS. Say the first two sentences, pointing at Needed and the struck-out number. Press → on “That form is step one”: the form shrinks into step 1 and the flow draws (≈1.5 s).",
-    say: "Here's OneRecord in one picture. Amy's email becomes a form that knows an IVD item needs a licence number, and the bank details are stripped out. [→] That form is step one. Before any approver sees it, we check that it's complete and not a duplicate. Approvers decide in parallel, on a Teams card, with a two-business-day clock. MDM does one final check, and SAP gets an import file through its own import tool. Once every hospital is one record, the regional numbers can be trusted. A lean team of two builds it, with about fifteen days of outside help and no new licences for the workflow.",
+    say: "Here's Tesseract in one picture. Amy's email becomes a form that knows an IVD item needs a licence number, and the bank details are stripped out. [→] That form is step one. Before any approver sees it, we check that it's complete and not a duplicate. Approvers decide in parallel, on a Teams card, with a two-business-day clock. MDM does one final check, and SAP gets an import file through its own import tool. Once every hospital is one record, the regional numbers can be trusted. A lean team of two builds it, with about fifteen days of outside help and no new licences for the workflow.",
   },
   {
     id: "s08-demo-handoff",
@@ -177,7 +177,7 @@ export const SLIDES: SlideMeta[] = [
     seconds: 50,
     clock: ["11:18", "12:08"],
     cue: "If the demo ended after 9:40, skip slide 13: say “The biggest risk is habit, so after four weeks the MDM mailbox auto-replies with the form link.” here, then press End for the close.",
-    say: "We'd prove it in six weeks, in Singapore and Malaysia, on customers and items, for two business units. In week one we rerun our analysis on real SAP extracts, so every number today gets re-measured. Success is ninety percent of requests through OneRecord, a four-business-day median, and fewer than fifteen percent bounced. At week six there's a gate: if the median is over six business days, or adoption is under seventy percent, we fix it or stop. If it works, we roll out to the other three countries, then add in-tenant AI and automatic posting.",
+    say: "We'd prove it in six weeks, in Singapore and Malaysia, on customers and items, for two business units. In week one we rerun our analysis on real SAP extracts, so every number today gets re-measured. Success is ninety percent of requests through Tesseract, a four-business-day median, and fewer than fifteen percent bounced. At week six there's a gate: if the median is over six business days, or adoption is under seventy percent, we fix it or stop. If it works, we roll out to the other three countries, then add in-tenant AI and automatic posting.",
   },
   {
     id: "s13-risks",
@@ -269,7 +269,7 @@ export const SLIDES: SlideMeta[] = [
     appendix: true,
     question: "Bank and credit data? Segregation of duties? Approver on leave or not responding?",
     fallback: "Approvals → Sandbox clock → +1 / +3 business days; audit trail → Verify chain",
-    say: "Credit terms and bank details never appear in a message; the card links back to OneRecord, where only Finance and MDM can open them, and every view is logged. In production they sit in a restricted SharePoint list behind Entra ID. Nobody can approve their own request, and nobody can hold two steps of the same request. If an approver doesn't act, there's a reminder after one business day and an escalation after three, and the escalation follows the same rules.",
+    say: "Credit terms and bank details never appear in a message; the card links back to Tesseract, where only Finance and MDM can open them, and every view is logged. In production they sit in a restricted SharePoint list behind Entra ID. Nobody can approve their own request, and nobody can hold two steps of the same request. If an approver doesn't act, there's a reminder after one business day and an escalation after three, and the escalation follows the same rules.",
   },
   {
     id: "a8-sap-landing-and-scope",

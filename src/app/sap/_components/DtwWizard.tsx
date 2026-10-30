@@ -420,7 +420,7 @@ export function DtwWizard({
                   </ResultBox>
                 ) : (
                   <ResultBox tone="error" icon={<XCircle className="size-4" />}>
-                    {sim.errorCount} error{sim.errorCount === 1 ? "" : "s"} found. DTW would reject this import. Correct the request in OneRecord, then
+                    {sim.errorCount} error{sim.errorCount === 1 ? "" : "s"} found. DTW would reject this import. Correct the request in Tesseract, then
                     regenerate the files.
                   </ResultBox>
                 )

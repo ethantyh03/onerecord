@@ -303,12 +303,12 @@ export const SYSTEM_ACTOR_ID = "system";
 /** Stand-in Person for automated events, so UI code can always resolve an actor. */
 export const SYSTEM_PERSON: Person = {
   id: SYSTEM_ACTOR_ID,
-  name: "OneRecord automation",
+  name: "Tesseract automation",
   title: "Workflow engine (Power Automate)",
   roles: [],
   entity: "SPD",
   country: "SG",
-  email: "onerecord@livesgroup.example",
+  email: "tesseract@livesgroup.example",
   persona: false,
   avatarColor: "#64748B",
 };

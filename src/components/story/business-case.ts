@@ -1,5 +1,5 @@
 /**
- * OneRecord business case (final model §6), as pure functions.
+ * Tesseract business case (final model §6), as pure functions.
  *
  * Every number on /impact comes from here. Inputs are the §6.1 table (A12, A13, A19–A26 plus the research log);
  * change an input and every derived figure follows. Hard benefit = capacity released (hours × loaded rate).
@@ -372,7 +372,7 @@ export const ALTERNATIVES: Alternative[] = [
   },
   {
     id: "onerecord",
-    option: "OneRecord (Microsoft 365 workflow + small data-science layer + SAP import file)",
+    option: "Tesseract (Microsoft 365 workflow + small data-science layer + SAP import file)",
     oneOff: "~S$40k, no new licences for the workflow (phase 1); Power BI Pro only if not owned",
     stopsIncomplete: "yes",
     stopsDuplicates: "yes",

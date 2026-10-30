@@ -1,6 +1,6 @@
-# OneRecord production flows: Power Automate specification
+# Tesseract production flows: Power Automate specification
 
-This is the build spec for the Microsoft 365 version of OneRecord. The prototype's routing engine (`src/lib/engine/routing.ts`, `sla.ts`) implements the same logic, so each prototype behaviour below maps to a named flow action.
+This is the build spec for the Microsoft 365 version of Tesseract. The prototype's routing engine (`src/lib/engine/routing.ts`, `sla.ts`) implements the same logic, so each prototype behaviour below maps to a named flow action.
 
 **Licensing summary.** Flows 1 to 3 use **standard connectors only** (SharePoint, Approvals, Microsoft Teams, Office 365 Outlook, Office 365 Users). They run on the Microsoft 365 licences Lives Group already has. Only Flow 4, which writes to SAP Business One, uses a premium connector. It runs under **one Power Automate Process licence**, not per-user Premium.
 
@@ -169,7 +169,7 @@ Scope "Catch" (run after: Try failed / timed out)
 ```
 
 - **Connectivity.** If B1 is on-premises, the custom connector runs through the on-premises data gateway (premium). If the partner hosts B1 with a reachable Service Layer, no gateway is needed, but the HTTP or custom connector is still premium.
-- **Identity.** B1 records the integration user as the creator. The approving M365 user and the request ID are written to the UDF `U_OneRecordRef` so the audit trail joins up.
+- **Identity.** B1 records the integration user as the creator. The approving M365 user and the request ID are written to the UDF `U_TesseractRef` so the audit trail joins up.
 - **Atomicity.** `$batch` with one changeset rolls the whole business partner back if any child row fails.
 - **Closing the loop.** On B1 10.0 FP 2602 or later, Service Layer webhooks (`BusinessPartners` Created/Updated) can notify a HTTP-triggered flow when someone creates a record outside the workflow, so MDM governance sees it. Webhooks are off by default and need the Webhook Messenger Service.
 

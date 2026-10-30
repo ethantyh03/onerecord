@@ -37,7 +37,7 @@ const OPTIONS: { name: string; cost: string; marks: Mark[]; note?: string; ours?
   { name: "Teams Approvals only", cost: "~S$0", marks: ["p", "n", "y", "y", "n"] },
   { name: "Power Apps + SharePoint + Power Automate only", cost: "~S$30k", marks: ["y", "p", "y", "y", "n"], note: "exact match only" },
   { name: "Buy an MDM suite / B1 add-on", cost: "High (not verified) + IT", marks: ["y", "y", "y", "p", "p"] },
-  { name: "OneRecord", cost: "~S$40k, no new licences for the workflow", marks: ["y", "y", "y", "y", "y"], ours: true },
+  { name: "Tesseract", cost: "~S$40k, no new licences for the workflow", marks: ["y", "y", "y", "y", "y"], ours: true },
 ];
 
 export function A1Alternatives({ position }: SlideProps) {
@@ -308,7 +308,7 @@ export function A6Forecast({ position }: SlideProps) {
 const CONTROLS: { lead: string; text: ReactNode }[] = [
   {
     lead: "Bank and credit",
-    text: "The Teams card shows “•••• · view in OneRecord (Finance and MDM only)”. In production: a restricted SharePoint list with item-level permissions through Entra ID (SharePoint has no column-level security, hence a separate list). Every view is logged. Vendor bank details need a call-back to an independently sourced number, logged.",
+    text: "The Teams card shows “•••• · view in Tesseract (Finance and MDM only)”. In production: a restricted SharePoint list with item-level permissions through Entra ID (SharePoint has no column-level security, hence a separate list). Every view is logged. Vendor bank details need a call-back to an independently sourced number, logged.",
   },
   {
     lead: "Segregation of duties",

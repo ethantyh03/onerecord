@@ -90,7 +90,7 @@ export function CardJsonView({ request, step }: { request: MdmRequest; step: App
           <span className="font-medium text-ok-ink">
             Bank details, credit limits and payment terms are replaced with a mask before binding,
           </span>{" "}
-          so they never travel in the Teams message. Finance opens them in OneRecord, where each view is logged.
+          so they never travel in the Teams message. Finance opens them in Tesseract, where each view is logged.
         </span>
       </p>
       <pre

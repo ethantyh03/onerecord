@@ -248,7 +248,7 @@ export function S07OnePicture({ mode, play, step, position }: SlideProps) {
     <SlideFrame position={position}>
       <div ref={rootRef} className="absolute inset-0">
         <Headline size={58}>
-          OneRecord is one front door on Microsoft 365, and every approved record lands in SAP Business One.
+          Tesseract is one front door on Microsoft 365, and every approved record lands in SAP Business One.
         </Headline>
 
         {showMorph ? (

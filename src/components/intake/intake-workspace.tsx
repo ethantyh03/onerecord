@@ -517,7 +517,7 @@ function IntakeForm({ domainParam, draftParam }: { domainParam: string | null; d
 
           {!domain ? (
             <Notice className="py-1">
-              Pick a request type above, or paste an old email and OneRecord picks it for you.
+              Pick a request type above, or paste an old email and Tesseract picks it for you.
             </Notice>
           ) : (
             // The form itself sits on the page, not in boxes: each section is a ruled title (hairline to the right

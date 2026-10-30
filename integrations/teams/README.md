@@ -1,6 +1,6 @@
 # Teams approval card (Adaptive Card 1.5)
 
-`approval-card.json` is the production card that the OneRecord flow posts to each approver in Microsoft Teams and inside Outlook actionable messages. The in-app "Teams" mock (`src/components/mocks/TeamsApprovalCard.tsx`) renders the same content, so what judges click in the prototype is what approvers will see in Teams.
+`approval-card.json` is the production card that the Tesseract flow posts to each approver in Microsoft Teams and inside Outlook actionable messages. The in-app "Teams" mock (`src/components/mocks/TeamsApprovalCard.tsx`) renders the same content, so what judges click in the prototype is what approvers will see in Teams.
 
 | File | What it is |
 |---|---|
@@ -28,7 +28,7 @@ Try **Ask a question**: the card expands in place with a required question box, 
 | `Input.Text` `comment` | – | Optional on approve, required on reject (the flow checks it and re-posts the card if empty) |
 | `Action.Execute` `approve` / `reject` | `data.requestId`, `data.stepId` | Universal Actions (schema 1.4+). The same card works in Teams and in Outlook |
 | `Action.ShowCard` → `Action.Execute` `ask` | `question` input | Pauses the SLA clock and routes the question to the requestor |
-| `Action.OpenUrl` | `${detailsUrl}` | Opens the request in the OneRecord app (SharePoint list item / Power Apps screen in production) |
+| `Action.OpenUrl` | `${detailsUrl}` | Opens the request in the Tesseract app (SharePoint list item / Power Apps screen in production) |
 
 All three `Action.Execute` actions send `associatedInputs: "auto"`, so the comment or question travels with the decision.
 
@@ -39,7 +39,7 @@ All three `Action.Execute` actions send `associatedInputs: "auto"`, so the comme
 - **Throttling.** The Teams connector allows about 100 calls per connection per 60 seconds. Group reminders into one scheduled run rather than one flow run per step.
 - **Channels.** Post to 1:1 chats with the approver (Flow bot) or standard channels. Private channels are not supported by "Post adaptive card".
 - **Execute vs Submit.** `Action.Execute` is the Universal Actions model and works in both Teams and Outlook. If your tenant's "Post adaptive card and wait for a response" action does not capture the response, change the three `Action.Execute` actions to `Action.Submit`. The `data` payload stays the same.
-- **Outlook.** Actionable messages need Exchange Online and, since 8 Jun 2026, Microsoft Entra ID token authentication for custom integrations. They do not render in Office Professional Plus (Click-to-Run), Exchange on-premises OWA or OWA in a mobile browser. Those users get the plain email with the "Open in OneRecord" link.
+- **Outlook.** Actionable messages need Exchange Online and, since 8 Jun 2026, Microsoft Entra ID token authentication for custom integrations. They do not render in Office Professional Plus (Click-to-Run), Exchange on-premises OWA or OWA in a mobile browser. Those users get the plain email with the "Open in Tesseract" link.
 - **Mobile.** The Power Automate mobile app was retired on 31 Aug 2026. Approvers act from Teams mobile, Outlook mobile or the Power Automate portal. The card renders in Teams mobile unchanged.
 
 The full routing, reminder and escalation logic is specified in [`../power-automate/flow-spec.md`](../power-automate/flow-spec.md).

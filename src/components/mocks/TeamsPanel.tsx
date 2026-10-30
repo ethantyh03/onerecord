@@ -340,7 +340,7 @@ function FeedItem({
               className="mt-1.5 inline-flex items-center gap-1 text-[12px] font-semibold hover:underline"
               style={{ color: TEAMS.purple }}
             >
-              Open in OneRecord
+              Open in Tesseract
               <ArrowUpRight className="size-3.5" aria-hidden="true" />
             </Link>
           ) : null}

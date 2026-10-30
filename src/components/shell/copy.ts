@@ -1,5 +1,5 @@
 /** The environment line under every screen. The live config version is appended where the sandbox has loaded. */
-export const FOOTER_TEXT = "OneRecord · Lives Group · Sandbox environment";
+export const FOOTER_TEXT = "Tesseract · Lives Group · Sandbox environment";
 
 /** The one environment tag in the top bar ("Sandbox · synthetic data"): replaces per-section "synthetic data" markers. */
 export const ENVIRONMENT_TAG_SHORT = "Sandbox";

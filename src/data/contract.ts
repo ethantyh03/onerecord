@@ -1,5 +1,5 @@
 /**
- * OneRecord analytics → app JSON contract (owned by the data-science lane).
+ * Tesseract analytics → app JSON contract (owned by the data-science lane).
  *
  * Every JSON file in src/data/ is produced by analytics/ (Python, seed 42) and imported here with a type.
  * Screens import the typed constants from "@/data/contract", never the raw JSON.

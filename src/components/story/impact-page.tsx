@@ -76,7 +76,7 @@ export function ImpactPage() {
     <div className="w-full space-y-8 pb-10">
       <PageHeader
         title="Business case"
-        subtitle="What OneRecord saves, what it costs and when it pays back. Only hard savings (hours released) count towards payback; delayed revenue and growth signals sit in their own columns."
+        subtitle="What Tesseract saves, what it costs and when it pays back. Only hard savings (hours released) count towards payback; delayed revenue and growth signals sit in their own columns."
         actions={
           <Link href="/assumptions" className={buttonVariants({ variant: "outline" })}>
             <ScrollText aria-hidden />
@@ -490,7 +490,7 @@ export function ImpactPage() {
             <div className="p-4">
               <h3 className="text-sm font-semibold text-foreground">What the pilot measures</h3>
               <ul className="mt-3 space-y-2 text-sm">
-                <KpiLine target="≥90%" what="of requests come through OneRecord by week 6" />
+                <KpiLine target="≥90%" what="of requests come through Tesseract by week 6" />
                 <KpiLine target="≤4 business days" what="median setup time (baseline 14 calendar days)" />
                 <KpiLine target="<15%" what="of requests bounced (baseline 40%)" />
                 <KpiLine target="Count" what="duplicates caught at intake" />

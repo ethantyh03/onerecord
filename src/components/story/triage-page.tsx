@@ -58,7 +58,7 @@ const KIND_META: Record<MessageKind, { label: string; plural: string; role: stri
     label: "Master-data setup",
     plural: "Master-data setup",
     role: "Internal work, not demand",
-    counted: "A new customer, item or vendor to set up. Goes into OneRecord as a request, never into the sales numbers.",
+    counted: "A new customer, item or vendor to set up. Goes into Tesseract as a request, never into the sales numbers.",
     dot: "var(--muted-foreground)",
     hollow: true,
   },

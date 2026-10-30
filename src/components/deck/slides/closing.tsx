@@ -10,7 +10,7 @@ import { Headline, MetaColumns, SlideFrame, type SlideProps } from "../primitive
 // ---------------------------------------------------------------- S12 · pilot
 
 const KPIS: { kpi: string; today: string; target: string }[] = [
-  { kpi: "Requests through OneRecord", today: "0% (email)", target: "≥ 90%" },
+  { kpi: "Requests through Tesseract", today: "0% (email)", target: "≥ 90%" },
   { kpi: "Median setup time", today: "14 days", target: "≤ 4 business days" },
   { kpi: "Requests bounced for missing information", today: "40%", target: "< 15%" },
   { kpi: "Duplicates stopped at intake", today: "not measured", target: "counted weekly" },
@@ -71,7 +71,7 @@ const RISKS: { risk: string; doo: string; watch: string }[] = [
   {
     risk: "People keep emailing",
     doo: "After 4 weeks the MDM mailbox auto-replies with the form link; a champion per entity and country; 30-minute onboarding",
-    watch: "Share of requests through OneRecord",
+    watch: "Share of requests through Tesseract",
   },
   {
     risk: "Approvers miss one more notification",

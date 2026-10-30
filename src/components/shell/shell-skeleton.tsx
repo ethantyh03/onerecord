@@ -22,7 +22,7 @@ export function ShellSkeleton({ rail = true }: { rail?: boolean }) {
           <span className={cn("flex shrink-0 items-center gap-2.5 pr-3 pl-1 sm:pr-4 lg:w-[184px] lg:pr-2", rail && "lg:hidden")}>
             <RecordMark className="size-7 shrink-0 text-foreground" />
             <span className="hidden flex-col leading-none sm:flex">
-              <span className="font-wide text-[1.0625rem] font-semibold text-foreground">OneRecord</span>
+              <span className="font-wide text-[1.0625rem] font-semibold text-foreground">Tesseract</span>
               <span className="mt-1 hidden truncate text-xs text-muted-foreground lg:block dark:text-sidebar-muted">
                 Lives Group master data
               </span>
@@ -58,7 +58,7 @@ function SkeletonRail() {
       <div className="flex h-14 shrink-0 items-center gap-2.5 border-b border-sidebar-border px-4">
         <RecordMark className="size-7 text-sidebar-primary" />
         <span className="flex flex-col leading-none">
-          <span className="font-wide text-[1.0625rem] font-semibold text-sidebar-accent-foreground">OneRecord</span>
+          <span className="font-wide text-[1.0625rem] font-semibold text-sidebar-accent-foreground">Tesseract</span>
           <span className="mt-1 text-xs text-sidebar-muted">Lives Group master data</span>
         </span>
       </div>
@@ -102,7 +102,7 @@ function SkeletonMain() {
         </div>
       </div>
       <p className="sr-only" role="status">
-        Loading OneRecord…
+        Loading Tesseract…
       </p>
     </main>
   );

@@ -58,7 +58,7 @@ describe("buildDtwFiles — business partners", () => {
     expect(cell(bp, "EmailAddress")).toBe("procurement@kkaj.example");
     expect(cell(bp, "CreditLimit")).toBe("80000");
     expect(cell(bp, "Currency")).toBe("MYR");
-    expect(cell(bp, "U_OneRecordRef")).toBe("REQ-1038");
+    expect(cell(bp, "U_TesseractRef")).toBe("REQ-1038");
   });
 
   it("second header row carries the DB column names", () => {

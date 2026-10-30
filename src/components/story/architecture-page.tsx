@@ -320,7 +320,7 @@ function FieldMapSection() {
                       ) : null}
                     </span>
                     <span className="text-xs text-muted-foreground">
-                      {r.source === "system" ? "Set by OneRecord" : r.required === "always" ? "Required" : r.required === "conditional" ? "Required when it applies" : "Optional"}
+                      {r.source === "system" ? "Set by Tesseract" : r.required === "always" ? "Required" : r.required === "conditional" ? "Required when it applies" : "Optional"}
                     </span>
                   </td>
                   <td className={cn(T.cell, "py-2")}>

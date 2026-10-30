@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { AMY_WATERFALL, waterfallTotals, type FixKind } from "./business-case";
 import { Panel, T } from "./story-ui";
 
-/** Grey = days elapsed; chart series 1 (teal) = saved by OneRecord's form and workflow; amber = saved by a process change alone. */
+/** Grey = days elapsed; chart series 1 (teal) = saved by Tesseract's form and workflow; amber = saved by a process change alone. */
 const COLOR: Record<FixKind | "total", string> = {
   total: "var(--chart-5)",
   tooling: "var(--chart-1)",
@@ -60,8 +60,8 @@ export function AmyWaterfall() {
   }
   bars.push({
     id: "end",
-    label: "With OneRecord",
-    short: "With OneRecord",
+    label: "With Tesseract",
+    short: "With Tesseract",
     low: 0,
     high: t.afterDays,
     kind: "total",

@@ -1097,7 +1097,7 @@
   },
   "kpis": [
    {
-    "kpi": "Requests through OneRecord",
+    "kpi": "Requests through Tesseract",
     "target": "≥90% by week 6 (month 2 at rollout)",
     "baseline": "0% (email)"
    },
@@ -1201,7 +1201,7 @@
     "chosen": false
    },
    {
-    "option": "OneRecord (M365 workflow + small DS layer + DTW)",
+    "option": "Tesseract (M365 workflow + small DS layer + DTW)",
     "oneOff": "~S$40k, no new licences for the workflow (phase 1)",
     "stopsIncomplete": "yes",
     "stopsDuplicates": "yes",
@@ -1214,7 +1214,7 @@
   ],
   "sources": {
    "SAP B1 approval procedures": "research log (docs/research/2026-10-23-business-case-facts.md): verified top fact (SAP Learning, 'Implementing the approval processes')",
-   "OneRecord": "phase-1 one-off S$39,900 (this file, costs.phase1)"
+   "Tesseract": "phase-1 one-off S$39,900 (this file, costs.phase1)"
   }
  },
  "syntheticHistoryCheck": {

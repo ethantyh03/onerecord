@@ -144,7 +144,7 @@ export function DuplicatePanel({ hasInput, checking, matches, decision, onDecide
 
       <p className="px-4 pt-3 pb-3 text-sm leading-5 text-muted-foreground">
         {!hasInput
-          ? `As you type the name, tax ID and postcode, OneRecord checks every ${noun} record already in SAP B1.`
+          ? `As you type the name, tax ID and postcode, Tesseract checks every ${noun} record already in SAP B1.`
           : strong
             ? "Decide before submitting, so no approver spends time on a second copy of the same organisation."
             : top
@@ -369,7 +369,7 @@ export function RecordLookup({ code, name, record, entities, targetEntity, sugge
                 ? `No customer with code ${code.trim()} was found in SAP B1. Check the code, or search by name.`
                 : name.trim()
                   ? "Pick the record you mean:"
-                  : "Enter the customer code or name and OneRecord finds the record."}
+                  : "Enter the customer code or name and Tesseract finds the record."}
           </p>
         )}
         {!record && suggestions.length ? (

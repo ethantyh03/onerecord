@@ -57,7 +57,7 @@ export const PRC_CODE_MAX = 8;
 /**
  * The key a code is stored under inside SAP B1. Business partner and item codes fit their SAP keys as-is;
  * a cost-centre display code such as CC-SG-0031 (10 characters) exceeds OPRC.PrcCode's 8, so SAP holds it
- * without the "CC-" prefix (SG-0031). OneRecord keeps showing the full display code everywhere else.
+ * without the "CC-" prefix (SG-0031). Tesseract keeps showing the full display code everywhere else.
  */
 export function sapKeyFor(code: string): string {
   const c = code.trim();

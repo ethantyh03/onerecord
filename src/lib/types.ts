@@ -1,5 +1,5 @@
 /**
- * OneRecord shared contract. Every module codes against these types.
+ * Tesseract shared contract. Every module codes against these types.
  * Change only via the lead integrator — parallel builders must not edit this file.
  */
 

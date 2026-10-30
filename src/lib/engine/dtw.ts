@@ -15,7 +15,7 @@ import { parseAddress } from "./extract";
  * Phase 2: the equivalent Service Layer (OData v4) call, shown for reference only.
  *
  * Request data maps to SAP fields through FieldDef.sapField first ("CardName", "BPAddresses.Street",
- * "U_ShelfLife"…); fields without one fall back to the standard OneRecord field keys.
+ * "U_ShelfLife"…); fields without one fall back to the standard Tesseract field keys.
  */
 
 type Kind = "bp" | "extend" | "item" | "costcentre" | "generic";
@@ -294,7 +294,7 @@ function bpHeaderRow(ctx: Ctx): Row {
     ["ContactPerson", text(v("ContactPerson", "contactPerson"))],
     ["PayTermsGrpCode", paymentTermsCode(v("PayTermsGrpCode", "paymentTerms"))],
     ["CreditLimit", ctx.isVendor ? undefined : num(v("CreditLimit", "creditLimit"))],
-    ["U_OneRecordRef", ctx.req.id],
+    ["U_TesseractRef", ctx.req.id],
   ];
 }
 
@@ -347,7 +347,7 @@ function extendHeaderRow(ctx: Ctx, opts?: DtwOptions): Row {
     row.push(["PayTermsGrpCode", paymentTermsCode(pick(ctx, "paymentTerms"))]);
     row.push(["CreditLimit", num(pick(ctx, "creditLimit"))]);
   }
-  row.push(["U_OneRecordRef", ctx.req.id]);
+  row.push(["U_TesseractRef", ctx.req.id]);
   return row;
 }
 
@@ -433,7 +433,7 @@ function itemRow(ctx: Ctx): Row {
     ["U_PackSize", text(v("U_PackSize", "packSize"))],
     ["U_StorageCond", text(v("U_StorageCond", "storage"))],
     ["U_RegLicenceNo", text(v("U_RegLicenceNo", "regLicenceNo"))],
-    ["U_OneRecordRef", ctx.req.id],
+    ["U_TesseractRef", ctx.req.id],
   ];
 }
 
@@ -471,7 +471,7 @@ function profitCenterRow(ctx: Ctx): Row {
     ["U_Entity", text(v("U_Entity", "entity")) || ctx.req.entity],
     ["U_Country", countryOf(ctx, "country")],
     ["U_Owner", text(v("U_Owner", "owner"))],
-    ["U_OneRecordRef", ctx.req.id],
+    ["U_TesseractRef", ctx.req.id],
   ];
 }
 
@@ -510,7 +510,7 @@ function genericRow(ctx: Ctx): Row {
     const v = ctx.data[f.key];
     row.push([f.sapField ? parseSapField(f.sapField).field : f.key, f.type === "number" ? num(v) : text(v)]);
   }
-  row.push(["U_OneRecordRef", ctx.req.id]);
+  row.push(["U_TesseractRef", ctx.req.id]);
   return row;
 }
 

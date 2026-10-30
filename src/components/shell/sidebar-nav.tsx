@@ -79,7 +79,7 @@ export function SidebarNav({ onNavigate, onClose, closeRef, className }: Sidebar
         >
           <RecordMark className="size-7 shrink-0 text-sidebar-primary" />
           <span className="flex min-w-0 flex-col leading-none">
-            <span className="font-wide text-[1.0625rem] font-semibold text-sidebar-accent-foreground">OneRecord</span>
+            <span className="font-wide text-[1.0625rem] font-semibold text-sidebar-accent-foreground">Tesseract</span>
             <span className="mt-1 truncate text-xs text-sidebar-muted">Lives Group master data</span>
           </span>
         </Link>
