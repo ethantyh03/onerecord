@@ -47,7 +47,7 @@ function StripFootnote() {
   );
 }
 
-const SEEN_KEY = "onerecord-pulse-unblock-seen";
+const SEEN_KEY = "tesseract-pulse-unblock-seen";
 
 /** Measured on the customer master (summary.json → headlines.duplicates): the same figure as Home. */
 const DUP = headline("duplicates");

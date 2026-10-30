@@ -542,7 +542,7 @@ def kpi_section() -> dict:
                        "SAP B1 extracts in week 1.",
         },
         "kpis": [
-            {"kpi": "Requests through OneRecord", "target": "≥90% by week 6 (month 2 at rollout)", "baseline": "0% (email)"},
+            {"kpi": "Requests through Tesseract", "target": "≥90% by week 6 (month 2 at rollout)", "baseline": "0% (email)"},
             {"kpi": "Median setup time", "target": "≤ 4 business days", "baseline": "median 14 days (Amy's took 18) (A26)"},
             {"kpi": "Bounce rate (sent back for missing info)", "target": "<15%", "baseline": "40% (A13)"},
             {"kpi": "Duplicates intercepted at intake", "target": "count, reported weekly", "baseline": "not measured"},
@@ -575,7 +575,7 @@ ALTERNATIVES = [
      "Fixes the workflow (exact-match duplicates only), but the regional numbers stay dirty", False),
     ("Buy an MDM suite / B1 add-on", "High (enterprise pricing; not verified) + IT", "yes", "yes", "yes", "partly", "partly",
      "Over-sized for ~80 requests a month", False),
-    ("OneRecord (M365 workflow + small DS layer + DTW)", "~S$40k, no new licences for the workflow (phase 1)", "yes", "yes", "yes", "yes", "yes",
+    ("Tesseract (M365 workflow + small DS layer + DTW)", "~S$40k, no new licences for the workflow (phase 1)", "yes", "yes", "yes", "yes", "yes",
      "Chosen: fuzzy + tax-ID duplicate check, parallel approvals with SLA, stuck demand, de-duplicated forecast", True),
 ]
 
@@ -593,7 +593,7 @@ def alternatives_section() -> dict:
         "rows": rows,
         "sources": {
             "SAP B1 approval procedures": f"{RESEARCH}: verified top fact (SAP Learning, 'Implementing the approval processes')",
-            "OneRecord": "phase-1 one-off S$39,900 (this file, costs.phase1)",
+            "Tesseract": "phase-1 one-off S$39,900 (this file, costs.phase1)",
         },
     }
 

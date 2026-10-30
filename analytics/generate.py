@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""OneRecord seeded synthetic data generator.
+"""Tesseract seeded synthetic data generator.
 
 Usage (from the repo root):
     python analytics/generate.py --seed 42 --scenario base       --out analytics/out/base
@@ -2163,7 +2163,7 @@ class Generator:
 
 def print_summary(S: dict, scenario: str, seed: int, secs: float):
     p = print
-    p(f"\n=== OneRecord synthetic data · scenario={scenario} seed={seed} · {secs:.1f}s ===")
+    p(f"\n=== Tesseract synthetic data · scenario={scenario} seed={seed} · {secs:.1f}s ===")
     p("12M PO value Oct 2025–Sep 2026, de-duplicated view (S$k) and YoY vs Oct 2024–Sep 2025:")
     p(f"{'':4}" + "".join(f"{x:>18}" for x in ["A", "B", "C", "Total"]))
     for c in COUNTRIES:

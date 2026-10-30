@@ -1,7 +1,7 @@
 /**
  * Blind evaluation of the inbox-triage rules.
  *
- * Run:  cd C:/Users/ethan/dev/onerecord && npx tsx analytics/triage/eval_triage.ts
+ * Run (from the repository root):  npx tsx analytics/triage/eval_triage.ts
  *
  * Reads  analytics/triage/testset.json  (60 hand-labelled messages, 12 per type, written BEFORE the
  *        rules in src/lib/engine/triage.ts were read; never used to tune them)

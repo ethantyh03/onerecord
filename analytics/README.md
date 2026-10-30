@@ -1,4 +1,4 @@
-# OneRecord analytics
+# Tesseract analytics
 
 Python pipeline that generates the **synthetic** data and every analytics number the app shows. The app never reads
 the CSVs: it reads the JSON in `src/data/`, typed by `src/data/contract.ts`. All data is synthetic and illustrative,
@@ -8,7 +8,7 @@ and all names are fictional. The one exception is the pinned demo master record,
 ## Run it
 
 ```bash
-cd C:/Users/ethan/dev/onerecord
+# from the repository root
 PYTHONIOENCODING=utf-8 python analytics/run_all.py           # everything, ~70–80 s
 PYTHONIOENCODING=utf-8 python analytics/run_all.py --from forecast --no-triage   # resume from a step
 PYTHONIOENCODING=utf-8 python analytics/build_summary.py --check-only            # just the consistency checks

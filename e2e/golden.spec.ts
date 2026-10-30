@@ -1,7 +1,7 @@
 import { expect, test, type ConsoleMessage, type Page } from "@playwright/test";
 
 /**
- * OneRecord golden path, driven through the /demo scene loader (storyboard §7.1).
+ * Tesseract golden path, driven through the /demo scene loader (storyboard §7.1).
  * Every scene resets the per-browser sandbox, so each test starts from a known state.
  */
 

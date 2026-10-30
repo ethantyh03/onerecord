@@ -1,4 +1,4 @@
-// Beat scripts for the OneRecord demo video (storyboard §7.1). Times are beat-local seconds on the
+// Beat scripts for the Tesseract demo video (storyboard §7.1). Times are beat-local seconds on the
 // virtual clock; the VO starts at voOffset. Sentence starts (VO-local) are noted from vo/<beat>.srt.
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const tid = (id) => `[data-testid="${id}"]`;
@@ -30,7 +30,7 @@ export const BEATS = {
     async run(r) {},
   },
 
-  // VO: s1 0.05 "At Lives Group ... by email." s2 3.45 "Records arrive ..." s3 8.62 "OneRecord fixes both ends." (10.78 s)
+  // VO: s1 0.05 "At Lives Group ... by email." s2 3.45 "Records arrive ..." s3 8.62 "Tesseract fixes both ends." (10.78 s)
   frame: {
     onScreen: "Home. The badge \"Runs on Microsoft 365 · lands in SAP Business One\", the three spellings caught at intake, then a slow scroll to the process diagram with its CLEAN IN and MONEY OUT labels.",
     voOffset: 0.3, tail: 0.8, startMouse: [900, 620],
@@ -99,7 +99,7 @@ export const BEATS = {
 
   // VO: s1 0.05 approves on Teams  s2 4.17 credit terms never travel  s3 6.76 Finance and MDM  s4 10.72 reminders + logged (15.07 s)
   weijie: {
-    onScreen: "Wei Jie's Approvals page with the Teams card: credit terms show \"•••• · view in OneRecord (Finance and MDM only)\". He clicks Approve (toast), opens the details, reveals the credit values (the view is logged), and the audit trail shows his approval and the logged view.",
+    onScreen: "Wei Jie's Approvals page with the Teams card: credit terms show \"•••• · view in Tesseract (Finance and MDM only)\". He clicks Approve (toast), opens the details, reveals the credit values (the view is logged), and the audit trail shows his approval and the logged view.",
     voOffset: 0.3, tail: 0.8, startMouse: [1100, 420],
     async setup(r) {
       await loadScene(r, "weijie-teams");

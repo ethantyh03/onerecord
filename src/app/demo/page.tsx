@@ -11,7 +11,7 @@ import { useSandbox } from "@/lib/store";
 import { SCENES, loadScene, nudgeClock, type Scene, type SceneId } from "@/lib/scenes";
 import { cn } from "@/lib/utils";
 
-const LAST_KEY = "onerecord-demo-last-loaded";
+const LAST_KEY = "tesseract-demo-last-loaded";
 
 /** Storyboard beats that are not store scenes: pitch frames and short inserts. */
 interface OpenBeat {

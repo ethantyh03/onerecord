@@ -120,7 +120,7 @@ export function PulseHeader() {
   // Takeaway 3 is on the first screen at presenter size: after an SAP release (Beat 7's bridge) it counts
   // down from the old stuck figure to the new one, so the drop is seen without scrolling to the tile.
   const stuckTakeRef = useRef<HTMLLIElement>(null);
-  const shownStuck = useUnblockCountdown(stuck.totalSgd, "onerecord-pulse-unblock-seen-takeaway", stuckTakeRef);
+  const shownStuck = useUnblockCountdown(stuck.totalSgd, "tesseract-pulse-unblock-seen-takeaway", stuckTakeRef);
 
   const takeaways: { href: string; testId: string; focus: MapFocus; body: ReactNode }[] = [
     {

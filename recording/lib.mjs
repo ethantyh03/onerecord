@@ -7,7 +7,7 @@ import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
 export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-export const BASE = process.env.ONERECORD_URL || "http://localhost:3100";
+export const BASE = process.env.TESSERACT_URL || "http://localhost:3100";
 export const FFBIN =
   "C:/Users/ethan/AppData/Local/Microsoft/WinGet/Packages/Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe/ffmpeg-9.0.2-full_build/bin";
 export const FFMPEG = `${FFBIN}/ffmpeg.exe`;

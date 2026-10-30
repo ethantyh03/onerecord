@@ -1,4 +1,4 @@
-// Exports /pitch/summary to deliverables/summary/: OneRecord-summary.pdf (2 pages, 1920×1080) + slide-1.png, slide-2.png.
+// Exports /pitch/summary to deliverables/summary/: Tesseract-summary.pdf (2 pages, 1920×1080) + slide-1.png, slide-2.png.
 // Usage: node recording/export-summary.mjs [baseUrl]   (default http://localhost:3100)
 // Re-run after changing LINKS (src/lib/links.ts) and rebuilding; nothing else depends on it.
 import { chromium } from "@playwright/test";
@@ -50,7 +50,7 @@ try {
 
   await page.emulateMedia({ media: "print" });
   await page.pdf({
-    path: path.join(OUT, "OneRecord-summary.pdf"),
+    path: path.join(OUT, "Tesseract-summary.pdf"),
     width: "1920px",
     height: "1080px",
     printBackground: true,

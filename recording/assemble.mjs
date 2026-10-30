@@ -1,7 +1,7 @@
 // Assemble the demo video from the recorded beats + TTS voice-over.
 // Usage: node recording/assemble.mjs [--cuts]      (--cuts = hard cuts instead of 0.25 s crossfades)
 // Inputs:  deliverables/video/beats/<beat>.mp4 + .json (from record.mjs), deliverables/video/vo/<beat>.mp3/.srt
-// Outputs: deliverables/video/OneRecord-demo.mp4, OneRecord-demo-silent.mp4, OneRecord-demo.srt, voiceover-script.md
+// Outputs: deliverables/video/Tesseract-demo.mp4, Tesseract-demo-silent.mp4, Tesseract-demo.srt, voiceover-script.md
 import fs from "node:fs";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
@@ -69,7 +69,7 @@ fs.mkdirSync(tmp, { recursive: true });
 }
 
 // ---- 2. picture (crossfades) + mux ------------------------------------------------------------
-const final = path.join(OUT, "OneRecord-demo.mp4");
+const final = path.join(OUT, "Tesseract-demo.mp4");
 {
   const args = ["-y", "-v", "error"];
   beats.forEach((b) => args.push("-i", b.video));
@@ -86,7 +86,7 @@ const final = path.join(OUT, "OneRecord-demo.mp4");
     "-c:v", "libx264", "-preset", "slow", "-crf", "18", "-pix_fmt", "yuv420p", "-r", String(FPS), "-g", String(FPS * 2),
     "-c:a", "aac", "-b:a", "192k", "-ar", "48000", "-t", total.toFixed(3), "-movflags", "+faststart", final);
   run(args, "final");
-  run(["-y", "-v", "error", "-i", final, "-map", "0:v", "-c", "copy", "-an", "-movflags", "+faststart", path.join(OUT, "OneRecord-demo-silent.mp4")], "silent");
+  run(["-y", "-v", "error", "-i", final, "-map", "0:v", "-c", "copy", "-an", "-movflags", "+faststart", path.join(OUT, "Tesseract-demo-silent.mp4")], "silent");
 }
 
 // ---- 3. captions (.srt) -----------------------------------------------------------------------
@@ -105,16 +105,16 @@ const mmss = (s) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart
   }
   for (let i = 0; i < cues.length - 1; i++) cues[i].z = Math.min(cues[i].z, cues[i + 1].a - 0.02);
   const srt = cues.map((c, i) => `${i + 1}\n${tc(c.a)} --> ${tc(c.z)}\n${c.text}\n`).join("\n");
-  fs.writeFileSync(path.join(OUT, "OneRecord-demo.srt"), srt, "utf8");
+  fs.writeFileSync(path.join(OUT, "Tesseract-demo.srt"), srt, "utf8");
 }
 
 // ---- 4. voice-over script for the student's own narration -------------------------------------
 {
   const voTotal = beats.reduce((a, b) => a + b.voDur, 0);
   const intro =
-    `Read this over the silent cut (\`OneRecord-demo-silent.mp4\`, **${mmss(total)}**). Each beat below gives its window in the video and the moment to **start speaking** ` +
-    `(the TTS take, ${sb.tts.voice} at ${sb.tts.rate}, starts there in \`OneRecord-demo.mp4\`). The TTS voice-over itself runs **${mmss(voTotal)}**; the rest is holds. ` +
-    `The hard ceiling is 2:55. The same text is in \`recording/storyboard.json\`, and the captions are in \`OneRecord-demo.srt\`.`;
+    `Read this over the silent cut (\`Tesseract-demo-silent.mp4\`, **${mmss(total)}**). Each beat below gives its window in the video and the moment to **start speaking** ` +
+    `(the TTS take, ${sb.tts.voice} at ${sb.tts.rate}, starts there in \`Tesseract-demo.mp4\`). The TTS voice-over itself runs **${mmss(voTotal)}**; the rest is holds. ` +
+    `The hard ceiling is 2:55. The same text is in \`recording/storyboard.json\`, and the captions are in \`Tesseract-demo.srt\`.`;
   const header = fs.readFileSync(path.join(ROOT, "recording", "vo-script-header.md"), "utf8").replace("{{INTRO}}", intro);
   const parts = [header.trimEnd(), "", "---", ""];
   beats.forEach((b, k) => {

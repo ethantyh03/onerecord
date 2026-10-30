@@ -1,5 +1,5 @@
 {
- "name": "OneRecord inbox-triage blind test set v1",
+ "name": "Tesseract inbox-triage blind test set v1",
  "writtenBlind": true,
  "writtenAt": "2026-10-28T01:04+08:00",
  "protocol": "Written and hand-labelled BEFORE the author read src/lib/engine/triage.ts or its tests; never used to tune the rules. sha256 of messages recorded at write time so later edits are detectable.",

@@ -59,7 +59,7 @@ import { segregationCheck } from "@/lib/engine/routing";
 // Types
 // =============================================================================================
 
-export const STORAGE_KEY = "onerecord-sandbox-v1";
+export const STORAGE_KEY = "tesseract-sandbox-v1";
 /** Bump whenever the persisted shape or the seed changes: every visitor is then reseeded. */
 export const SANDBOX_VERSION = 2;
 
@@ -389,7 +389,7 @@ function browserStorage(): StateStorage {
   if (typeof window === "undefined") throw new Error("No browser storage during server rendering");
   try {
     const ls = window.localStorage;
-    const probe = "__onerecord_probe__";
+    const probe = "__tesseract_probe__";
     ls.setItem(probe, "1");
     ls.removeItem(probe);
     return ls;

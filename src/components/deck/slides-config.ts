@@ -325,7 +325,7 @@ export const CHECKPOINTS = [
   "Demo starts by 4:15. Behind? Cut in this order: Marcus's admin scene (one line instead), Wei Jie's detail view, slide 13.",
   "Demo ends by 9:15 (after 9:40: cut slide 13).",
   "Close (slide 14) starts by 13:00; never after 14:15.",
-  "If the live demo breaks: play deliverables/video/OneRecord-demo.mp4 (2:54), then slide 9.",
+  "If the live demo breaks: play the backup demo video (2:54; youtu.be/5tieuSmd2Aw or the downloaded copy), then slide 9.",
 ];
 
 export function clockToSeconds(c: string): number {

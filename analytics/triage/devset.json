@@ -1,5 +1,5 @@
 {
- "name": "OneRecord inbox-triage DEV set v1",
+ "name": "Tesseract inbox-triage DEV set v1",
  "purpose": "Development set for tuning the transparent triage rules in src/lib/engine/triage.ts. Written by the rules author. The blind TEST set (testset.json) was written by a different agent and is never inspected or used for tuning.",
  "labels": {
   "po": "Confirmed order that carries a PO number (PO, P.O., LPO, Purchase Order No.)",

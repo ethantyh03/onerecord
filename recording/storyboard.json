@@ -1,5 +1,5 @@
 {
-  "title": "OneRecord demo — voice-over storyboard",
+  "title": "Tesseract demo — voice-over storyboard",
   "source": "final model §7.1 (team design notes, 28 Oct 2026) with the 28 Oct fact fixes; numbers from src/data/summary.json, impact.json, meta.json",
   "note": "Synthetic, illustrative data. The real company is never named. SAP Business One is described as document-centric, never as unable to approve master data.",
   "tts": {
@@ -31,7 +31,7 @@
     {
       "id": "frame",
       "targetSeconds": 10,
-      "vo": "At Lives Group, master data is created by email. Records arrive incomplete or duplicated, so the regional numbers can't be trusted. OneRecord fixes both ends.",
+      "vo": "At Lives Group, master data is created by email. Records arrive incomplete or duplicated, so the regional numbers can't be trusted. Tesseract fixes both ends.",
       "screen": "Home: split \"Clean in │ Money out\"; badge \"Runs on Microsoft 365 · lands in SAP Business One\".",
       "voSeconds": 10.78,
       "voFile": "deliverables/video/vo/frame.mp3",
@@ -39,7 +39,7 @@
       "slotStart": 10.77,
       "slotEnd": 22.65,
       "title": "Frame",
-      "read": "At Lives Group, / master data is created **by email**. // Records arrive **incomplete** or **duplicated**, / so the regional numbers **can't be trusted**. // OneRecord fixes **both ends**.",
+      "read": "At Lives Group, / master data is created **by email**. // Records arrive **incomplete** or **duplicated**, / so the regional numbers **can't be trusted**. // Tesseract fixes **both ends**.",
       "note": "",
       "voStart": 11.07
     },
@@ -67,7 +67,7 @@
     {
       "id": "marcus",
       "targetSeconds": 15,
-      "vo": "Marcus is from a new business unit, Meridian Life Sciences. He types a hospital in shorthand, and OneRecord finds it already on file. So he extends that record to his entity, instead of creating a duplicate. Business Support and Finance check it, then MDM.",
+      "vo": "Marcus is from a new business unit, Meridian Life Sciences. He types a hospital in shorthand, and Tesseract finds it already on file. So he extends that record to his entity, instead of creating a duplicate. Business Support and Finance check it, then MDM.",
       "screen": "4 s admin-marcus insert (\"MLS — Meridian Life Sciences + approvers · Saved\"), then marcus-dup: types \"Natl Univ Hosp\" → amber card \"National University Hospital · C-SG-00017 · same tax ID\" → clicks \"Extend to my entity\" → route \"Business Support + Finance (Wei Jie) → MDM\".",
       "voSeconds": 15.74,
       "voFile": "deliverables/video/vo/marcus.mp3",
@@ -75,22 +75,22 @@
       "slotStart": 49.21,
       "slotEnd": 65.95,
       "title": "Clean in: Marcus",
-      "read": "Marcus is from a **new** business unit, / Meridian Life Sciences. // He types a hospital **in shorthand**, / and OneRecord finds it **already on file**. // So he **extends** that record to his entity, / instead of creating a **duplicate**. // Business Support and **Finance** check it, / then MDM.",
+      "read": "Marcus is from a **new** business unit, / Meridian Life Sciences. // He types a hospital **in shorthand**, / and Tesseract finds it **already on file**. // So he **extends** that record to his entity, / instead of creating a **duplicate**. // Business Support and **Finance** check it, / then MDM.",
       "note": "",
       "voStart": 49.51
     },
     {
       "id": "weijie",
       "targetSeconds": 18,
-      "vo": "Wei Jie in Finance approves on a Teams card, where he already works. Credit terms never travel in the message. Only Finance and MDM can open them, inside OneRecord. Reminders go out before anything stalls, and every decision is logged.",
-      "screen": "weijie-teams: Teams card with \"Credit terms: •••• · view in OneRecord (Finance only)\" → open details (values visible to Wei Jie) → 2 s persona flip to Amy (••••) → Approve → tracker step turns green; chip \"Reminder after 1 business day\".",
+      "vo": "Wei Jie in Finance approves on a Teams card, where he already works. Credit terms never travel in the message. Only Finance and MDM can open them, inside Tesseract. Reminders go out before anything stalls, and every decision is logged.",
+      "screen": "weijie-teams: Teams card with \"Credit terms: •••• · view in Tesseract (Finance only)\" → open details (values visible to Wei Jie) → 2 s persona flip to Amy (••••) → Approve → tracker step turns green; chip \"Reminder after 1 business day\".",
       "voSeconds": 15.07,
       "voFile": "deliverables/video/vo/weijie.mp3",
       "words": 40,
       "slotStart": 65.7,
       "slotEnd": 81.87,
       "title": "Clean in: Wei Jie",
-      "read": "Wei Jie in Finance approves on a **Teams card**, / where he **already works**. // Credit terms **never travel** in the message. / Only **Finance and MDM** can open them, / inside OneRecord. // **Reminders** go out before anything stalls, / and **every decision** is logged.",
+      "read": "Wei Jie in Finance approves on a **Teams card**, / where he **already works**. // Credit terms **never travel** in the message. / Only **Finance and MDM** can open them, / inside Tesseract. // **Reminders** go out before anything stalls, / and **every decision** is logged.",
       "note": "",
       "voStart": 66
     },

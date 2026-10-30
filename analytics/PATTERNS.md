@@ -1,6 +1,6 @@
-# Planted patterns in the OneRecord synthetic data
+# Planted patterns in the Tesseract synthetic data
 
-All data in OneRecord is **synthetic and illustrative**. It comes from one seeded script,
+All data in Tesseract is **synthetic and illustrative**. It comes from one seeded script,
 `analytics/generate.py`, and every number it uses is in `analytics/params.yaml`, where each value is
 commented with its source. This page lists every pattern we planted on purpose, the parameter that controls it, where the
 number comes from, and what the base run actually produced. Because the patterns are known in advance, a good score here

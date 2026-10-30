@@ -247,7 +247,7 @@ export interface RecheckMatch {
   name: string;
   score: number;
   reasons: string[];
-  source: "master" | "onerecord";
+  source: "master" | "tesseract";
 }
 
 export interface RecheckResult {
@@ -317,7 +317,7 @@ export function recheckDuplicates(
         name: h.record.cardName,
         score: h.score,
         reasons: h.reasons,
-        source: sapCodes.has(h.record.cardCode) ? "onerecord" : "master",
+        source: sapCodes.has(h.record.cardCode) ? "tesseract" : "master",
       })),
     };
   }
@@ -329,7 +329,7 @@ export function recheckDuplicates(
     for (const r of sapRecords) {
       if (r.object !== "oItems" || r.code === own) continue;
       seen.add(r.code);
-      pool.push({ code: r.code, name: r.name, source: "onerecord" });
+      pool.push({ code: r.code, name: r.name, source: "tesseract" });
     }
     for (const i of masters.items) if (!seen.has(i.itemCode) && i.itemCode !== own) pool.push({ code: i.itemCode, name: i.itemName, source: "master" });
     const matches = pool
@@ -348,7 +348,7 @@ export function recheckDuplicates(
       .map((r) => ({ r, score: name ? nameSimilarity(name, r.name) : 0 }))
       .filter((x) => x.score >= 0.9)
       .slice(0, 3)
-      .map(({ r, score }) => ({ code: r.code, name: r.name, score, reasons: [`${Math.round(score * 100)}% name match`], source: "onerecord" as const }));
+      .map(({ r, score }) => ({ code: r.code, name: r.name, score, reasons: [`${Math.round(score * 100)}% name match`], source: "tesseract" as const }));
     return { kind: matches.length ? "matches" : "clear", matches, compared: pool.length };
   }
 

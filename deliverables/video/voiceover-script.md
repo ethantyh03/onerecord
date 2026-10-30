@@ -1,6 +1,6 @@
-# OneRecord demo: voice-over script
+# Tesseract demo: voice-over script
 
-Read this over the silent cut (`OneRecord-demo-silent.mp4`, **2:53**). Each beat below gives its window in the video and the moment to **start speaking** (the TTS take, en-US-AndrewNeural at +3%, starts there in `OneRecord-demo.mp4`). The TTS voice-over itself runs **2:42**; the rest is holds. The hard ceiling is 2:55. The same text is in `recording/storyboard.json`, and the captions are in `OneRecord-demo.srt`.
+Read this over the silent cut (`Tesseract-demo-silent.mp4`, **2:53**). Each beat below gives its window in the video and the moment to **start speaking** (the TTS take, en-US-AndrewNeural at +3%, starts there in `Tesseract-demo.mp4`). The TTS voice-over itself runs **2:42**; the rest is holds. The hard ceiling is 2:55. The same text is in `recording/storyboard.json`, and the captions are in `Tesseract-demo.srt`.
 
 **Pace.** Aim for about **150 words a minute**. That is slower than you think, so read as if you were explaining it to a friend across a table. If a beat runs long, cut a hold, not your breath.
 - `/` means a short pause (about half a second).
@@ -34,7 +34,7 @@ The data is **synthetic and illustrative**. Never name the real company. SAP Bus
 
 **On screen:** Home. The badge "Runs on Microsoft 365 · lands in SAP Business One", the three spellings caught at intake, then a slow scroll to the process diagram with its CLEAN IN and MONEY OUT labels.
 
-> At Lives Group, / master data is created **by email**. // Records arrive **incomplete** or **duplicated**, / so the regional numbers **can't be trusted**. // OneRecord fixes **both ends**.
+> At Lives Group, / master data is created **by email**. // Records arrive **incomplete** or **duplicated**, / so the regional numbers **can't be trusted**. // Tesseract fixes **both ends**.
 
 ### 3. Clean in: Amy (0:22–0:49)
 **Start speaking at 0:22** (22.8 s) · TTS line lasts 25.7 s · window 26.7 s
@@ -48,14 +48,14 @@ The data is **synthetic and illustrative**. Never name the real company. SAP Bus
 
 **On screen:** Admin: "Add business unit" opens prefilled for MLS — Meridian Life Sciences; Save → "Config v2 live". Cut to Marcus's form: he retypes "Natl Univ Hosp", the amber card finds National University Hospital · C-SG-00017 (100%, same tax ID), he clicks "Extend to my entity", sets "Changes credit terms? = Yes" and Tan Wei Jie (Finance) joins Business Support before the MDM check.
 
-> Marcus is from a **new** business unit, / Meridian Life Sciences. // He types a hospital **in shorthand**, / and OneRecord finds it **already on file**. // So he **extends** that record to his entity, / instead of creating a **duplicate**. // Business Support and **Finance** check it, / then MDM.
+> Marcus is from a **new** business unit, / Meridian Life Sciences. // He types a hospital **in shorthand**, / and Tesseract finds it **already on file**. // So he **extends** that record to his entity, / instead of creating a **duplicate**. // Business Support and **Finance** check it, / then MDM.
 
 ### 5. Clean in: Wei Jie (1:05–1:21)
 **Start speaking at 1:06** (66.0 s) · TTS line lasts 15.1 s · window 15.9 s
 
-**On screen:** Wei Jie's Approvals page with the Teams card: credit terms show "•••• · view in OneRecord (Finance and MDM only)". He clicks Approve (toast), opens the details, reveals the credit values (the view is logged), and the audit trail shows his approval and the logged view.
+**On screen:** Wei Jie's Approvals page with the Teams card: credit terms show "•••• · view in Tesseract (Finance and MDM only)". He clicks Approve (toast), opens the details, reveals the credit values (the view is logged), and the audit trail shows his approval and the logged view.
 
-> Wei Jie in Finance approves on a **Teams card**, / where he **already works**. // Credit terms **never travel** in the message. / Only **Finance and MDM** can open them, / inside OneRecord. // **Reminders** go out before anything stalls, / and **every decision** is logged.
+> Wei Jie in Finance approves on a **Teams card**, / where he **already works**. // Credit terms **never travel** in the message. / Only **Finance and MDM** can open them, / inside Tesseract. // **Reminders** go out before anything stalls, / and **every decision** is logged.
 
 ### 6. Lands in SAP B1 (1:21–1:53)
 **Start speaking at 1:21** (81.9 s) · TTS line lasts 31.6 s · window 32.2 s

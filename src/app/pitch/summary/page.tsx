@@ -89,7 +89,7 @@ const ALT_LABEL: Record<string, string> = {
   "teams-approvals": "Teams Approvals only",
   "power-platform": "Power Platform workflow only",
   "mdm-suite": "Buy an MDM suite / B1 add-on",
-  onerecord: "Tesseract",
+  tesseract: "Tesseract",
 };
 const ALT_COST: Record<string, string> = {
   "status-quo": "~S$0",
@@ -97,7 +97,7 @@ const ALT_COST: Record<string, string> = {
   "teams-approvals": "~S$0",
   "power-platform": "~S$30k",
   "mdm-suite": "High",
-  onerecord: "~S$40k",
+  tesseract: "~S$40k",
 };
 const CRITERIA = [
   { key: "stopsIncomplete", label: "Stops incomplete" },

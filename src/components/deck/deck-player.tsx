@@ -14,8 +14,8 @@ import { useViewport } from "./use-viewport";
 const LAST_MAIN = MAIN_COUNT - 1;
 const HANDOFF_INDEX = SLIDES.findIndex((s) => s.id === "s08-demo-handoff");
 const RETURN_INDEX = SLIDES.findIndex((s) => s.id === "s09-regional");
-const TIMER_KEY = "onerecord-deck-timer";
-const CHANNEL = "onerecord-deck";
+const TIMER_KEY = "tesseract-deck-timer";
+const CHANNEL = "tesseract-deck";
 
 /** Every slide change is a 180 ms cross-fade, or a cut where the next slide's first frame continues this one. */
 const FADE: Variants = {

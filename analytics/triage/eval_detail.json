@@ -1,5 +1,5 @@
 {
- "testSet": "OneRecord inbox-triage blind test set v1",
+ "testSet": "Tesseract inbox-triage blind test set v1",
  "testSetSha256": "3f3a4099cdded854d70c4880d0c3bd4fe264897a0a821d05b376c15aa9abf9c6",
  "n": 60,
  "accuracy": 0.917,

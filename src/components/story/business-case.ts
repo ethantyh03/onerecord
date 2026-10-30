@@ -371,7 +371,7 @@ export const ALTERNATIVES: Alternative[] = [
     verdict: "Over-sized for ~80 requests a month",
   },
   {
-    id: "onerecord",
+    id: "tesseract",
     option: "Tesseract (Microsoft 365 workflow + small data-science layer + SAP import file)",
     oneOff: "~S$40k, no new licences for the workflow (phase 1); Power BI Pro only if not owned",
     stopsIncomplete: "yes",

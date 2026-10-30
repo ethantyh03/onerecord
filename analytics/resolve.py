@@ -1,4 +1,4 @@
-"""Entity resolution for OneRecord: blocking -> pair scoring -> threshold tuned on SG+MY -> clusters (golden IDs).
+"""Entity resolution for Tesseract: blocking -> pair scoring -> threshold tuned on SG+MY -> clusters (golden IDs).
 
 Outputs
 - analytics/out/<scenario>/crosswalk.csv   one row per SAP customer record -> predicted golden ID (+ evidence)

@@ -1,4 +1,4 @@
-"""Run the whole OneRecord analytics pipeline end to end, in dependency order.
+"""Run the whole Tesseract analytics pipeline end to end, in dependency order.
 
     PYTHONIOENCODING=utf-8 python analytics/run_all.py            # everything, incl. the triage eval (needs Node)
     PYTHONIOENCODING=utf-8 python analytics/run_all.py --no-triage

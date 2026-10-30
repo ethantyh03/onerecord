@@ -1,4 +1,4 @@
-# OneRecord synthetic-data generator parameters. Every tunable number lives here.
+# Tesseract synthetic-data generator parameters. Every tunable number lives here.
 #
 # Source tags used in the comments:
 #   [R: <section>]  research log  docs/research/2026-10-23-business-case-facts.md, section "<section>"

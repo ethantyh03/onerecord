@@ -1,4 +1,4 @@
-"""Shared helpers for the OneRecord analytics pipeline.
+"""Shared helpers for the Tesseract analytics pipeline.
 
 Paths, parameters, country/product constants, month arithmetic and CSV/JSON IO, so every script
 (generator, matcher, backtest, signals, business case) reads the same files the same way.

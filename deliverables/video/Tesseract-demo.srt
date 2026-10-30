@@ -16,7 +16,7 @@ Records arrive incomplete or duplicated, so the regional numbers can't be truste
 
 5
 00:00:19,686 --> 00:00:22,286
-OneRecord fixes both ends.
+Tesseract fixes both ends.
 
 6
 00:00:22,780 --> 00:00:30,346
@@ -40,7 +40,7 @@ Marcus is from a new business unit, Meridian Life Sciences.
 
 11
 00:00:53,260 --> 00:00:57,815
-He types a hospital in shorthand, and OneRecord finds it already on file.
+He types a hospital in shorthand, and Tesseract finds it already on file.
 
 12
 00:00:57,835 --> 00:01:01,929
@@ -60,7 +60,7 @@ Credit terms never travel in the message.
 
 16
 00:01:12,759 --> 00:01:16,696
-Only Finance and MDM can open them, inside OneRecord.
+Only Finance and MDM can open them, inside Tesseract.
 
 17
 00:01:16,716 --> 00:01:21,512

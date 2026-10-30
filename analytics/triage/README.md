@@ -63,7 +63,7 @@ The per-class columns show recall. The individual blind-test errors were not ins
 ## Reproduce
 
 ```bash
-cd C:/Users/ethan/dev/onerecord
+# from the repository root
 npx vitest run src/lib/engine/__tests__/triage.test.ts   # dev-set regression + unit tests
 npx tsx analytics/triage/eval_triage.ts                   # blind test → src/data/triage_eval.json
 ```

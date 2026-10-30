@@ -32,7 +32,7 @@ All data is synthetic and illustrative; every figure is in the numbers ledger of
 - Demo starts by 4:15. Behind? Cut in this order: Marcus's admin scene (one line instead), Wei Jie's detail view, slide 13.
 - Demo ends by 9:15 (after 9:40: cut slide 13).
 - Close (slide 14) starts by 13:00; never after 14:15.
-- If the live demo breaks: play deliverables/video/OneRecord-demo.mp4 (2:54), then slide 9.
+- If the live demo breaks: play the backup demo video (2:54; youtu.be/5tieuSmd2Aw or the downloaded copy), then slide 9.
 
 **Handoffs:** Joash → Ethan at slide 6 ("Thanks, Joash."). Ethan → Joash at slide 10 ("Thanks, Ethan."). Joash opens and closes.
 
@@ -141,7 +141,7 @@ hold; → shrinks them). The [→] in the script below marks the press.
 | 5 · Pulse | 3:50–4:45 | Stay on /pulse (don't reload: it resets stuck demand) | Top-bar tag “Sandbox · synthetic data”. Raw SAP records → Bukit Damai #7 / #10 / #11. Merge the duplicates → #2, −32%. “Recommended action”: BU Head, SPD Malaysia, by 13 Nov, S$620k. |
 | Return | 4:45–5:00 | Ctrl+1 to the return tab (tab 1, already on slide 9) | “What does that mean for the region?” Never the Back button. |
 
-If the live demo breaks: play `deliverables/video/OneRecord-demo.mp4` (2:54), then slide 9.
+If the live demo breaks: play the backup demo video (2:54; youtu.be/5tieuSmd2Aw or the downloaded copy), then slide 9.
 
 ### 9 · What Regional Pulse tells a manager
 

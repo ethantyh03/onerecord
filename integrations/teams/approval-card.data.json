@@ -25,5 +25,5 @@
     { "label": "Regulatory licence", "value": "MDA-IVD-2026-04418" },
     { "label": "Blocked demand", "value": "2 customer PRs · S$70,000" }
   ],
-  "detailsUrl": "https://onerecord.livesgroup.example/requests/REQ-1042"
+  "detailsUrl": "https://tesseract.livesgroup.example/requests/REQ-1042"
 }

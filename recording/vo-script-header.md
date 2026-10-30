@@ -1,4 +1,4 @@
-# OneRecord demo: voice-over script
+# Tesseract demo: voice-over script
 
 {{INTRO}}
 

@@ -27,7 +27,7 @@ Today, every new master-data record is requested by email. That causes four prob
 - Nobody can see where a request stands.
 - Duplicates slip into SAP B1, and those duplicates then make the regional numbers wrong.
 
-OneRecord fixes both ends of the problem.
+Tesseract fixes both ends of the problem.
 
 - **Clean in:**
   - One form with the right rules built in.
@@ -41,7 +41,7 @@ OneRecord fixes both ends of the problem.
   - a seasonal forecast, tested against today's rolling average
   - the customer orders stuck behind master-data setup
 
-Amy needed one new item code. It took eighteen days, a bounced request and three approvers one at a time — and her sales order still failed. With OneRecord the target is a **median of 14 days → ≤ 4 business days**.
+Amy needed one new item code. It took eighteen days, a bounced request and three approvers one at a time — and her sales order still failed. With Tesseract the target is a **median of 14 days → ≤ 4 business days**.
 
 ## Guided tour for judges (about 10 minutes)
 

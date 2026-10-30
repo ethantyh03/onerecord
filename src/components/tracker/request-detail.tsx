@@ -41,7 +41,7 @@ function Fact({ label, children, className }: { label: string; children: React.R
 }
 
 /** The scene loader on /demo marks the tab; while filming, the approver-simulation box stays out of shot. */
-const DEMO_SESSION_KEY = "onerecord-demo-last-loaded";
+const DEMO_SESSION_KEY = "tesseract-demo-last-loaded";
 function isFilming(params: URLSearchParams): boolean {
   if (params.get("demo") === "1") return true;
   try {

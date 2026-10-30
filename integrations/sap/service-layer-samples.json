@@ -15,7 +15,7 @@
       "headers": { "Content-Type": "application/json" },
       "body": {
         "CompanyDB": "LIVES_PROD",
-        "UserName": "svc_onerecord",
+        "UserName": "svc_tesseract",
         "Password": "<from Azure Key Vault>"
       },
       "response": {

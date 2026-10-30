@@ -56,7 +56,7 @@ __pycache__/
 # large video artefacts (the final video goes to YouTube; keep scripts + captions only)
 /deliverables/video/*
 !/deliverables/video/voiceover-script.md
-!/deliverables/video/OneRecord-demo.srt
+!/deliverables/video/Tesseract-demo.srt
 
 .vercel
 .env*

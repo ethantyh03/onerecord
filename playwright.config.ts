@@ -1,7 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 
 /**
- * Golden-path e2e for the OneRecord prototype.
+ * Golden-path e2e for the Tesseract prototype.
  * Run after `npm run build`: `npx playwright test e2e/golden.spec.ts --reporter=line`.
  * Against the live site: `E2E_BASE_URL=https://onerecord-lives-dsa26.vercel.app npx playwright test e2e/golden.spec.ts`.
  */
